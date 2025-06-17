@@ -5,7 +5,7 @@ import {
 } from "react-router-dom";
 import NotFound from "@/pages/not-found";
 import AdminLayout from "@/components/shared/admin-layout";
-import Admin from "@/pages";
+import Admin from "@/pages/Dashboard/index";
 
 export const router = createBrowserRouter(
   createRoutesFromElements(

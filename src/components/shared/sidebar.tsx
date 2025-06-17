@@ -174,7 +174,6 @@ function Sidebar() {
     return (
       <Button
         key={sectionKey}
-        asChild
         variant={isActive(href) ? "default" : "ghost"}
         className={cn(
           "w-full justify-start text-right h-auto py-3 px-4",
@@ -214,7 +213,6 @@ function Sidebar() {
               return (
                 <Button
                   key={index}
-                  asChild
                   variant={isActive(href) ? "default" : "ghost"}
                   size="sm"
                   className={cn(
