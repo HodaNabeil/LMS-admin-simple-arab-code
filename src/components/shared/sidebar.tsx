@@ -1,268 +1,185 @@
-import { Link, useLocation } from "react-router-dom";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import {
+  Home,
+  Settings,
+  Users,
+  FolderOpen,
+  Briefcase,
+  Megaphone,
+  Wallet,
+  User,
+  BarChart3,
+  Bot,
+  ArrowLeft,
+  ChevronLeft,
+} from "lucide-react";
+import { Link, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 
-interface SidebarItem {
-  name: string;
-  section?: string;
-  href?: string;
+interface MenuItem {
+  id: string;
+  label: string;
+  icon: React.ReactNode;
+  href: string;
+  badge?: number;
 }
 
-interface SidebarSection {
-  title: string;
-  section?: string;
-  items: string[] | SidebarItem[];
+const menuItems: MenuItem[] = [
+  {
+    id: "dashboard",
+    label: "لوحة التحكم",
+    icon: <Home className="w-5 h-5" />,
+    href: "/dashboard",
+  },
+  {
+    id: "system-control",
+    label: "التحكم بالنظام",
+    icon: <Settings className="w-5 h-5" />,
+    href: "/system-control",
+  },
+  {
+    id: "users",
+    label: "قاعدة المستخدمين",
+    icon: <Users className="w-5 h-5" />,
+    href: "/users",
+  },
+  {
+    id: "content",
+    label: "إدارة المحتوى",
+    icon: <FolderOpen className="w-5 h-5" />,
+    href: "/content",
+  },
+  {
+    id: "students",
+    label: "حقيبة الطلاب",
+    icon: <Briefcase className="w-5 h-5" />,
+    href: "/students",
+    badge: 2,
+  },
+  {
+    id: "marketing",
+    label: "التسويق",
+    icon: <Megaphone className="w-5 h-5" />,
+    href: "/marketing",
+  },
+  {
+    id: "wallet",
+    label: "المحفظة",
+    icon: <Wallet className="w-5 h-5" />,
+    href: "/wallet",
+  },
+  {
+    id: "profile",
+    label: "الملف الشخصي",
+    icon: <User className="w-5 h-5" />,
+    href: "/profile",
+  },
+  {
+    id: "reports",
+    label: "التقارير والإحصائيات",
+    icon: <BarChart3 className="w-5 h-5" />,
+    href: "/reports",
+  },
+];
+
+interface SidebarProps {
+  isCollapsed?: boolean;
 }
 
-interface SidebarData {
-  [key: string]: SidebarSection;
-}
-
-const sidebarData: SidebarData = {
-  dashboard: {
-    title: "🏠 لوحة التحكم الرئيسية",
-    items: [
-      {
-        name: "🏠 لوحة التحكم",
-        section: "General Dashboard",
-        href: "/dashboard",
-      },
-    ],
-  },
-  coursesManagement: {
-    title: "📚 إدارة الدورات",
-    section: "Courses Management",
-    items: ["📂 جميع الدورات", "➕ إضافة دورة جديدة", "📋 حالة الدورات"],
-  },
-  pathsManagement: {
-    title: "🛣️ إدارة المسارات التعليمية",
-    section: "Learning Paths Management",
-    items: ["🛣️ جميع المسارات التعليمية", "➕ إضافة مسار جديد"],
-  },
-  contentManagement: {
-    title: "🎥 إدارة المحتوى",
-    section: "Content Management",
-    items: [
-      "🎞️ إدارة الفيديوهات (إذا كنت ترفع الفيديوهات يدويًا أو من خارج المنصة)",
-      "🗂️ إدارة الملفات والمرفقات",
-    ],
-  },
-  analyticsReports: {
-    title: "📊 التحليلات والتقارير",
-    section: "Analytics & Reports",
-    items: [
-      "📈 إحصائيات عامة",
-      "💰 تقارير المبيعات",
-      "📋 تقارير الطلبات",
-      "👤 تقارير المستخدمين",
-    ],
-  },
-  userManagement: {
-    title: "👥 إدارة المستخدمين",
-    section: "User Management",
-    items: ["👤 جميع المستخدمين", "🛡️ صلاحيات المشرفين"],
-  },
-  ordersPayments: {
-    title: "🛒 إدارة الطلبات والمدفوعات",
-    section: "Orders & Payments Management",
-    items: [
-      "🛒 جميع الطلبات",
-      "💳 المدفوعات والمعاملات المالية",
-      "🔄 سجل المرتجعات (في حال دعم سياسة الاسترجاع)",
-    ],
-  },
-  couponsManagement: {
-    title: "🎟️ إدارة الكوبونات والخصومات",
-    section: "Coupons & Discounts Management",
-    items: ["🎫 جميع الكوبونات", "➕ إضافة كوبون جديد"],
-  },
-  reviewsFeedback: {
-    title: "📝 إدارة المراجعات والتعليقات",
-    section: "Reviews & Feedback",
-    items: ["⭐ جميع المراجعات", "💬 جميع التعليقات"],
-  },
-  messagesNotifications: {
-    title: "📧 إدارة الرسائل والإشعارات",
-    section: "Messages & Notifications",
-    items: [
-      "✉️ إعداد رسائل البريد الإلكتروني",
-      "🔔 إعداد الإشعارات داخل المنصة",
-    ],
-  },
-  settings: {
-    title: "⚙️ الإعدادات",
-    section: "Settings",
-    items: [
-      "🛠️ إعدادات المنصة",
-      "💳 إعدادات الدفع",
-      "🌍 إعدادات اللغة والمنطقة الزمنية",
-      "🔒 إعدادات الحماية",
-    ],
-  },
-  teamManagement: {
-    title: "🧑‍💼 إدارة الفريق",
-    section: "Team Management",
-    items: ["👥 إدارة الأعضاء والمشرفين", "➕ دعوة عضو جديد"],
-  },
-};
-
-// Helper function to generate route from Arabic text
-const generateRoute = (text: string): string => {
-  const routeMap: { [key: string]: string } = {
-    "🏠 لوحة التحكم": "/dashboard",
-    "📂 جميع الدورات": "/courses",
-    "➕ إضافة دورة جديدة": "/courses/new",
-    "📋 حالة الدورات": "/courses/status",
-    "🛣️ جميع المسارات التعليمية": "/learning-paths",
-    "➕ إضافة مسار جديد": "/learning-paths/new",
-    "🎞️ إدارة الفيديوهات (إذا كنت ترفع الفيديوهات يدويًا أو من خارج المنصة)":
-      "/content/videos",
-    "🗂️ إدارة الملفات والمرفقات": "/content/files",
-    "📈 إحصائيات عامة": "/analytics/overview",
-    "💰 تقارير المبيعات": "/analytics/sales",
-    "📋 تقارير الطلبات": "/analytics/orders",
-    "👤 تقارير المستخدمين": "/analytics/users",
-    "👤 جميع المستخدمين": "/users",
-    "🛡️ صلاحيات المشرفين": "/users/admins",
-    "🛒 جميع الطلبات": "/orders",
-    "💳 المدفوعات والمعاملات المالية": "/payments",
-    "🔄 سجل المرتجعات (في حال دعم سياسة الاسترجاع)": "/refunds",
-    "🎫 جميع الكوبونات": "/coupons",
-    "➕ إضافة كوبون جديد": "/coupons/new",
-    "⭐ جميع المراجعات": "/reviews",
-    "💬 جميع التعليقات": "/comments",
-    "✉️ إعداد رسائل البريد الإلكتروني": "/messages/email",
-    "🔔 إعداد الإشعارات داخل المنصة": "/messages/notifications",
-    "🛠️ إعدادات المنصة": "/settings/platform",
-    "💳 إعدادات الدفع": "/settings/payment",
-    "🌍 إعدادات اللغة والمنطقة الزمنية": "/settings/locale",
-    "🔒 إعدادات الحماية": "/settings/security",
-    "👥 إدارة الأعضاء والمشرفين": "/team/members",
-    "➕ دعوة عضو جديد": "/team/invite",
-  };
-
-  return routeMap[text] || "#";
-};
-
-function Sidebar() {
+function Sidebar({ isCollapsed = false }: SidebarProps = {}) {
   const location = useLocation();
 
   const isActive = (href: string) => {
     return location.pathname === href;
   };
 
-  const renderSingleItemSection = (
-    section: SidebarSection,
-    sectionKey: string
-  ) => {
-    if (!Array.isArray(section.items) || section.items.length === 0)
-      return null;
-
-    const item = section.items[0];
-    const itemText = typeof item === "string" ? item : item.name;
-    const href =
-      typeof item === "object" && item.href
-        ? item.href
-        : generateRoute(itemText);
-
-    return (
-      <Button
-        key={sectionKey}
-        variant={isActive(href) ? "default" : "ghost"}
-        className={cn(
-          "w-full justify-start text-right h-auto py-3 px-4",
-          isActive(href) && "bg-primary text-primary-foreground"
-        )}
-      >
-        <Link to={href}>{itemText}</Link>
-      </Button>
-    );
-  };
-
-  const renderMultiItemSection = (
-    section: SidebarSection,
-    sectionKey: string
-  ) => {
-    return (
-      <AccordionItem
-        key={sectionKey}
-        value={sectionKey}
-        className="border-none"
-      >
-        <AccordionTrigger
-          shownChevronDownIcon={true}
-          className="text-right py-3 px-4 hover:bg-muted rounded-md [&[data-state=open]>svg]:rotate-180"
-        >
-          <span className="font-medium">{section.title}</span>
-        </AccordionTrigger>
-        <AccordionContent className="pb-0">
-          <div className="space-y-1 mr-4">
-            {section.items.map((item, index) => {
-              const itemText = typeof item === "string" ? item : item.name;
-              const href =
-                typeof item === "object" && item.href
-                  ? item.href
-                  : generateRoute(itemText);
-
-              return (
-                <Button
-                  key={index}
-                  variant={isActive(href) ? "default" : "ghost"}
-                  size="sm"
-                  className={cn(
-                    "w-full justify-start text-right h-auto py-2 px-3",
-                    isActive(href) && "bg-primary text-primary-foreground"
-                  )}
-                >
-                  <Link to={href}>{itemText}</Link>
-                </Button>
-              );
-            })}
-          </div>
-        </AccordionContent>
-      </AccordionItem>
-    );
-  };
-
-  // Separate dashboard and other sections
-  const { dashboard, ...otherSections } = sidebarData;
-  const defaultAccordionValues = Object.keys(otherSections).slice(0, 2); // Open first 2 sections by default
-
   return (
-    <aside className="w-80 bg-background border-r border-border h-screen overflow-y-auto">
+    <aside className="w-full bg-white h-screen overflow-y-auto cairo-font border-r border-gray-200">
       <div className="p-6">
-        <h1 className="text-xl font-bold text-foreground mb-8 text-right">
-          لوحة تحكم الإدارة
-        </h1>
+        {/* User Profile Section */}
+        <div className="flex items-center gap-3 mb-8">
+          <Avatar className="w-12 h-12">
+            <AvatarImage src="https://randomuser.me/api/portraits/men/32.jpg" alt="محمد محمد" />
+            <AvatarFallback className="bg-gray-200 text-gray-600">م م</AvatarFallback>
+          </Avatar>
+          <span className="font-bold text-lg text-gray-800 cairo-font">محمد محمد</span>
+        </div>
 
-        <nav className="space-y-4">
-          {/* Dashboard section - always visible */}
-          <div className="space-y-2">
-            {renderSingleItemSection(dashboard, "dashboard")}
-          </div>
-
-          {/* Other sections with accordion */}
-          <Accordion
-            type="multiple"
-            defaultValue={defaultAccordionValues}
-            className="space-y-2"
+        {/* Dashboard Button */}
+        <div className="mb-6">
+          <Button
+            variant={isActive("/dashboard") ? "default" : "ghost"}
+            className={cn(
+              "w-full justify-between text-right h-12 px-4 text-base font-semibold rounded-xl cairo-font",
+              isActive("/dashboard") 
+                ? "bg-blue-500 text-white hover:bg-blue-600" 
+                : "bg-transparent text-gray-700 hover:bg-gray-100"
+            )}
+            asChild
           >
-            {Object.entries(otherSections).map(([sectionKey, section]) => {
-              const hasMultipleItems =
-                Array.isArray(section.items) && section.items.length > 1;
+            <Link to="/dashboard">
+              <span className="flex items-center gap-3">
+                <Home className="w-5 h-5" />
+                لوحة التحكم
+              </span>
+            </Link>
+          </Button>
+        </div>
 
-              return hasMultipleItems
-                ? renderMultiItemSection(section, sectionKey)
-                : renderSingleItemSection(section, sectionKey);
-            })}
-          </Accordion>
+        {/* Navigation Menu */}
+        <nav className="space-y-2">
+          {menuItems.slice(1).map((item) => (
+            <div key={item.id} className="relative">
+              <Button
+                variant="ghost"
+                className={cn(
+                  "w-full justify-between text-right h-12 px-4 text-base font-medium rounded-lg cairo-font",
+                  isActive(item.href)
+                    ? "bg-gray-100 text-gray-900"
+                    : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                )}
+                asChild
+              >
+                <Link to={item.href}>
+                  <span className="flex items-center gap-3">
+                    {item.icon}
+                    {item.label}
+                  </span>
+                  <div className="flex items-center gap-2">
+                    {item.badge && (
+                      <Badge className="bg-blue-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
+                        {item.badge}
+                      </Badge>
+                    )}
+                    <ChevronLeft className="w-4 h-4 text-gray-400" />
+                  </div>
+                </Link>
+              </Button>
+            </div>
+          ))}
         </nav>
+
+        {/* AI Assistant Card */}
+        <Card className="mt-8 rounded-2xl bg-gradient-to-br from-green-400 to-green-500 p-6 text-white">
+          <div className="flex items-center justify-center mb-3">
+            <div className="bg-white/20 rounded-full p-3">
+              <Bot className="w-8 h-8 text-white" />
+            </div>
+          </div>
+          <div className="text-center space-y-2">
+            <h3 className="font-bold text-lg cairo-font">مساعدك الذكي</h3>
+            <p className="text-sm opacity-90 cairo-font">متصل الآن</p>
+            <Button className="w-full bg-white/20 hover:bg-white/30 text-white border-0 rounded-xl h-10 font-medium cairo-font">
+              <span className="flex items-center justify-center gap-2">
+                تواصل
+                <ArrowLeft className="w-4 h-4" />
+              </span>
+            </Button>
+          </div>
+        </Card>
       </div>
     </aside>
   );

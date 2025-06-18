@@ -2,7 +2,7 @@
 @import "tw-animate-css";
 
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'Cairo', system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
   font-synthesis: none;
@@ -96,6 +96,10 @@
 
   body {
     @apply font-normal;
-    font-family: "Noto Kufi Arabic", sans-serif;
+    font-family: 'Cairo', sans-serif;
+  }
+
+  .cairo-font {
+    font-family: 'Cairo', sans-serif !important;
   }
 }
