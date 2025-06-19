@@ -16,6 +16,10 @@ import { useEffect } from "react";
 import { motion } from "framer-motion";
 import { FiUsers, FiFileText, FiCheckSquare } from "react-icons/fi";
 import { MdOutlineAttachMoney } from "react-icons/md";
+import { Users, BookOpen, DollarSign } from "lucide-react";
+import { PieChart, Pie, Cell } from "recharts";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import PaymentHistory from "@/components/PaymentHistory";
 // import { Label, Pie, PieChart, Cell } from "recharts";
 // import {
 //   ChartContainer,
@@ -267,275 +271,205 @@ function SubscriptionPieChart() {
   );
 }
 
+// بيانات إحصائيات ديناميكية (مثال)
+const stats = [
+  {
+    label: "إجمالي الطلاب",
+    value: 0,
+    icon: <Users className="w-6 h-6" />,
+    change: 0,
+    sub: "٪0 زيادة خلال الشهر الماضي",
+    bg: "from-[#dbeafe] to-[#93c5fd]",
+    iconBg: "bg-[#3b82f6] text-white"
+  },
+  {
+    label: "إجمالي المسجلين في الدورات",
+    value: 2,
+    icon: <BookOpen className="w-6 h-6" />,
+    change: 0,
+    sub: "٪0 زيادة خلال الشهر الماضي",
+    bg: "from-[#fce7f3] to-[#f9a8d4]",
+    iconBg: "bg-[#ec4899] text-white"
+  },
+  {
+    label: "إجمالي الإيرادات",
+    value: 0,
+    icon: <DollarSign className="w-6 h-6" />,
+    change: 0,
+    sub: "٪0 زيادة خلال الشهر الماضي",
+    bg: "from-[#dcfce7] to-[#bbf7d0]",
+    iconBg: "bg-[#22c55e] text-white"
+  },
+  {
+    label: "أرباح المنصة",
+    value: 0,
+    icon: <DollarSign className="w-6 h-6" />,
+    change: 0,
+    sub: "+10% منذ آخر شهر",
+    bg: "from-[#8b5cf6] to-[#6d28d9] text-white",
+    iconBg: "bg-white/10 text-white"
+  }
+];
+
+const progressData = [
+  { label: "جاري التقدم", color: "#f472b6", value: 10 },
+  { label: "مكتمل", color: "#8b5cf6", value: 5 },
+  { label: "مسجل", color: "#3b82f6", value: 20 }
+];
+
+function CoursesProgressCard({ data }: { data: { label: string; color: string; value: number }[] }) {
+  return (
+    <div className="w-full flex flex-col items-center">
+      <div className="w-full">
+        <div className="text-base font-bold text-gray-800 mb-8 text-center">متوسط تقدم الدورات</div>
+      </div>
+      {/* Doughnut Chart */}
+      <PieChart width={120} height={120}>
+        <Pie
+          data={data}
+          dataKey="value"
+          nameKey="label"
+          cx="50%"
+          cy="50%"
+          innerRadius={38}
+          outerRadius={55}
+          paddingAngle={2}
+        >
+          {data.map((entry: { label: string; color: string; value: number }, idx: number) => (
+            <Cell key={`cell-${idx}`} fill={entry.color} />
+          ))}
+        </Pie>
+      </PieChart>
+      {/* Legend */}
+      <div className="flex gap-8 items-end justify-center w-full mt-4">
+        {data.map((item: { label: string; color: string; value: number }, idx: number) => (
+          <div key={idx} className="flex flex-col items-center gap-1">
+            <span
+              className="inline-block w-8 h-3 rounded"
+              style={{ background: item.color, border: `1px solid ${item.color}` }}
+            ></span>
+            <span className="text-sm text-gray-500 mt-1">{item.label}</span>
+            <span className="text-xs text-gray-400">{item.value}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// مكون جدول الدورات التي تم إنشاؤها مؤخرًا
+interface Course {
+  id: string | number;
+  name: string;
+  image?: string;
+  enrolled: number;
+  status: string;
+}
+
+function RecentlyCreatedCoursesCard({ courses }: { courses: Course[] }) {
+  return (
+    <div className="w-full flex flex-col items-center">
+      <div className="pb-2 w-full">
+        <div className="text-base font-bold text-gray-800 text-center">الدورات التي تم إنشاؤها مؤخرًا</div>
+      </div>
+      <div className="pt-0 w-full">
+        <Table>
+          <TableHeader>
+            <TableRow className="text-gray-500 border-b">
+              <TableHead className="font-semibold text-right">الدورة</TableHead>
+              <TableHead className="font-semibold text-center">المسجلين</TableHead>
+              <TableHead className="font-semibold text-center">الحالة</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {courses.map((course) => (
+              <TableRow key={course.id} className="border-b last:border-b-0 hover:bg-gray-50 transition">
+                <TableCell className="py-3 px-2 flex items-center gap-2">
+                  {course.image ? (
+                    <img src={course.image} alt={course.name} className="w-8 h-8 rounded object-cover border" />
+                  ) : (
+                    <div className="w-8 h-8 rounded bg-gray-200 flex items-center justify-center text-gray-400">?</div>
+                  )}
+                  <span className="font-medium text-gray-800">{course.name}</span>
+                </TableCell>
+                <TableCell className="py-3 px-2 text-center font-bold text-blue-600">{course.enrolled}</TableCell>
+                <TableCell className="py-3 px-2 text-center">
+                  <span className={`inline-block rounded px-2 py-1 text-xs font-semibold ${course.status === 'منشورة' ? 'bg-green-100 text-green-700 border border-green-200' : 'bg-gray-100 text-gray-500'}`}>
+                    {course.status}
+                  </span>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
+    </div>
+  );
+}
+
+// مثال بيانات وهمية (يمكن استبدالها ببيانات API)
+const recentCourses = [
+  { id: 1, name: "Nodejs", enrolled: 1, status: "منشورة", image: "" },
+  { id: 2, name: "إتقان ...", enrolled: 1, status: "منشورة", image: "" },
+];
+
+const paymentData = [
+  {
+    id: "INV-001",
+    date: "2024-06-01",
+    amount: "$120.00",
+    method: "Credit Card",
+    status: "Paid",
+  },
+  // ... بيانات أخرى
+]
+
 export default function Admin() {
   useEffect(() => {
     document.body.style.fontFamily = 'Cairo, sans-serif';
   }, []);
 
   return (
-    <div dir="rtl" className="hidden flex-col md:flex bg-[#f8fafc] min-h-screen font-cairo">
-      {/* بطاقات الإحصائيات */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-8 px-8">
-        {/* المستخدمين */}
-        <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
-          <Card className="rounded-3xl bg-gradient-to-br from-[#dbeafe] to-[#93c5fd] shadow-xl p-8 relative overflow-hidden border-0">
+    <div dir="rtl" className="flex flex-col min-h-screen bg-[#f8fafc] font-cairo p-4 gap-6">
+      {/* الصف الأول: 3 بطاقات إحصائيات */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {stats.slice(0, 3).map((stat, idx) => (
+          <Card key={idx} className="rounded-lg bg-white text-gray-800 shadow-md p-6 border-0">
             <div className="flex items-center justify-between mb-4">
-              <div className="text-lg font-bold text-[#1e3a8a]">المستخدمين</div>
-              <div className="w-12 h-12 bg-[#3b82f6] rounded-full flex items-center justify-center shadow-lg">
-                <FiUsers size={24} className="text-white" />
+              <div className="text-lg font-bold text-gray-800">{stat.label}</div>
+              <div className={`w-12 h-12 ${stat.iconBg} rounded-full flex items-center justify-center shadow-lg`}>
+                {stat.icon}
               </div>
             </div>
-            <div className="text-4xl font-black text-[#1e3a8a]">14,390</div>
+            <div className="text-4xl font-black text-gray-800">{stat.value}</div>
+            <div className="text-sm opacity-75 mt-2 text-gray-600">{stat.sub}</div>
           </Card>
-        </motion.div>
-
-        {/* المحتوى */}
-        <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
-          <Card className="rounded-3xl bg-gradient-to-br from-[#fce7f3] to-[#f9a8d4] shadow-xl p-8 relative overflow-hidden border-0">
-            <div className="flex items-center justify-between mb-4">
-              <div className="text-lg font-bold text-[#831843]">المحتوى</div>
-              <div className="w-12 h-12 bg-[#ec4899] rounded-full flex items-center justify-center shadow-lg">
-                <FiFileText size={24} className="text-white" />
-              </div>
-            </div>
-            <div className="text-4xl font-black text-[#831843]">48,655</div>
-          </Card>
-        </motion.div>
-
-        {/* المبيعات */}
-        <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}>
-          <Card className="rounded-3xl bg-gradient-to-br from-[#dcfce7] to-[#bbf7d0] shadow-xl p-8 relative overflow-hidden border-0">
-            <div className="flex items-center justify-between mb-4">
-              <div className="text-lg font-bold text-[#166534]">المبيعات</div>
-              <div className="w-12 h-12 bg-[#22c55e] rounded-full flex items-center justify-center shadow-lg">
-                <FiCheckSquare size={24} className="text-white" />
-              </div>
-            </div>
-            <div className="text-4xl font-black text-[#166534]">4,993</div>
-          </Card>
-        </motion.div>
-
-        {/* أرباح المنصة */}
-        <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}>
-          <Card className="rounded-3xl bg-gradient-to-br from-[#8b5cf6] to-[#6d28d9] text-white shadow-xl p-8 relative overflow-hidden border-0">
-            <div className="relative z-10">
-              <div className="text-lg font-bold mb-3 opacity-90">أرباح المنصة</div>
-              <div className="flex items-baseline gap-2 mb-2">
-                <span className="text-4xl font-black">70,600</span>
-                <span className="text-lg font-medium">ر.س</span>
-              </div>
-              <div className="text-sm opacity-75">+10% منذ آخر شهر</div>
-            </div>
-            <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -translate-y-16 translate-x-16"></div>
-          </Card>
-        </motion.div>
+        ))}
       </div>
-      {/* الشبكة الرئيسية */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6 px-8">
-        {/* مخطط المبيعات */}
-        <Card className="col-span-2 border-0">
-          <CardHeader className="flex flex-row items-start justify-between pb-4">
-            <div className="space-y-2">
-              <div className="flex items-center gap-2">
-                <span className="text-green-500 text-sm font-bold">▲ +2.45%</span>
-                <span className="text-muted-foreground text-sm">المبيعات منذ آخر شهر</span>
-              </div>
-              <div className="flex items-center gap-4">
-                <div className="text-4xl font-black">19,392 <span className="text-lg font-medium">ر.س</span></div>
-                <span className="bg-green-500 text-white rounded-lg px-3 py-1 text-sm font-medium">7,500 ر.س</span>
-              </div>
-            </div>
-            <div className="text-muted-foreground text-sm">هذا الشهر ▼</div>
-          </CardHeader>
-          <CardContent>
-            <div className="relative h-32 mb-4">
-              <SalesLineChart />
-            </div>
-            <div className="flex justify-between text-xs text-muted-foreground px-2">
-              <span>01</span>
-              <span>02</span>
-              <span>03</span>
-              <span>04</span>
-              <span>05</span>
-              <span>06</span>
-              <span>07</span>
-            </div>
-          </CardContent>
+      {/* الصف الثاني: رسم بياني كبير بعرض كامل */}
+      <Card className="rounded-lg bg-white text-gray-800 shadow-md p-6 border-0 w-full">
+        <CardHeader className="pb-2">
+          <CardTitle className="text-base font-bold text-gray-800">تقدم الإيرادات السنوي</CardTitle>
+          <CardDescription className="text-green-500">+0.00%</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="h-64 flex items-center justify-center">
+            <SalesLineChart />
+          </div>
+        </CardContent>
+      </Card>
+      {/* الصف الثالث: متوسط تقدم الدورات + الدورات المنشأة مؤخرًا */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <Card className="rounded-lg bg-white text-gray-800 shadow-md p-6 border-0 flex flex-col items-center justify-center">
+          <CoursesProgressCard data={progressData} />
         </Card>
-
-        {/* زوار المنصة */}
-        <Card className="border-0">
-          <CardHeader className="pb-4">
-            <div className="space-y-1">
-              <CardDescription>إحصائيات</CardDescription>
-              <CardTitle className="text-lg">زوار المنصة</CardTitle>
-              <div className="flex items-center gap-2">
-                <span className="text-4xl font-black">5,773</span>
-                <div className="w-6 h-6 bg-green-500 rounded flex items-center justify-center">
-                  <div className="w-2 h-2 bg-white rounded"></div>
-                </div>
-              </div>
-              <p className="text-sm text-muted-foreground">زائر خلال هذا الأسبوع</p>
-            </div>
-          </CardHeader>
-          <CardContent>
-            <div className="h-24 mb-4">
-              <VisitorsBarChart />
-            </div>
-            <div className="space-y-2 text-sm">
-              <div className="flex items-center gap-2">
-                <span className="w-3 h-3 bg-[#ec4899] rounded-full"></span>
-                <span className="text-muted-foreground">4,773 مسجلين في المنصة</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="w-3 h-3 bg-[#3b82f6] rounded-full"></span>
-                <span className="text-muted-foreground">1,000 لم يقوموا بالتسجيل</span>
-              </div>
-            </div>
-          </CardContent>
+        <Card className="rounded-lg bg-white text-gray-800 shadow-md p-6 border-0 flex flex-col items-center justify-center">
+          <RecentlyCreatedCoursesCard courses={recentCourses} />
         </Card>
       </div>
-      {/* الشبكة السفلية */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6 px-8 mb-8">
-        {/* فريق العمل */}
-        <Card className="border-0 rounded-3xl shadow-lg bg-white">
-          <CardHeader className="pb-3">
-            <div className="flex items-start justify-between">
-              <CardTitle className="text-xl font-bold text-gray-800">فريق سبان</CardTitle>
-              <div className="flex items-center gap-2">
-                <div className="w-7 h-7 bg-green-500 rounded-full flex items-center justify-center">
-                  <span className="text-white text-xs font-bold">↗</span>
-                </div>
-                <span className="text-green-500 text-sm font-bold">1.3%</span>
-              </div>
-            </div>
-            <p className="text-sm text-gray-500 mt-1">منذ آخر شهر</p>
-          </CardHeader>
-          <CardContent className="space-y-5">
-            <div className="flex items-center justify-between py-2">
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 bg-gradient-to-br from-pink-400 to-pink-500 rounded-full flex items-center justify-center">
-                  <span className="text-white font-bold text-lg">ن</span>
-                </div>
-                <div>
-                  <div className="font-semibold text-gray-800">نورة سعد</div>
-                  <div className="text-sm text-gray-500">مبرمج</div>
-                </div>
-              </div>
-              <button className="text-gray-400 hover:text-gray-600 p-1">
-                <span className="text-lg">⋮</span>
-              </button>
-            </div>
-            
-            <div className="flex items-center justify-between py-2">
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 bg-gradient-to-br from-blue-400 to-blue-500 rounded-full flex items-center justify-center">
-                  <span className="text-white font-bold text-lg">م</span>
-                </div>
-                <div>
-                  <div className="font-semibold text-gray-800">محمد عبدالعزيز</div>
-                  <div className="text-sm text-gray-500">مدير التسويق</div>
-                </div>
-              </div>
-              <button className="text-gray-400 hover:text-gray-600 p-1">
-                <span className="text-lg">⋮</span>
-              </button>
-            </div>
-            
-            <div className="flex items-center justify-between py-2">
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 bg-gradient-to-br from-orange-400 to-orange-500 rounded-full flex items-center justify-center">
-                  <span className="text-white font-bold text-lg">ع</span>
-                </div>
-                <div>
-                  <div className="font-semibold text-gray-800">عبدالرحمن يوسف</div>
-                  <div className="text-sm text-gray-500">مدير المالية</div>
-                </div>
-              </div>
-              <button className="text-gray-400 hover:text-gray-600 p-1">
-                <span className="text-lg">⋮</span>
-              </button>
-            </div>
-            
-            <div className="flex items-center justify-between py-2">
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 bg-gradient-to-br from-green-400 to-green-500 rounded-full flex items-center justify-center">
-                  <span className="text-white font-bold text-lg">م</span>
-                </div>
-                <div>
-                  <div className="font-semibold text-gray-800">محمد ياسر</div>
-                  <div className="text-sm text-gray-500">مدير إدارة المحتوى</div>
-                </div>
-              </div>
-              <button className="text-gray-400 hover:text-gray-600 p-1">
-                <span className="text-lg">⋮</span>
-              </button>
-            </div>
-            
-            <div className="flex items-center justify-between py-2">
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 bg-gradient-to-br from-purple-400 to-purple-500 rounded-full flex items-center justify-center">
-                  <span className="text-white font-bold text-lg">A</span>
-                </div>
-                <div>
-                  <div className="font-semibold text-gray-800">Alex</div>
-                  <div className="text-sm text-gray-500">المدير التقني</div>
-                </div>
-              </div>
-              <button className="text-gray-400 hover:text-gray-600 p-1">
-                <span className="text-lg">⋮</span>
-              </button>
-            </div>
-            
-            <div className="pt-4 border-t border-gray-100">
-              <button className="w-full flex items-center justify-center">
-                <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center hover:bg-blue-700 transition-colors">
-                  <span className="text-white text-xl font-bold">+</span>
-                </div>
-              </button>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* باقات الاشتراك */}
-        <Card className="col-span-2 border-0 rounded-3xl shadow-lg bg-white">
-          <CardHeader className="pb-2">
-            <div className="flex items-start justify-between">
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
-                  <span className="text-white text-sm font-bold">↗</span>
-                </div>
-                <span className="text-green-500 text-lg font-bold">1.3%</span>
-              </div>
-              <div className="text-right">
-                <div className="text-gray-500 text-sm mb-1">باقات الاشتراك</div>
-                <div className="text-4xl font-black text-[#4a5568]">12,563 <span className="text-lg font-medium">مشترك</span></div>
-              </div>
-            </div>
-            <p className="text-sm text-gray-400 mt-2">منذ آخر شهر</p>
-          </CardHeader>
-          <CardContent className="pt-6">
-            <div className="flex items-center justify-center mb-8">
-              <SubscriptionPieChart />
-            </div>
-            
-            {/* البيانات أسفل المخطط */}
-            <div className="grid grid-cols-2 gap-6">
-              {subscriptionData.map((item, index) => (
-                <div key={index} className="text-center">
-                  <div className="text-3xl font-bold text-gray-400 mb-1">{item.value}</div>
-                  <div className="flex items-center justify-center gap-2">
-                    <span 
-                      className="w-3 h-3 rounded-full" 
-                      style={{ backgroundColor: item.fill }}
-                    ></span>
-                    <span className="text-[#4a5568] font-semibold">{item.name}</span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
+      {/* الصف الرابع: سجل المدفوعات بعرض كامل */}
+      <div className="w-full">
+        <PaymentHistory />
       </div>
     </div>
   );

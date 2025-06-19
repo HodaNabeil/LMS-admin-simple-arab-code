@@ -5,6 +5,11 @@ import { Badge } from "@/components/ui/badge";
 import {
   Home,
   Settings,
+  Bell,
+  CreditCard,
+  ShieldCheck,
+  FileText,
+  BookOpen,
   Users,
   FolderOpen,
   Briefcase,
@@ -13,11 +18,61 @@ import {
   User,
   BarChart3,
   Bot,
-  ArrowLeft,
   ChevronLeft,
+  PlusCircle,
+  FileStack,
+  FileCheck2,
+  FileCog,
+  FileLock2,
+  FileText as FileTextIcon,
+  MessageCircle,
+  Star,
+  Mail,
+  Globe,
+  Lock,
+  UserPlus,
+  UserCog,
+  Tag,
+  Layers,
+  PieChart,
+  File,
+  FilePlus,
+  Users2,
+  FileSearch,
+  FileBarChart2,
+  FileBadge2,
+  FileSignature,
+  FileCheck,
+  FileClock,
+  FileWarning,
+  FileOutput,
+  FileInput,
+  FileMinus,
+  FileEdit,
+  FileX,
+  FileUp,
+  FileDown,
+  FileArchive,
+  FileAudio,
+  FileVideo,
+  FileImage,
+  FileSpreadsheet,
+  FileSymlink,
+  FileTerminal,
+  FileType,
+  FileVolume,
+  FileJson,
+  FileCode2,
+  FileDiff,
+  FileQuestion,
+  FileKey,
+  FileHeart,
+  Download
 } from "lucide-react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
+import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
+import { useState } from "react";
 
 interface MenuItem {
   id: string;
@@ -89,97 +144,132 @@ interface SidebarProps {
   isCollapsed?: boolean;
 }
 
-function Sidebar({ isCollapsed = false }: SidebarProps = {}) {
-  const location = useLocation();
+// بيانات السايدبار من json
+const sidebarData = [
+  {
+    title: "لوحة التحكم الرئيسية",
+    icon: <Home className="w-5 h-5" />,
+    items: [
+      { name: "لوحة التحكم", icon: <Home className="w-4 h-4" />, path: "/admin" }
+    ]
+  },
+  {
+    title: "التحكم بالنظام",
+    icon: <Settings className="w-5 h-5" />,
+    items: [
+      { name: "بث التنبيهات", icon: <Bell className="w-4 h-4" />, path: "/admin/notifications" },
+      { name: "باقات الاشتراك", icon: <CreditCard className="w-4 h-4" />, path: "/admin/plans" },
+      { name: "سياسة الخصوصية", icon: <ShieldCheck className="w-4 h-4" />, path: "/admin/privacy" },
+      { name: "الشروط والأحكام", icon: <FileText className="w-4 h-4" />, path: "/admin/terms" },
+      { name: "باني الصفحات", icon: <FileStack className="w-4 h-4" />, path: "/admin/page-builder" },
+      { name: "باني المحتوى", icon: <FileTextIcon className="w-4 h-4" />, path: "/admin/content-builder" },
+      { name: "بوت الذكاء الاصطناعي", icon: <Bot className="w-4 h-4" />, path: "/admin/ai-bot" }
+    ]
+  },
+  {
+    title: "قاعدة المستخدمين",
+    icon: <Users className="w-5 h-5" />,
+    items: [
+      { name: "جميع المستخدمين", icon: <Users className="w-4 h-4" />, path: "/admin/users" }
+    ]
+  },
+  {
+    title: "إدارة المحتوى",
+    icon: <FolderOpen className="w-5 h-5" />,
+    items: [
+      { name: "إدارة الفيديوهات", icon: <FileVideo className="w-4 h-4" />, path: "/admin/videos" },
+      { name: "إدارة الملفات والمرفقات", icon: <FileTextIcon className="w-4 h-4" />, path: "/admin/files" }
+    ]
+  },
+  {
+    title: "حقيبة الطلاب",
+    icon: <Briefcase className="w-5 h-5" />,
+    items: [
+      { name: "حقيبة الطلاب", icon: <Briefcase className="w-4 h-4" />, path: "/admin/students-bag" }
+    ]
+  },
+  {
+    title: "التسويق",
+    icon: <Megaphone className="w-5 h-5" />,
+    items: [
+      { name: "التسويق", icon: <Megaphone className="w-4 h-4" />, path: "/admin/marketing" }
+    ]
+  },
+  {
+    title: "المحفظة",
+    icon: <Wallet className="w-5 h-5" />,
+    items: [
+      { name: "المحفظة", icon: <Wallet className="w-4 h-4" />, path: "/admin/wallet" }
+    ]
+  },
+  {
+    title: "الملف الشخصي",
+    icon: <User className="w-5 h-5" />,
+    items: [
+      { name: "الملف الشخصي", icon: <User className="w-4 h-4" />, path: "/admin/profile" }
+    ]
+  },
+  {
+    title: "التقارير والإحصائيات",
+    icon: <BarChart3 className="w-5 h-5" />,
+    items: [
+      { name: "التقارير والإحصائيات", icon: <BarChart3 className="w-4 h-4" />, path: "/admin/reports" }
+    ]
+  }
+];
 
-  const isActive = (href: string) => {
-    return location.pathname === href;
-  };
+function Sidebar({ isCollapsed = false }: SidebarProps = {}) {
+  const [activeSection, setActiveSection] = useState<string | null>(null);
+  const [activeItem, setActiveItem] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   return (
-    <aside className="w-full bg-white h-screen overflow-y-auto cairo-font border-r border-gray-200">
-      <div className="p-6">
-        {/* User Profile Section */}
-        <div className="flex items-center gap-3 mb-8">
-          <Avatar className="w-12 h-12">
-            <AvatarImage src="https://randomuser.me/api/portraits/men/32.jpg" alt="محمد محمد" />
-            <AvatarFallback className="bg-gray-200 text-gray-600">م م</AvatarFallback>
-          </Avatar>
-          <span className="font-bold text-lg text-gray-800 cairo-font">محمد محمد</span>
-        </div>
-
-        {/* Dashboard Button */}
-        <div className="mb-6">
-          <Button
-            variant={isActive("/dashboard") ? "default" : "ghost"}
-            className={cn(
-              "w-full justify-between text-right h-12 px-4 text-base font-semibold rounded-xl cairo-font",
-              isActive("/dashboard") 
-                ? "bg-blue-500 text-white hover:bg-blue-600" 
-                : "bg-transparent text-gray-700 hover:bg-gray-100"
-            )}
-            asChild
-          >
-            <Link to="/dashboard">
-              <span className="flex items-center gap-3">
-                <Home className="w-5 h-5" />
-                لوحة التحكم
-              </span>
-            </Link>
-          </Button>
-        </div>
-
-        {/* Navigation Menu */}
-        <nav className="space-y-2">
-          {menuItems.slice(1).map((item) => (
-            <div key={item.id} className="relative">
-              <Button
-                variant="ghost"
-                className={cn(
-                  "w-full justify-between text-right h-12 px-4 text-base font-medium rounded-lg cairo-font",
-                  isActive(item.href)
-                    ? "bg-gray-100 text-gray-900"
-                    : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
-                )}
-                asChild
+    <aside className="w-64 h-screen overflow-y-auto cairo-font bg-white border-r border-gray-100 shadow-xl flex flex-col">
+      {/* User Profile */}
+      <div className="flex items-center gap-3 h-20 px-6 border-b border-gray-100 mb-2">
+        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="محمد محمد" className="w-10 h-10 rounded-full object-cover" />
+        <span className="font-bold text-base text-gray-800 cairo-font">محمد محمد</span>
+      </div>
+      <div className="flex-1 p-2">
+        <Accordion type="single" collapsible className="space-y-1 bg-white">
+          {sidebarData.map((section, index) => (
+            <AccordionItem key={index} value={index.toString()} className="border-none">
+              <AccordionTrigger
+                className={`flex items-center gap-2 px-3 py-2 text-gray-700 hover:bg-blue-50 rounded-lg text-base font-semibold transition-all ${activeSection === index.toString() ? 'bg-blue-600 text-white' : ''}`}
+                onClick={() => setActiveSection(activeSection === index.toString() ? null : index.toString())}
               >
-                <Link to={item.href}>
-                  <span className="flex items-center gap-3">
-                    {item.icon}
-                    {item.label}
-                  </span>
-                  <div className="flex items-center gap-2">
-                    {item.badge && (
-                      <Badge className="bg-blue-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
-                        {item.badge}
-                      </Badge>
-                    )}
-                    <ChevronLeft className="w-4 h-4 text-gray-400" />
-                  </div>
-                </Link>
-              </Button>
-            </div>
+                <span className={`flex items-center gap-2 ${activeSection === index.toString() ? 'text-white' : 'text-gray-500'}`}>{section.icon}</span>
+                <span>{section.title}</span>
+                <ChevronLeft className={`ml-auto transition-transform ${activeSection === index.toString() ? 'rotate-180 text-white' : 'text-gray-400'}`} />
+              </AccordionTrigger>
+              {section.items.length > 0 && (
+                <AccordionContent className="bg-transparent px-0">
+                  <ul className="pl-6 space-y-2 mt-2">
+                    {section.items.map((item, i) => {
+                      const itemName = typeof item === 'string' ? item : item.name;
+                      const isActive = activeSection === index.toString() && activeItem === itemName;
+                      return (
+                        <li
+                          key={i}
+                          className={`flex items-center gap-3 px-4 py-2 rounded-xl cursor-pointer text-sm font-medium transition-all ${isActive ? 'bg-[#2563eb] text-white shadow-sm' : 'text-gray-500 hover:text-[#2563eb] hover:bg-[#e0edff]'}`}
+                          onClick={() => {
+                            setActiveItem(itemName);
+                            if (item.path) navigate(item.path);
+                          }}
+                        >
+                          {typeof item === 'object' && item.icon && (
+                            <span className="text-gray-400">{item.icon}</span>
+                          )}
+                          <span>{itemName}</span>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </AccordionContent>
+              )}
+            </AccordionItem>
           ))}
-        </nav>
-
-        {/* AI Assistant Card */}
-        <Card className="mt-8 rounded-2xl bg-gradient-to-br from-green-400 to-green-500 p-6 text-white">
-          <div className="flex items-center justify-center mb-3">
-            <div className="bg-white/20 rounded-full p-3">
-              <Bot className="w-8 h-8 text-white" />
-            </div>
-          </div>
-          <div className="text-center space-y-2">
-            <h3 className="font-bold text-lg cairo-font">مساعدك الذكي</h3>
-            <p className="text-sm opacity-90 cairo-font">متصل الآن</p>
-            <Button className="w-full bg-white/20 hover:bg-white/30 text-white border-0 rounded-xl h-10 font-medium cairo-font">
-              <span className="flex items-center justify-center gap-2">
-                تواصل
-                <ArrowLeft className="w-4 h-4" />
-              </span>
-            </Button>
-          </div>
-        </Card>
+        </Accordion>
       </div>
     </aside>
   );
