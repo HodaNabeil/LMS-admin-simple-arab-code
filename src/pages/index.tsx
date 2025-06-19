@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -6,15 +5,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Overview } from "@/features/admin/components/overview";
-import { RecentSales } from "@/features/admin/components/recent-sales";
-import { Search } from "@/features/admin/components/search";
 
-import { useEffect } from "react";
-import { motion } from "framer-motion";
-import { FiUsers, FiFileText, FiCheckSquare } from "react-icons/fi";
-import { MdOutlineAttachMoney } from "react-icons/md";
 import { Users, BookOpen, DollarSign } from "lucide-react";
 import { PieChart, Pie, Cell } from "recharts";
 import {
@@ -26,17 +17,13 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import PaymentHistory from "@/components/PaymentHistory";
-// import { Label, Pie, PieChart, Cell } from "recharts";
-// import {
-//   ChartContainer,
-//   ChartTooltip,
-//   ChartTooltipContent,
-// } from "@/components/ui/chart";
-// import { UserNav } from "@/pages/Dashboard/components/user-nav";
-// import { CalendarDateRangePicker } from "@/components/ui/calendar-date-range-picker";
+import { useAnnualRevenue } from "@/hooks/useAnnualRevenue";
 
 // مكون مخطط خطي بسيط (مؤقت)
-function SalesLineChart() {
+function SalesLineChart({ data }: { data: number[] }) {
+  // رسم المخطط بناءً على البيانات القادمة من الـ API
+  // مثال: تحويل البيانات إلى نقاط polyline
+  const points = data.map((v, i) => `${i * 40},${100 - v}`).join(" ");
   return (
     <div className="w-full h-40 flex items-end">
       <svg width="100%" height="100%" viewBox="0 0 300 100">
@@ -44,263 +31,9 @@ function SalesLineChart() {
           fill="none"
           stroke="#22d3ee"
           strokeWidth="3"
-          points="0,80 40,60 80,70 120,40 160,60 200,50 240,60 280,55"
-        />
-        <polyline
-          fill="none"
-          stroke="#6366f1"
-          strokeWidth="3"
-          points="0,90 40,80 80,85 120,60 160,80 200,70 240,80 280,75"
+          points={points}
         />
       </svg>
-    </div>
-  );
-}
-
-// مكون مخطط أعمدة بسيط (مؤقت)
-function VisitorsBarChart() {
-  return (
-    <div className="w-full h-32 flex items-end">
-      <svg width="100%" height="100%" viewBox="0 0 300 80">
-        {[30, 60, 40, 70, 50, 65, 55, 60, 40, 70, 50, 65, 55, 60].map(
-          (h, i) => (
-            <rect
-              key={i}
-              x={i * 20 + 10}
-              y={80 - h}
-              width="10"
-              height={h}
-              fill={i % 2 === 0 ? "#e879f9" : "#6366f1"}
-              rx="3"
-            />
-          )
-        )}
-      </svg>
-    </div>
-  );
-}
-
-// بيانات باقات الاشتراك
-const subscriptionData = [
-  {
-    name: "الباقة الأساسية",
-    value: 410,
-    percentage: 26,
-    fill: "#c084fc",
-  },
-  {
-    name: "باقة النمو",
-    value: 134,
-    percentage: 11,
-    fill: "#67e8f9",
-  },
-  {
-    name: "الباقة الاحترافية",
-    value: 765,
-    percentage: 39,
-    fill: "#a5b4fc",
-  },
-  {
-    name: "باقة التميز",
-    value: 338,
-    percentage: 24,
-    fill: "#4fd1c7",
-  },
-];
-
-// const chartConfig = {
-//   basic: {
-//     label: "الباقة الأساسية",
-//     color: "#c084fc"
-//   },
-//   growth: {
-//     label: "باقة النمو",
-//     color: "#67e8f9"
-//   },
-//   professional: {
-//     label: "الباقة الاحترافية",
-//     color: "#a5b4fc"
-//   },
-//   premium: {
-//     label: "باقة التميز",
-//     color: "#4fd1c7"
-//   }
-// };
-
-// مكون مخطط دائري احترافي للاشتراكات
-function SubscriptionPieChart() {
-  return (
-    <div className="w-[320px] h-[320px] mx-auto relative">
-      <svg
-        width="320"
-        height="320"
-        viewBox="0 0 320 320"
-        className="filter drop-shadow-2xl"
-      >
-        <defs>
-          {/* تدرجات احترافية */}
-          <linearGradient
-            id="premiumGradient"
-            x1="0%"
-            y1="0%"
-            x2="100%"
-            y2="100%"
-          >
-            <stop offset="0%" stopColor="#4fd1c7" />
-            <stop offset="100%" stopColor="#06b6d4" />
-          </linearGradient>
-
-          <linearGradient
-            id="basicGradient"
-            x1="0%"
-            y1="0%"
-            x2="100%"
-            y2="100%"
-          >
-            <stop offset="0%" stopColor="#c084fc" />
-            <stop offset="100%" stopColor="#a855f7" />
-          </linearGradient>
-
-          <linearGradient id="proGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#a5b4fc" />
-            <stop offset="100%" stopColor="#6366f1" />
-          </linearGradient>
-
-          <linearGradient
-            id="growthGradient"
-            x1="0%"
-            y1="0%"
-            x2="100%"
-            y2="100%"
-          >
-            <stop offset="0%" stopColor="#67e8f9" />
-            <stop offset="100%" stopColor="#22d3ee" />
-          </linearGradient>
-
-          {/* ظلال ثلاثية الأبعاد */}
-          <filter id="innerShadow">
-            <feGaussianBlur in="SourceGraphic" stdDeviation="2" />
-            <feOffset dx="2" dy="2" result="offset" />
-            <feFlood floodColor="#000000" floodOpacity="0.1" />
-            <feComposite in2="offset" operator="in" />
-            <feMerge>
-              <feMergeNode />
-              <feMergeNode in="SourceGraphic" />
-            </feMerge>
-          </filter>
-
-          <filter id="textShadow">
-            <feDropShadow dx="0" dy="2" stdDeviation="3" floodOpacity="0.8" />
-          </filter>
-        </defs>
-
-        <g transform="translate(160, 160)">
-          {/* باقة التميز - 24% - أخضر متدرج */}
-          <path
-            d="M 0,0 L 0,-120 A 120,120 0 0,1 103.9,-60 Z"
-            fill="url(#premiumGradient)"
-            filter="url(#innerShadow)"
-            className="hover:scale-105 transition-transform duration-300 cursor-pointer"
-            stroke="rgba(255,255,255,0.1)"
-            strokeWidth="2"
-          />
-
-          {/* الباقة الأساسية - 26% - بنفسجي متدرج */}
-          <path
-            d="M 0,0 L 103.9,-60 A 120,120 0 0,1 120,0 Z"
-            fill="url(#basicGradient)"
-            filter="url(#innerShadow)"
-            className="hover:scale-105 transition-transform duration-300 cursor-pointer"
-            stroke="rgba(255,255,255,0.1)"
-            strokeWidth="2"
-          />
-
-          {/* الباقة الاحترافية - 39% - أزرق متدرج */}
-          <path
-            d="M 0,0 L 120,0 A 120,120 0 0,1 -72,96 Z"
-            fill="url(#proGradient)"
-            filter="url(#innerShadow)"
-            className="hover:scale-105 transition-transform duration-300 cursor-pointer"
-            stroke="rgba(255,255,255,0.1)"
-            strokeWidth="2"
-          />
-
-          {/* باقة النمو - 11% - فيروزي متدرج */}
-          <path
-            d="M 0,0 L -72,96 A 120,120 0 0,1 0,-120 Z"
-            fill="url(#growthGradient)"
-            filter="url(#innerShadow)"
-            className="hover:scale-105 transition-transform duration-300 cursor-pointer"
-            stroke="rgba(255,255,255,0.1)"
-            strokeWidth="2"
-          />
-
-          {/* النسب المئوية مع تحسينات بصرية */}
-          <text
-            x="52"
-            y="-72"
-            fill="white"
-            fontSize="22"
-            fontWeight="900"
-            textAnchor="middle"
-            dominantBaseline="central"
-            filter="url(#textShadow)"
-            className="font-cairo"
-          >
-            24%
-          </text>
-
-          <text
-            x="102"
-            y="-30"
-            fill="white"
-            fontSize="22"
-            fontWeight="900"
-            textAnchor="middle"
-            dominantBaseline="central"
-            filter="url(#textShadow)"
-            className="font-cairo"
-          >
-            26%
-          </text>
-
-          <text
-            x="36"
-            y="72"
-            fill="white"
-            fontSize="22"
-            fontWeight="900"
-            textAnchor="middle"
-            dominantBaseline="central"
-            filter="url(#textShadow)"
-            className="font-cairo"
-          >
-            39%
-          </text>
-
-          <text
-            x="-36"
-            y="-12"
-            fill="white"
-            fontSize="22"
-            fontWeight="900"
-            textAnchor="middle"
-            dominantBaseline="central"
-            filter="url(#textShadow)"
-            className="font-cairo"
-          >
-            11%
-          </text>
-        </g>
-      </svg>
-
-      {/* مؤشرات تفاعلية للأجزاء */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-8 right-16 w-3 h-3 bg-gradient-to-r from-cyan-400 to-cyan-600 rounded-full shadow-lg animate-pulse"></div>
-        <div className="absolute top-16 right-4 w-3 h-3 bg-gradient-to-r from-purple-400 to-purple-600 rounded-full shadow-lg animate-pulse delay-300"></div>
-        <div className="absolute bottom-8 right-8 w-3 h-3 bg-gradient-to-r from-blue-400 to-blue-600 rounded-full shadow-lg animate-pulse delay-500"></div>
-        <div className="absolute top-1/2 left-4 w-3 h-3 bg-gradient-to-r from-cyan-300 to-teal-400 rounded-full shadow-lg animate-pulse delay-700"></div>
-      </div>
     </div>
   );
 }
@@ -491,22 +224,8 @@ const recentCourses = [
   { id: 2, name: "إتقان ...", enrolled: 1, status: "منشورة", image: "" },
 ];
 
-const paymentData = [
-  {
-    id: "INV-001",
-    date: "2024-06-01",
-    amount: "$120.00",
-    method: "Credit Card",
-    status: "Paid",
-  },
-  // ... بيانات أخرى
-];
-
 export default function Admin() {
-  useEffect(() => {
-    document.body.style.fontFamily = "Cairo, sans-serif";
-  }, []);
-
+  const { data, isLoading, error } = useAnnualRevenue();
   return (
     <div
       dir="rtl"
@@ -548,7 +267,13 @@ export default function Admin() {
         </CardHeader>
         <CardContent>
           <div className="h-64 flex items-center justify-center">
-            <SalesLineChart />
+            {isLoading ? (
+              <span>جاري التحميل...</span>
+            ) : error ? (
+              <span>حدث خطأ في جلب البيانات</span>
+            ) : (
+              <SalesLineChart data={data?.values || [0, 0, 0, 0, 0, 0, 0, 0]} />
+            )}
           </div>
         </CardContent>
       </Card>
