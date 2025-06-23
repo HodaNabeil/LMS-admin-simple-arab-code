@@ -146,74 +146,68 @@ interface SidebarProps {
 
 // بيانات السايدبار من json
 const sidebarData = [
-  {
-    title: "لوحة التحكم الرئيسية",
-    icon: <Home className="w-5 h-5" />,
-    items: [
-      { name: "لوحة التحكم", icon: <Home className="w-4 h-4" />, path: "/admin" }
-    ]
-  },
+
   {
     title: "التحكم بالنظام",
     icon: <Settings className="w-5 h-5" />,
     items: [
-      { name: "بث التنبيهات", icon: <Bell className="w-4 h-4" />, path: "/admin/notifications" },
-      { name: "باقات الاشتراك", icon: <CreditCard className="w-4 h-4" />, path: "/admin/plans" },
-      { name: "سياسة الخصوصية", icon: <ShieldCheck className="w-4 h-4" />, path: "/admin/privacy" },
-      { name: "الشروط والأحكام", icon: <FileText className="w-4 h-4" />, path: "/admin/terms" },
-      { name: "باني الصفحات", icon: <FileStack className="w-4 h-4" />, path: "/admin/page-builder" },
-      { name: "باني المحتوى", icon: <FileTextIcon className="w-4 h-4" />, path: "/admin/content-builder" },
-      { name: "بوت الذكاء الاصطناعي", icon: <Bot className="w-4 h-4" />, path: "/admin/ai-bot" }
+      { name: "بث التنبيهات", icon: <Bell className="w-4 h-4" />, path: "/notifications" },
+      { name: "باقات الاشتراك", icon: <CreditCard className="w-4 h-4" />, path: "/plans" },
+      { name: "سياسة الخصوصية", icon: <ShieldCheck className="w-4 h-4" />, path: "/privacy" },
+      { name: "الشروط والأحكام", icon: <FileText className="w-4 h-4" />, path: "/terms" },
+      { name: "باني الصفحات", icon: <FileStack className="w-4 h-4" />, path: "/page-builder" },
+      { name: "باني المحتوى", icon: <FileTextIcon className="w-4 h-4" />, path: "/content-builder" },
+      { name: "بوت الذكاء الاصطناعي", icon: <Bot className="w-4 h-4" />, path: "/ai-bot" }
     ]
   },
   {
     title: "قاعدة المستخدمين",
     icon: <Users className="w-5 h-5" />,
     items: [
-      { name: "جميع المستخدمين", icon: <Users className="w-4 h-4" />, path: "/admin/users" }
+      { name: "جميع المستخدمين", icon: <Users className="w-4 h-4" />, path: "/users" }
     ]
   },
   {
     title: "إدارة المحتوى",
     icon: <FolderOpen className="w-5 h-5" />,
     items: [
-      { name: "إدارة الفيديوهات", icon: <FileVideo className="w-4 h-4" />, path: "/admin/videos" },
-      { name: "إدارة الملفات والمرفقات", icon: <FileTextIcon className="w-4 h-4" />, path: "/admin/files" }
+      { name: "إدارة الفيديوهات", icon: <FileVideo className="w-4 h-4" />, path: "/videos" },
+      { name: "إدارة الملفات والمرفقات", icon: <FileTextIcon className="w-4 h-4" />, path: "/files" }
     ]
   },
   {
     title: "حقيبة الطلاب",
     icon: <Briefcase className="w-5 h-5" />,
     items: [
-      { name: "حقيبة الطلاب", icon: <Briefcase className="w-4 h-4" />, path: "/admin/students-bag" }
+      { name: "حقيبة الطلاب", icon: <Briefcase className="w-4 h-4" />, path: "/students-bag" }
     ]
   },
   {
     title: "التسويق",
     icon: <Megaphone className="w-5 h-5" />,
     items: [
-      { name: "التسويق", icon: <Megaphone className="w-4 h-4" />, path: "/admin/marketing" }
+      { name: "التسويق", icon: <Megaphone className="w-4 h-4" />, path: "/marketing" }
     ]
   },
   {
     title: "المحفظة",
     icon: <Wallet className="w-5 h-5" />,
     items: [
-      { name: "المحفظة", icon: <Wallet className="w-4 h-4" />, path: "/admin/wallet" }
+      { name: "المحفظة", icon: <Wallet className="w-4 h-4" />, path: "/wallet" }
     ]
   },
   {
     title: "الملف الشخصي",
     icon: <User className="w-5 h-5" />,
     items: [
-      { name: "الملف الشخصي", icon: <User className="w-4 h-4" />, path: "/admin/profile" }
+      { name: "الملف الشخصي", icon: <User className="w-4 h-4" />, path: "/profile" }
     ]
   },
   {
     title: "التقارير والإحصائيات",
     icon: <BarChart3 className="w-5 h-5" />,
     items: [
-      { name: "التقارير والإحصائيات", icon: <BarChart3 className="w-4 h-4" />, path: "/admin/reports" }
+      { name: "التقارير والإحصائيات", icon: <BarChart3 className="w-4 h-4" />, path: "/reports" }
     ]
   }
 ];
