@@ -1,9 +1,13 @@
 import { useEffect, useState } from "react";
 import { DataTable } from "@/components/ui/data-table";
-import { Button } from "@/components/ui/button";
 import { Edit, Trash2 } from "lucide-react";
 import { Dialog, DialogContent, DialogTitle } from "@radix-ui/react-dialog";
 import { DialogHeader } from "@/components/ui/dialog";
+import { useForm } from "react-hook-form";
+
+import { Button } from "@/components/ui/button";
+import { InputTypes } from "@/constants/enums";
+import FormFields from "@/components/shared/form-fields/form-fields";
 
 // بيانات وهمية مؤقتة
 const mockData = [
@@ -18,6 +22,7 @@ export default function UsersTable() {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [dialogType, setDialogType] = useState(""); // "edit" | "delete" | "create"
   const [selectedUser, setSelectedUser] = useState<any>(null);
+  const { control, handleSubmit, reset, formState } = useForm();
 
   // جلب البيانات من API
   // useEffect(() => {
@@ -38,12 +43,13 @@ export default function UsersTable() {
     setDialogOpen(true);
   };
   const handleCreate = () => {
-    // setSelectedUser(null);
-    // setDialogType("create");
-    // setDialogOpen(true);
+    setSelectedUser(null);
+    setDialogType("create");
+    setDialogOpen(true);
+    reset(); // إعادة تعيين الحقول عند الفتح
   };
 
- const columns = (onEdit: any, onDelete: any) => [
+  const columns = (onEdit: any, onDelete: any) => [
     {
       accessorKey: "id",
       header: "ID",
@@ -61,10 +67,18 @@ export default function UsersTable() {
       header: "",
       cell: ({ row }: { row: any }) => (
         <div className="flex gap-2">
-          <Button variant="ghost" size="icon" onClick={() => onEdit(row.original)}>
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => onEdit(row.original)}
+          >
             <Edit className="w-4 h-4" />
           </Button>
-          <Button variant="ghost" size="icon" onClick={() => onDelete(row.original)}>
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => onDelete(row.original)}
+          >
             <Trash2 className="w-4 h-4" />
           </Button>
         </div>
@@ -76,22 +90,37 @@ export default function UsersTable() {
     <div className=" p-2 ">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-2xl font-bold text-blue-800">Users</h2>
-        <Button onClick={handleCreate} variant="link" className="">CreateNewUser</Button>
+        <Button
+          onClick={handleCreate}
+          className=" border-blue-800 bg-blue-800 text-white hover:bg-blue-700  "
+        >
+          CreateNewUser
+        </Button>
       </div>
       <DataTable columns={columns(handleEdit, handleDelete)} data={data} />
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent >
+        <DialogContent>
           <DialogHeader>
             <DialogTitle>
               {dialogType === "edit" && "Edit User"}
               {dialogType === "delete" && "Delete User"}
-              {dialogType === "create" && "Create New User"}
+              {dialogType === "create" && (
+                <form onSubmit={handleSubmit((data) => console.log(data))}>
+                  <FormFields
+                    name="user"
+                    placeholder="Create User"
+                    control={control}
+                    label="Create User"
+                    type={InputTypes.TEXT}
+                    errors={formState.errors}
+                  />
+                  <Button type="submit" className="mt-4">
+                    save
+                  </Button>
+                </form>
+              )}
             </DialogTitle>
           </DialogHeader>
-          {/* هنا ضعي فورم التعديل أو الحذف أو الإنشاء حسب dialogType */}
-          {dialogType === "edit" && <div>تعديل بيانات المستخدم: {selectedUser?.name}</div>}
-          {dialogType === "delete" && <div>هل أنت متأكد من حذف المستخدم: {selectedUser?.name}؟</div>}
-          {dialogType === "create" && <div>إنشاء مستخدم جديد</div>}
         </DialogContent>
       </Dialog>
     </div>
