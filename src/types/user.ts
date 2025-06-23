@@ -1,14 +1,9 @@
 import { UserType } from "@/constants/enums";
 
 export type User = {
-  id: string;
   name: string;
   email: string;
-  phone?: string;
-  user_type: UserType;
-  profile_picture?: string;
-  createdAt: Date;
-  updatedAt: Date;
+  role: UserType;
 };
 
 export type AuthResponse = {

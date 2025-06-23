@@ -8,6 +8,8 @@ import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { InputTypes } from "@/constants/enums";
 import FormFields from "@/components/shared/form-fields/form-fields";
+import { CreateNewUser } from "./CreateNewUser";
+import { EditUser } from "./EditUser";
 
 // بيانات وهمية مؤقتة
 const mockData = [
@@ -67,13 +69,14 @@ export default function UsersTable() {
       header: "",
       cell: ({ row }: { row: any }) => (
         <div className="flex gap-2">
-          <Button
+          <EditUser user={row.original} />
+          {/* <Button
             variant="ghost"
             size="icon"
             onClick={() => onEdit(row.original)}
           >
             <Edit className="w-4 h-4" />
-          </Button>
+          </Button> */}
           <Button
             variant="ghost"
             size="icon"
@@ -88,6 +91,7 @@ export default function UsersTable() {
 
   return (
     <div className=" p-2 ">
+      <CreateNewUser />
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-2xl font-bold text-blue-800">Users</h2>
         <Button
