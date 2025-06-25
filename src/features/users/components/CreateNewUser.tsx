@@ -5,7 +5,7 @@ import {
   DialogHeader,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Directions } from "@/constants/enums";
+import { Directions, UserType } from "@/constants/enums";
 import UserForm from "./UserForm";
 import { DialogDescription, DialogTitle } from "@radix-ui/react-dialog";
 
@@ -23,7 +23,14 @@ export function CreateNewUser() {
             بشكل صحيح.
           </DialogDescription>
         </DialogHeader>
-        <UserForm actionLabel="انشاء مستخدم جديد" />
+        <UserForm
+          actionLabel="انشاء مستخدم جديد"
+          user={{
+            name: "",
+            email: "",
+            role: UserType.USER,
+          }}
+        />
       </DialogContent>
     </Dialog>
   );

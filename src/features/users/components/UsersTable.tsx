@@ -10,6 +10,7 @@ import { InputTypes } from "@/constants/enums";
 import FormFields from "@/components/shared/form-fields/form-fields";
 import { CreateNewUser } from "./CreateNewUser";
 import { EditUser } from "./EditUser";
+import DeleteUser from "./DeleteUser";
 
 // بيانات وهمية مؤقتة
 const mockData = [
@@ -68,22 +69,14 @@ export default function UsersTable() {
       id: "actions",
       header: "",
       cell: ({ row }: { row: any }) => (
-        <div className="flex gap-2">
-          <EditUser user={row.original} />
-          {/* <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => onEdit(row.original)}
-          >
-            <Edit className="w-4 h-4" />
-          </Button> */}
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => onDelete(row.original)}
-          >
-            <Trash2 className="w-4 h-4" />
-          </Button>
+        <div className="flex gap-2 items-center">
+          <button>
+            <EditUser user={row.original} />
+          </button>
+
+          <button>
+            <DeleteUser user={row.original} />
+          </button>
         </div>
       ),
     },
@@ -91,42 +84,12 @@ export default function UsersTable() {
 
   return (
     <div className=" p-2 ">
-      <CreateNewUser />
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-2xl font-bold text-blue-800">Users</h2>
-        <Button
-          onClick={handleCreate}
-          className=" border-blue-800 bg-blue-800 text-white hover:bg-blue-700  "
-        >
-          CreateNewUser
-        </Button>
+        <CreateNewUser />
       </div>
       <DataTable columns={columns(handleEdit, handleDelete)} data={data} />
-      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>
-              {dialogType === "edit" && "Edit User"}
-              {dialogType === "delete" && "Delete User"}
-              {dialogType === "create" && (
-                <form onSubmit={handleSubmit((data) => console.log(data))}>
-                  <FormFields
-                    name="user"
-                    placeholder="Create User"
-                    control={control}
-                    label="Create User"
-                    type={InputTypes.TEXT}
-                    errors={formState.errors}
-                  />
-                  <Button type="submit" className="mt-4">
-                    save
-                  </Button>
-                </form>
-              )}
-            </DialogTitle>
-          </DialogHeader>
-        </DialogContent>
-      </Dialog>
+      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}></Dialog>
     </div>
   );
 }

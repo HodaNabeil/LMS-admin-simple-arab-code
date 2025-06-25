@@ -1,6 +1,6 @@
 import { Card } from "@/components/ui/card";
 import { LineChart, Line, ResponsiveContainer, Tooltip } from "recharts";
-import { User } from "lucide-react"; 
+import { User } from "lucide-react";
 import React from "react";
 
 interface StatsCardProps {
@@ -11,7 +11,13 @@ interface StatsCardProps {
   lineName?: string;
 }
 
-export function StatsCard({ title, value, icon, data, lineName = "" }: StatsCardProps) {
+export function StatsCard({
+  title,
+  value,
+  icon,
+  data,
+  lineName = "",
+}: StatsCardProps) {
   return (
     <Card className="bg-white text-gray-800 p-4 h-full shadow-sm border border-gray-100">
       <div className="flex items-center gap-2 mb-2">
@@ -33,7 +39,11 @@ export function StatsCard({ title, value, icon, data, lineName = "" }: StatsCard
             <Tooltip
               labelFormatter={(label) => label}
               formatter={(v) => [`${v}`, lineName || title]}
-              contentStyle={{ background: "#fff", border: "1px solid #e5e7eb", color: "#1e293b" }}
+              contentStyle={{
+                background: "#fff",
+                border: "1px solid #e5e7eb",
+                color: "#1e293b",
+              }}
               labelStyle={{ color: "#1e293b" }}
               itemStyle={{ color: "#1e293b" }}
             />
