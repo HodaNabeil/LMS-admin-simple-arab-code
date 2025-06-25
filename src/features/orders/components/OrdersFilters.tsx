@@ -1,219 +1,364 @@
-// import { Button } from "@/components/ui/button";
-// import { Input } from "@/components/ui/input";
-// import { Badge } from "@/components/ui/badge";
-// import {
-//   Select,
-//   SelectContent,
-//   SelectItem,
-//   SelectTrigger,
-//   SelectValue,
-// } from "@/components/ui/select";
-// import { Search, Filter, X } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Search, Filter, X } from "lucide-react";
 
-// interface OrdersFiltersProps {
-//   searchTerm: string;
-//   onSearchChange: (term: string) => void;
-//   selectedCategory: string;
-//   onCategoryChange: (category: string) => void;
-//   selectedLevel: string;
-//   onLevelChange: (level: string) => void;
-//   selectedType: string;
-//   onTypeChange: (type: string) => void;
-//   minPrice: number;
-//   onMinPriceChange: (price: number) => void;
-//   onClearFilters: () => void;
-// }
+interface OrdersFiltersProps {
+  searchTerm: string;
+  onSearchChange: (term: string) => void;
+  selectedCategory: string;
+  onCategoryChange: (category: string) => void;
+  selectedLevel: string;
+  onLevelChange: (level: string) => void;
+  selectedType: string;
+  onTypeChange: (type: string) => void;
+  minPrice: number;
+  onMinPriceChange: (price: number) => void;
+  onClearFilters: () => void;
+  dateOrder: string;
+  onDateOrderChange: (order: string) => void;
+  selectedPaymentMethod: string;
+  onPaymentMethodChange: (method: string) => void;
+  selectedCurrency: string;
+  onCurrencyChange: (currency: string) => void;
+  selectedAmount: string;
+  onAmountChange: (amount: string) => void;
+}
 
-// function OrdersFilters({
-//   searchTerm,
-//   onSearchChange,
-//   selectedCategory,
-//   onCategoryChange,
-//   selectedLevel,
-//   onLevelChange,
-//   selectedType,
-//   onTypeChange,
-//   minPrice,
-//   onMinPriceChange,
-//   onClearFilters,
-// }: OrdersFiltersProps) {
-//   const categories = [
-//     "الكل",
-//     "تطوير التطبيقات",
-//     "تطوير الويب",
-//     "تصميم",
-//     "برمجة",
-//     "تسويق",
-//     "أعمال",
-//   ];
+function OrdersFilters({
+  searchTerm,
+  onSearchChange,
+  selectedCategory,
+  onCategoryChange,
+  selectedLevel,
+  onLevelChange,
+  selectedType,
+  onTypeChange,
+  minPrice,
+  onMinPriceChange,
+  dateOrder,
+  onDateOrderChange,
+  selectedPaymentMethod,
+  onPaymentMethodChange,
+  selectedCurrency,
+  onCurrencyChange,
+  selectedAmount,
+  onAmountChange,
+}: OrdersFiltersProps) {
+  const priceRanges = [
+    { label: "جميع الأسعار", value: 0 },
+    { label: "مجاني", value: -1 },
+    { label: "أكثر من 100 ر.س", value: 100 },
+    { label: "أكثر من 200 ر.س", value: 200 },
+    { label: "أكثر من 300 ر.س", value: 300 },
+    { label: "أكثر من 500 ر.س", value: 500 },
+  ];
 
-//   const levels = ["الكل", "مبتدئ", "متوسط", "متقدم"];
+  const dateOrders = [
+    { label: "الأحدث أولاً", value: "desc" },
+    { label: "الأقدم أولاً", value: "asc" },
+  ];
 
-//   const types = ["الكل", "تفاعلية", "تقنية", "إبداعية"];
+  const paymentMethods = [
+    { label: "الكل", value: "all" },
+    { label: "محفظة إلكترونية", value: "wallet" },
+    { label: "بطاقة فيزا/ماستر", value: "card" },
+    { label: "Apple Pay", value: "applepay" },
+    { label: "STC Pay", value: "stcpay" },
+    { label: "Stripe", value: "stripe" },
+  ];
 
-//   const priceRanges = [
-//     { label: "جميع الأسعار", value: 0 },
-//     { label: "مجاني", value: -1 },
-//     { label: "أكثر من 100 ر.س", value: 100 },
-//     { label: "أكثر من 200 ر.س", value: 200 },
-//     { label: "أكثر من 300 ر.س", value: 300 },
-//     { label: "أكثر من 500 ر.س", value: 500 },
-//   ];
+  const currencies = [
+    { label: "الكل", value: "all" },
+    { label: "جنيه مصري (EGP)", value: "EGP" },
+    { label: "ريال سعودي (SAR)", value: "SAR" },
+    { label: "دولار أمريكي (USD)", value: "USD" },
+  ];
 
-//   const hasActiveFilters =
-//     searchTerm ||
-//     selectedCategory !== "الكل" ||
-//     selectedLevel !== "الكل" ||
-//     selectedType !== "الكل" ||
-//     minPrice !== 0;
+  const amountOptions = [
+    { label: "الكل", value: "all" },
+    { label: "من 1 إلى 5", value: "1-5" },
+    { label: "من 5 إلى 10", value: "5-10" },
+    { label: "أكثر من 10", value: "10+" },
+  ];
 
-//   return (
-//     <div className="bg-white rounded-lg border border-gray-200 p-4 space-y-4">
-//       <div className="flex items-center justify-between">
-//         <div className="flex items-center gap-2">
-//           <Filter className="w-5 h-5 text-gray-600" />
-//           <h3 className="font-semibold text-gray-900">فلترة الدورات</h3>
-//         </div>
-//         {hasActiveFilters && (
-//           <Button
-//             variant="outline"
-//             size="sm"
-//             onClick={onClearFilters}
-//             className="text-red-600 border-red-200 hover:bg-red-50"
-//           >
-//             <X className="w-4 h-4 mr-1" />
-//             مسح الفلاتر
-//           </Button>
-//         )}
-//       </div>
+  const hasActiveFilters =
+    searchTerm ||
+    selectedCategory !== "الكل" ||
+    selectedLevel !== "الكل" ||
+    selectedType !== "الكل" ||
+    minPrice !== 0 ||
+    selectedAmount !== "all";
 
-//       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
-//         {/* Search */}
-//         <div className="relative">
-//           <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-//           <Input
-//             placeholder="البحث عن دورة..."
-//             value={searchTerm}
-//             onChange={(e) => onSearchChange(e.target.value)}
-//             className="pr-10"
-//           />
-//         </div>
+  const handleClearFilters = () => {
+    onSearchChange("");
+    onCategoryChange("الكل");
+    onLevelChange("الكل");
+    onTypeChange("الكل");
+    onMinPriceChange(0);
+    onDateOrderChange("desc");
+    onPaymentMethodChange("all");
+    onCurrencyChange("all");
+    onAmountChange("all");
+  };
 
-//         {/* Category Filter */}
-//         <Select value={selectedCategory} onValueChange={onCategoryChange}>
-//           <SelectTrigger>
-//             <SelectValue placeholder="التصنيف" />
-//           </SelectTrigger>
-//           <SelectContent>
-//             {categories.map((category) => (
-//               <SelectItem key={category} value={category}>
-//                 {category}
-//               </SelectItem>
-//             ))}
-//           </SelectContent>
-//         </Select>
+  return (
+    <div className="bg-white rounded-lg border border-gray-200 p-4 space-y-4">
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <Filter className="w-5 h-5 text-gray-600" />
+          <h3 className="font-semibold text-gray-900">فلترة الدورات</h3>
+        </div>
+        {hasActiveFilters && (
+          <button
+            type="button"
+            onClick={handleClearFilters}
+            className="flex items-center gap-1 text-red-600 border border-red-200 bg-gray-50 hover:bg-red-100 rounded-lg px-3 py-1.5 text-sm font-semibold transition"
+            aria-label="مسح جميع الفلاتر"
+          >
+            <X className="w-4 h-4" />
+            مسح الفلاتر
+          </button>
+        )}
+      </div>
 
-//         {/* Level Filter */}
-//         <Select value={selectedLevel} onValueChange={onLevelChange}>
-//           <SelectTrigger>
-//             <SelectValue placeholder="المستوى" />
-//           </SelectTrigger>
-//           <SelectContent>
-//             {levels.map((level) => (
-//               <SelectItem key={level} value={level}>
-//                 {level}
-//               </SelectItem>
-//             ))}
-//           </SelectContent>
-//         </Select>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-7 gap-4">
+        {/* Search */}
+        <div className="relative">
+          <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+          <Input
+            placeholder="ID"
+            value={searchTerm}
+            onChange={(e) => onSearchChange(e.target.value)}
+            className="pr-10"
+          />
+        </div>
 
-//         {/* Type Filter */}
-//         <Select value={selectedType} onValueChange={onTypeChange}>
-//           <SelectTrigger>
-//             <SelectValue placeholder="النوع" />
-//           </SelectTrigger>
-//           <SelectContent>
-//             {types.map((type) => (
-//               <SelectItem key={type} value={type}>
-//                 {type}
-//               </SelectItem>
-//             ))}
-//           </SelectContent>
-//         </Select>
+        {/* Price Filter */}
+        <Select
+          value={minPrice.toString()}
+          onValueChange={(value) => onMinPriceChange(Number(value))}
+        >
+          <SelectTrigger>
+            <SelectValue placeholder="السعر" />
+          </SelectTrigger>
+          <SelectContent>
+            {priceRanges.map((range) => (
+              <SelectItem key={range.value} value={range.value.toString()}>
+                {range.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
 
-//         {/* Price Filter */}
-//         <Select
-//           value={minPrice.toString()}
-//           onValueChange={(value) => onMinPriceChange(Number(value))}
-//         >
-//           <SelectTrigger>
-//             <SelectValue placeholder="السعر" />
-//           </SelectTrigger>
-//           <SelectContent>
-//             {priceRanges.map((range) => (
-//               <SelectItem key={range.value} value={range.value.toString()}>
-//                 {range.label}
-//               </SelectItem>
-//             ))}
-//           </SelectContent>
-//         </Select>
-//       </div>
+        {/* Date Order Filter */}
+        <Select value={dateOrder} onValueChange={onDateOrderChange}>
+          <SelectTrigger>
+            <SelectValue placeholder="ترتيب التاريخ" />
+          </SelectTrigger>
+          <SelectContent>
+            {dateOrders.map((order) => (
+              <SelectItem key={order.value} value={order.value}>
+                {order.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
 
-//       {/* Active Filters */}
-//       {hasActiveFilters && (
-//         <div className="flex flex-wrap gap-2 pt-2 border-t">
-//           <span className="text-sm font-medium text-gray-600">
-//             الفلاتر النشطة:
-//           </span>
-//           {searchTerm && (
-//             <Badge variant="secondary" className="gap-1">
-//               البحث: {searchTerm}
-//               <X
-//                 className="w-3 h-3 cursor-pointer"
-//                 onClick={() => onSearchChange("")}
-//               />
-//             </Badge>
-//           )}
-//           {selectedCategory !== "الكل" && (
-//             <Badge variant="secondary" className="gap-1">
-//               التصنيف: {selectedCategory}
-//               <X
-//                 className="w-3 h-3 cursor-pointer"
-//                 onClick={() => onCategoryChange("الكل")}
-//               />
-//             </Badge>
-//           // )}
-//           {selectedLevel !== "الكل" && (
-//             <Badge variant="secondary" className="gap-1">
-//               المستوى: {selectedLevel}
-//               <X
-//                 className="w-3 h-3 cursor-pointer"
-//                 onClick={() => onLevelChange("الكل")}
-//               />
-//             </Badge>
-//           )}
-//           {selectedType !== "الكل" && (
-//             <Badge variant="secondary" className="gap-1">
-//               النوع: {selectedType}
-//               <X
-//                 className="w-3 h-3 cursor-pointer"
-//                 onClick={() => onTypeChange("الكل")}
-//               />
-//             </Badge>
-//           )}
-//           {minPrice !== 0 && (
-//             <Badge variant="secondary" className="gap-1">
-//               السعر: {minPrice === -1 ? "مجاني" : `أكثر من ${minPrice} ر.س`}
-//               <X
-//                 className="w-3 h-3 cursor-pointer"
-//                 onClick={() => onMinPriceChange(0)}
-//               />
-//             </Badge>
-//           )}
-//         </div>
-//       )}
-//     </div>
-//   );
-// }
+        {/* Payment Method Filter */}
+        <Select
+          value={selectedPaymentMethod}
+          onValueChange={onPaymentMethodChange}
+        >
+          <SelectTrigger>
+            <SelectValue placeholder="طريقة الدفع" />
+          </SelectTrigger>
+          <SelectContent>
+            {paymentMethods.map((method) => (
+              <SelectItem key={method.value} value={method.value}>
+                {method.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
 
-// export default OrdersFilters;
+        {/* Currency Filter */}
+        <Select value={selectedCurrency} onValueChange={onCurrencyChange}>
+          <SelectTrigger>
+            <SelectValue placeholder="العملة" />
+          </SelectTrigger>
+          <SelectContent>
+            {currencies.map((currency) => (
+              <SelectItem key={currency.value} value={currency.value}>
+                {currency.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+        {/* Amount Filter */}
+        <Select value={selectedAmount} onValueChange={onAmountChange}>
+          <SelectTrigger>
+            <SelectValue placeholder="عدد الكورسات" />
+          </SelectTrigger>
+          <SelectContent>
+            {amountOptions.map((option) => (
+              <SelectItem key={option.value} value={option.value}>
+                {option.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+
+      {/* Active Filters */}
+      {hasActiveFilters && (
+        <div className="flex flex-wrap gap-2 pt-2 mt-2 border-t border-gray-200 bg-gray-50 rounded-lg py-3 px-3 items-center">
+          <span className="text-sm font-semibold text-gray-700 mr-2">
+            الفلاتر النشطة:
+          </span>
+          {searchTerm && (
+            <Badge
+              variant="secondary"
+              className="gap-1 text-xs px-2 py-1 flex items-center"
+            >
+              البحث: {searchTerm}
+              <button type="button" aria-label="مسح البحث">
+                <X
+                  className="w-3 h-3 cursor-pointer text-gray-500 hover:text-red-500 transition"
+                  onClick={() => onSearchChange("")}
+                />
+              </button>
+            </Badge>
+          )}
+          {selectedCategory !== "الكل" && (
+            <Badge
+              variant="secondary"
+              className="gap-1 text-xs px-2 py-1 flex items-center"
+            >
+              التصنيف: {selectedCategory}
+              <button type="button" aria-label="مسح التصنيف">
+                <X
+                  className="w-3 h-3 cursor-pointer text-gray-500 hover:text-red-500 transition"
+                  onClick={() => onCategoryChange("الكل")}
+                />
+              </button>
+            </Badge>
+          )}
+          {selectedLevel !== "الكل" && (
+            <Badge
+              variant="secondary"
+              className="gap-1 text-xs px-2 py-1 flex items-center"
+            >
+              المستوى: {selectedLevel}
+              <button type="button" aria-label="مسح المستوى">
+                <X
+                  className="w-3 h-3 cursor-pointer text-gray-500 hover:text-red-500 transition"
+                  onClick={() => onLevelChange("الكل")}
+                />
+              </button>
+            </Badge>
+          )}
+          {selectedType !== "الكل" && (
+            <Badge
+              variant="secondary"
+              className="gap-1 text-xs px-2 py-1 flex items-center"
+            >
+              النوع: {selectedType}
+              <button type="button" aria-label="مسح النوع">
+                <X
+                  className="w-3 h-3 cursor-pointer text-gray-500 hover:text-red-500 transition"
+                  onClick={() => onTypeChange("الكل")}
+                />
+              </button>
+            </Badge>
+          )}
+          {minPrice !== 0 && (
+            <Badge
+              variant="secondary"
+              className="gap-1 text-xs px-2 py-1 flex items-center"
+            >
+              السعر: {minPrice === -1 ? "مجاني" : `أكثر من ${minPrice} ر.س`}
+              <button type="button" aria-label="مسح السعر">
+                <X
+                  className="w-3 h-3 cursor-pointer text-gray-500 hover:text-red-500 transition"
+                  onClick={() => onMinPriceChange(0)}
+                />
+              </button>
+            </Badge>
+          )}
+          {dateOrder !== "desc" && (
+            <Badge
+              variant="secondary"
+              className="gap-1 text-xs px-2 py-1 flex items-center"
+            >
+              ترتيب التاريخ:{" "}
+              {dateOrders.find((d) => d.value === dateOrder)?.label}
+              <button type="button" aria-label="مسح ترتيب التاريخ">
+                <X
+                  className="w-3 h-3 cursor-pointer text-gray-500 hover:text-red-500 transition"
+                  onClick={() => onDateOrderChange("desc")}
+                />
+              </button>
+            </Badge>
+          )}
+          {selectedPaymentMethod !== "all" && (
+            <Badge
+              variant="secondary"
+              className="gap-1 text-xs px-2 py-1 flex items-center"
+            >
+              طريقة الدفع:{" "}
+              {
+                paymentMethods.find((m) => m.value === selectedPaymentMethod)
+                  ?.label
+              }
+              <button type="button" aria-label="مسح طريقة الدفع">
+                <X
+                  className="w-3 h-3 cursor-pointer text-gray-500 hover:text-red-500 transition"
+                  onClick={() => onPaymentMethodChange("all")}
+                />
+              </button>
+            </Badge>
+          )}
+          {selectedCurrency !== "all" && (
+            <Badge
+              variant="secondary"
+              className="gap-1 text-xs px-2 py-1 flex items-center"
+            >
+              العملة:{" "}
+              {currencies.find((c) => c.value === selectedCurrency)?.label}
+              <button type="button" aria-label="مسح العملة">
+                <X
+                  className="w-3 h-3 cursor-pointer text-gray-500 hover:text-red-500 transition"
+                  onClick={() => onCurrencyChange("all")}
+                />
+              </button>
+            </Badge>
+          )}
+          {selectedAmount !== "all" && (
+            <Badge
+              variant="secondary"
+              className="gap-1 text-xs px-2 py-1 flex items-center"
+            >
+              عدد الكورسات:{" "}
+              {amountOptions.find((a) => a.value === selectedAmount)?.label}
+              <button type="button" aria-label="مسح عدد الكورسات">
+                <X
+                  className="w-3 h-3 cursor-pointer text-gray-500 hover:text-red-500 transition"
+                  onClick={() => onAmountChange("all")}
+                />
+              </button>
+            </Badge>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
+export default OrdersFilters;
