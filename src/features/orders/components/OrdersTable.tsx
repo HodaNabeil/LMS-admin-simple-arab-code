@@ -33,110 +33,50 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 
-interface Course {
+interface Order {
   id: number;
-  title: string;
-  category: string;
-  type: string;
-  level: string;
-  instructor: string;
+  date: string;
+  PaymentMethod: string;
   price: number;
-  image: string;
-  students?: number;
-  rating?: number;
+  Status: string;
+  Amount: number;
+  Currency: string;
 }
 
-interface CourseTableProps {
-  courses: Course[];
+interface OrdersTableProps {
+  orders: Order[];
 }
 
-const columns: ColumnDef<Course>[] = [
+const columns: ColumnDef<Order>[] = [
   {
-    accessorKey: "image",
-    header: "الصورة",
-    cell: ({ row }) => (
-      <div className="flex items-center justify-center">
-        <img
-          src={row.getValue("image")}
-          alt={row.getValue("title")}
-          className="h-12 w-12 rounded-lg object-cover"
-        />
-      </div>
-    ),
-    enableSorting: false,
+    accessorKey: "id",
+    header: "ID",
+    cell: ({ row }) => <div>{row.getValue("id")}</div>,
   },
   {
-    accessorKey: "title",
-    header: "اسم المادة",
-    cell: ({ row }) => (
-      <div className="max-w-[300px]">
-        <div className="font-medium text-right truncate">
-          {row.getValue("title")}
-        </div>
-      </div>
-    ),
+    accessorKey: "date",
+    header: "Date",
+    cell: ({ row }) => <div>{row.getValue("date")}</div>,
   },
   {
-    accessorKey: "category",
-    header: "الفئة",
-    cell: ({ row }) => (
-      <Badge variant="outline" className="border-blue-200 text-blue-800">
-        {row.getValue("category")}
-      </Badge>
-    ),
+    accessorKey: "PaymentMethod",
+    header: "Payment Method",
+    cell: ({ row }) => <div>{row.getValue("PaymentMethod")}</div>,
   },
   {
-    accessorKey: "type",
-    header: "النوع",
-    cell: ({ row }) => (
-      <Badge
-        variant="secondary"
-        className="bg-purple-100 text-purple-800 border-purple-200"
-      >
-        {row.getValue("type")}
-      </Badge>
-    ),
+    accessorKey: "Status",
+    header: "Status",
+    cell: ({ row }) => <div>{row.getValue("Status")}</div>,
   },
   {
-    accessorKey: "level",
-    header: "المستوى",
-    cell: ({ row }) => {
-      const level = row.getValue("level") as string;
-      const levelColors = {
-        مبتدئ: "bg-green-100 text-green-800 border-green-200",
-        متوسط: "bg-yellow-100 text-yellow-800 border-yellow-200",
-        متقدم: "bg-red-100 text-red-800 border-red-200",
-      };
-      return (
-        <Badge
-          className={`${
-            levelColors[level as keyof typeof levelColors] ||
-            "bg-gray-100 text-gray-800 border-gray-200"
-          }`}
-        >
-          {level}
-        </Badge>
-      );
-    },
+    accessorKey: "Amount",
+    header: "Amount",
+    cell: ({ row }) => <div>{row.getValue("Amount")}</div>,
   },
   {
-    accessorKey: "instructor",
-    header: "اسم المدرب",
-    cell: ({ row }) => (
-      <div className="font-medium text-right">{row.getValue("instructor")}</div>
-    ),
-  },
-  {
-    accessorKey: "price",
-    header: "السعر",
-    cell: ({ row }) => {
-      const price = parseFloat(row.getValue("price"));
-      return (
-        <div className="font-medium text-right">
-          {price === 0 ? "مجاني" : `${price} ر.س`}
-        </div>
-      );
-    },
+    accessorKey: "Currency",
+    header: "Currency",
+    cell: ({ row }) => <div>{row.getValue("Currency")}</div>,
   },
   {
     id: "actions",
@@ -144,28 +84,19 @@ const columns: ColumnDef<Course>[] = [
     enableHiding: false,
     cell: () => {
       return (
-        <div className="flex items-center justify-center gap-2">
-          <Button
-            variant="ghost"
-            size="sm"
-            className="h-8 w-8 p-0 text-blue-600 hover:text-blue-800 hover:bg-blue-50"
-          >
-            <Edit className="h-4 w-4" />
-          </Button>
-          <Button
-            variant="ghost"
-            size="sm"
-            className="h-8 w-8 p-0 text-red-600 hover:text-red-800 hover:bg-red-50"
-          >
-            <Trash2 className="h-4 w-4" />
-          </Button>
-        </div>
+        <Button
+          variant="ghost"
+          size="sm"
+          className="h-8 w-8 p-0 text-blue-600 hover:text-blue-800 hover:bg-blue-50"
+        >
+          <Edit className="h-4 w-4" />
+        </Button>
       );
     },
   },
 ];
 
-function CourseTable({ courses }: CourseTableProps) {
+function OrdersTable({ orders }: OrdersTableProps) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -175,7 +106,7 @@ function CourseTable({ courses }: CourseTableProps) {
   const [rowSelection, setRowSelection] = React.useState({});
 
   const table = useReactTable({
-    data: courses,
+    data: orders,
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -195,7 +126,7 @@ function CourseTable({ courses }: CourseTableProps) {
 
   return (
     <div className="w-full">
-      <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 py-4">
+      {/* <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 py-4">
         <Input
           placeholder="البحث في الدورات..."
           value={(table.getColumn("title")?.getFilterValue() as string) ?? ""}
@@ -210,28 +141,34 @@ function CourseTable({ courses }: CourseTableProps) {
               الأعمدة <ChevronDown className="ml-2 h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
+          <DropdownMenuContent className="min-w-[180px] z-50 shadow-lg text-right right-0 rtl:right-0 rtl:left-auto ltr:left-0 ltr:right-auto">
             {table
               .getAllColumns()
               .filter((column) => column.getCanHide())
               .map((column) => {
                 const columnHeaders = {
-                  image: "الصورة",
-                  title: "اسم المادة",
-                  category: "الفئة",
-                  type: "النوع",
-                  level: "المستوى",
-                  instructor: "اسم المدرب",
-                  price: "السعر",
+                  id: "ID",
+                  date: "Date",
+                  PaymentMethod: "Payment Method",
+                  Status: "Status",
+                  Amount: "Amount",
+                  Currency: "Currency",
                 };
                 return (
                   <DropdownMenuItem
                     key={column.id}
-                    checked={column.getIsVisible()}
-                    onCheckedChange={(value) =>
-                      column.toggleVisibility(!!value)
-                    }
+                    onSelect={() => {
+                      column.toggleVisibility();
+                    }}
+                    className="flex items-center gap-2 cursor-pointer select-none"
                   >
+                    <input
+                      type="checkbox"
+                      checked={column.getIsVisible()}
+                      readOnly
+                      className="accent-blue-600 cursor-pointer"
+                      tabIndex={-1}
+                    />
                     {columnHeaders[column.id as keyof typeof columnHeaders] ||
                       column.id}
                   </DropdownMenuItem>
@@ -239,7 +176,7 @@ function CourseTable({ courses }: CourseTableProps) {
               })}
           </DropdownMenuContent>
         </DropdownMenu>
-      </div>
+      </div> */}
 
       {/* Mobile Card View */}
       <div className="block lg:hidden space-y-4">
@@ -250,15 +187,7 @@ function CourseTable({ courses }: CourseTableProps) {
               className="bg-white rounded-lg border border-gray-200 p-4 space-y-3"
             >
               <div className="flex items-start gap-3">
-                <img
-                  src={row.getValue("image")}
-                  alt={row.getValue("title")}
-                  className="h-16 w-16 rounded-lg object-cover flex-shrink-0"
-                />
                 <div className="flex-1 min-w-0">
-                  <h3 className="font-medium text-sm leading-5 line-clamp-2 text-right">
-                    {row.getValue("title")}
-                  </h3>
                   <p className="text-sm text-muted-foreground mt-1 text-right">
                     {row.getValue("instructor")}
                   </p>
@@ -278,42 +207,6 @@ function CourseTable({ courses }: CourseTableProps) {
                   >
                     <Trash2 className="h-4 w-4" />
                   </Button>
-                </div>
-              </div>
-
-              <div className="flex flex-wrap gap-2 justify-end">
-                <Badge
-                  variant="secondary"
-                  className="bg-purple-100 text-purple-800 text-xs"
-                >
-                  {row.getValue("category")}
-                </Badge>
-                <Badge
-                  variant="outline"
-                  className="border-blue-200 text-blue-800 text-xs"
-                >
-                  {row.getValue("type")}
-                </Badge>
-                <Badge
-                  className={`text-xs ${
-                    row.getValue("level") === "مبتدئ"
-                      ? "bg-green-100 text-green-800"
-                      : row.getValue("level") === "متوسط"
-                      ? "bg-yellow-100 text-yellow-800"
-                      : row.getValue("level") === "متقدم"
-                      ? "bg-red-100 text-red-800"
-                      : "bg-gray-100 text-gray-800"
-                  }`}
-                >
-                  {row.getValue("level")}
-                </Badge>
-              </div>
-
-              <div className="flex justify-end pt-2 border-t">
-                <div className="text-sm font-medium">
-                  {parseFloat(row.getValue("price")) === 0
-                    ? "مجاني"
-                    : `${row.getValue("price")} ر.س`}
                 </div>
               </div>
             </div>
@@ -412,4 +305,4 @@ function CourseTable({ courses }: CourseTableProps) {
   );
 }
 
-export default CourseTable;
+export default OrdersTable;

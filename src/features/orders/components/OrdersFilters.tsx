@@ -12,12 +12,7 @@ import { Search, Filter, X } from "lucide-react";
 interface OrdersFiltersProps {
   searchTerm: string;
   onSearchChange: (term: string) => void;
-  selectedCategory: string;
-  onCategoryChange: (category: string) => void;
-  selectedLevel: string;
-  onLevelChange: (level: string) => void;
-  selectedType: string;
-  onTypeChange: (type: string) => void;
+
   minPrice: number;
   onMinPriceChange: (price: number) => void;
   onClearFilters: () => void;
@@ -34,12 +29,7 @@ interface OrdersFiltersProps {
 function OrdersFilters({
   searchTerm,
   onSearchChange,
-  selectedCategory,
-  onCategoryChange,
-  selectedLevel,
-  onLevelChange,
-  selectedType,
-  onTypeChange,
+
   minPrice,
   onMinPriceChange,
   dateOrder,
@@ -90,17 +80,15 @@ function OrdersFilters({
 
   const hasActiveFilters =
     searchTerm ||
-    selectedCategory !== "الكل" ||
-    selectedLevel !== "الكل" ||
-    selectedType !== "الكل" ||
     minPrice !== 0 ||
-    selectedAmount !== "all";
+    selectedAmount !== "all" ||
+    selectedCurrency !== "all" ||
+    selectedPaymentMethod !== "all" ||
+    dateOrder !== "desc";
 
   const handleClearFilters = () => {
     onSearchChange("");
-    onCategoryChange("الكل");
-    onLevelChange("الكل");
-    onTypeChange("الكل");
+
     onMinPriceChange(0);
     onDateOrderChange("desc");
     onPaymentMethodChange("all");
@@ -133,9 +121,16 @@ function OrdersFilters({
         <div className="relative">
           <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
           <Input
+            type="number"
+            min="1"
+            step="1"
             placeholder="ID"
             value={searchTerm}
-            onChange={(e) => onSearchChange(e.target.value)}
+            onChange={(e) => {
+              // السماح فقط بالأرقام الصحيحة
+              const val = e.target.value.replace(/[^\d]/g, "");
+              onSearchChange(val);
+            }}
             className="pr-10"
           />
         </div>
@@ -236,48 +231,7 @@ function OrdersFilters({
               </button>
             </Badge>
           )}
-          {selectedCategory !== "الكل" && (
-            <Badge
-              variant="secondary"
-              className="gap-1 text-xs px-2 py-1 flex items-center"
-            >
-              التصنيف: {selectedCategory}
-              <button type="button" aria-label="مسح التصنيف">
-                <X
-                  className="w-3 h-3 cursor-pointer text-gray-500 hover:text-red-500 transition"
-                  onClick={() => onCategoryChange("الكل")}
-                />
-              </button>
-            </Badge>
-          )}
-          {selectedLevel !== "الكل" && (
-            <Badge
-              variant="secondary"
-              className="gap-1 text-xs px-2 py-1 flex items-center"
-            >
-              المستوى: {selectedLevel}
-              <button type="button" aria-label="مسح المستوى">
-                <X
-                  className="w-3 h-3 cursor-pointer text-gray-500 hover:text-red-500 transition"
-                  onClick={() => onLevelChange("الكل")}
-                />
-              </button>
-            </Badge>
-          )}
-          {selectedType !== "الكل" && (
-            <Badge
-              variant="secondary"
-              className="gap-1 text-xs px-2 py-1 flex items-center"
-            >
-              النوع: {selectedType}
-              <button type="button" aria-label="مسح النوع">
-                <X
-                  className="w-3 h-3 cursor-pointer text-gray-500 hover:text-red-500 transition"
-                  onClick={() => onTypeChange("الكل")}
-                />
-              </button>
-            </Badge>
-          )}
+
           {minPrice !== 0 && (
             <Badge
               variant="secondary"
