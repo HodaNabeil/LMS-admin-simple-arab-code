@@ -5,7 +5,6 @@ import { FaUserGraduate, FaBookOpen, FaMoneyBillWave } from "react-icons/fa";
 
 export default function RegistrationStatuses() {
   const { data, isLoading, error } = useAdminStats();
-  console.log("Admin stats data:", data);
 
   // تحقق من تحميل البيانات
   if (isLoading)
