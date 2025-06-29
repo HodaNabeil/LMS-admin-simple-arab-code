@@ -10,7 +10,7 @@ import { Menu } from "lucide-react";
 import { useOutletContext } from "react-router-dom";
 import { CoursesProgressCard } from "@/features/admin/components/CoursesProgressCard";
 import { RecentlyCreatedCoursesCard } from "@/features/admin/components/RecentlyCreatedCoursesCard";
-import { SalesLineChart } from "@/features/admin/components/SalesLineChart";
+// import { SalesLineChart } from "@/features/admin/components/SalesLineChart";
 import PaymentHistory from "@/components/PaymentHistory";
 import RegistrationStatuses from "@/features/admin/components/Registration-Statuses";
 
