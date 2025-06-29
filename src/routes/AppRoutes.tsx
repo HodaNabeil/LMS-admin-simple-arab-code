@@ -4,8 +4,8 @@ import {
   createRoutesFromElements,
 } from "react-router-dom";
 import NotFound from "@/pages/not-found";
-import Login from "@/pages/Login";
 import { adminRoutes } from "./AdminRoutes";
+import Login from "@/pages/login";
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
