@@ -12,8 +12,14 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import Select, { components } from "react-select";
-import type { StylesConfig, ThemeConfig, OptionProps } from "react-select";
+import type {
+  StylesConfig,
+  ThemeConfig,
+  OptionProps,
+  ActionMeta,
+} from "react-select";
 import { orderStatuses, paymentMethods, currencies } from "@/types/orders";
+import { ReducerHandler, ReducerInitialState } from "@/Utility/stateHalper";
 
 const cursors = [
   {
@@ -80,57 +86,6 @@ const userOptions = users.map((user) => ({
 interface OptionType {
   value: string | number;
   label: string;
-}
-
-// حالة النموذج
-interface OrderFormState {
-  price: number;
-  discountCode: string;
-  orderStatus: OptionType | null;
-  paymentMethod: OptionType | null;
-  currency: OptionType | null;
-  courses: OptionType[];
-  user: OptionType | null;
-}
-
-type Action =
-  | { type: "SET_PRICE"; payload: number }
-  | { type: "SET_DISCOUNT_CODE"; payload: string }
-  | { type: "SET_ORDER_STATUS"; payload: OptionType | null }
-  | { type: "SET_PAYMENT_METHOD"; payload: OptionType | null }
-  | { type: "SET_CURRENCY"; payload: OptionType | null }
-  | { type: "SET_COURSES"; payload: OptionType[] }
-  | { type: "SET_USER"; payload: OptionType | null };
-
-const initialState: OrderFormState = {
-  price: 0,
-  discountCode: "",
-  orderStatus: null,
-  paymentMethod: null,
-  currency: null,
-  courses: [],
-  user: null,
-};
-
-function reducer(state: OrderFormState, action: Action): OrderFormState {
-  switch (action.type) {
-    case "SET_PRICE":
-      return { ...state, price: action.payload };
-    case "SET_DISCOUNT_CODE":
-      return { ...state, discountCode: action.payload };
-    case "SET_ORDER_STATUS":
-      return { ...state, orderStatus: action.payload };
-    case "SET_PAYMENT_METHOD":
-      return { ...state, paymentMethod: action.payload };
-    case "SET_CURRENCY":
-      return { ...state, currency: action.payload };
-    case "SET_COURSES":
-      return { ...state, courses: action.payload };
-    case "SET_USER":
-      return { ...state, user: action.payload };
-    default:
-      return state;
-  }
 }
 
 // Custom Option لإظهار أيقونة صح عند الاختيار
@@ -232,9 +187,51 @@ const selectTheme: ThemeConfig = (theme) => ({
   },
 });
 
+// 1. Define your state type
+type OrderFormState = {
+  price: number;
+  discountCode: string;
+  orderStatus: any;
+  paymentMethod: any;
+  currency: any;
+  courses: any[];
+  user: any;
+  // add other fields as needed
+};
+
 export function NewOrder() {
-  const [state, dispatch] = useReducer(reducer, initialState);
-  // console.log("Current state:", state);
+  // 2. Use your type in useReducer
+  const [state, dispatch] = useReducer(
+    ReducerHandler,
+    ReducerInitialState.OrderFormState
+  ) as [OrderFormState, React.Dispatch<any>];
+
+  console.log("Current state:", state);
+
+  const handleChange = (e: { target: { name: any; value: any } }) => {
+    dispatch({
+      type: "Change",
+      payload: {
+        [e.target.name]: e.target.value,
+      },
+    });
+  };
+
+  type SelectValue = OptionType | OptionType[] | null;
+
+  const handleSelectChange = (
+    selectedOption: SelectValue | readonly OptionType[],
+    actionMeta: ActionMeta<OptionType>
+  ) => {
+    const value: SelectValue = Array.isArray(selectedOption)
+      ? [...selectedOption]
+      : selectedOption;
+
+    dispatch({
+      type: "Change",
+      payload: { [actionMeta.name as string]: value },
+    });
+  };
 
   // handle submit
   const handleSubmit = (e: React.FormEvent) => {
@@ -275,14 +272,9 @@ export function NewOrder() {
                 type="number"
                 min="0"
                 step="1"
-                name="pricePaidInCents"
+                name="price"
                 value={state.price}
-                onChange={(e) =>
-                  dispatch({
-                    type: "SET_PRICE",
-                    payload: Number(e.target.value),
-                  })
-                }
+                onChange={handleChange}
                 className="text-gray-900 font-bold placeholder:text-gray-500 bg-white py-1 px-2"
               />
             </div>
@@ -296,14 +288,9 @@ export function NewOrder() {
               </label>
               <Input
                 id="discountCodeId"
-                name="discountCodeId"
+                name="discountCode"
                 value={state.discountCode}
-                onChange={(e) =>
-                  dispatch({
-                    type: "SET_DISCOUNT_CODE",
-                    payload: e.target.value,
-                  })
-                }
+                onChange={handleChange}
                 className="text-gray-900 font-bold placeholder:text-gray-500 bg-white"
               />
             </div>
@@ -320,18 +307,13 @@ export function NewOrder() {
                 options={orderStatusOptions}
                 name="orderStatus"
                 value={state.orderStatus}
-                onChange={(option) =>
-                  dispatch({
-                    type: "SET_ORDER_STATUS",
-                    payload: option as OptionType,
-                  })
-                }
                 classNamePrefix="react-select"
                 styles={selectStyles}
                 theme={selectTheme}
                 components={{ Option: CustomOption }}
                 isRtl
                 menuPlacement="auto"
+                onChange={handleSelectChange}
               />
             </div>
             {/* طريقة الدفع */}
@@ -347,12 +329,7 @@ export function NewOrder() {
                 options={paymentMethodOptions}
                 name="paymentMethod"
                 value={state.paymentMethod}
-                onChange={(option) =>
-                  dispatch({
-                    type: "SET_PAYMENT_METHOD",
-                    payload: option as OptionType,
-                  })
-                }
+                onChange={handleSelectChange}
                 classNamePrefix="react-select"
                 styles={selectStyles}
                 theme={selectTheme}
@@ -374,12 +351,7 @@ export function NewOrder() {
                 options={currencyOptions}
                 name="currency"
                 value={state.currency}
-                onChange={(option) =>
-                  dispatch({
-                    type: "SET_CURRENCY",
-                    payload: option as OptionType,
-                  })
-                }
+                onChange={handleSelectChange}
                 classNamePrefix="react-select"
                 styles={selectStyles}
                 theme={selectTheme}
@@ -399,12 +371,7 @@ export function NewOrder() {
                 isMulti
                 name="courses"
                 value={state.courses}
-                onChange={(option) =>
-                  dispatch({
-                    type: "SET_COURSES",
-                    payload: option as OptionType[],
-                  })
-                }
+                onChange={handleSelectChange}
                 classNamePrefix="react-select"
                 styles={selectStyles}
                 theme={selectTheme}
@@ -423,9 +390,7 @@ export function NewOrder() {
                 options={userOptions}
                 name="user"
                 value={state.user}
-                onChange={(option) =>
-                  dispatch({ type: "SET_USER", payload: option as OptionType })
-                }
+                onChange={handleSelectChange}
                 classNamePrefix="react-select"
                 styles={selectStyles}
                 theme={selectTheme}
