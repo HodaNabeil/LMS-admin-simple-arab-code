@@ -13,16 +13,10 @@ import type {
   SortingState,
   VisibilityState,
 } from "@tanstack/react-table";
-import { ChevronDown, Edit, Trash2 } from "lucide-react";
+import { Edit, Trash2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuItem,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Input } from "@/components/ui/input";
+
 import {
   Table,
   TableBody,
@@ -31,7 +25,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Badge } from "@/components/ui/badge";
 
 interface Order {
   id: number;
@@ -135,11 +128,7 @@ function OrdersTable({ orders }: OrdersTableProps) {
               className="bg-white rounded-lg border border-gray-200 p-4 space-y-3"
             >
               <div className="flex items-start gap-3">
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm text-muted-foreground mt-1 text-right">
-                    {row.getValue("instructor")}
-                  </p>
-                </div>
+                <div className="flex-1 min-w-0"></div>
                 <div className="flex gap-2">
                   <Button
                     variant="ghost"
