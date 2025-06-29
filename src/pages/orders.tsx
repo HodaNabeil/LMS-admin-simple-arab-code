@@ -1,6 +1,7 @@
 import { NewOrder } from "@/features/orders/components/NewOrder";
-import CourseFilters from "@/features/orders/components/OrdersFilters";
-import CourseTable from "@/features/orders/components/OrdersTable";
+import OrdersFilters from "@/features/orders/components/OrdersFilters";
+import OrdersTable from "@/features/orders/components/OrdersTable";
+
 import { useMemo, useState } from "react";
 
 const orders = [
@@ -105,7 +106,7 @@ export default function Orders() {
         <h1 className="text-2xl font-bold mb-4">كل الطلبات </h1>
         <NewOrder />
       </div>
-      <CourseFilters
+      <OrdersFilters
         selectedPaymentMethod={selectedPaymentMethod}
         searchTerm={searchTerm}
         onSearchChange={setSearchTerm}
@@ -120,7 +121,7 @@ export default function Orders() {
         onAmountChange={setSelectedAmount}
         onClearFilters={handleClearFilters}
       />
-      <CourseTable orders={filteredOrders} />
+      <OrdersTable orders={filteredOrders} />
     </div>
   );
 }

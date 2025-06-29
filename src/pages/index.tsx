@@ -5,6 +5,17 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Line } from "react-chartjs-2";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+} from "chart.js";
 
 import { useAnnualRevenue } from "@/hooks/useAnnualRevenue";
 import PaymentHistory from "@/components/PaymentHistory";
@@ -12,7 +23,6 @@ import PaymentHistory from "@/components/PaymentHistory";
 import { stats } from "@/features/admin/components/stats-data";
 import { CoursesProgressCard } from "@/features/admin/components/CoursesProgressCard";
 import { RecentlyCreatedCoursesCard } from "@/features/admin/components/RecentlyCreatedCoursesCard";
-import { SalesLineChart } from "@/features/admin/components/SalesLineChart";
 
 // بيانات التقدم والبيانات الوهمية للدورات
 const progressData = [
@@ -24,6 +34,16 @@ const recentCourses = [
   { id: 1, name: "Nodejs", enrolled: 1, status: "منشورة", image: "" },
   { id: 2, name: "إتقان ...", enrolled: 1, status: "منشورة", image: "" },
 ];
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 export default function Admin() {
   const { data, isLoading, error } = useAnnualRevenue();
@@ -73,7 +93,42 @@ export default function Admin() {
             ) : error ? (
               <span>حدث خطأ في جلب البيانات</span>
             ) : (
-              <SalesLineChart data={data?.values || [0, 0, 0, 0, 0, 0, 0, 0]} />
+              <Line
+                data={{
+                  labels: [
+                    "يناير",
+                    "فبراير",
+                    "مارس",
+                    "أبريل",
+                    "مايو",
+                    "يونيو",
+                    "يوليو",
+                    "أغسطس",
+                  ],
+                  datasets: [
+                    {
+                      label: "الإيرادات (ر.س)",
+                      data: data?.values || [0, 0, 0, 0, 0, 0, 0, 0],
+                      borderColor: "#22c55e",
+                      backgroundColor: "rgba(34,197,94,0.1)",
+                      tension: 0.4,
+                      fill: true,
+                    },
+                  ],
+                }}
+                options={{
+                  responsive: true,
+                  plugins: {
+                    legend: { display: false },
+                    title: { display: false },
+                  },
+                  scales: {
+                    x: { grid: { display: false } },
+                    y: { grid: { color: "#e5e7eb" } },
+                  },
+                }}
+                height={220}
+              />
             )}
           </div>
         </CardContent>

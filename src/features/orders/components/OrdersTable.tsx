@@ -126,58 +126,6 @@ function OrdersTable({ orders }: OrdersTableProps) {
 
   return (
     <div className="w-full">
-      {/* <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 py-4">
-        <Input
-          placeholder="البحث في الدورات..."
-          value={(table.getColumn("title")?.getFilterValue() as string) ?? ""}
-          onChange={(event) =>
-            table.getColumn("title")?.setFilterValue(event.target.value)
-          }
-          className="w-full sm:max-w-sm"
-        />
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="w-full sm:w-auto sm:ml-auto">
-              الأعمدة <ChevronDown className="ml-2 h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent className="min-w-[180px] z-50 shadow-lg text-right right-0 rtl:right-0 rtl:left-auto ltr:left-0 ltr:right-auto">
-            {table
-              .getAllColumns()
-              .filter((column) => column.getCanHide())
-              .map((column) => {
-                const columnHeaders = {
-                  id: "ID",
-                  date: "Date",
-                  PaymentMethod: "Payment Method",
-                  Status: "Status",
-                  Amount: "Amount",
-                  Currency: "Currency",
-                };
-                return (
-                  <DropdownMenuItem
-                    key={column.id}
-                    onSelect={() => {
-                      column.toggleVisibility();
-                    }}
-                    className="flex items-center gap-2 cursor-pointer select-none"
-                  >
-                    <input
-                      type="checkbox"
-                      checked={column.getIsVisible()}
-                      readOnly
-                      className="accent-blue-600 cursor-pointer"
-                      tabIndex={-1}
-                    />
-                    {columnHeaders[column.id as keyof typeof columnHeaders] ||
-                      column.id}
-                  </DropdownMenuItem>
-                );
-              })}
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </div> */}
-
       {/* Mobile Card View */}
       <div className="block lg:hidden space-y-4">
         {table.getRowModel().rows?.length ? (
