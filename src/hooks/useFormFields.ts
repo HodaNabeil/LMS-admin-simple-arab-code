@@ -93,6 +93,15 @@ const useFormFields = ({ slug }: IFormFieldsVariables) => {
       placeholder: "أعد إدخال كلمة المرور",
     },
   ];
+  const loginFields = (): IFormField[] => [
+    {
+      label: "البريد الإلكتروني",
+      name: "email",
+      type: "email",
+      placeholder: "أدخل بريدك الإلكتروني",
+      autoFocus: true,
+    },
+  ];
 
   const getFormFields = (): IFormField[] => {
     switch (slug) {
@@ -104,6 +113,8 @@ const useFormFields = ({ slug }: IFormFieldsVariables) => {
         return forgotFields();
       case Pages.RESET_PASSWORD:
         return resetFields();
+      case Pages.LOGIN:
+        return loginFields();
 
       default:
         return [];

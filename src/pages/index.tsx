@@ -6,7 +6,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
-import { useAnnualRevenue } from "@/hooks/useAnnualRevenue";
+import { useAdminStats } from "@/hooks/useAdminStats";
 import PaymentHistory from "@/components/PaymentHistory";
 
 import { stats } from "@/features/admin/components/stats-data";
@@ -32,7 +32,8 @@ export default function Admin() {
   const { setIsMobileSidebarOpen } = useOutletContext<{
     setIsMobileSidebarOpen: (open: boolean) => void;
   }>();
-  const { data, isLoading, error } = useAnnualRevenue();
+  const { data, isLoading, error } = useAdminStats();
+  console.log("data", data);
   return (
     <div
       dir="rtl"
