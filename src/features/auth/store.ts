@@ -31,14 +31,21 @@ interface AuthState {
   clearAuth: () => void;
 }
 
+// Initialize authentication state from cookies
+const initializeAuthState = () => {
+  const { accessToken } = authCookies.getTokens();
+
+  return {
+    user: null,
+    accessToken,
+    refreshToken: null,
+    isLoading: false,
+    isAuthenticated: Boolean(accessToken),
+  };
+};
 export const useAuthStore = create<AuthState>()((set, get) => ({
   // Initial state
-  user: null,
-  accessToken: null,
-  refreshToken: null,
-  isLoading: false,
-  isAuthenticated: false,
-
+  ...initializeAuthState(),
   // Actions
   setUser: (user) =>
     set(() => ({
