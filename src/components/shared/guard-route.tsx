@@ -29,3 +29,31 @@ export function ProtectedRoute({
 
   return <>{children}</>;
 }
+
+interface PublicRouteProps {
+  children: React.ReactNode;
+  redirectTo?: string;
+}
+
+export function PublicRoute({
+  children,
+  redirectTo = "/admin",
+}: PublicRouteProps) {
+  const { isAuthenticated, isLoading } = useAuthStore();
+
+  // Show loading while checking authentication
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
+
+  // Redirect to dashboard if already authenticated
+  if (isAuthenticated) {
+    return <Navigate to={redirectTo} replace />;
+  }
+
+  return <>{children}</>;
+}
