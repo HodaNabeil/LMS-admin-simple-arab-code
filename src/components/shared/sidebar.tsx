@@ -339,8 +339,8 @@ function Sidebar({ isMobile = false, isOpen = true, onClose }: SidebarProps) {
   ];
 
   const isActivePath = (href: string) => {
-    if (href === "/") {
-      return location.pathname === "/";
+    if (href === "/admin") {
+      return location.pathname === "/admin";
     }
     return location.pathname.startsWith(href);
   };
