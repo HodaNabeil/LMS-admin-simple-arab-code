@@ -13,6 +13,8 @@ import { RecentlyCreatedCoursesCard } from "@/features/admin/components/Recently
 // import { SalesLineChart } from "@/features/admin/components/SalesLineChart";
 import PaymentHistory from "@/components/PaymentHistory";
 import RegistrationStatuses from "@/features/admin/components/Registration-Statuses";
+import { useAdminStats } from "@/hooks/useAdminStats";
+import YearlyProgress from "@/features/admin/components/Yearly-Progress";
 
 // بيانات التقدم والبيانات الوهمية للدورات
 const progressData = [
@@ -31,6 +33,8 @@ export default function Admin() {
     setIsMobileSidebarOpen: (open: boolean) => void;
   }>();
 
+  const { data, isLoading, error, isError } = useAdminStats();
+  const yearlyProgress = data?.yearlyProgress;
   return (
     <div
       dir="rtl"
@@ -49,19 +53,8 @@ export default function Admin() {
       <RegistrationStatuses />
 
       {/* الصف الثانRegistrationStatusesي: رسم بياني */}
-      <Card className="rounded-lg bg-white text-gray-800 shadow-md p-6 border-0 w-full">
-        <CardHeader className="pb-2">
-          <CardTitle className="text-base font-bold text-gray-800">
-            تقدم الإيرادات السنوي
-          </CardTitle>
-          <CardDescription className="text-green-500">+0.00%</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="h-64 flex items-center justify-center">
-            {/* <SalesLineChart data={data?.values || [0, 0, 0, 0, 0, 0, 0, 0]} /> */}
-          </div>
-        </CardContent>
-      </Card>
+
+      <YearlyProgress yearlyProgress={yearlyProgress || {}} />
 
       {/* الصف الثالث: متوسط تقدم الدورات + الدورات المنشأة مؤخرًا */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
