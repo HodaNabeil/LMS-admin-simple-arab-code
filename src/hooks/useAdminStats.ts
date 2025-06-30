@@ -1,11 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
 import api from "@/lib/axios";
 
-export function useAnnualRevenue() {
+export function useAdminStats() {
   return useQuery({
-    queryKey: ["annual-revenue"],
+    queryKey: ["admin-stats"],
     queryFn: async () => {
-      const { data } = await api.get("/revenue/annual");
+      const { data } = await api.get("/stats");
       return data;
     },
   });

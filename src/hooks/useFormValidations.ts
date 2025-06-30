@@ -3,6 +3,7 @@ import { signinSchema, signupSchema } from "@/validations/auth";
 import type { IFormFieldsVariables } from "@/types/app";
 import { Pages } from "@/constants/enums";
 import { userSchema } from "@/validations/user";
+import { loginSchema } from "@/validations/login";
 
 const useFormValidations = (props: IFormFieldsVariables) => {
   const { slug } = props;
@@ -15,6 +16,8 @@ const useFormValidations = (props: IFormFieldsVariables) => {
         return signupSchema;
       case Pages.USERS:
         return userSchema;
+      case Pages.LOGIN:
+        return loginSchema;
 
       default:
         return z.object({});

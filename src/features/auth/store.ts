@@ -1,5 +1,10 @@
 import { create } from "zustand";
-import type { User, LoginRequest, SignupRequest } from "@/types/user";
+import type {
+  User,
+  LoginRequest,
+  SignupRequest,
+  AuthResponse,
+} from "@/types/user";
 import { authService } from "./services/authService";
 import { authCookies } from "@/lib/cookies";
 import { Pages, Routes } from "@/constants/enums";
@@ -18,7 +23,7 @@ interface AuthState {
   setAccessToken: (token: string | null) => void;
   setRefreshToken: (token: string | null) => void;
   setLoading: (loading: boolean) => void;
-  login: (credentials: LoginRequest) => Promise<void>;
+  login: (credentials: LoginRequest) => Promise<AuthResponse>;
   signup: (userData: SignupRequest) => Promise<void>;
   logout: () => Promise<void>;
   refreshUser: () => Promise<void>;
@@ -26,14 +31,21 @@ interface AuthState {
   clearAuth: () => void;
 }
 
+// Initialize authentication state from cookies
+const initializeAuthState = () => {
+  const { accessToken } = authCookies.getTokens();
+
+  return {
+    user: null,
+    accessToken,
+    refreshToken: null,
+    isLoading: false,
+    isAuthenticated: Boolean(accessToken),
+  };
+};
 export const useAuthStore = create<AuthState>()((set, get) => ({
   // Initial state
-  user: null,
-  accessToken: null,
-  refreshToken: null,
-  isLoading: false,
-  isAuthenticated: false,
-
+  ...initializeAuthState(),
   // Actions
   setUser: (user) =>
     set(() => ({
@@ -77,9 +89,9 @@ export const useAuthStore = create<AuthState>()((set, get) => ({
         isAuthenticated: true,
         isLoading: false,
       }));
-
       // Store in cookies
-      authCookies.setTokens(response.access_token, response.refresh_token);
+      authCookies.setTokens(response.access_token);
+      return response;
     } catch (error) {
       set(() => ({ isLoading: false }));
       throw error;

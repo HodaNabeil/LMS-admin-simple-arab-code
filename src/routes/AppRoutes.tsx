@@ -4,20 +4,23 @@ import {
   createRoutesFromElements,
 } from "react-router-dom";
 import NotFound from "@/pages/not-found";
-import AdminLayout from "@/components/shared/admin-layout";
-import Admin from "@/pages/index";
-import Users from "@/pages/users";
-import Orders from "@/pages/orders";
+import { adminRoutes } from "./AdminRoutes";
+import Login from "@/pages/login";
+import { PublicRoute } from "@/components/shared/guard-route";
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
     <>
-      <Route path="/" element={<AdminLayout />}>
-        <Route index element={<Admin />} />
-        <Route path="profile" element={<div>Profile Page</div>} />
-        <Route path="settings" element={<div>Settings Page</div>} />
-        <Route path="users" element={<Users />} />
-        <Route path="orders" element={<Orders />} />
+      <Route path="/">
+        <Route
+          index
+          element={
+            <PublicRoute>
+              <Login />
+            </PublicRoute>
+          }
+        />
+        {adminRoutes}
       </Route>
       <Route path="*" element={<NotFound />} />
     </>
