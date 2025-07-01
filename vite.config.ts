@@ -16,26 +16,4 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
-  build: {
-    rollupOptions: {
-      output: {
-        manualChunks(id) {
-          if (id.includes("node_modules")) {
-            if (id.includes("react")) return "react-vendors";
-            if (id.includes("framer-motion")) return "framer";
-            if (id.includes("swiper")) return "swiper";
-            if (id.includes("recharts")) return "recharts";
-            if (id.includes("zod")) return "zod";
-            if (id.includes("axios")) return "axios";
-            if (id.includes("date-fns")) return "date-fns";
-            if (id.includes("react-hook-form")) return "react-hook-form";
-            if (id.includes("@tanstack")) return "tanstack-query";
-            if (id.includes("zustand")) return "zustand";
-            return "vendor"; // باقي المكتبات
-          }
-        },
-      },
-    },
-    chunkSizeWarningLimit: 1000, // زيادة الحد بدلاً من 500 KB
-  },
 });
