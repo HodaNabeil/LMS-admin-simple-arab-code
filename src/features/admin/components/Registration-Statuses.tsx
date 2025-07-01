@@ -58,6 +58,9 @@ export default function RegistrationStatuses() {
           iconBg: meta.iconBg,
           value: meta.getValue(raw),
           increaseLastMonth: meta.getIncrease(raw),
+          IncreaseLastMonth: `زيادة بنسبة ${meta.getIncrease(
+            raw
+          )} في الشهر الماضي`,
         };
       })
     : [];
@@ -78,8 +81,9 @@ export default function RegistrationStatuses() {
             </div>
           </div>
           <div className="text-4xl font-black text-gray-800">{stat.value}</div>
-          <div className="text-sm opacity-75 mt-2 text-gray-600">
-            {stat.increaseLastMonth}
+
+          <div className="text-xs text-gray-500 mt-1">
+            {stat.IncreaseLastMonth}
           </div>
         </Card>
       ))}

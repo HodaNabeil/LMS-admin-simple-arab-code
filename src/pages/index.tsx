@@ -1,14 +1,22 @@
 import { Button } from "@/components/ui/button";
 import { Menu } from "lucide-react";
 import { useOutletContext } from "react-router-dom";
-
-// import { SalesLineChart } from "@/features/admin/components/SalesLineChart";
-import PaymentHistory from "@/features/admin/components/PaymentHistory";
-import RegistrationStatuses from "@/features/admin/components/Registration-Statuses";
 import { useAdminStats } from "@/hooks/useAdminStats";
-import YearlyProgress from "@/features/admin/components/Yearly-Progress";
-import AverageCourseProgress from "@/features/admin/components/Average-Course-progress";
 import { Loader } from "@/components/shared/loader";
+import { Suspense, lazy } from "react";
+
+const PaymentHistory = lazy(
+  () => import("@/features/admin/components/PaymentHistory")
+);
+const RegistrationStatuses = lazy(
+  () => import("@/features/admin/components/Registration-Statuses")
+);
+const YearlyProgress = lazy(
+  () => import("@/features/admin/components/Yearly-Progress")
+);
+const AverageCourseProgress = lazy(
+  () => import("@/features/admin/components/Average-Course-progress")
+);
 
 export default function Admin() {
   const { setIsMobileSidebarOpen } = useOutletContext<{
@@ -17,6 +25,7 @@ export default function Admin() {
 
   const { data, isLoading, error, isError } = useAdminStats();
   const yearlyProgress = data?.yearlyProgress;
+
   if (isLoading) {
     return (
       <div className="text-center py-8">
@@ -35,7 +44,7 @@ export default function Admin() {
 
   if (data) {
     return (
-      <div className=" flex    flex-row-reverse">
+      <div className="flex flex-row-reverse">
         <div
           dir="rtl"
           className="flex flex-col min-h-screen bg-[#f8fafc] font-cairo p-4 gap-6"
@@ -49,25 +58,31 @@ export default function Admin() {
             <Menu className="w-5 h-5" />
           </Button>
 
-          {/* الصف الأول: الكروت الإحصائية */}
-          <RegistrationStatuses />
+          <Suspense fallback={<Loader />}>
+            <RegistrationStatuses />
+          </Suspense>
 
-          {/* الصف الثانRegistrationStatusesي: رسم بياني */}
+          <Suspense fallback={<Loader />}>
+            <YearlyProgress yearlyProgress={yearlyProgress || {}} />
+          </Suspense>
 
-          <YearlyProgress yearlyProgress={yearlyProgress || {}} />
-
-          {/* الصف الرابع: سجل المدفوعات */}
           <div className="w-full">
-            <PaymentHistory />
+            <Suspense fallback={<Loader />}>
+              <PaymentHistory />
+            </Suspense>
           </div>
         </div>
-        {/* الصف الثالث: متوسط تقدم الدورات + الدورات المنشأة مؤخرًا */}
-        <div className=" p-[20px] w-full lg:w-1/2">
-          <AverageCourseProgress
-            averageCourseProgress={data?.averageCourseProgress}
-          />
+
+        <div className="p-[20px] w-full lg:w-1/2">
+          <Suspense fallback={<Loader />}>
+            <AverageCourseProgress
+              averageCourseProgress={data?.averageCourseProgress}
+            />
+          </Suspense>
         </div>
       </div>
     );
   }
+
+  return null;
 }
