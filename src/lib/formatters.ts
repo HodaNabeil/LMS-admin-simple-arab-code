@@ -1,4 +1,5 @@
 import { Languages } from "@/constants/enums";
+import type { Invoice } from "@/types/PaymentHistory";
 
 const CURRENCY_FORMATTER = new Intl.NumberFormat("en-US", {
   currency: "USD",
@@ -51,4 +52,29 @@ export function formatLargeNumber(value: number): string {
     return `${formattedValue}k+`;
   }
   return value.toString();
+}
+
+export function formatPaymentStatus(status: Invoice["status"]): string {
+  switch (status) {
+    case "PAID":
+      return "مدفوعة";
+    case "FAILED":
+      return "غير مدفوعة";
+    case "PENDING":
+      return "قيد الانتظار";
+    case "REFUNDED":
+      return "مستردة";
+    default:
+      return status; // Return the original status if it doesn't match known values
+  }
+}
+export function formatPaymentMethod(method: Invoice["paymentMethod"]): string {
+  switch (method) {
+    case "STRIPE":
+      return "بطاقة ائتمان";
+    case "PHONE_CASH":
+      return "نقدًا عبر الهاتف";
+    default:
+      return method; // Return the original method if it doesn't match known values
+  }
 }

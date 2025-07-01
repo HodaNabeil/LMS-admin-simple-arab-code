@@ -13,22 +13,16 @@ import {
   TableBody,
   TableCell,
 } from "@/components/ui/table";
-import { formatCurrency } from "@/lib/formatters";
-
-type Invoice = {
-  id: string;
-  createdAt: string;
-  pricePaidInCents: number;
-  paymentMethod: string;
-  status: string;
-};
+import {
+  formatCurrency,
+  formatPaymentMethod,
+  formatPaymentStatus,
+} from "@/lib/formatters";
+import type { Invoice } from "@/types/PaymentHistory";
 
 export default function PaymentTable({ invoices }: { invoices: Invoice[] }) {
   return (
-    <Card
-      className="bg-white text-gray-800 rounded-lg border-0 shadow-md"
-      dir="rtl"
-    >
+    <Card className=" text-gray-800 rounded-lg border-0 shadow-md">
       <CardHeader>
         <CardTitle className="text-base font-bold text-gray-800">
           سجل المدفوعات
@@ -65,10 +59,10 @@ export default function PaymentTable({ invoices }: { invoices: Invoice[] }) {
                   {formatCurrency(item.pricePaidInCents / 100)}
                 </TableCell>
                 <TableCell className="text-gray-800 font-medium">
-                  {item.paymentMethod}
+                  {formatPaymentMethod(item.paymentMethod)}
                 </TableCell>
                 <TableCell className="text-gray-800 font-medium">
-                  {item.status}
+                  {formatPaymentStatus(item.status)}
                 </TableCell>
               </TableRow>
             ))}

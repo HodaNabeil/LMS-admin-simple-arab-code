@@ -10,32 +10,29 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
+import type { AdminStats } from "@/types/stats";
 
-type YearlyProgressData = {
-  monthlyRevenue?: number[];
-  revenueChangePercentage?: number;
-};
-
-function YearlyProgress({ yearlyProgress }: { yearlyProgress: YearlyProgressData }) {
-
-  const monthlyRevenue = yearlyProgress?.monthlyRevenue || Array(12).fill(0);
-  const percentageChange = yearlyProgress?.revenueChangePercentage ?? 0;
+function YearlyProgress({
+  yearlyProgress,
+}: {
+  yearlyProgress: AdminStats["yearlyProgress"];
+}) {
+  const percentageChange = yearlyProgress?.revenueChangePercentage;
 
   return (
-    <section className="bg-white p-6 rounded-md w-full h-full flex flex-col flex-grow" dir="rtl">
+    <section className="bg-white p-6 rounded-md h-fit flex flex-col flex-grow shadow-md">
       <div className="space-y-2">
         <h2 className="text-lg font-semibold text-slate-800">التقدم السنوي</h2>
         <p className="flex items-center gap-4 text-slate-700">
           الإيرادات:
           <span className="text-green-600 flex items-center gap-1">
-  
             {percentageChange >= 0
               ? `+${percentageChange.toFixed(2)}%`
               : `${percentageChange.toFixed(2)}%`}
           </span>
         </p>
       </div>
-      <Chart monthlyRevenue={monthlyRevenue} />
+      <Chart monthlyRevenue={yearlyProgress?.monthlyRevenue} />
     </section>
   );
 }
@@ -73,7 +70,7 @@ const Chart = ({ monthlyRevenue }: { monthlyRevenue: number[] }) => {
     labels: labels.map((label) => label.slice(0, 3)),
     datasets: [
       {
-        label: "Revenue",
+        label: "الإيرادات الشهرية",
         data: monthlyRevenue,
         borderColor: "#7dd3fc",
         backgroundColor: "rgba(255,255,255,0.5)",
@@ -134,10 +131,6 @@ const Chart = ({ monthlyRevenue }: { monthlyRevenue: number[] }) => {
     },
   };
   return (
-    <div className="flex-1 w-full h-full">
-      <div className="w-full h-[60vh] min-h-[350px]">
-        <Line data={data} options={config.options} className="w-full h-full" />
-      </div>
-    </div>
+    <Line data={data} options={config.options} className="w-full h-full" />
   );
 };

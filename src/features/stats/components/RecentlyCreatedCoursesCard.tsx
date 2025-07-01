@@ -17,7 +17,7 @@ interface Course {
 
 export function RecentlyCreatedCoursesCard({ courses }: { courses: Course[] }) {
   return (
-    <div className="w-full flex flex-col items-center">
+    <div className="w-full flex flex-col items-center shadow-md rounded-lg border border-gray-200 bg-white p-4">
       <div className="pb-2 w-full">
         <div className="text-base font-bold text-gray-800 text-center">
           الدورات التي تم إنشاؤها مؤخرًا

@@ -2,7 +2,6 @@ import { useAdminPaymentHistory } from "@/hooks/useAdminPaymentHistory";
 import PaymentTable from "./PaymentTable";
 import { Loader } from "@/components/shared/loader";
 
-
 export default function PaymentHistory() {
   const { data, isError, isLoading, error } = useAdminPaymentHistory();
 
@@ -22,11 +21,5 @@ export default function PaymentHistory() {
     );
   }
 
-  if (data ) {
-    return <PaymentTable invoices={data?.invoices} />;
-  }
-
-  return (
-    <div className="text-center py-8 text-gray-500">لا توجد بيانات متاحة حالياً.</div>
-  );
+  return !isLoading && data && <PaymentTable invoices={data?.invoices} />;
 }
