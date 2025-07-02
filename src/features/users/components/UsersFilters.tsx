@@ -15,8 +15,6 @@ interface UsersFiltersProps {
   onSearchChange: (term: string) => void;
   selectedCategory: string;
   onCategoryChange: (category: string) => void;
-  selectedType: string;
-  onTypeChange: (type: string) => void;
   onClearFilters: () => void;
 }
 
@@ -25,14 +23,12 @@ function UsersFilters({
   onSearchChange,
   selectedCategory,
   onCategoryChange,
-  selectedType,
-  onTypeChange,
+
   onClearFilters,
 }: UsersFiltersProps) {
   const categories = ["الكل", "ADMIN", "USER"];
 
-  const hasActiveFilters =
-    searchTerm || selectedCategory !== "الكل" || selectedType !== "الكل";
+  const hasActiveFilters = searchTerm || selectedCategory !== "الكل";
 
   return (
     <div className="bg-white rounded-lg border border-gray-200 p-4 space-y-4">
@@ -102,16 +98,6 @@ function UsersFilters({
               <X
                 className="w-3 h-3 cursor-pointer"
                 onClick={() => onCategoryChange("الكل")}
-              />
-            </Badge>
-          )}
-
-          {selectedType !== "الكل" && (
-            <Badge variant="secondary" className="gap-1">
-              النوع: {selectedType}
-              <X
-                className="w-3 h-3 cursor-pointer"
-                onClick={() => onTypeChange("الكل")}
               />
             </Badge>
           )}

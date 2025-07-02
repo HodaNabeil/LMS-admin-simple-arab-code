@@ -26,27 +26,13 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-
-interface Users {
-  id: number;
-  title: string;
-  category: string;
-  type: string;
-  level: string;
-  instructor: string;
-  price: number;
-  image: string;
-  students?: number;
-  rating?: number;
-  email: string;
-  name: string;
-}
+import type { TableColumnUsers } from "@/types/users-table";
 
 interface UsersTableProps {
-  users: Users[];
+  users: TableColumnUsers[];
 }
 
-const columns: ColumnDef<Users>[] = [
+const columns: ColumnDef<TableColumnUsers>[] = [
   {
     accessorKey: "id",
     header: "ID",
@@ -59,7 +45,7 @@ const columns: ColumnDef<Users>[] = [
       <div className="flex items-center justify-center">
         <img
           src={row.getValue("image")}
-          alt={row.getValue("title")}
+          alt={row.getValue("name")}
           className="h-12 w-12 rounded-lg object-cover"
         />
       </div>
@@ -67,12 +53,12 @@ const columns: ColumnDef<Users>[] = [
     enableSorting: false,
   },
   {
-    accessorKey: "title",
+    accessorKey: "name",
     header: "اسم المستخدم",
     cell: ({ row }) => (
       <div className="max-w-[300px]">
         <div className="font-medium text-right truncate">
-          {row.getValue("title")}
+          {row.getValue("name")}
         </div>
       </div>
     ),
@@ -83,23 +69,11 @@ const columns: ColumnDef<Users>[] = [
     header: "Email",
   },
   {
-    accessorKey: "category",
-    header: "الفئة",
+    accessorKey: "role",
+    header: "نوعة المستخدم",
     cell: ({ row }) => (
       <Badge variant="outline" className="border-blue-200 text-blue-800">
-        {row.getValue("category")}
-      </Badge>
-    ),
-  },
-  {
-    accessorKey: "type",
-    header: "النوع",
-    cell: ({ row }) => (
-      <Badge
-        variant="secondary"
-        className="bg-purple-100 text-purple-800 border-purple-200"
-      >
-        {row.getValue("type")}
+        {row.getValue("role")}
       </Badge>
     ),
   },
@@ -177,7 +151,7 @@ function UserTableFilter({ users }: UsersTableProps) {
                 />
                 <div className="flex-1 min-w-0">
                   <h3 className="font-medium text-sm leading-5 line-clamp-2 text-right">
-                    {row.getValue("title")}
+                    {row.getValue("name")}
                   </h3>
                   <p className="text-sm text-muted-foreground mt-1 text-right">
                     {row.getValue("instructor")}

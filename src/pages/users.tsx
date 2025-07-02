@@ -27,85 +27,31 @@ const studentsData3 = [
   { date: "2025-06-19", value: 1 },
 ];
 
-interface Users {
-  id: number;
-  title: string;
-  category: string;
-  type: string;
-  level: string;
-  instructor: string;
-  price: number;
-  image: string;
-  students?: number;
-  rating?: number;
-}
-
-const users: Users[] = [
-  {
-    id: 1,
-    title:
-      "دورة تطوير تطبيقات باستخدام Flutter - بناء واجهات احترافية لأنظمة iOS و Android",
-    category: "تطوير التطبيقات",
-    type: "تفاعلية",
-    level: "متوسط",
-    instructor: "أحمد محمد",
-    price: 299,
-    image: "https://i.ibb.co/Zzr165m4/Chat-GPT-Image-8-2025-04-06-00.png",
-    students: 145,
-    rating: 4.8,
-  },
-  {
-    id: 2,
-    title:
-      "دورة تطوير مواقع الويب باستخدام React و Next.js - من المبتدئ إلى المحترف",
-    category: "تطوير الويب",
-    type: "تقنية",
-    level: "متقدم",
-    instructor: "سارة أحمد",
-    price: 450,
-    image: "https://i.ibb.co/Zzr165m4/Chat-GPT-Image-8-2025-04-06-00.png",
-    students: 298,
-    rating: 4.9,
-  },
-  {
-    id: 3,
-    title: "دورة تصميم واجهات المستخدم UX/UI - إنشاء تجارب مستخدم مميزة",
-    category: "تصميم",
-    type: "إبداعية",
-    level: "مبتدئ",
-    instructor: "محمد علي",
-    price: 199,
-    image: "https://i.ibb.co/Zzr165m4/Chat-GPT-Image-8-2025-04-06-00.png",
-    students: 89,
-    rating: 4.7,
-  },
-];
 export default function Users() {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("الكل");
-  const [selectedType, setSelectedType] = useState("الكل");
   const { data } = useUsers();
-  console.log("data", data);
+  console.log(" users", data?.users);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const users = data?.users || [];
+  const [searchTerm, setSearchTerm] = useState(""); // قيمة افتراضية فارغة
+  const [selectedCategory, setSelectedCategory] = useState("الكل");
 
-  const filteredCourses = useMemo(() => {
-    return users.filter((user) => {
-      const matchesSearch =
-        user.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        user.instructor.toLowerCase().includes(searchTerm.toLowerCase());
+  const filteredUsers = useMemo(() => {
+    return users.filter(
+      (user: { id: { toString: () => string | string[] }; role: string }) => {
+        // البحث فقط في id
+        const matchesSearch = user.id?.toString().includes(searchTerm);
 
-      const matchesCategory =
-        selectedCategory === "الكل" || user.category === selectedCategory;
+        const matchesCategory =
+          selectedCategory === "الكل" || user.role === selectedCategory;
 
-      const matchesType = selectedType === "الكل" || user.type === selectedType;
-
-      return matchesSearch && matchesCategory && matchesType;
-    });
-  }, [searchTerm, selectedCategory, selectedType]);
+        return matchesSearch && matchesCategory;
+      }
+    );
+  }, [users, searchTerm, selectedCategory]); // أضيفي users للدوال التابعة
 
   const handleClearFilters = () => {
-    setSearchTerm("");
+    setSearchTerm(""); // أعيديها فارغة
     setSelectedCategory("الكل");
-    setSelectedType("الكل");
   };
   return (
     <>
@@ -136,11 +82,9 @@ export default function Users() {
         onSearchChange={setSearchTerm}
         selectedCategory={selectedCategory}
         onCategoryChange={setSelectedCategory}
-        selectedType={selectedType}
-        onTypeChange={setSelectedType}
         onClearFilters={handleClearFilters}
       />
-      <UserTableFilter users={filteredCourses} />
+      <UserTableFilter users={filteredUsers} />
     </>
   );
 }
