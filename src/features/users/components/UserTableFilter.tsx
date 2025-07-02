@@ -27,6 +27,8 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import type { TableColumnUsers } from "@/types/users-table";
+import { EditUser } from "./EditUser";
+import DeleteUser from "./DeleteUser";
 
 interface UsersTableProps {
   users: TableColumnUsers[];
@@ -82,26 +84,18 @@ const columns: ColumnDef<TableColumnUsers>[] = [
     id: "actions",
     header: "الإجراءات",
     enableHiding: false,
-    cell: () => {
-      return (
-        <div className="flex items-center justify-center gap-2">
-          <Button
-            variant="ghost"
-            size="sm"
-            className="h-8 w-8 p-0 text-blue-600 hover:text-blue-800 hover:bg-blue-50"
-          >
-            <Edit className="h-4 w-4" />
-          </Button>
-          <Button
-            variant="ghost"
-            size="sm"
-            className="h-8 w-8 p-0 text-red-600 hover:text-red-800 hover:bg-red-50"
-          >
-            <Trash2 className="h-4 w-4" />
-          </Button>
-        </div>
-      );
-    },
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    cell: ({ row }: { row: any }) => (
+      <div className="flex gap-2 items-center">
+        <button>
+          <EditUser user={row.original} />
+        </button>
+
+        <button>
+          <DeleteUser user={row.original} />
+        </button>
+      </div>
+    ),
   },
 ];
 

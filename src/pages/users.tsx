@@ -1,10 +1,10 @@
 import { User } from "lucide-react";
 import { StatsCard } from "@/features/users/components/StatsCard";
-import UsersTable from "@/features/users/components/UsersTable";
 import { useMemo, useState } from "react";
 import UsersFilters from "@/features/users/components/UsersFilters";
 import UserTableFilter from "@/features/users/components/UserTableFilter";
 import { useUsers } from "@/hooks/useUsers";
+import { CreateNewUser } from "@/features/users/components/CreateNewUser";
 
 const studentsData1 = [
   { date: "2025-06-12", value: 1 },
@@ -75,8 +75,11 @@ export default function Users() {
           data={studentsData2}
         />
       </div>
-      <UsersTable />
 
+      <div className="flex justify-between items-center m-4">
+        <h2 className="text-2xl font-bold text-blue-800">Users</h2>
+        <CreateNewUser />
+      </div>
       <UsersFilters
         searchTerm={searchTerm}
         onSearchChange={setSearchTerm}

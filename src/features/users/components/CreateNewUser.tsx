@@ -13,7 +13,7 @@ export function CreateNewUser() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="default">Create new user</Button>
+        <Button variant="default">انشاء مستخدم جديد</Button>
       </DialogTrigger>
       <DialogContent dir={Directions.RTL} className="sm:max-w-[425px]">
         <DialogHeader className="!text-right">

@@ -86,19 +86,11 @@ function UsersFilters({
           {searchTerm && (
             <Badge variant="secondary" className="gap-1">
               البحث: {searchTerm}
-              <X
-                className="w-3 h-3 cursor-pointer"
-                onClick={() => onSearchChange("")}
-              />
             </Badge>
           )}
           {selectedCategory !== "الكل" && (
             <Badge variant="secondary" className="gap-1">
               التصنيف: {selectedCategory}
-              <X
-                className="w-3 h-3 cursor-pointer"
-                onClick={() => onCategoryChange("الكل")}
-              />
             </Badge>
           )}
         </div>
