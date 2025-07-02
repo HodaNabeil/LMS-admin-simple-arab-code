@@ -26,6 +26,7 @@ export function CreateNewUser() {
         <UserForm
           actionLabel="انشاء مستخدم جديد"
           user={{
+            id: () => undefined,
             name: "",
             email: "",
             role: UserType.USER,

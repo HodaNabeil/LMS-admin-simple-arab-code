@@ -32,7 +32,6 @@ export function useUpdateUser() {
   });
 }
 
-
 export function useDeleteUser() {
   return useMutation({
     mutationFn: async (userId: string) => {

@@ -36,7 +36,7 @@ function UserForm({ actionLabel, user }: { actionLabel: string; user: User }) {
     if (actionLabel === "انشاء مستخدم جديد") {
       createUser.mutate(data, {
         onSuccess: () => {
-          console.log("User created successfully");
+          toast.success("تم انشاء المستخدم بنجاح  ");
         },
         onError: (error) => {
           // Check if error is an AxiosError
@@ -53,12 +53,12 @@ function UserForm({ actionLabel, user }: { actionLabel: string; user: User }) {
       toast.success("تم تعديل المستخدم بنجاح");
     }
     if (actionLabel === "حذف") {
-      deleteUser.mutate(user.id, {
+      deleteUser.mutate(String(user.id), {
         onSuccess: () => {
           toast.success("تم حذف المستخدم بنجاح");
         },
-        onError: (error) => {
-          if ((error as any)?.response?.status === 409) {
+        onError: (error: any) => {
+          if (error?.response?.status === 409) {
             toast.error("لا يمكن حذف المستخدم بسبب تعارض!");
           } else {
             console.error("Error deleting user:", error);
