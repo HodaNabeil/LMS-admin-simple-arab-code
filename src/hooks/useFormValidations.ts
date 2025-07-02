@@ -2,6 +2,7 @@ import * as z from "zod";
 import { signinSchema, signupSchema } from "@/validations/auth";
 import type { IFormFieldsVariables } from "@/types/app";
 import { Pages } from "@/constants/enums";
+import { loginSchema } from "@/validations/login";
 import { userSchema } from "@/validations/user";
 
 const useFormValidations = (props: IFormFieldsVariables) => {
@@ -15,6 +16,8 @@ const useFormValidations = (props: IFormFieldsVariables) => {
         return signupSchema;
       case Pages.USERS:
         return userSchema;
+      case Pages.LOGIN:
+        return loginSchema;
 
       default:
         return z.object({});

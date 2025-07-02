@@ -43,6 +43,8 @@ export const authCookies = {
 
   // Legacy token methods (for backward compatibility)
   setToken: (token: string) => {
+    console.log("token", token);
+
     authCookies.setAccessToken(token);
   },
 
@@ -118,9 +120,11 @@ export const authCookies = {
   },
 
   // Set tokens only
-  setTokens: (accessToken: string, refreshToken: string) => {
+  setTokens: (accessToken: string, refreshToken?: string) => {
     authCookies.setAccessToken(accessToken);
-    authCookies.setRefreshToken(refreshToken);
+    if (refreshToken) {
+      authCookies.setRefreshToken(refreshToken);
+    }
   },
 
   // Get tokens only

@@ -18,6 +18,7 @@ export enum Routes {
 export enum Pages {
   SIGNIN = "signin",
   SIGNUP = "signup",
+  LOGIN = "login",
   VERIFY_ACCOUNT = "verify-account",
   FORGOT_PASSWORD = "forgot-password",
   ENTER_OTP = "enter-otp",

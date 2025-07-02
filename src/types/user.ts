@@ -8,6 +8,7 @@ export type User = {
 
 export type AuthResponse = {
   user: User;
+  message: string;
   access_token: string;
   refresh_token: string;
 };
@@ -19,7 +20,7 @@ export type TokenRefreshResponse = {
 
 export type LoginRequest = {
   email: string;
-  password: string;
+  password?: string;
 };
 
 export type SignupRequest = {
