@@ -140,7 +140,7 @@ function UserTableFilter({ users }: UsersTableProps) {
               <div className="flex items-start gap-3">
                 <img
                   src={row.getValue("image")}
-                  alt={row.getValue("title")}
+                  alt={row.getValue("name")}
                   className="h-16 w-16 rounded-lg object-cover flex-shrink-0"
                 />
                 <div className="flex-1 min-w-0">

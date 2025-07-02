@@ -29,7 +29,7 @@ const studentsData3 = [
 
 export default function Users() {
   const { data } = useUsers();
-  console.log(" users", data?.users);
+
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const users = data?.users || [];
   const [searchTerm, setSearchTerm] = useState(""); // قيمة افتراضية فارغة

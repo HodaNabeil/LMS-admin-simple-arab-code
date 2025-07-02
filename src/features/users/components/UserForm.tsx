@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import useFormFields from "@/hooks/useFormFields";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -8,11 +9,13 @@ import { Button } from "@/components/ui/button";
 import type { User } from "@/types/user";
 import type { Control } from "react-hook-form";
 import useFormValidations from "@/hooks/useFormValidations";
+import { useCreateUser } from "@/hooks/useUsers";
+import { toast } from "sonner";
 
 function UserForm({ actionLabel, user }: { actionLabel: string; user: User }) {
   const { getFormFields } = useFormFields({ slug: Pages.USERS });
   const { getValidationSchema } = useFormValidations({ slug: Pages.USERS });
-
+  const createUser = useCreateUser();
   const {
     handleSubmit,
     control,
@@ -28,7 +31,21 @@ function UserForm({ actionLabel, user }: { actionLabel: string; user: User }) {
   });
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onSubmit = (data: any) => {
-    console.log("Form submitted with data:", data);
+    if (actionLabel === "انشاء مستخدم جديد") {
+      createUser.mutate(data, {
+        onSuccess: () => {
+          console.log("User created successfully");
+        },
+        onError: (error) => {
+          // Check if error is an AxiosError
+          if ((error as any)?.response?.status === 409) {
+            toast.error("هذا المستخدم موجود بالفعل!");
+          } else {
+            console.error("Error creating user:", error);
+          }
+        },
+      });
+    }
   };
   const formLoading = isSubmitting; // isLoading;
   return (
