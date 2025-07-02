@@ -6,9 +6,10 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Directions, UserType } from "@/constants/enums";
+import { Directions } from "@/constants/enums";
 import { Delete } from "lucide-react";
 import UserForm from "./UserForm";
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default function DeleteUser({ user }: { user: any }) {
   if (!user) {
     return null;
