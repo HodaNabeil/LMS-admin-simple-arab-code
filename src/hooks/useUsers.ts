@@ -20,3 +20,24 @@ export function useCreateUser() {
     },
   });
 }
+
+export function useUpdateUser() {
+  return useMutation({
+    mutationFn: async (user: object) => {
+      // console.log("Updating user:", user);
+      const { data } = await api.put("/users", user);
+
+      return data;
+    },
+  });
+}
+
+
+export function useDeleteUser() {
+  return useMutation({
+    mutationFn: async (userId: string) => {
+      const { data } = await api.delete(`/users/${userId}`);
+      return data;
+    },
+  });
+}

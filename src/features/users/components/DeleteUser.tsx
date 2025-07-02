@@ -29,8 +29,13 @@ export default function DeleteUser({ user }: { user: any }) {
           </DialogDescription>
         </DialogHeader>
         <UserForm
-          actionLabel="حذف المستخدم"
-          user={{ name: user.name, email: user.email, role: user.role }}
+          actionLabel="حذف"
+          user={{
+            name: user.name,
+            email: user.email,
+            role: user.role,
+            id: user.id,
+          }}
         />
       </DialogContent>
     </Dialog>

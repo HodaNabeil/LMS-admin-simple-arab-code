@@ -1,6 +1,7 @@
 import { UserType } from "@/constants/enums";
 
 export type User = {
+  id(id: any): unknown;
   name: string;
   email: string;
   role: UserType;

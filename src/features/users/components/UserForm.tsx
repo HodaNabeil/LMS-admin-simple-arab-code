@@ -9,13 +9,15 @@ import { Button } from "@/components/ui/button";
 import type { User } from "@/types/user";
 import type { Control } from "react-hook-form";
 import useFormValidations from "@/hooks/useFormValidations";
-import { useCreateUser } from "@/hooks/useUsers";
+import { useCreateUser, useDeleteUser, useUpdateUser } from "@/hooks/useUsers";
 import { toast } from "sonner";
 
 function UserForm({ actionLabel, user }: { actionLabel: string; user: User }) {
   const { getFormFields } = useFormFields({ slug: Pages.USERS });
   const { getValidationSchema } = useFormValidations({ slug: Pages.USERS });
   const createUser = useCreateUser();
+  const updateUser = useUpdateUser();
+  const deleteUser = useDeleteUser(); // Assuming you have a similar hook for updating users
   const {
     handleSubmit,
     control,
@@ -42,6 +44,24 @@ function UserForm({ actionLabel, user }: { actionLabel: string; user: User }) {
             toast.error("هذا المستخدم موجود بالفعل!");
           } else {
             console.error("Error creating user:", error);
+          }
+        },
+      });
+    }
+    if (actionLabel === "تعديل") {
+      updateUser.mutate(data);
+      toast.success("تم تعديل المستخدم بنجاح");
+    }
+    if (actionLabel === "حذف") {
+      deleteUser.mutate(user.id, {
+        onSuccess: () => {
+          toast.success("تم حذف المستخدم بنجاح");
+        },
+        onError: (error) => {
+          if ((error as any)?.response?.status === 409) {
+            toast.error("لا يمكن حذف المستخدم بسبب تعارض!");
+          } else {
+            console.error("Error deleting user:", error);
           }
         },
       });
