@@ -38,6 +38,9 @@ function UserForm({ actionLabel, user }: { actionLabel: string; user: User }) {
         onSuccess: () => {
           toast.success("تم انشاء المستخدم بنجاح  ");
         },
+        // onSuccess: () => {
+        //   queryClient.invalidateQueries({ queryKey: [queryKeys.key] });
+        // },
         onError: (error) => {
           // Check if error is an AxiosError
           if ((error as any)?.response?.status === 409) {

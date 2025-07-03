@@ -35,7 +35,7 @@ export function useUpdateUser() {
 export function useDeleteUser() {
   return useMutation({
     mutationFn: async (userId: string) => {
-      const { data } = await api.delete(`/users/${userId}`);
+      const { data } = await api.delete(`/users?id=${userId}`);
       return data;
     },
   });
