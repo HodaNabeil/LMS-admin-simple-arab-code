@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import useFormFields from "@/hooks/useFormFields";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -9,15 +8,18 @@ import { Button } from "@/components/ui/button";
 import type { User } from "@/types/user";
 import type { Control } from "react-hook-form";
 import useFormValidations from "@/hooks/useFormValidations";
-import { useCreateUser, useDeleteUser, useUpdateUser } from "@/hooks/useUsers";
+import { useCreateUser, useUpdateUser } from "@/hooks/useUsers";
 import { toast } from "sonner";
+import { useMemo } from "react";
 
 function UserForm({ actionLabel, user }: { actionLabel: string; user: User }) {
   const { getFormFields } = useFormFields({ slug: Pages.USERS });
   const { getValidationSchema } = useFormValidations({ slug: Pages.USERS });
   const createUser = useCreateUser();
   const updateUser = useUpdateUser();
-  const deleteUser = useDeleteUser(); // Assuming you have a similar hook for updating users
+  const mutation =
+    actionLabel === "انشاء مستخدم جديد" ? createUser : updateUser;
+
   const {
     handleSubmit,
     control,
@@ -27,57 +29,43 @@ function UserForm({ actionLabel, user }: { actionLabel: string; user: User }) {
       name: user?.name || "",
       email: user?.email || "",
       role: user?.role || "",
+      id: user?.id || "", // Ensure id is included for updates
     },
     mode: "onChange",
     resolver: zodResolver(getValidationSchema()),
   });
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onSubmit = (data: any) => {
-    if (actionLabel === "انشاء مستخدم جديد") {
-      createUser.mutate(data, {
-        onSuccess: () => {
-          toast.success("تم انشاء المستخدم بنجاح  ");
-        },
-        // onSuccess: () => {
-        //   queryClient.invalidateQueries({ queryKey: [queryKeys.key] });
-        // },
-        onError: (error) => {
-          // Check if error is an AxiosError
-          if ((error as any)?.response?.status === 409) {
-            toast.error("هذا المستخدم موجود بالفعل!");
-          } else {
-            console.error("Error creating user:", error);
-          }
-        },
-      });
-    }
-    if (actionLabel === "تعديل") {
-      updateUser.mutate(data);
-      toast.success("تم تعديل المستخدم بنجاح");
-    }
-    if (actionLabel === "حذف") {
-      deleteUser.mutate(String(user.id), {
-        onSuccess: () => {
-          toast.success("تم حذف المستخدم بنجاح");
-        },
-        onError: (error: any) => {
-          if (error?.response?.status === 409) {
-            toast.error("لا يمكن حذف المستخدم بسبب تعارض!");
-          } else {
-            console.error("Error deleting user:", error);
-          }
-        },
-      });
-    }
+    mutation.mutate(data, {
+      onSuccess: () => {
+        toast.success(
+          actionLabel === "انشاء مستخدم جديد"
+            ? "تم انشاء المستخدم بنجاح"
+            : "تم تحديث المستخدم بنجاح"
+        );
+      },
+      onError: (error) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        if ((error as any)?.response?.status === 409) {
+          toast.error("هذا المستخدم موجود بالفعل!");
+        } else {
+          console.error("خطأ:", error);
+          toast.error("حدث خطأ غير متوقع");
+        }
+      },
+    });
   };
+
+  const formFields = useMemo(() => getFormFields(), [getFormFields]);
+
   const formLoading = isSubmitting; // isLoading;
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      {getFormFields().map((field, index) => (
+      {formFields.map((field, index) => (
         <div key={index} className="mb-4">
           <FormFields
             {...field}
-            control={control as unknown as Control<Record<string, unknown>>}
+            control={control as Control<Record<string, unknown>>}
             errors={errors}
           />
         </div>

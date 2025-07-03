@@ -14,7 +14,7 @@ export function EditUser({ user }: { user: User }) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Edit className="w-4 h-4" />
+        <Edit className="h-4 w-4" />
       </DialogTrigger>
       <DialogContent dir={Directions.RTL} className="sm:max-w-[425px]">
         <DialogHeader className="!text-right">
@@ -24,7 +24,15 @@ export function EditUser({ user }: { user: User }) {
             صحيح.
           </DialogDescription>
         </DialogHeader>
-        <UserForm actionLabel="تعديل" user={user} />
+        <UserForm
+          user={{
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            role: user.role,
+          }}
+          actionLabel="تعديل"
+        />
       </DialogContent>
     </Dialog>
   );

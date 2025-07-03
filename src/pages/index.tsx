@@ -33,7 +33,6 @@ export default function Admin() {
     setIsMobileSidebarOpen: (open: boolean) => void;
   }>();
   const { data, isLoading, error } = useAdminStats();
-  console.log("data", data);
   return (
     <div
       dir="rtl"

@@ -22,4 +22,5 @@ export const queryKeys = {
     details: () => [...queryKeys.courses.all, "detail"] as const,
     detail: (id: string) => [...queryKeys.courses.details(), id] as const,
   },
+  
 };

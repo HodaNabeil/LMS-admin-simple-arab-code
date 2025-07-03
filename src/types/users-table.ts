@@ -1,5 +1,5 @@
 export interface TableColumnUsers {
-  id: string;
+  id: (id: unknown) => unknown;
   name: string;
   email: string;
   image: string;

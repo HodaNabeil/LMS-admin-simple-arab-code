@@ -1,6 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import api from "@/lib/axios";
+import { toast } from "sonner";
+
+
 
 export function useUsers() {
   return useQuery({
@@ -13,30 +16,51 @@ export function useUsers() {
 }
 
 export function useCreateUser() {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (user: object) => {
       const { data } = await api.post("/users", user);
       return data;
     },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["users"] });
+    },
+    onError: (error) => {
+      console.error("Error creating user:", error);
+    },
   });
 }
 
 export function useUpdateUser() {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (user: object) => {
-      // console.log("Updating user:", user);
       const { data } = await api.put("/users", user);
-
+      console.log(data)
       return data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["users"] });
+      toast.success("تم تعديل المستخدم بنجاح");
+    },
+    onError: (error) => {
+      console.error("Error updating user:", error);
     },
   });
 }
 
 export function useDeleteUser() {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (userId: string) => {
       const { data } = await api.delete(`/users?id=${userId}`);
       return data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["users"] });
+    },
+    onError: (error) => {
+      console.error("Error deleting user:", error);
     },
   });
 }

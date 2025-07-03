@@ -13,7 +13,6 @@ import type {
   SortingState,
   VisibilityState,
 } from "@tanstack/react-table";
-import { Edit, Trash2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 
@@ -29,6 +28,7 @@ import { Badge } from "@/components/ui/badge";
 import type { TableColumnUsers } from "@/types/users-table";
 import { EditUser } from "./EditUser";
 import DeleteUser from "./DeleteUser";
+import type { UserType } from "@/constants/enums";
 
 interface UsersTableProps {
   users: TableColumnUsers[];
@@ -43,30 +43,34 @@ const columns: ColumnDef<TableColumnUsers>[] = [
   {
     accessorKey: "image",
     header: "الصورة",
-    cell: ({ row }) => (
-      <div className="flex items-center justify-center">
-        {typeof row.getValue("image") === "string" &&
-        row.getValue("image").trim() !== "" ? (
-          <img
-            src={row.getValue("image")}
-            alt={row.getValue("name")}
-            className="h-12 w-12 rounded-lg object-cover"
-          />
-        ) : null}
-      </div>
-    ),
+    cell: ({ row }) => {
+      const image = row.getValue("image") as string;
+      const name = row.getValue("name") as string;
+      return (
+        <div className="flex items-center justify-center">
+          {typeof image === "string" && image.trim() !== "" ? (
+            <img
+              src={image}
+              alt={name}
+              className="h-12 w-12 rounded-lg object-cover"
+            />
+          ) : null}
+        </div>
+      );
+    },
     enableSorting: false,
   },
   {
     accessorKey: "name",
     header: "اسم المستخدم",
-    cell: ({ row }) => (
-      <div className="max-w-[300px]">
-        <div className="font-medium text-right truncate">
-          {row.getValue("name")}
+    cell: ({ row }) => {
+      const name = row.getValue("name") as string;
+      return (
+        <div className="max-w-[300px]">
+          <div className="font-medium text-right truncate">{name}</div>
         </div>
-      </div>
-    ),
+      );
+    },
   },
 
   {
@@ -90,11 +94,13 @@ const columns: ColumnDef<TableColumnUsers>[] = [
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     cell: ({ row }: { row: any }) => (
       <div className="flex gap-2 items-center">
-        <button>
-          <EditUser user={row.original} />
+        <button className="text-blue-600 hover:text-blue-800">
+          <EditUser
+            user={{ ...row.original, role: row.original.role as UserType }}
+          />
         </button>
 
-        <button>
+        <button className="text-red-600 hover:text-red-800">
           <DeleteUser user={row.original} />
         </button>
       </div>
@@ -154,21 +160,19 @@ function UserTableFilter({ users }: UsersTableProps) {
                     {row.getValue("name")}
                   </h3>
                 </div>
-                <div className="flex gap-2">
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="h-8 w-8 p-0 text-blue-600"
-                  >
-                    <Edit className="h-4 w-4" />
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="h-8 w-8 p-0 text-red-600"
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
+                <div className="flex gap-2 items-center">
+                  <button className="text-blue-600 hover:text-blue-800">
+                    <EditUser
+                      user={{
+                        ...row.original,
+                        role: row.original.role as UserType,
+                      }}
+                    />
+                  </button>
+
+                  <button className="text-red-600 hover:text-red-800">
+                    <DeleteUser user={row.original} />
+                  </button>
                 </div>
               </div>
             </div>
