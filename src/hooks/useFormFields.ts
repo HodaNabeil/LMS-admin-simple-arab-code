@@ -123,8 +123,8 @@ const useFormFields = ({ slug }: IFormFieldsVariables) => {
       type: "select",
       placeholder: "اختر نوع حسابك",
       options: [
-        { value: UserType.USER, label: "" },
-        { value: UserType.ADMIN, label: "" },
+        { value: UserType.USER, label: UserType.USER },
+        { value: UserType.ADMIN, label: UserType.ADMIN },
       ],
     },
   ];

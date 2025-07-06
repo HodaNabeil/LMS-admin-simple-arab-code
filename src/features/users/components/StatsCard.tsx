@@ -7,16 +7,9 @@ interface StatsCardProps {
   value: number | string;
   icon: React.ReactNode;
   data: { date: string; value: number }[];
-  lineName?: string;
 }
 
-export function StatsCard({
-  title,
-  value,
-  icon,
-  data,
-  lineName = "",
-}: StatsCardProps) {
+export function StatsCard({ title, value, icon, data }: StatsCardProps) {
   return (
     <Card className="bg-white text-gray-800 p-4 h-full shadow-sm border border-gray-100">
       <div className="flex items-center gap-2 mb-2">
@@ -33,11 +26,11 @@ export function StatsCard({
               stroke="#6366f1"
               strokeWidth={2}
               dot={{ r: 4, fill: "#818cf8" }}
-              name={lineName || title}
+              name={title}
             />
             <Tooltip
               labelFormatter={(label) => label}
-              formatter={(v) => [`${v}`, lineName || title]}
+              formatter={(v) => [`${v}`, title]}
               contentStyle={{
                 background: "#fff",
                 border: "1px solid #e5e7eb",

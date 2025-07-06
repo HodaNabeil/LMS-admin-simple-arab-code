@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo, useState } from "react";
 import {
   flexRender,
   getCoreRowModel,
@@ -28,7 +28,8 @@ import { Badge } from "@/components/ui/badge";
 import type { TableColumnUsers } from "@/types/users-table";
 import { EditUser } from "./EditUser";
 import DeleteUser from "./DeleteUser";
-import type { UserType } from "@/constants/enums";
+import type { User } from "@/types/user";
+import UsersFilters from "./UsersFilters";
 
 interface UsersTableProps {
   users: TableColumnUsers[];
@@ -91,24 +92,21 @@ const columns: ColumnDef<TableColumnUsers>[] = [
     id: "actions",
     header: "الإجراءات",
     enableHiding: false,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    cell: ({ row }: { row: any }) => (
+    cell: ({ row }) => (
       <div className="flex gap-2 items-center">
         <button className="text-blue-600 hover:text-blue-800">
-          <EditUser
-            user={{ ...row.original, role: row.original.role as UserType }}
-          />
+          <EditUser user={row.original as User} />
         </button>
 
         <button className="text-red-600 hover:text-red-800">
-          <DeleteUser user={row.original} />
+          <DeleteUser userId={row.original.id} />
         </button>
       </div>
     ),
   },
 ];
 
-function UserTableFilter({ users }: UsersTableProps) {
+function UserTable({ users }: UsersTableProps) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -116,9 +114,30 @@ function UserTableFilter({ users }: UsersTableProps) {
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
+  const [searchTerm, setSearchTerm] = useState(""); // قيمة افتراضية فارغة
+  const [selectedCategory, setSelectedCategory] = useState("الكل");
+
+  const filteredUsers = useMemo(() => {
+    return users.filter(
+      (user: { id: { toString: () => string | string[] }; role: string }) => {
+        // البحث فقط في id
+        const matchesSearch = user.id?.toString().includes(searchTerm);
+
+        const matchesCategory =
+          selectedCategory === "الكل" || user.role === selectedCategory;
+
+        return matchesSearch && matchesCategory;
+      }
+    );
+  }, [users, searchTerm, selectedCategory]); // أضيفي users للدوال التابعة
+
+  const handleClearFilters = () => {
+    setSearchTerm(""); // أعيديها فارغة
+    setSelectedCategory("الكل");
+  };
 
   const table = useReactTable({
-    data: users,
+    data: filteredUsers,
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -138,6 +157,13 @@ function UserTableFilter({ users }: UsersTableProps) {
 
   return (
     <div className="w-full">
+      <UsersFilters
+        searchTerm={searchTerm}
+        onSearchChange={setSearchTerm}
+        selectedCategory={selectedCategory}
+        onCategoryChange={setSelectedCategory}
+        onClearFilters={handleClearFilters}
+      />
       {/* Mobile Card View */}
       <div className="block lg:hidden space-y-4">
         {table.getRowModel().rows?.length ? (
@@ -162,16 +188,11 @@ function UserTableFilter({ users }: UsersTableProps) {
                 </div>
                 <div className="flex gap-2 items-center">
                   <button className="text-blue-600 hover:text-blue-800">
-                    <EditUser
-                      user={{
-                        ...row.original,
-                        role: row.original.role as UserType,
-                      }}
-                    />
+                    <EditUser user={row.original as User} />
                   </button>
 
                   <button className="text-red-600 hover:text-red-800">
-                    <DeleteUser user={row.original} />
+                    <DeleteUser userId={row.original.id} />
                   </button>
                 </div>
               </div>
@@ -271,4 +292,4 @@ function UserTableFilter({ users }: UsersTableProps) {
   );
 }
 
-export default UserTableFilter;
+export default UserTable;

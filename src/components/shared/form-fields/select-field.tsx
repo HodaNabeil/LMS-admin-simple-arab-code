@@ -61,7 +61,7 @@ const SelectField = ({
             <SelectContent>
               {options.map((option) => (
                 <SelectItem
-                  className="!text-lg !font-bold text-gray-900 p-[0.8rem]"
+                  className="!text-sm !font-bold text-gray-900 p-[0.8rem]"
                   key={option.value}
                   value={option.value}
                 >

@@ -8,17 +8,21 @@ import { Button } from "@/components/ui/button";
 import type { User } from "@/types/user";
 import type { Control } from "react-hook-form";
 import useFormValidations from "@/hooks/useFormValidations";
-import { useCreateUser, useUpdateUser } from "@/hooks/useUsers";
+import type { UseMutationResult } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { useMemo } from "react";
+import type { AxiosError } from "axios";
 
-function UserForm({ actionLabel, user }: { actionLabel: string; user: User }) {
+function UserForm({
+  user,
+  setUserMenu,
+  mutation,
+}: {
+  user?: User;
+  setUserMenu: React.Dispatch<React.SetStateAction<boolean>>;
+  mutation: UseMutationResult<{ message: string }, Error, object, unknown>;
+}) {
   const { getFormFields } = useFormFields({ slug: Pages.USERS });
   const { getValidationSchema } = useFormValidations({ slug: Pages.USERS });
-  const createUser = useCreateUser();
-  const updateUser = useUpdateUser();
-  const mutation =
-    actionLabel === "انشاء مستخدم جديد" ? createUser : updateUser;
 
   const {
     handleSubmit,
@@ -29,39 +33,37 @@ function UserForm({ actionLabel, user }: { actionLabel: string; user: User }) {
       name: user?.name || "",
       email: user?.email || "",
       role: user?.role || "",
-      id: user?.id || "", // Ensure id is included for updates
     },
     mode: "onChange",
     resolver: zodResolver(getValidationSchema()),
   });
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const onSubmit = (data: any) => {
-    mutation.mutate(data, {
-      onSuccess: () => {
-        toast.success(
-          actionLabel === "انشاء مستخدم جديد"
-            ? "تم انشاء المستخدم بنجاح"
-            : "تم تحديث المستخدم بنجاح"
-        );
-      },
-      onError: (error) => {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        if ((error as any)?.response?.status === 409) {
-          toast.error("هذا المستخدم موجود بالفعل!");
+
+  const onSubmit = async (data: Record<string, string>) => {
+    const mutationData = user ? { ...data, id: user.id } : data;
+    try {
+      const res = await mutation.mutateAsync(mutationData);
+      toast.success(res.message);
+      setUserMenu(false);
+    } catch (error) {
+      if (error instanceof Error) {
+        // Handle AxiosError specifically
+        const axiosError = error as AxiosError<{ message: string }>;
+        if (axiosError.response?.data?.message) {
+          toast.error(axiosError.response.data.message);
         } else {
-          console.error("خطأ:", error);
-          toast.error("حدث خطأ غير متوقع");
+          toast.error("An error occurred");
         }
-      },
-    });
+      } else {
+        toast.error("An unexpected error occurred");
+      }
+    }
   };
 
-  const formFields = useMemo(() => getFormFields(), [getFormFields]);
+  const formLoading = isSubmitting || mutation.isPending;
 
-  const formLoading = isSubmitting; // isLoading;
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      {formFields.map((field, index) => (
+      {getFormFields().map((field, index) => (
         <div key={index} className="mb-4">
           <FormFields
             {...field}
@@ -71,7 +73,7 @@ function UserForm({ actionLabel, user }: { actionLabel: string; user: User }) {
         </div>
       ))}
       <Button type="submit" disabled={formLoading}>
-        {actionLabel}
+        {user ? "تحديث المستخدم" : "انشاء مستخدم جديد"}
         {formLoading && <Loader />}
       </Button>
     </form>

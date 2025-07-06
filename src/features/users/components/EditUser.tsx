@@ -9,10 +9,14 @@ import UserForm from "./UserForm";
 import { DialogDescription, DialogTitle } from "@radix-ui/react-dialog";
 import { Edit } from "lucide-react";
 import type { User } from "@/types/user";
+import { useState } from "react";
+import { useUpdateUser } from "@/hooks/useUsers";
 
 export function EditUser({ user }: { user: User }) {
+  const [userMenu, setUserMenu] = useState(false);
+  const mutation = useUpdateUser();
   return (
-    <Dialog>
+    <Dialog open={userMenu} onOpenChange={(open) => setUserMenu(open)}>
       <DialogTrigger asChild>
         <Edit className="h-4 w-4" />
       </DialogTrigger>
@@ -24,15 +28,7 @@ export function EditUser({ user }: { user: User }) {
             صحيح.
           </DialogDescription>
         </DialogHeader>
-        <UserForm
-          user={{
-            id: user.id,
-            name: user.name,
-            email: user.email,
-            role: user.role,
-          }}
-          actionLabel="تعديل"
-        />
+        <UserForm user={user} setUserMenu={setUserMenu} mutation={mutation} />
       </DialogContent>
     </Dialog>
   );

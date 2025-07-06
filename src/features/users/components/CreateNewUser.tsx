@@ -5,13 +5,18 @@ import {
   DialogHeader,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Directions, UserType } from "@/constants/enums";
+import { Directions } from "@/constants/enums";
 import UserForm from "./UserForm";
 import { DialogDescription, DialogTitle } from "@radix-ui/react-dialog";
+import { useState } from "react";
+import { useCreateUser } from "@/hooks/useUsers";
 
 export function CreateNewUser() {
+  const [userMenu, setUserMenu] = useState(false);
+  const mutation = useCreateUser();
+
   return (
-    <Dialog>
+    <Dialog open={userMenu} onOpenChange={(open) => setUserMenu(open)}>
       <DialogTrigger asChild>
         <Button variant="default">انشاء مستخدم جديد</Button>
       </DialogTrigger>
@@ -23,15 +28,7 @@ export function CreateNewUser() {
             بشكل صحيح.
           </DialogDescription>
         </DialogHeader>
-        <UserForm
-          actionLabel="انشاء مستخدم جديد"
-          user={{
-            id: () => undefined,
-            name: "",
-            email: "",
-            role: UserType.USER,
-          }}
-        />
+        <UserForm setUserMenu={setUserMenu} mutation={mutation} />
       </DialogContent>
     </Dialog>
   );

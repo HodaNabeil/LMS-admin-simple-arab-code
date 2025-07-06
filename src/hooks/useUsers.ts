@@ -1,9 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import api from "@/lib/axios";
-import { toast } from "sonner";
-
-
 
 export function useUsers() {
   return useQuery({
@@ -36,12 +33,11 @@ export function useUpdateUser() {
   return useMutation({
     mutationFn: async (user: object) => {
       const { data } = await api.put("/users", user);
-      console.log(data)
+      console.log(data);
       return data;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["users"] });
-      toast.success("تم تعديل المستخدم بنجاح");
     },
     onError: (error) => {
       console.error("Error updating user:", error);
