@@ -25,6 +25,7 @@ export enum Pages {
   RESET_PASSWORD = "reset-password",
   LOGOUT = "logout",
   USERS = "users",
+  PATHS_CREATE = "paths/create",
 }
 
 export enum InputTypes {

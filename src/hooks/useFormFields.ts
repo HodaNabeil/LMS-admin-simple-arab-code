@@ -129,6 +129,84 @@ const useFormFields = ({ slug }: IFormFieldsVariables) => {
     },
   ];
 
+  const createPathsFieldsFirstStep = (): IFormField[] => [
+    {
+      label: "اسم المسار",
+      name: "name",
+      type: "text",
+      placeholder: "ادخل اسم المسار الجديد",
+      autoFocus: true,
+    },
+    {
+      label: "معرف المسار (Slug)",
+      name: "slug",
+      type: "text",
+      placeholder: "ادخل معرف المسار (slug)",
+    },
+    {
+      label: "عنوان المسار",
+      name: "title",
+      type: "text",
+      placeholder: "ادخل عنوان المسار",
+    },
+    {
+      label: "وصف المسار",
+      name: "description",
+      type: "textarea", // "textarea" can also be used
+      placeholder: "أدخل وصفًا موجزًا للمسار",
+    },
+
+    // {
+    //   label: "صورة المسار",
+    //   name: "image",
+    //   type: "image",
+    //   placeholder: "اختر صورة للمسار",
+    // },
+    // {
+    //   label: "خريطة المسار",
+    //   name: "map",
+    //   type: "image",
+    //   placeholder: "ارفع خريطة المسار",
+    // },
+    // {
+    //   label: "الكورسات",
+    //   name: "courses",
+    //   type: "select",
+    //   placeholder: "اختر كورس",
+    //   options: [
+    //     { value: "course1", label: "Course 1" },
+    //     { value: "course2", label: "Course 2" },
+    //   ],
+    // },
+  ];
+
+
+
+
+  const createPathsFieldsStepTow= (): IFormField[] => [
+    {
+      label: "صورة المسار",
+      name: "image",
+      type: "image",
+      placeholder: "اختر صورة للمسار",
+    },
+    {
+      label: "خريطة المسار",
+      name: "map",
+      type: "image",
+      placeholder: "ارفع خريطة المسار",
+    },
+    {
+      label: "الكورسات",
+      name: "courses",
+      type: "select",
+      placeholder: "اختر كورس",
+      options: [
+        { value: "course1", label: "Course 1" },
+        { value: "course2", label: "Course 2" },
+      ],
+    },
+  ];
   const getFormFields = (): IFormField[] => {
     switch (slug) {
       case Pages.SIGNIN:
@@ -143,6 +221,8 @@ const useFormFields = ({ slug }: IFormFieldsVariables) => {
         return userFields();
       case Pages.LOGIN:
         return loginFields();
+      case Pages.PATHS_CREATE:
+        return createPathsFieldsFirstStep();
 
       default:
         return [];

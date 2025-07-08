@@ -40,6 +40,9 @@ const FormFields = (props: Props) => {
     if (type === InputTypes.IMAGE) {
       return <ImageField {...props} />;
     }
+    if (type === InputTypes.TEXTAREA) {
+      return <TextField {...props} />;
+    }
 
     return null;
   };
