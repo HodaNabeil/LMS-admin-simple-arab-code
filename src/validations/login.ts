@@ -8,4 +8,8 @@ export const loginSchema = z.object({
     .email({
       message: "يجب أن يكون بريد إلكتروني صحيح",
     }),
+  password: z
+    .string()
+    .min(6, { message: "كلمة المرور يجب أن تكون 6 أحرف على الأقل" }),
+  rememberMe: z.boolean().optional(),
 });
