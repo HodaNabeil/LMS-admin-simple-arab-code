@@ -1,6 +1,5 @@
 import type { Path } from "@/types/path";
-import { BookOpen, Users, Star, TrendingUp, DollarSign } from "lucide-react";
-
+import { BookOpen, Users, Star, TrendingUp } from "lucide-react";
 
 interface PathStatsProps {
   paths: Path[];
@@ -44,10 +43,6 @@ function PathsStats({ paths }: PathStatsProps) {
     (sum, path) => sum + (path.students || 0),
     0
   );
-  const averageRating =
-    paths.reduce((sum, path) => sum + (path.rating || 0), 0) /
-    paths.length;
-
 
   const stats = [
     {
@@ -56,7 +51,7 @@ function PathsStats({ paths }: PathStatsProps) {
       icon: <BookOpen className="w-8 h-8" />,
       change: "+3مسار  جديدة",
       changeType: "positive" as const,
-    }, 
+    },
     {
       title: "   إجمالي  الدورات",
       value: totalStudents.toLocaleString(),
@@ -66,15 +61,15 @@ function PathsStats({ paths }: PathStatsProps) {
     },
     {
       title: "إجمالي المنضمين",
-      value: averageRating.toFixed(1),
+      value: totalStudents.toLocaleString(),
       icon: <Star className="w-8 h-8" />,
       change: "تحسن بـ 0.1 نقطة",
       changeType: "positive" as const,
     },
     {
       title: "اجمالي المسارات المضافه حديثا",
-      value: ` ر.س`,
-      icon: <DollarSign className="w-8 h-8" />,
+      value: ` ${totalpaths} مسار`,
+      icon: "",
       change: "+18% من الشهر الماضي",
       changeType: "positive" as const,
     },
