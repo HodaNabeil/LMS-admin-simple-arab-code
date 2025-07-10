@@ -52,7 +52,7 @@ const removeFromLocalStorage = (key: string) => {
   }
 };
 
-const AddPathForm = ({
+const AddPathFrom = ({
   onSubmit,
   onCancel,
   isLoading = false,
@@ -400,4 +400,4 @@ const AddPathForm = ({
   );
 };
 
-export default AddPathForm;
+export default AddPathFrom ;

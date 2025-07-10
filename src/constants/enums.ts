@@ -13,6 +13,7 @@ export enum Routes {
   AUTH = "auth",
   PROFILE = "profile",
   ADMIN = "admin",
+  PATHS=  "paths"
 }
 
 export enum Pages {
