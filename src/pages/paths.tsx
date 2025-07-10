@@ -1,5 +1,3 @@
-
-
 import PathsStats from "@/features/paths/components/PathsStats";
 import { Plus, Users } from "lucide-react";
 import { useMemo, useState } from "react";
@@ -8,10 +6,6 @@ import PathTable from "@/features/paths/components/PathTable";
 import { Link } from "react-router-dom";
 import { buttonVariants } from "@/components/ui/button";
 import type { Path } from "@/types/path";
-
-
-
-
 
 const pathsData: Path[] = [
   {
@@ -24,7 +18,6 @@ const pathsData: Path[] = [
     instructor: "أحمد محمد",
     image: "https://i.ibb.co/Zzr165m4/Chat-GPT-Image-8-2025-04-06-00.png",
     students: 145,
-
   },
   {
     id: 2,
@@ -36,7 +29,6 @@ const pathsData: Path[] = [
     instructor: "سارة أحمد",
     image: "https://i.ibb.co/Zzr165m4/Chat-GPT-Image-8-2025-04-06-00.png",
     students: 298,
-
   },
   {
     id: 3,
@@ -47,7 +39,6 @@ const pathsData: Path[] = [
     instructor: "محمد علي",
     image: "https://i.ibb.co/Zzr165m4/Chat-GPT-Image-8-2025-04-06-00.png",
     students: 89,
-
   },
 ];
 function Paths() {
@@ -59,8 +50,8 @@ function Paths() {
   const filteredPaths = useMemo(() => {
     return pathsData.filter((path) => {
       const matchesSearch =
-      path.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      path.instructor.toLowerCase().includes(searchTerm.toLowerCase());
+        path.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        path.instructor.toLowerCase().includes(searchTerm.toLowerCase());
 
       const matchesCategory =
         selectedCategory === "الكل" || path.category === selectedCategory;
@@ -68,17 +59,9 @@ function Paths() {
       const matchesLevel =
         selectedLevel === "الكل" || path.level === selectedLevel;
 
-      const matchesType =
-        selectedType === "الكل" || path.type === selectedType;
+      const matchesType = selectedType === "الكل" || path.type === selectedType;
 
-
-      return (
-        matchesSearch &&
-        matchesCategory &&
-        matchesLevel &&
-        matchesType 
-      );
-
+      return matchesSearch && matchesCategory && matchesLevel && matchesType;
     });
   }, [searchTerm, selectedCategory, selectedLevel, selectedType]);
 
@@ -90,7 +73,7 @@ function Paths() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6  p-4">
       <Header PathsCount={filteredPaths.length} />
       <PathsStats paths={filteredPaths} />
       <PathFilters
@@ -104,35 +87,36 @@ function Paths() {
         onTypeChange={setSelectedType}
         onClearFilters={handleClearFilters}
       />
-      <PathTable   paths={filteredPaths} />
+      <PathTable paths={filteredPaths} />
     </div>
   );
 }
 
-export default  Paths ; 
+export default Paths;
 
 function Header({ PathsCount }: { PathsCount: number }) {
   return (
-    <div className="flex flex-col sm:space-y-0 sm:flex-row sm:items-center sm:justify-between gap-4
-     bg-white p-4 lg:p-6 rounded-xl shadow-sm border border-gray-100">
+    <div
+      className="flex flex-col sm:space-y-0 sm:flex-row sm:items-center sm:justify-between gap-4
+     bg-white p-4 lg:p-6 rounded-xl shadow-sm border border-gray-100"
+    >
       <div className="flex flex-col sm:flex-row sm:items-center gap-3 lg:gap-4">
         <div className="flex items-center gap-2 text-gray-600">
           <Users className="w-5 h-5 text-blue-600" />
           <span className="font-medium text-sm lg:text-base">
-المسارات التعليمية              
+            المسارات التعليمية
           </span>
         </div>
-        <div className="bg-gradient-to-r from-blue-100 to-blue-200 text-blue-700 
+        <div
+          className="bg-gradient-to-r from-blue-100 to-blue-200 text-blue-700 
         px-3 lg:px-4 py-1.5 lg:py-2 rounded-full text-sm font-medium
-         border border-blue-300 shadow-sm">
+         border border-blue-300 shadow-sm"
+        >
           المسارات ({PathsCount})
         </div>
       </div>
       <div className="flex items-center gap-4">
-        <Link
-          to="/admin/paths/create"
-          className={buttonVariants()}
-        >
+        <Link to="/admin/paths/create" className={buttonVariants()}>
           <Plus className="w-4 h-4 mr-2" />
           إضافة مسار جديد
         </Link>
@@ -140,7 +124,3 @@ function Header({ PathsCount }: { PathsCount: number }) {
     </div>
   );
 }
-
-
-
-
