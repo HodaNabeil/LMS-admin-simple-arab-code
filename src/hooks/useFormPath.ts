@@ -48,7 +48,7 @@ export function useDeletePath() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (pathId: string) => {
-      const { data } = await api.delete(`/paths?id=${pathId}`);
+      const { data } = await api.delete("/paths", { data: { id: pathId } });
       return data;
     },
     onSuccess: () => {
