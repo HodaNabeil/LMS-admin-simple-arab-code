@@ -74,7 +74,7 @@ const AddPathForm = ({
         name: "",
         slug: "",
         image: null, // Initialize as null for file input
-        url: "",
+        Roadmap: null, // Initialize as null for file input
       }
     );
   }, []);
@@ -190,7 +190,7 @@ const AddPathForm = ({
       case 1:
         return ["name", "slug", "description", "title"];
       case 2:
-        return ["image", "url"];
+        return ["image", "roadmap"];
       default:
         return [];
     }
@@ -200,7 +200,7 @@ const AddPathForm = ({
   const step1Fields = [
     {
       name: "name",
-      label: "اسم المسار التعليمي",
+      label: "  اسم المسار التعليمي (المحتصر)",
       type: "text" as const,
       placeholder: "ادخل اسم المسار التعليمي",
     },
@@ -219,7 +219,7 @@ const AddPathForm = ({
 
     {
       name: "description",
-      label: "وصف المسار التعليمي",
+      label: "  وصف المسار التعليمي (بالتفاصيل)",
       type: "textarea" as const,
       placeholder: "ادخل وصف المسار التعليمي",
     },
@@ -238,10 +238,15 @@ const AddPathForm = ({
       allowedTypes: ["image/jpeg", "image/png", "image/jpg", "image/webp"],
     },
     {
-      name: "url",
-      label: "رابط المسار التعليمي",
-      type: "text" as const,
-      placeholder: "ادخل رابط المسار التعليمي",
+      name: "roadmap",
+      label: "خريطة المسار التعليمي (PDF فقط)",
+      type: "file" as const,
+      placeholder: "ارفع ملف PDF لخريطة المسار",
+      description: "يجب رفع ملف PDF فقط، وأقل من 5 ميجابايت",
+      fileType: "pdf" as const,
+      accept: "application/pdf",
+      maxSize: 5, // بالميجابايت
+      allowedTypes: ["application/pdf"],
     },
   ];
 
@@ -318,16 +323,11 @@ const AddPathForm = ({
       {/* Form */}
       <Card className="p-8">
         <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {getCurrentFields().map((field) => (
-              <div
-                key={field.name}
-                className={field.type === "textarea" ? "md:col-span-2" : ""}
-              >
-                <FormFields {...field} control={control} errors={errors} />
-              </div>
-            ))}
-          </div>
+          {getCurrentFields().map((field) => (
+            <div key={field.name} className="mb-6">
+              <FormFields {...field} control={control} errors={errors} />
+            </div>
+          ))}
 
           {/* Form Actions */}
           <div className="flex items-center justify-between pt-6 border-t">
