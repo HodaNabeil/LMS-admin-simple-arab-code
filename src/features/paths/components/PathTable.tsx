@@ -13,14 +13,10 @@ import type {
   SortingState,
   VisibilityState,
 } from "@tanstack/react-table";
-import {  Edit, Trash2 } from "lucide-react";
+import { Edit, Trash2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-// import {
-//   DropdownMenu,
-//   DropdownMenuContent,
-//   DropdownMenuTrigger,
-// } from "@/components/ui/dropdown-menu";
+
 import { Input } from "@/components/ui/input";
 import {
   Table,
@@ -32,8 +28,8 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import type { Path } from "@/types/path";
-
-
+import DeleteUser from "@/features/users/components/DeleteUser";
+import { EditPath } from "./EditPath";
 
 interface PathTableProps {
   paths: Path[];
@@ -47,102 +43,89 @@ const columns: ColumnDef<Path>[] = [
       <div className="flex items-center justify-center">
         <img
           src={row.getValue("image")}
-          alt={row.getValue("title")}
-          className="h-12 w-12 rounded-lg object-cover"
+          alt={row.getValue("name")}
+          className="h-12 w-12 roundend-lg object-cover"
         />
       </div>
     ),
     enableSorting: false,
   },
   {
-    accessorKey: "title",
-    header: "اسم المادة",
+    accessorKey: "name",
+    header: "اسم المسار",
     cell: ({ row }) => (
       <div className="max-w-[300px]">
         <div className="font-medium text-right truncate">
-          {row.getValue("title")}
+          {row.getValue("name")}
         </div>
       </div>
     ),
   },
   {
-    accessorKey: "category",
-    header: "الفئة",
-    cell: ({ row }) => (
-      <Badge variant="outline" className="border-blue-200 text-blue-800">
-        {row.getValue("category")}
-      </Badge>
-    ),
-  },
-  {
-    accessorKey: "type",
-    header: "النوع",
+    accessorKey: "slug",
+    header: " المعرف ()",
     cell: ({ row }) => (
       <Badge
         variant="secondary"
         className="bg-purple-100 text-purple-800 border-purple-200"
       >
-        {row.getValue("type")}
+        {row.getValue("slug")}
       </Badge>
     ),
   },
   {
-    accessorKey: "level",
-    header: "المستوى",
-    cell: ({ row }) => {
-      const level = row.getValue("level") as string;
-      const levelColors = {
-        مبتدئ: "bg-green-100 text-green-800 border-green-200",
-        متوسط: "bg-yellow-100 text-yellow-800 border-yellow-200",
-        متقدم: "bg-red-100 text-red-800 border-red-200",
-      };
-      return (
-        <Badge
-          className={`${
-            levelColors[level as keyof typeof levelColors] ||
-            "bg-gray-100 text-gray-800 border-gray-200"
-          }`}
-        >
-          {level}
-        </Badge>
-      );
-    },
-  },
-  {
-    accessorKey: "instructor",
-    header: "اسم المدرب",
+    accessorKey: "description",
+    header: "وصف المسار (بالتفاصيل)",
     cell: ({ row }) => (
-      <div className="font-medium text-right">{row.getValue("instructor")}</div>
+      <Badge variant="outline" className="border-blue-200 text-blue-800">
+        {row.getValue("description")}
+      </Badge>
     ),
   },
+  {
+    accessorKey: "heading",
+    header: "وصف المسار (بالعنوان الرئيسي)",
+    cell: ({ row }) => (
+      <Badge variant="outline" className="border-blue-200 text-blue-800">
+        {row.getValue("heading")}
+      </Badge>
+    ),
+  },
+
+  {
+    accessorKey: "roadmapUrl",
+    header: "roadmapUrl",
+    cell: ({ row }) => (
+      <Badge
+        variant="secondary"
+        className="bg-purple-100 text-purple-800 border-purple-200"
+      >
+        {row.getValue("roadmapUrl")}
+      </Badge>
+    ),
+  },
+
   {
     id: "actions",
     header: "الإجراءات",
     enableHiding: false,
-    cell: () => {
-      return (
-        <div className="flex items-center justify-center gap-2">
-          <Button
-            variant="ghost"
-            size="sm"
-            className="h-8 w-8 p-0 text-blue-600 hover:text-blue-800 hover:bg-blue-50"
-          >
-            <Edit className="h-4 w-4" />
-          </Button>
-          <Button
-            variant="ghost"
-            size="sm"
-            className="h-8 w-8 p-0 text-red-600 hover:text-red-800 hover:bg-red-50"
-          >
-            <Trash2 className="h-4 w-4" />
-          </Button>
-        </div>
-      );
-    },
+    cell: ({ row }) => (
+      <div className="flex gap-2 items-center">
+        <button className="text-blue-600 hover:text-blue-800">
+          {/* <EditU
+          ser user={row.original as User} /> */}
+          <EditPath path={row.original as Path} />
+        </button>
+
+        <button className="text-red-600 hover:text-red-800">
+          <DeleteUser userId={row.original.id as string} />
+        </button>
+      </div>
+    ),
   },
 ];
 
-function  PathTable({ paths }: PathTableProps) {
+function PathTable({ paths }: PathTableProps) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -175,9 +158,9 @@ function  PathTable({ paths }: PathTableProps) {
       <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 py-4">
         <Input
           placeholder="البحث في الدورات..."
-          value={(table.getColumn("title")?.getFilterValue() as string) ?? ""}
+          value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
-            table.getColumn("title")?.setFilterValue(event.target.value)
+            table.getColumn("name")?.setFilterValue(event.target.value)
           }
           className="w-full sm:max-w-sm"
         />
@@ -194,15 +177,15 @@ function  PathTable({ paths }: PathTableProps) {
               <div className="flex items-start gap-3">
                 <img
                   src={row.getValue("image")}
-                  alt={row.getValue("title")}
+                  alt={row.getValue("name")}
                   className="h-16 w-16 rounded-lg object-cover flex-shrink-0"
                 />
                 <div className="flex-1 min-w-0">
                   <h3 className="font-medium text-sm leading-5 line-clamp-2 text-right">
-                    {row.getValue("title")}
+                    {row.getValue("name")}
                   </h3>
                   <p className="text-sm text-muted-foreground mt-1 text-right">
-                    {row.getValue("instructor")}
+                    {row.getValue("slug")}
                   </p>
                 </div>
                 <div className="flex gap-2">
@@ -228,13 +211,13 @@ function  PathTable({ paths }: PathTableProps) {
                   variant="secondary"
                   className="bg-purple-100 text-purple-800 text-xs"
                 >
-                  {row.getValue("category")}
+                  {row.getValue("description")}
                 </Badge>
                 <Badge
                   variant="outline"
                   className="border-blue-200 text-blue-800 text-xs"
                 >
-                  {row.getValue("type")}
+                  {row.getValue("heading")}
                 </Badge>
                 <Badge
                   className={`text-xs ${
@@ -247,7 +230,7 @@ function  PathTable({ paths }: PathTableProps) {
                       : "bg-gray-100 text-gray-800"
                   }`}
                 >
-                  {row.getValue("level")}
+                  {row.getValue("roadmapUrl")}
                 </Badge>
               </div>
 
@@ -315,7 +298,7 @@ function  PathTable({ paths }: PathTableProps) {
             ) : (
               <TableRow>
                 <TableCell
-                  colSpan={columns.length}
+                  colSpan={columns?.length}
                   className="h-24 text-center text-gray-500"
                 >
                   لا توجد نتائج.

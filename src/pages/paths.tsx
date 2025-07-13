@@ -5,65 +5,33 @@ import PathFilters from "@/features/paths/components/PathFilters";
 import PathTable from "@/features/paths/components/PathTable";
 import { Link } from "react-router-dom";
 import { buttonVariants } from "@/components/ui/button";
-import type { Path } from "@/types/path";
+import { usePaths } from "@/hooks/useFormPath";
 
-const pathsData: Path[] = [
-  {
-    id: 1,
-    title:
-      "دورة تطوير تطبيقات باستخدام Flutter - بناء واجهات احترافية لأنظمة iOS و Android",
-    category: "Front-End",
-    type: "تفاعلية",
-    level: "متوسط",
-    instructor: "أحمد محمد",
-    image: "https://i.ibb.co/Zzr165m4/Chat-GPT-Image-8-2025-04-06-00.png",
-    students: 145,
-  },
-  {
-    id: 2,
-    title:
-      "دورة تطوير مواقع الويب باستخدام React و Next.js - من المبتدئ إلى المحترف",
-    category: "Back-End",
-    type: "تقنية",
-    level: "متقدم",
-    instructor: "سارة أحمد",
-    image: "https://i.ibb.co/Zzr165m4/Chat-GPT-Image-8-2025-04-06-00.png",
-    students: 298,
-  },
-  {
-    id: 3,
-    title: "دورة تصميم واجهات المستخدم UX/UI - إنشاء تجارب مستخدم مميزة",
-    category: "Ai",
-    type: "إبداعية",
-    level: "مبتدئ",
-    instructor: "محمد علي",
-    image: "https://i.ibb.co/Zzr165m4/Chat-GPT-Image-8-2025-04-06-00.png",
-    students: 89,
-  },
-];
 function Paths() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("الكل");
   const [selectedLevel, setSelectedLevel] = useState("الكل");
   const [selectedType, setSelectedType] = useState("الكل");
 
+  const { data } = usePaths();
+  const pathsData = data?.paths ?? [];
+  
+
   const filteredPaths = useMemo(() => {
     return pathsData.filter((path) => {
+      const name = path.name?.toLowerCase() ?? "";
+      const heading = path.heading?.toLowerCase() ?? "";
+
       const matchesSearch =
-        path.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        path.instructor.toLowerCase().includes(searchTerm.toLowerCase());
+        name.includes(searchTerm.toLowerCase()) ||
+        heading.includes(searchTerm.toLowerCase());
 
       const matchesCategory =
-        selectedCategory === "الكل" || path.category === selectedCategory;
+        selectedCategory === "الكل" || path.slug === selectedCategory;
 
-      const matchesLevel =
-        selectedLevel === "الكل" || path.level === selectedLevel;
-
-      const matchesType = selectedType === "الكل" || path.type === selectedType;
-
-      return matchesSearch && matchesCategory && matchesLevel && matchesType;
+      return matchesSearch && matchesCategory;
     });
-  }, [searchTerm, selectedCategory, selectedLevel, selectedType]);
+  }, [pathsData, searchTerm, selectedCategory]);
 
   const handleClearFilters = () => {
     setSearchTerm("");
@@ -73,10 +41,12 @@ function Paths() {
   };
 
   return (
-    <div className="space-y-6  p-4">
-      <Header PathsCount={filteredPaths.length} />
+    <div className="space-y-6 p-4">
+      <Header pathsCount={pathsData?.length || 0} />
+      
       <PathsStats paths={filteredPaths} />
-      <PathFilters
+
+      <PathFilters 
         searchTerm={searchTerm}
         onSearchChange={setSearchTerm}
         selectedCategory={selectedCategory}
@@ -87,19 +57,17 @@ function Paths() {
         onTypeChange={setSelectedType}
         onClearFilters={handleClearFilters}
       />
-      <PathTable paths={filteredPaths} />
+
+      <PathTable paths={filteredPaths ?? []} />
     </div>
   );
 }
 
 export default Paths;
 
-function Header({ PathsCount }: { PathsCount: number }) {
+function Header({ pathsCount }: { pathsCount: number }) {
   return (
-    <div
-      className="flex flex-col sm:space-y-0 sm:flex-row sm:items-center sm:justify-between gap-4
-     bg-white p-4 lg:p-6 rounded-xl shadow-sm border border-gray-100"
-    >
+    <div className="flex flex-col sm:space-y-0 sm:flex-row sm:items-center sm:justify-between gap-4 bg-white p-4 lg:p-6 rounded-xl shadow-sm border border-gray-100">
       <div className="flex flex-col sm:flex-row sm:items-center gap-3 lg:gap-4">
         <div className="flex items-center gap-2 text-gray-600">
           <Users className="w-5 h-5 text-blue-600" />
@@ -107,12 +75,8 @@ function Header({ PathsCount }: { PathsCount: number }) {
             المسارات التعليمية
           </span>
         </div>
-        <div
-          className="bg-gradient-to-r from-blue-100 to-blue-200 text-blue-700 
-        px-3 lg:px-4 py-1.5 lg:py-2 rounded-full text-sm font-medium
-         border border-blue-300 shadow-sm"
-        >
-          المسارات ({PathsCount})
+        <div className="bg-gradient-to-r from-blue-100 to-blue-200 text-blue-700 px-3 lg:px-4 py-1.5 lg:py-2 rounded-full text-sm font-medium border border-blue-300 shadow-sm">
+          المسارات ({pathsCount})
         </div>
       </div>
       <div className="flex items-center gap-4">
