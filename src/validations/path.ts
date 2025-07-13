@@ -57,7 +57,14 @@ export const PathSchema = z.object({
       },
       { message: "نوع الصورة يجب أن يكون JPEG أو PNG أو JPG أو WEBP" }
     ),
-  url: z.string().trim(),
+  roadmap: z
+    .any()
+    .refine((file) => file instanceof File && file.type === "application/pdf", {
+      message: "يجب رفع ملف PDF فقط",
+    })
+    .refine((file) => file instanceof File && file.size <= 5 * 1024 * 1024, {
+      message: "حجم الملف يجب أن يكون أقل من 5 ميجابايت",
+    }),
 });
 
 export type IPathForm = z.infer<typeof PathSchema>;

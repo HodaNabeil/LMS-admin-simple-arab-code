@@ -7,6 +7,7 @@ import PhoneField from "./phone-field";
 import ImageField from "./image-field";
 import type { Control, FieldErrors } from "react-hook-form";
 import Checkbox from "./checkbox";
+import { TextareaField } from "./textarea";
 
 interface Props extends IFormField {
   errors: FieldErrors;
@@ -41,7 +42,7 @@ const FormFields = (props: Props) => {
       return <ImageField {...props} />;
     }
     if (type === InputTypes.TEXTAREA) {
-      return <TextField {...props} />;
+      return <TextareaField {...props} />;
     }
 
     return null;
