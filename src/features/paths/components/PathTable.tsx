@@ -28,8 +28,8 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import type { Path } from "@/types/path";
-import DeleteUser from "@/features/users/components/DeleteUser";
 import { EditPath } from "./EditPath";
+import DeletePath from "./DeletePath";
 
 interface PathTableProps {
   paths: Path[];
@@ -112,13 +112,11 @@ const columns: ColumnDef<Path>[] = [
     cell: ({ row }) => (
       <div className="flex gap-2 items-center">
         <button className="text-blue-600 hover:text-blue-800">
-          {/* <EditU
-          ser user={row.original as User} /> */}
           <EditPath path={row.original as Path} />
         </button>
 
         <button className="text-red-600 hover:text-red-800">
-          <DeleteUser userId={row.original.id as string} />
+          <DeletePath pathId={row.original.id as unknown as string} />
         </button>
       </div>
     ),
@@ -203,42 +201,6 @@ function PathTable({ paths }: PathTableProps) {
                   >
                     <Trash2 className="h-4 w-4" />
                   </Button>
-                </div>
-              </div>
-
-              <div className="flex flex-wrap gap-2 justify-end">
-                <Badge
-                  variant="secondary"
-                  className="bg-purple-100 text-purple-800 text-xs"
-                >
-                  {row.getValue("description")}
-                </Badge>
-                <Badge
-                  variant="outline"
-                  className="border-blue-200 text-blue-800 text-xs"
-                >
-                  {row.getValue("heading")}
-                </Badge>
-                <Badge
-                  className={`text-xs ${
-                    row.getValue("level") === "مبتدئ"
-                      ? "bg-green-100 text-green-800"
-                      : row.getValue("level") === "متوسط"
-                      ? "bg-yellow-100 text-yellow-800"
-                      : row.getValue("level") === "متقدم"
-                      ? "bg-red-100 text-red-800"
-                      : "bg-gray-100 text-gray-800"
-                  }`}
-                >
-                  {row.getValue("roadmapUrl")}
-                </Badge>
-              </div>
-
-              <div className="flex justify-end pt-2 border-t">
-                <div className="text-sm font-medium">
-                  {parseFloat(row.getValue("price")) === 0
-                    ? "مجاني"
-                    : `${row.getValue("price")} ر.س`}
                 </div>
               </div>
             </div>

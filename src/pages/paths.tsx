@@ -1,7 +1,6 @@
 import PathsStats from "@/features/paths/components/PathsStats";
 import { Plus, Users } from "lucide-react";
 import { useMemo, useState } from "react";
-import PathFilters from "@/features/paths/components/PathFilters";
 import PathTable from "@/features/paths/components/PathTable";
 import { Link } from "react-router-dom";
 import { buttonVariants } from "@/components/ui/button";
@@ -9,54 +8,22 @@ import { usePaths } from "@/hooks/useFormPath";
 
 function Paths() {
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("الكل");
-  const [selectedLevel, setSelectedLevel] = useState("الكل");
-  const [selectedType, setSelectedType] = useState("الكل");
 
   const { data } = usePaths();
   const pathsData = data?.paths ?? [];
-  
-
   const filteredPaths = useMemo(() => {
     return pathsData.filter((path) => {
       const name = path.name?.toLowerCase() ?? "";
-      const heading = path.heading?.toLowerCase() ?? "";
-
-      const matchesSearch =
-        name.includes(searchTerm.toLowerCase()) ||
-        heading.includes(searchTerm.toLowerCase());
-
-      const matchesCategory =
-        selectedCategory === "الكل" || path.slug === selectedCategory;
-
-      return matchesSearch && matchesCategory;
+      const matchesSearch = name.includes(searchTerm.toLowerCase());
+      return matchesSearch;
     });
-  }, [pathsData, searchTerm, selectedCategory]);
-
-  const handleClearFilters = () => {
-    setSearchTerm("");
-    setSelectedCategory("الكل");
-    setSelectedLevel("الكل");
-    setSelectedType("الكل");
-  };
+  }, [pathsData, searchTerm]);
 
   return (
     <div className="space-y-6 p-4">
       <Header pathsCount={pathsData?.length || 0} />
-      
-      <PathsStats paths={filteredPaths} />
 
-      <PathFilters 
-        searchTerm={searchTerm}
-        onSearchChange={setSearchTerm}
-        selectedCategory={selectedCategory}
-        onCategoryChange={setSelectedCategory}
-        selectedLevel={selectedLevel}
-        onLevelChange={setSelectedLevel}
-        selectedType={selectedType}
-        onTypeChange={setSelectedType}
-        onClearFilters={handleClearFilters}
-      />
+      <PathsStats paths={filteredPaths} />
 
       <PathTable paths={filteredPaths ?? []} />
     </div>

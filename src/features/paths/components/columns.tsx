@@ -68,7 +68,7 @@ export const columnsPaths: ColumnDef<Path>[] = [
       const url = row.getValue("roadmapUrl");
       return (
         <a
-          href={url}
+          ref={url}
           target="_blank"
           rel="noopener noreferrer"
           className="text-purple-700 hover:underline"
@@ -121,7 +121,7 @@ export const columnsPaths: ColumnDef<Path>[] = [
         </button>
 
         <button className="text-red-600 hover:text-red-800">
-          <DeleteUser userId={row.original.id as string} />
+          <DeleteUser userId={row.original.id as unknown as string} />
         </button>
       </div>
     ),

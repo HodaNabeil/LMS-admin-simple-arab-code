@@ -135,6 +135,51 @@ const useFormFields = ({ slug }: IFormFieldsVariables) => {
     },
   ];
 
+  const PathFields = (): IFormField[] => [
+    {
+      name: "name",
+      label: "اسم المسار التعليمي",
+      type: "text" as const,
+      placeholder: "ادخل اسم المسار التعليمي",
+    },
+    {
+      name: "title",
+      label: "عنوان المسار ",
+      type: "text" as const,
+      placeholder: "ادخل عنوان المسار",
+    },
+    {
+      name: "slug",
+      label: "المُعرّف (Slug)",
+      type: "text" as const,
+      placeholder: "أدخل مُعرّف المادة (يجب أن يكون فريدًا)",
+    },
+
+    {
+      name: "description",
+      label: "وصف المسار التعليمي",
+      type: "textarea" as const,
+      placeholder: "ادخل وصف المسار التعليمي",
+    },
+    {
+      name: "image",
+      label: "اختار صورة المسار التعليمي",
+      type: "image" as const,
+      placeholder: "اختار صورة المسار التعليمي",
+      description: "يجب أن تكون الصورة JPEG أو PNG أو JPG أو WEBP",
+      fileType: "image" as const,
+      accept: "image/*",
+      maxSize: 5,
+      allowedTypes: ["image/jpeg", "image/png", "image/jpg", "image/webp"],
+    },
+    {
+      name: "url",
+      label: "رابط المسار التعليمي",
+      type: "text" as const,
+      placeholder: "ادخل رابط المسار التعليمي",
+    },
+  ];
+
   const getFormFields = (): IFormField[] => {
     switch (slug) {
       case Pages.SIGNIN:
@@ -149,6 +194,8 @@ const useFormFields = ({ slug }: IFormFieldsVariables) => {
         return userFields();
       case Pages.LOGIN:
         return loginFields();
+      case Pages.PATHS:
+        return PathFields();
       default:
         return [];
     }

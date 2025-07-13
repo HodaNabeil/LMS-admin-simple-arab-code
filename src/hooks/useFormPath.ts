@@ -44,7 +44,7 @@ export function useUpdatePath() {
   });
 }
 
-export function useDeleteUser() {
+export function useDeletePath() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (pathId: string) => {
