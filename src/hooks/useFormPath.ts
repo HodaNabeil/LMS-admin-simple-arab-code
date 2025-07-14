@@ -16,7 +16,7 @@ export function useCreatePath() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (path: object) => {
-      const { data } = await api.post("/paths", path);
+      const { data } = await api.post("/paths", { data: path });
       return data;
     },
     onSuccess: () => {

@@ -28,7 +28,7 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import type { Path } from "@/types/path";
-import { EditPath } from "./EditPath";
+import { EditPath } from "@/pages/paths/edit";
 import DeletePath from "./DeletePath";
 
 interface PathTableProps {
