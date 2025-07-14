@@ -1,7 +1,7 @@
 import FormFields from "@/components/shared/form-fields/form-fields";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { PathSchema, type IPathForm } from "@/validations/path";
+import { pathSchema, type IPathForm } from "@/validations/path";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowRight, Save, Trash2 } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
@@ -60,7 +60,7 @@ const AddPathFrom = ({
   // Get saved step from localStorage or default to 1
   const [currentStep, setCurrentStep] = useState(() => {
     const savedStep = getFromLocalStorage(FORM_STEP_KEY);
-    return savedStep || 1;
+    return savedStep || 2;
   });
   const totalSteps = 2;
 
@@ -69,7 +69,7 @@ const AddPathFrom = ({
     const savedData = getFromLocalStorage(FORM_DATA_KEY);
     return (
       savedData || {
-        title: "",
+        heading: "",
         description: "",
         name: "",
         slug: "",
@@ -86,8 +86,8 @@ const AddPathFrom = ({
     trigger,
     watch,
     reset,
-  } = useForm<IPathForm>({
-    resolver: zodResolver(PathSchema),
+  } = useForm({
+    resolver: zodResolver(pathSchema),
     mode: "onChange",
     defaultValues: getSavedFormData(),
   });
@@ -188,7 +188,7 @@ const AddPathFrom = ({
   const getFieldsForStep = (step: number): (keyof IPathForm)[] => {
     switch (step) {
       case 1:
-        return ["name", "slug", "description", "title"];
+        return ["name", "slug", "description", "heading"];
       case 2:
         return ["image", "roadmap"];
       default:
@@ -200,12 +200,12 @@ const AddPathFrom = ({
   const step1Fields = [
     {
       name: "name",
-      label: "  اسم المسار التعليمي (المحتصر)",
+      label: "اسم المسار التعليمي",
       type: "text" as const,
       placeholder: "ادخل اسم المسار التعليمي",
     },
     {
-      name: "title",
+      name: "heading",
       label: "عنوان المسار ",
       type: "text" as const,
       placeholder: "ادخل عنوان المسار",
@@ -219,7 +219,7 @@ const AddPathFrom = ({
 
     {
       name: "description",
-      label: "  وصف المسار التعليمي (بالتفاصيل)",
+      label: "وصف المسار التعليمي (بالتفاصيل)",
       type: "textarea" as const,
       placeholder: "ادخل وصف المسار التعليمي",
     },
@@ -229,7 +229,7 @@ const AddPathFrom = ({
     {
       name: "image",
       label: "اختار صورة المسار التعليمي",
-      type: "image" as const,
+      type: "file" as const,
       placeholder: "اختار صورة المسار التعليمي",
       description: "يجب أن تكون الصورة JPEG أو PNG أو JPG أو WEBP",
       fileType: "image" as const,
@@ -247,7 +247,7 @@ const AddPathFrom = ({
       accept: "application/pdf",
       maxSize: 5, // بالميجابايت
       allowedTypes: ["application/pdf"],
-    },
+    }, //
   ];
 
   const getCurrentFields = () => {
@@ -307,7 +307,6 @@ const AddPathFrom = ({
           </div>
         ))}
       </div>
-
       {/* Step Title */}
       <div className="text-center space-y-2">
         <h2 className="text-2xl font-bold text-foreground">{getStepTitle()}</h2>
@@ -389,7 +388,7 @@ const AddPathFrom = ({
                   ) : (
                     <Save className="w-4 h-4" />
                   )}
-                  حفظ المسار التعليمي
+                  انشاء
                 </Button>
               )}
             </div>
