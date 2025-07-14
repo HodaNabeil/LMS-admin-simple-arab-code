@@ -112,26 +112,6 @@ const AddPathFrom = ({
     saveToLocalStorage(FORM_STEP_KEY, currentStep);
   }, [currentStep]);
 
-  // Check for saved draft on component mount
-  useEffect(() => {
-    const savedData = getFromLocalStorage(FORM_DATA_KEY);
-    if (
-      savedData &&
-      Object.keys(savedData).some(
-        (key) => savedData[key] !== "" && savedData[key] !== 0
-      )
-    ) {
-      toast.info("تم استعادة المسودة المحفوظة مسبقاً", {
-        duration: 5000,
-        action: {
-          label: "بدء من جديد",
-          onClick: handleClearDraft,
-        },
-      });
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   const clearDraftData = useCallback(() => {
     removeFromLocalStorage(FORM_DATA_KEY);
     removeFromLocalStorage(FORM_STEP_KEY);
@@ -399,4 +379,4 @@ const AddPathFrom = ({
   );
 };
 
-export default AddPathFrom ;
+export default AddPathFrom;

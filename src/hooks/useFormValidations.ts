@@ -4,7 +4,7 @@ import type { IFormFieldsVariables } from "@/types/app";
 import { Pages } from "@/constants/enums";
 import { loginSchema } from "@/validations/login";
 import { userSchema } from "@/validations/user";
-import { PathSchema } from "@/validations/path";
+import { pathSchema } from "@/validations/path";
 
 const useFormValidations = (props: IFormFieldsVariables) => {
   const { slug } = props;
@@ -21,7 +21,7 @@ const useFormValidations = (props: IFormFieldsVariables) => {
         return loginSchema;
 
       case Pages.PATHS:
-        return PathSchema;
+        return pathSchema;
       default:
         return z.object({});
     }

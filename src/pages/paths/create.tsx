@@ -1,4 +1,4 @@
-import AddPathFrom from "./AddPathFrom";
+import AddPathFrom from "@/features/paths/components/AddPathFrom";
 
 export default function NewAddPath() {
   return (

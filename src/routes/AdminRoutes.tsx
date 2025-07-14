@@ -1,7 +1,8 @@
 import AdminLayout from "@/components/shared/admin-layout";
-import NewAddPath from "@/features/paths/components/NewAddPath";
 import Admin from "@/pages";
 import Paths from "@/pages/paths";
+import NewAddPath from "@/pages/paths/create";
+import { EditPath } from "@/pages/paths/edit";
 import Users from "@/pages/users";
 import { Route } from "react-router-dom";
 
@@ -11,7 +12,10 @@ export const adminRoutes = (
     <Route path="users" element={<Users />} />
     <Route path="profile" element={<div>Profile Page</div>} />
     <Route path="settings" element={<div>Settings Page</div>} />
-    <Route path="paths" element={<Paths />} />
-    <Route path="paths/create" element={<NewAddPath />} />
+    <Route path="paths">
+      <Route index element={<Paths />} />
+      <Route path="create" element={<NewAddPath />} />
+      <Route path="edit/:id" element={<EditPath />} />
+    </Route>
   </Route>
 );
