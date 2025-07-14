@@ -50,13 +50,19 @@ function Login() {
 
   return (
     <div className="container element-center min-h-screen">
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="flex flex-col bg-[#ffffff] p-4 rounded-lg shadow w-full max-w-md"
+      >
         {getFormFields().map((field, index) => (
           <div key={index}>
             <FormFields {...field} control={control} errors={errors} />
           </div>
         ))}
-        <Button type="submit" className="w-full h-10 text-white font-medium">
+        <Button
+          type="submit"
+          className="w-full h-10 mt-4 text-white font-medium"
+        >
           <LoadingButton
             loading={formLoading}
             loadingText="جار تسجيل الدخول..."

@@ -50,9 +50,9 @@ const SelectField = ({
           >
             <SelectTrigger
               ref={ref}
-              className={
+              className={`   ${
                 hasError ? "border-destructive focus:ring-destructive/20" : ""
-              }
+              }`}
               aria-invalid={hasError ? "true" : "false"}
               aria-describedby={hasError ? `${name}-error` : undefined}
             >
@@ -60,7 +60,11 @@ const SelectField = ({
             </SelectTrigger>
             <SelectContent>
               {options.map((option) => (
-                <SelectItem key={option.value} value={option.value}>
+                <SelectItem
+                  className="!text-sm !font-bold text-gray-900 p-[0.8rem]"
+                  key={option.value}
+                  value={option.value}
+                >
                   {option.label}
                 </SelectItem>
               ))}

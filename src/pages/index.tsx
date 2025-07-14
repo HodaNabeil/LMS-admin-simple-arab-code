@@ -1,5 +1,5 @@
 import { useOutletContext } from "react-router-dom";
-import { useAdminStats } from "@/hooks/useAdminStats";
+import { useAdminStats } from "@/features/stats/hooks/useAdminStats";
 import { Loader } from "@/components/shared/loader";
 import StatsSummary from "@/features/stats/components/StatsSummary";
 import YearlyProgress from "@/features/stats/components/YearlyProgress";

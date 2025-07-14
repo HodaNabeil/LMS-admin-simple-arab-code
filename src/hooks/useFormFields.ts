@@ -103,6 +103,32 @@ const useFormFields = ({ slug }: IFormFieldsVariables) => {
     },
   ];
 
+  const userFields = (): IFormField[] => [
+    {
+      label: "الاسم",
+      name: "name",
+      type: "text",
+      placeholder: "أدخل اسمك الكامل",
+      autoFocus: true,
+    },
+    {
+      label: "البريد الإلكتروني",
+      name: "email",
+      type: "email",
+      placeholder: "أدخل بريدك الإلكتروني",
+    },
+    {
+      label: "نوع الحساب",
+      name: "role",
+      type: "select",
+      placeholder: "اختر نوع حسابك",
+      options: [
+        { value: UserType.USER, label: UserType.USER },
+        { value: UserType.ADMIN, label: UserType.ADMIN },
+      ],
+    },
+  ];
+
   const getFormFields = (): IFormField[] => {
     switch (slug) {
       case Pages.SIGNIN:
@@ -113,6 +139,8 @@ const useFormFields = ({ slug }: IFormFieldsVariables) => {
         return forgotFields();
       case Pages.RESET_PASSWORD:
         return resetFields();
+      case Pages.USERS:
+        return userFields();
       case Pages.LOGIN:
         return loginFields();
 

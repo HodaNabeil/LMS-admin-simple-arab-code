@@ -1,4 +1,4 @@
-import { useAdminPaymentHistory } from "@/hooks/useAdminPaymentHistory";
+import { useAdminPaymentHistory } from "@/features/stats/hooks/useAdminPaymentHistory";
 import PaymentTable from "./PaymentTable";
 import { Loader } from "@/components/shared/loader";
 
