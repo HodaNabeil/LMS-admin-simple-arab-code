@@ -1,6 +1,6 @@
 import * as z from "zod";
 
-export const PathSchema = z.object({
+export const pathSchema = z.object({
   name: z
     .string()
     .trim()
@@ -16,17 +16,15 @@ export const PathSchema = z.object({
         "المُعرّف يجب أن يحتوي فقط على حروف إنجليزية صغيرة، أرقام، وشرطات (-)",
     }),
 
-  title: z
-    .string()
-    .trim()
-    .min(2, { message: "العنوان يجب أن يكون على الأقل حرفين" })
-    .max(50, { message: "العنوان يجب ألا يزيد عن 50 حرفًا" }),
-
   description: z
     .string()
-    .trim()
-    .min(2, { message: "الوصف يجب أن يكون على الأقل حرفين" })
-    .max(50, { message: "الوصف يجب ألا يزيد عن 50 حرفًا" }),
+    .min(1, { message: "الوصف التفصيلي مطلوب" })
+    .min(20, { message: "الوصف التفصيلي يجب أن يكون 20 حرف على الأقل" }),
+
+  heading: z
+    .string()
+    .min(1, { message: "المحتوى المختصر مطلوب" })
+    .min(10, { message: "المحتوى المختصر يجب أن يكون 10 أحرف على الأقل" }),
 
   image: z
     .any()
@@ -35,7 +33,7 @@ export const PathSchema = z.object({
         if (!file) return false;
         return file instanceof File;
       },
-      { message: "صورة المادة مطلوبة" }
+      { message: "صورة المسار مطلوبة" }
     )
     .refine(
       (file) => {
@@ -67,4 +65,4 @@ export const PathSchema = z.object({
     }),
 });
 
-export type IPathForm = z.infer<typeof PathSchema>;
+export type IPathForm = z.infer<typeof pathSchema>;
