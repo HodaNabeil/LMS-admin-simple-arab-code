@@ -118,21 +118,23 @@ function UserTable({ users }: UsersTableProps) {
   const [selectedCategory, setSelectedCategory] = useState("الكل");
 
   const filteredUsers = useMemo(() => {
-    return users.filter(
-      (user: { id: { toString: () => string | string[] }; role: string }) => {
-        // البحث فقط في id
-        const matchesSearch = user.id?.toString().includes(searchTerm);
+    const term = searchTerm.toLowerCase().trim();
 
-        const matchesCategory =
-          selectedCategory === "الكل" || user.role === selectedCategory;
+    return users.filter((user: { id: string; role: string; email: string }) => {
+      const matchesSearchId = user.id?.toString().includes(term);
+      const matchesSearchEmail = user.email?.toLowerCase().includes(term);
 
-        return matchesSearch && matchesCategory;
-      }
-    );
-  }, [users, searchTerm, selectedCategory]); // أضيفي users للدوال التابعة
+      const matchesCategory =
+        selectedCategory === "الكل" || user.role === selectedCategory;
+
+      const matchesSearch = matchesSearchId || matchesSearchEmail;
+
+      return matchesSearch && matchesCategory;
+    });
+  }, [users, searchTerm, selectedCategory]);
 
   const handleClearFilters = () => {
-    setSearchTerm(""); // أعيديها فارغة
+    setSearchTerm("");
     setSelectedCategory("الكل");
   };
 
