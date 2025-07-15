@@ -14,7 +14,7 @@ import { toast } from "sonner";
 import { Loader } from "@/components/shared/loader";
 import type { AxiosError } from "axios";
 import { useState } from "react";
-import { useDeletePath } from "@/hooks/useFormPath";
+import { useDeletePath } from "../hooks/usePathsMutations";
 export default function DeletePath({ pathId }: { pathId: string }) {
   console.log("pathId", pathId);
   const [userMenu, setUserMenu] = useState(false);
@@ -41,7 +41,9 @@ export default function DeletePath({ pathId }: { pathId: string }) {
   return (
     <Dialog open={userMenu} onOpenChange={(open) => setUserMenu(open)}>
       <DialogTrigger asChild>
-        <Trash2 className="h-4 w-4" />
+        <Button variant="link" className="text-red-600 hover:text-red-800">
+          <Trash2 className="h-4 w-4" />
+        </Button>
       </DialogTrigger>
       <DialogContent dir={Directions.RTL} className="sm:max-w-[425px]">
         <DialogHeader className="!text-right">

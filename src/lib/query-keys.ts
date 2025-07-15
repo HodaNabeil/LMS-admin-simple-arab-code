@@ -10,17 +10,13 @@ export const authKeys = {
   userProfile: (id: string) => [...authKeys.profile(), id] as const,
 };
 
+// Query key factory for paths-related queries
+export const pathKeys = {
+  all: ["paths"] as const,
+};
+
 // General query key factory patterns
 export const queryKeys = {
   auth: authKeys,
-
-  // Add other feature query keys here as the app grows
-  courses: {
-    all: ["courses"] as const,
-    lists: () => [...queryKeys.courses.all, "list"] as const,
-    list: (filters: string) => [...queryKeys.courses.lists(), filters] as const,
-    details: () => [...queryKeys.courses.all, "detail"] as const,
-    detail: (id: string) => [...queryKeys.courses.details(), id] as const,
-  },
-  
+  paths: pathKeys,
 };

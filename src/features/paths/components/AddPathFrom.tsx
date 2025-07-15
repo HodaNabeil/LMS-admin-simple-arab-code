@@ -1,7 +1,6 @@
 import FormFields from "@/components/shared/form-fields/form-fields";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { useCreatePath } from "@/hooks/useFormPath";
 import { pathSchema, type IPathForm } from "@/validations/path";
 import { zodResolver } from "@hookform/resolvers/zod";
 import type { AxiosError } from "axios";
@@ -9,6 +8,7 @@ import { ArrowRight, Save, Trash2 } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+import { useCreatePath } from "../hooks/usePathsMutations";
 interface AddPathFormProps {
   onSubmit?: (data: IPathForm) => void;
   onCancel?: () => void;

@@ -6,24 +6,22 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
-
 import { Edit } from "lucide-react";
 import { useState } from "react";
 import type { Path } from "@/types/path";
 import { Directions, Pages } from "@/constants/enums";
 import useFormFields from "@/hooks/useFormFields";
 import useFormValidations from "@/hooks/useFormValidations";
-import { useForm, type Control } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import type { AxiosError } from "axios";
 import FormFields from "@/components/shared/form-fields/form-fields";
 import { Button } from "@/components/ui/button";
 import { Loader } from "@/components/shared/loader";
-import { useUpdatePath } from "@/hooks/useFormPath";
+import { useUpdatePath } from "@/features/paths/hooks/usePathsMutations";
 
-export function EditPath({ path }: { path?: Path }) {
-  console.log("path", path);
+export function EditPath({ path }: { path: Path }) {
   const { getFormFields } = useFormFields({ slug: Pages.PATHS });
   const { getValidationSchema } = useFormValidations({
     slug: Pages.PATHS,
@@ -34,22 +32,22 @@ export function EditPath({ path }: { path?: Path }) {
     handleSubmit,
     control,
     formState: { errors, isSubmitting },
-  } = useForm({
-    defaultValues: {
-      title: path?.title || "",
-      description: path?.description || "",
-      name: path?.name || "",
-      slug: path?.slug || "",
-      image: path?.image || null,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } = useForm<any>({
+    defaultValues: path || {
+      name: "",
+      description: "",
+      slug: "",
+      heading: "",
+      image: null,
+      roadmap: null,
     },
     mode: "onChange",
     resolver: zodResolver(getValidationSchema()),
   });
-  const onSubmit = async (data: Record<string, string>) => {
-    const mutationData = path ? { ...data, id: path.id } : data;
+  const onSubmit = async (data: Path) => {
     try {
-      const res = await mutation.mutateAsync(mutationData);
-      toast.success(res.message);
+      await mutation.mutateAsync(data); // Call the mutation to update the path (fetch request)
       setUserMenu(false);
     } catch (error) {
       if (error instanceof Error) {
@@ -66,13 +64,15 @@ export function EditPath({ path }: { path?: Path }) {
     }
   };
 
-  // const formLoading = isSubmitting || mutation.isPending;
+  const formLoading = isSubmitting || mutation.isPending;
   return (
     <Dialog open={userMenu} onOpenChange={setUserMenu}>
       <DialogTrigger asChild>
-        <Edit className="h-4 w-4   cursor-pointer text-gray-600 hover:text-black" />
+        <Button variant="link" className="text-primary hover:text-black">
+          <Edit className="h-4 w-4" />
+        </Button>
       </DialogTrigger>
-      <DialogContent dir={Directions.RTL} className="sm:max-w-[500px]">
+      <DialogContent dir={Directions.RTL} className="sm:max-w-[500px] block">
         <DialogHeader className="!text-right">
           <DialogTitle>تعديل المسار التعليمي</DialogTitle>
           <DialogDescription>
@@ -83,16 +83,13 @@ export function EditPath({ path }: { path?: Path }) {
         <form onSubmit={handleSubmit(onSubmit)}>
           {getFormFields().map((field, index) => (
             <div key={index} className="mb-4">
-              <FormFields
-                {...field}
-                control={control as Control<Record<string, unknown>>}
-                errors={errors}
-              />
+              <FormFields {...field} control={control} errors={errors} />
             </div>
           ))}
 
-          <Button type="submit">
-            {isSubmitting ? <Loader /> : "تعديل المسار"}
+          <Button type="submit" disabled={formLoading}>
+            {formLoading && <Loader />}
+            تعديل المسار
           </Button>
         </form>
       </DialogContent>

@@ -2,7 +2,6 @@ import AdminLayout from "@/components/shared/admin-layout";
 import Admin from "@/pages";
 import Paths from "@/pages/paths";
 import NewAddPath from "@/pages/paths/create";
-import { EditPath } from "@/pages/paths/edit";
 import Users from "@/pages/users";
 import { Route } from "react-router-dom";
 
@@ -15,7 +14,6 @@ export const adminRoutes = (
     <Route path="paths">
       <Route index element={<Paths />} />
       <Route path="create" element={<NewAddPath />} />
-      <Route path="edit/:id" element={<EditPath />} />
     </Route>
   </Route>
 );

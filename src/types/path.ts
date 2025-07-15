@@ -1,11 +1,16 @@
 export interface Path {
-    id: number;
-    title: string;
-    category: string;
-    type: string;
-    level: string;
-    instructor: string;
-    image: string;
-    students?: number;
+  id: string;
+  name: string;
+  slug: string;
+  order: number;
+  createdAt: string;
+  updatedAt: string;
+  image: null;
+  heading: string;
+  roadmapUrl: string | null;
+  description: string;
+}
 
-  }
+export interface PathResponse {
+  paths: Path[];
+}
