@@ -16,7 +16,6 @@ import type { AxiosError } from "axios";
 import { useState } from "react";
 import { useDeletePath } from "../hooks/usePathsMutations";
 export default function DeletePath({ pathId }: { pathId: string }) {
-  console.log("pathId", pathId);
   const [userMenu, setUserMenu] = useState(false);
   const { mutateAsync, isPending } = useDeletePath();
   const handleDeletePath = async (id: string) => {

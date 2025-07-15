@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 interface Props extends IFormField {
   errors: FieldErrors;
   control: Control<Record<string, unknown>>;
+  onImageChange?: () => void;
 }
 
 const ImageField = ({
@@ -18,6 +19,7 @@ const ImageField = ({
   disabled,
   control,
   errors,
+  onImageChange,
 }: Props) => {
   const hasError = Boolean(errors[name]);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -39,6 +41,9 @@ const ImageField = ({
 
       // Pass the file to the form
       onChange(file);
+      if (typeof onImageChange === "function") {
+        onImageChange();
+      }
     }
   };
 

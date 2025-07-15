@@ -122,14 +122,18 @@ const AddPathFrom = ({
 
   const handleFormSubmit = async (data: IPathForm) => {
     try {
-      await mutation.mutateAsync({
-        name: data.name,
-        slug: data.slug,
-        description: data.description,
-        heading: data.heading,
-        image: null,
-        roadmapUrl: null,
-      });
+      const formData = new FormData();
+      formData.append("name", data.name);
+      formData.append("slug", data.slug);
+      formData.append("description", data.description);
+      formData.append("heading", data.heading);
+      if (data.image && typeof data.image !== "string") {
+        formData.append("image", data.image);
+      }
+      if (data.roadmap && typeof data.roadmap !== "string") {
+        formData.append("roadmap", data.roadmap);
+      }
+      await mutation.mutateAsync(formData);
       clearDraftData();
       onSubmit?.(data);
     } catch (error) {

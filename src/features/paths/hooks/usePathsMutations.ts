@@ -5,17 +5,16 @@ import type { Path } from "@/types/path";
 import { toast } from "sonner";
 import type { AxiosError } from "axios";
 
-type CreatePathData = Omit<Path, "id" | "createdAt" | "updatedAt" | "order">;
-type UpdatePathData = Omit<Path, "createdAt" | "updatedAt" | "order">;
-
 // Types for mutation operations
 type PathMutationResponse = { path: Path; message?: string };
 
 export function useCreatePath() {
   const queryClient = useQueryClient();
-  return useMutation<PathMutationResponse, Error, CreatePathData>({
-    mutationFn: async (path: CreatePathData): Promise<PathMutationResponse> => {
-      const { data } = await api.post<PathMutationResponse>("/paths", path);
+  return useMutation<PathMutationResponse, Error, FormData>({
+    mutationFn: async (formData: FormData): Promise<PathMutationResponse> => {
+      const { data } = await api.post<PathMutationResponse>("/paths", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
       return data;
     },
     onSuccess: (res) => {
@@ -39,9 +38,11 @@ export function useCreatePath() {
 
 export function useUpdatePath() {
   const queryClient = useQueryClient();
-  return useMutation<PathMutationResponse, Error, UpdatePathData>({
-    mutationFn: async (path: UpdatePathData): Promise<PathMutationResponse> => {
-      const { data } = await api.put<PathMutationResponse>("/paths", path);
+  return useMutation<PathMutationResponse, Error, FormData>({
+    mutationFn: async (formData: FormData): Promise<PathMutationResponse> => {
+      const { data } = await api.put<PathMutationResponse>("/paths", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
       return data;
     },
     onSuccess: (res) => {

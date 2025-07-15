@@ -170,7 +170,7 @@ const useFormFields = ({ slug }: IFormFieldsVariables) => {
     {
       name: "roadmap",
       label: "رابط المسار التعليمي",
-      type: "text",
+      type: "file",
       placeholder: "ادخل رابط المسار التعليمي",
     },
   ];

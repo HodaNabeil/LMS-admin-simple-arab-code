@@ -14,12 +14,11 @@ import useFormFields from "@/hooks/useFormFields";
 import useFormValidations from "@/hooks/useFormValidations";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { toast } from "sonner";
-import type { AxiosError } from "axios";
 import FormFields from "@/components/shared/form-fields/form-fields";
 import { Button } from "@/components/ui/button";
 import { Loader } from "@/components/shared/loader";
 import { useUpdatePath } from "@/features/paths/hooks/usePathsMutations";
+import ImageField from "@/components/shared/form-fields/image-field";
 
 export function EditPath({ path }: { path: Path }) {
   const { getFormFields } = useFormFields({ slug: Pages.PATHS });
@@ -28,6 +27,7 @@ export function EditPath({ path }: { path: Path }) {
   });
   const [userMenu, setUserMenu] = useState(false);
   const mutation = useUpdatePath();
+  const [hasSelectedImage, setHasSelectedImage] = useState(false);
   const {
     handleSubmit,
     control,
@@ -46,21 +46,21 @@ export function EditPath({ path }: { path: Path }) {
     resolver: zodResolver(getValidationSchema()),
   });
   const onSubmit = async (data: Path) => {
+    const formData = new FormData();
+    formData.append("id", data.id);
+    formData.append("name", data.name);
+    formData.append("slug", data.slug);
+    formData.append("heading", data.heading);
+    formData.append("description", data.description);
+    if (data.roadmapUrl) formData.append("roadmapUrl", data.roadmapUrl);
+    if (data.image && typeof data.image !== "string") {
+      formData.append("image", data.image);
+    }
     try {
-      await mutation.mutateAsync(data); // Call the mutation to update the path (fetch request)
+      await mutation.mutateAsync(formData); 
       setUserMenu(false);
     } catch (error) {
-      if (error instanceof Error) {
-        // Handle AxiosError specifically
-        const axiosError = error as AxiosError<{ message: string }>;
-        if (axiosError.response?.data?.message) {
-          toast.error(axiosError.response.data.message);
-        } else {
-          toast.error("An error occurred");
-        }
-      } else {
-        toast.error("An unexpected error occurred");
-      }
+      console.log(error);
     }
   };
 
@@ -72,7 +72,9 @@ export function EditPath({ path }: { path: Path }) {
           <Edit className="h-4 w-4" />
         </Button>
       </DialogTrigger>
-      <DialogContent dir={Directions.RTL} className="sm:max-w-[500px] block">
+      <DialogContent   dir={Directions.LTR} 
+        className="sm:max-w-[500px] block max-h-[80vh] overflow-y-auto" 
+        style={{ direction: 'ltr' }}>
         <DialogHeader className="!text-right">
           <DialogTitle>تعديل المسار التعليمي</DialogTitle>
           <DialogDescription>
@@ -83,7 +85,32 @@ export function EditPath({ path }: { path: Path }) {
         <form onSubmit={handleSubmit(onSubmit)}>
           {getFormFields().map((field, index) => (
             <div key={index} className="mb-4">
-              <FormFields {...field} control={control} errors={errors} />
+              {field.type === "image" ? (
+                <>
+                  <div className="flex items-center gap-2 mb-2">
+                    <span>{field.label}</span>
+                    {(path.image || hasSelectedImage) ? (
+                      <span className="text-blue-600 text-sm font-medium">
+                        تغيير الصورة
+                      </span>
+                    ) : (
+                      <span className="text-red-600 text-sm font-medium">
+                        اختيار صورة
+                      </span>
+                    )}
+                  </div>
+                  <ImageField
+                    name={field.name}
+                    control={control}
+                    errors={errors}
+                    type="image"
+                    placeholder={field.placeholder}
+                    onImageChange={() => setHasSelectedImage(true)}
+                  />
+                </>
+              ) : (
+                <FormFields {...field} control={control} errors={errors} />
+              )}
             </div>
           ))}
 
