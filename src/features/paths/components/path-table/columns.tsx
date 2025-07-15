@@ -11,7 +11,7 @@ export const columns: ColumnDef<Path>[] = [
     accessorKey: "image",
     header: "الصورة",
     cell: ({ row }) => (
-      <div className="flex items-center justify-center">
+      <div>
         <img
           src={row.getValue("image")}
           alt={row.getValue("name")}

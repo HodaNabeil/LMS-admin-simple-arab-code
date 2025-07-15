@@ -9,7 +9,7 @@ import {
 import { Edit } from "lucide-react";
 import { useState } from "react";
 import type { Path } from "@/types/path";
-import { Directions, Pages } from "@/constants/enums";
+import { Pages } from "@/constants/enums";
 import useFormFields from "@/hooks/useFormFields";
 import useFormValidations from "@/hooks/useFormValidations";
 import { useForm } from "react-hook-form";
@@ -57,7 +57,7 @@ export function EditPath({ path }: { path: Path }) {
       formData.append("image", data.image);
     }
     try {
-      await mutation.mutateAsync(formData); 
+      await mutation.mutateAsync(formData);
       setUserMenu(false);
     } catch (error) {
       console.log(error);
@@ -72,9 +72,7 @@ export function EditPath({ path }: { path: Path }) {
           <Edit className="h-4 w-4" />
         </Button>
       </DialogTrigger>
-      <DialogContent   dir={Directions.LTR} 
-        className="sm:max-w-[500px] block max-h-[80vh] overflow-y-auto" 
-        style={{ direction: 'ltr' }}>
+      <DialogContent className="sm:max-w-[500px] block max-h-[80vh] overflow-y-auto">
         <DialogHeader className="!text-right">
           <DialogTitle>تعديل المسار التعليمي</DialogTitle>
           <DialogDescription>
@@ -87,9 +85,9 @@ export function EditPath({ path }: { path: Path }) {
             <div key={index} className="mb-4">
               {field.type === "image" ? (
                 <>
-                  <div className="flex  flex-row-reverse  justify-end   gap-2 mb-2 " >
+                  <div className="flex  flex-row-reverse  justify-end   gap-2 mb-2 ">
                     <span>{field.label}</span>
-                    {(path.image || hasSelectedImage) ? (
+                    {path.image || hasSelectedImage ? (
                       <span className="text-blue-600 text-sm font-medium">
                         تغيير الصورة
                       </span>

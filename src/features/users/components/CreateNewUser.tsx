@@ -5,7 +5,6 @@ import {
   DialogHeader,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Directions } from "@/constants/enums";
 import UserForm from "./UserForm";
 import { DialogDescription, DialogTitle } from "@radix-ui/react-dialog";
 import { useState } from "react";
@@ -20,7 +19,7 @@ export function CreateNewUser() {
       <DialogTrigger asChild>
         <Button variant="default">انشاء مستخدم جديد</Button>
       </DialogTrigger>
-      <DialogContent dir={Directions.RTL} className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[425px]">
         <DialogHeader className="!text-right">
           <DialogTitle>إنشاء مستخدم جديد</DialogTitle>
           <DialogDescription>
