@@ -3,7 +3,6 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { pathSchema, type IPathForm } from "@/validations/path";
 import { zodResolver } from "@hookform/resolvers/zod";
-import type { AxiosError } from "axios";
 import { ArrowRight, Save, Trash2 } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -122,23 +121,19 @@ const AddPathFrom = ({
   }, []);
 
   const handleFormSubmit = async (data: IPathForm) => {
-    console.log(data);
     try {
-      const res = await mutation.mutateAsync(data);
-      toast.success(res.message);
+      await mutation.mutateAsync({
+        name: data.name,
+        slug: data.slug,
+        description: data.description,
+        heading: data.heading,
+        image: null,
+        roadmapUrl: null,
+      });
       clearDraftData();
       onSubmit?.(data);
     } catch (error) {
-      if (error instanceof Error) {
-        const axiosError = error as AxiosError<{ message: string }>;
-        if (axiosError.response?.data?.message) {
-          toast.error(axiosError.response.data.message);
-        } else {
-          toast.error("An error occurred");
-        }
-      } else {
-        toast.error("An unexpected error occurred");
-      }
+      console.log(error || "Error submitting form");
     }
   };
 
