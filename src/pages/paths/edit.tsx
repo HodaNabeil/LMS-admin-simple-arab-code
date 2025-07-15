@@ -87,7 +87,7 @@ export function EditPath({ path }: { path: Path }) {
             <div key={index} className="mb-4">
               {field.type === "image" ? (
                 <>
-                  <div className="flex items-center gap-2 mb-2">
+                  <div className="flex  flex-row-reverse  justify-end   gap-2 mb-2 " >
                     <span>{field.label}</span>
                     {(path.image || hasSelectedImage) ? (
                       <span className="text-blue-600 text-sm font-medium">
