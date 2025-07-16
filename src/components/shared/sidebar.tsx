@@ -89,7 +89,7 @@ function Sidebar({ isMobile = false, isOpen = true, onClose }: SidebarProps) {
         {
           id: "all-courses",
           title: "جميع الدورات",
-          href: "/courses",
+          href: "/admin/courses",
           icon: <BookOpen className="w-4 h-4" />,
         },
         {
