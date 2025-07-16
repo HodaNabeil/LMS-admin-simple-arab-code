@@ -27,6 +27,7 @@ export enum Pages {
   LOGOUT = "logout",
   USERS = "users",
   PATHS = "paths",
+  CREATE_COURSES = "courses/create",
 }
 
 export enum InputTypes {

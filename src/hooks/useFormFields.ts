@@ -175,6 +175,26 @@ const useFormFields = ({ slug }: IFormFieldsVariables) => {
     },
   ];
 
+  const createCourseFields = (): IFormField[] => [
+    {
+      name: "selectedPath", // تصحيح اسم الحقل
+      label: "اختار المسار التعليمي",
+      type: "select",
+      placeholder: "اختر المسار التعليمي",
+      options: [
+        { value: "1", label: "المسار التعليمي 1" },
+        { value: "2", label: "المسار التعليمي 2" },
+        { value: "3", label: "المسار التعليمي 3" },
+      ],
+    },
+    {
+      name: "slug", // تصحيح اسم الحقل ليطابق validation schema
+      label: "اسم الكورس (Slug)",
+      type: "text",
+      placeholder: "ادخل اسم الكورس يجب أن يكون فريد!",
+    },
+  ];
+
   const getFormFields = (): IFormField[] => {
     switch (slug) {
       case Pages.SIGNIN:
@@ -191,6 +211,8 @@ const useFormFields = ({ slug }: IFormFieldsVariables) => {
         return loginFields();
       case Pages.PATHS:
         return pathFields();
+      case Pages.CREATE_COURSES:
+        return createCourseFields();
       default:
         return [];
     }

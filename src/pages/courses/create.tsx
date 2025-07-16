@@ -1,27 +1,56 @@
-import Sidebar from "@/features/courses/components/Sidebar";
-import { Outlet } from "react-router-dom";
+import FormFields from "@/components/shared/form-fields/form-fields";
+import { Pages } from "@/constants/enums";
+import useFormFields from "@/hooks/useFormFields";
+import useFormValidations from "@/hooks/useFormValidations";
+import type { ICreateCourseForm } from "@/validations/createcourse";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm, type Control} from "react-hook-form";
+
+
 
 export default function CreateCourse() {
+  const { getFormFields } = useFormFields({ slug: Pages.CREATE_COURSES });
+  const { getValidationSchema } = useFormValidations({ slug: Pages.CREATE_COURSES });
+
+  const {
+    handleSubmit,
+    control,
+    formState: { errors, isSubmitting },
+  } = useForm<ICreateCourseForm>({
+    defaultValues: {
+      slug: "",
+      selectedPath: "",
+    },
+    mode: "onChange",
+    resolver : zodResolver(getValidationSchema()) 
+  });
+
+  const onSubmit = async (data: ICreateCourseForm) => {
+    console.log(data);
+  };
   return (
-    <div className="min-h-screen bg-background flex flex-col">
-      {/* Header */}
-      <header className="sticky top-0 z-30 w-full bg-background/80 backdrop-blur border-b border-muted px-4 py-3 flex items-center justify-between">
-        <h1 className="text-lg font-semibold text-foreground">إضافة كورس جديد</h1>
-        <div className="flex items-center gap-2">
-          {/* يمكنكِ وضع أزرار أو أكشن هنا */}
-          <button className="bg-primary text-white rounded px-4 py-2 text-sm hover:bg-primary/90 transition">حفظ</button>
-        </div>
-      </header>
-      {/* Main Content */}
-      <div className="flex flex-1 min-h-0">
-        <Sidebar />
-        <main className="flex-1 overflow-y-auto bg-muted/30 p-4 md:p-8">
-          <div className="container max-w-none p-0">
-            <Outlet
-          
+    <div className="min-h-screen flex items-center justify-center p-4">
+      <div className="flex flex-col gap-4 w-full max-w-md p-6 bg-white rounded-lg shadow-md border border-gray-200">
+        <h1 className="text-xl font-bold text-gray-600 mb-4 text-center border-b border-gray-200 pb-4 w-full">
+          إضافة كورس جديد
+        </h1>
+        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
+          {getFormFields().map((field) => (
+            <FormFields key={field.name}
+              {...field}
+              control={control as Control<ICreateCourseForm>}
+              errors={errors}
             />
-          </div>
-        </main>
+          ))}
+          <button 
+            type="submit" 
+            disabled={isSubmitting}
+            className="bg-primary text-white rounded px-4 py-2 text-sm hover:bg-primary/90 transition disabled:opacity-50"
+          >
+            {isSubmitting ? "جاري الإضافة..." : "إضافة"}
+          </button>
+          {isSubmitting && <p className="text-sm text-gray-500 text-center">جاري التحميل...</p>}
+        </form>
       </div>
     </div>
   );
