@@ -95,7 +95,7 @@ function Sidebar({ isMobile = false, isOpen = true, onClose }: SidebarProps) {
         {
           id: "add-course",
           title: "إضافة دورة جديدة",
-          href: "/courses/create",
+          href: "/admin/courses/create",
           icon: <Plus className="w-4 h-4" />,
         },
         {

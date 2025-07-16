@@ -1,7 +1,7 @@
 import { buttonVariants } from "@/components/ui/button";
-import CourseFilters from "@/features/courses/CourseFilters";
-import CourseStats from "@/features/courses/CourseStats";
-import CourseTable from "@/features/courses/CourseTable";
+import CourseFilters from "@/features/courses/components/CourseFilters";
+import CourseStats from "@/features/courses/components/CourseStats";
+import CourseTable from "@/features/courses/components/CourseTable";
 import { Plus, Users } from "lucide-react";
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
