@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 export default function Sidebar() {
   return (
-    <aside className="w-full md:w-64 bg-white border-r border-muted min-h-full p-6 flex flex-col gap-8 shadow-sm">
+    <aside className=" w-[20%]  min-h-full p-6 flex flex-col gap-4   ">
       {/* Plan your course */}
       <div>
         <h2 className="text-base font-bold    text-gray-600">Plan your course</h2>

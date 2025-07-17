@@ -28,6 +28,7 @@ export enum Pages {
   USERS = "users",
   PATHS = "paths",
   CREATE_COURSES = "courses/create",
+  GOALS = "manage/goals",
 }
 
 export enum InputTypes {

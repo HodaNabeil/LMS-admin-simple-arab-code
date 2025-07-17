@@ -188,12 +188,43 @@ const useFormFields = ({ slug }: IFormFieldsVariables) => {
       ],
     },
     {
-      name: "slug", // تصحيح اسم الحقل ليطابق validation schema
+      name: "slug",
       label: "اسم الكورس (Slug)",
       type: "text",
       placeholder: "ادخل اسم الكورس يجب أن يكون فريد!",
     },
   ];
+
+  const goalsFields = (): IFormField[] =>[
+    {
+      name: "whatWillStudentsLearn",
+      label: "ما الذي سيتعلمه الطلاب في هذا الكورس؟",
+      type: "text",
+      placeholder: "مثال: أساسيات البرمجة، استخدام React..."
+    },
+    {
+      name: "requirements",
+      label: "ما هي المتطلبات اللازمة للالتحاق بهذا الكورس؟",
+      type: "textarea",
+      placeholder: "مثال: معرفة سابقة بـ HTML و CSS"
+    },
+    {
+      name: "prerequisiteCourse",
+      label: "اختر كورسًا يجب تعلمه أولًا",
+      type: "select",
+      options: [
+        { value: "hodaCourse", label: "كورس Hoda" },
+        { value: "hodaCourse4", label: "كورس Hoda4" },
+      ]
+    },
+    {
+      name: "targetAudience",
+      label: "لمن هذا الكورس؟",
+      type: "text",
+      placeholder: "مثال: للمبتدئين، للمطورين المتوسطين، للطلاب..."
+    }
+  ];
+  
 
   const getFormFields = (): IFormField[] => {
     switch (slug) {
@@ -213,6 +244,8 @@ const useFormFields = ({ slug }: IFormFieldsVariables) => {
         return pathFields();
       case Pages.CREATE_COURSES:
         return createCourseFields();
+      case Pages.GOALS:
+        return goalsFields();
       default:
         return [];
     }

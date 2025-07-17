@@ -109,3 +109,9 @@
 textarea:focus {
   outline: none !important;
 }
+.react-tagsinput-tag {
+  @apply bg-blue-50 text-blue-500 border-none rounded-sm px-2 py-1 font-semibold text-sm cursor-pointer;
+}
+.react-tagsinput-remove {
+  @apply text-blue-500 hover:text-red-500 cursor-pointer;
+}

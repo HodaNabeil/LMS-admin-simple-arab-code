@@ -4,13 +4,14 @@ import useFormFields from "@/hooks/useFormFields";
 import useFormValidations from "@/hooks/useFormValidations";
 import type { ICreateCourseForm } from "@/validations/createcourse";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm, type Control} from "react-hook-form";
-
+import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 
 
 export default function CreateCourse() {
   const { getFormFields } = useFormFields({ slug: Pages.CREATE_COURSES });
   const { getValidationSchema } = useFormValidations({ slug: Pages.CREATE_COURSES });
+  const navigate = useNavigate();
 
   const {
     handleSubmit,
@@ -22,11 +23,13 @@ export default function CreateCourse() {
       selectedPath: "",
     },
     mode: "onChange",
-    resolver : zodResolver(getValidationSchema()) 
+    resolver: zodResolver(getValidationSchema()),
   });
 
   const onSubmit = async (data: ICreateCourseForm) => {
     console.log(data);
+ 
+    navigate(`/admin/courses/${data.slug}/manage/goals`);
   };
   return (
     <div className="min-h-screen flex items-center justify-center p-4">
@@ -38,7 +41,7 @@ export default function CreateCourse() {
           {getFormFields().map((field) => (
             <FormFields key={field.name}
               {...field}
-              control={control as Control<ICreateCourseForm>}
+              control={control}
               errors={errors}
             />
           ))}
