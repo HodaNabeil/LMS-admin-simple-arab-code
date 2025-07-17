@@ -1,9 +1,11 @@
 import AdminLayout from "@/components/shared/admin-layout";
+import Availability from "@/features/courses/components/Edit/components/Availability";
+import Goals from "@/features/courses/components/Edit/components/goals";
 import Admin from "@/pages";
 import Courses from "@/pages/courses";
 import CreateCourse from "@/pages/courses/create";
-import EditCourse from "@/pages/courses/Edit";
-import Goals from "@/pages/courses/Goals";
+import EditCourse from "@/pages/courses/edit";
+
 import Paths from "@/pages/paths";
 import NewAddPath from "@/pages/paths/create";
 import Users from "@/pages/users";
@@ -23,18 +25,10 @@ export const adminRoutes = (
       <Route index element={<Courses />} />
       <Route path="create" element={<CreateCourse />}></Route>
       <Route path=":slug/manage" element={<EditCourse />}>
-        <Route index path="goals" element={<Goals />} />
-        <Route path="lessons" element={<div>Manage Lessons</div>} />
-        <Route path="quizzes" element={<div>Manage Quizzes</div>} />
-        <Route path="assignments" element={<div>Manage Assignments</div>} />
-        <Route path="discussions" element={<div>Manage Discussions</div>} />
-        <Route path="announcements" element={<div>Manage Announcements</div>} />
-        <Route path="resources" element={<div>Manage Resources</div>} />
+        <Route index path="goals" element={<Goals goals="" />} />
+
+        <Route path="availability" element={<Availability />} />
       </Route>
-
-
-      
     </Route>
   </Route>
 );
-

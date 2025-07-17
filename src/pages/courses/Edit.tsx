@@ -1,5 +1,5 @@
-import Sidebar from '@/features/courses/components/Sidebar'
-import { Outlet, useParams } from 'react-router-dom'
+import Sidebar from "@/features/courses/components/Sidebar";
+import { Outlet, useParams } from "react-router-dom";
 
 export default function EditCourse() {
   const { slug } = useParams();
@@ -7,10 +7,14 @@ export default function EditCourse() {
     <div className="min-h-screen bg-background flex flex-col p-4 gap-4">
       {/* Header */}
       <header className="sticky top-0 z-30 w-full bg-background/80 backdrop-blur border-b border-muted px-4 py-3 flex items-center justify-between">
-        <h1 className="text-lg font-semibold text-foreground">تعديل الكورس: {slug}</h1>
+        <h1 className="text-lg font-semibold text-foreground">
+          تعديل الكورس: {slug}
+        </h1>
         <div className="flex items-center gap-2">
           {/* يمكنكِ وضع أزرار أو أكشن هنا */}
-          <button className="bg-primary text-white rounded px-4 py-2 text-sm hover:bg-primary/90 transition">حفظ</button>
+          <button className="bg-primary text-white rounded px-4 py-2 text-sm hover:bg-primary/90 transition">
+            حفظ
+          </button>
         </div>
       </header>
       {/* Main Content */}
@@ -28,5 +32,5 @@ export default function EditCourse() {
         </main>
       </div>
     </div>
-  )
+  );
 }
