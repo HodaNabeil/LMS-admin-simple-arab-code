@@ -7,7 +7,7 @@ export default function Sidebar() {
       {/* Plan your course */}
       <div>
         <h2 className="text-base font-bold    text-gray-600">
-          Plan your course
+          خطط لدورتك
         </h2>
         <ul className="">
           <li>
@@ -15,7 +15,7 @@ export default function Sidebar() {
               to={`/admin/courses/${sluge.slug}/manage/goals`}
               className="text-primary hover:underline text-sm font-medium"
             >
-              Intended learners
+              المتعلمون المستهدفون
             </Link>
           </li>
         </ul>
@@ -23,7 +23,7 @@ export default function Sidebar() {
       {/* Create your content */}
       <div>
         <h2 className="text-base font-bold  mb-2  text-gray-600">
-          Create your content
+          أنشئ المحتوى الخاص بك
         </h2>
         <ul className="space-y-1">
           <li>
@@ -31,7 +31,7 @@ export default function Sidebar() {
               to={`/admin/courses/${sluge.slug}/manage/curriculum`}
               className="text-gray-600 hover:text-primary text-sm"
             >
-              Curriculum
+              المنهج
             </Link>
           </li>
           <li>
@@ -39,7 +39,7 @@ export default function Sidebar() {
               to={`/admin/courses/${sluge.slug}/manage/availability`}
               className="text-gray-600 hover:text-primary text-sm"
             >
-              Availability
+              التوفر
             </Link>
           </li>
         </ul>
@@ -47,12 +47,12 @@ export default function Sidebar() {
       {/* Publish your course */}
       <div>
         <h2 className="text-base font-bold  mb-2  text-gray-600">
-          Publish your course
+          انشر دورتك
         </h2>
         <ul className="space-y-1">
           <li>
             <Link to={`/admin/courses/${sluge.slug}/manage/basics`} className="text-gray-600  hover:text-primary text-sm">
-              Course landing page
+              صفحة هبوط الدورة
             </Link>
           </li>
           <li>
@@ -60,7 +60,7 @@ export default function Sidebar() {
               to={`/admin/courses/${sluge.slug}/manage/pricing`}
               className="text-gray-600  hover:text-primary text-sm"
             >
-              Pricing
+              التسعير
             </Link>
           </li>
           <li>
@@ -68,7 +68,7 @@ export default function Sidebar() {
               to={`/admin/courses/${sluge.slug}/manage/promotions`}
               className="text-gray-600  hover:text-primary text-sm"
             >
-              Promotions
+              العروض الترويجية
             </Link>
           </li>
         </ul>

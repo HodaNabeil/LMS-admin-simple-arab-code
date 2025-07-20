@@ -16,15 +16,12 @@ const courseOptions: OptionType[] = [
 ];
 
 const Goals = () => {
-
-
   const [formData, setFormData] = useState({
     selectedCourses: [] as OptionType[],
     audienceTags: [] as string[],
     learnTags: [] as string[],
     rawGoals: "",
   });
-
   const handleChange = <K extends keyof typeof formData>(key: K, value: typeof formData[K]) => {
     setFormData((prev) => ({ ...prev, [key]: value }));
   };
@@ -34,12 +31,10 @@ const Goals = () => {
     handleChange("rawGoals", value);
 
   };
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log(formData);
   };
-
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-1">
       <h4 className="text-2xl font-extrabold text-blue-800 mb-8">الأهداف</h4>

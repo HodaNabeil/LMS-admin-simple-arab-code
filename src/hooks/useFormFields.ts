@@ -217,14 +217,65 @@ const useFormFields = ({ slug }: IFormFieldsVariables) => {
         { value: "hodaCourse4", label: "كورس Hoda4" },
       ]
     },
-    {
-      name: "targetAudience",
-      label: "لمن هذا الكورس؟",
-      type: "text",
-      placeholder: "مثال: للمبتدئين، للمطورين المتوسطين، للطلاب..."
-    }
-  ];
+      {
+        name: "targetAudience",
+        label: "لمن هذا الكورس؟",
+        type: "text",
+        placeholder: "مثال: للمبتدئين، للمطورين المتوسطين، للطلاب..."
+      }
+    ];
   
+  const basicsFields = (): IFormField[] => [
+    {
+      name: "name",
+      label: "اسم الدورة",
+      type: "text",
+      placeholder: "ادخل اسم الدورة",
+    },
+    {
+      name: "description",
+      label: "وصف الدورة",
+      type: "textarea",
+      placeholder: "ادخل وصف الدورة",
+    },
+    {
+      name: "slug",
+      label: "اسم الدورة (Slug)",
+      type: "text",
+      placeholder: "ادخل اسم الدورة (يجب أن يكون فريد)",
+    },
+    {
+      name: "level",
+      label: "مستوى الدورة",
+      type: "select",
+      placeholder: "اختر مستوى الدورة",
+      options: [
+        { value: "all", label: "جميع المستويات" },
+        { value: "beginner", label: "مبتدئ" },
+        { value: "intermediate", label: "متوسط" },
+        { value: "advanced", label: "متقدم" },
+      ],
+    },
+    {
+      name:"hours",
+      label: "مدة الدورة (بالساعات)",
+      type: "number",
+      placeholder: "ادخل مدة الدورة (بالساعات)",
+    },
+    {
+      name: "image",
+      label: "صورة الدورة",
+      type: "image",
+      placeholder: "اختار صورة الدورة",
+    },
+    {
+      name: "video",
+      label: "فيديو الدورة",
+      type: "file",
+      placeholder: "اختر فيديو الدورة",
+  
+    },
+  ];
 
   const getFormFields = (): IFormField[] => {
     switch (slug) {
@@ -246,6 +297,8 @@ const useFormFields = ({ slug }: IFormFieldsVariables) => {
         return createCourseFields();
       case Pages.GOALS:
         return goalsFields();
+      case Pages.BASICS:
+        return basicsFields();
       default:
         return [];
     }

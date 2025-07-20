@@ -7,6 +7,7 @@ import { userSchema } from "@/validations/user";
 import { pathSchema } from "@/validations/path";
 import { createCourseSchema } from "@/validations/createcourse";
 import { goalsSchema } from "@/validations/goals";
+import { basicsSchema } from "@/validations/course";
 
 const useFormValidations = (props: IFormFieldsVariables) => {
   const { slug } = props;
@@ -28,6 +29,8 @@ const useFormValidations = (props: IFormFieldsVariables) => {
         return createCourseSchema;
       case Pages.GOALS:
         return goalsSchema;
+      case Pages.BASICS:
+        return basicsSchema;
       default:
         return z.object({});
     }
