@@ -39,5 +39,23 @@ export interface Course {
   status: CourseStatus;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface Coupon {
+  id: string;
+  code: string;
+  discount: number;
+  type: 'FIXED' | 'PERCENTAGE';
+  createdAt: string;
+  expiresAt: string;
+  uses: number;
+  limit: number;
+  allCourses: boolean;
+  isActive: boolean;
+}
+
+export interface CouponsResponse {
+  activeCoupons: Coupon[];
+  expiredCoupons: Coupon[];
 } 
 

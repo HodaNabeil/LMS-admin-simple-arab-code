@@ -3,6 +3,7 @@ import Availability from "@/features/courses/components/Edit/components/Availabi
 import Basics from "@/features/courses/components/Edit/components/Basics";
 import Goals from "@/features/courses/components/Edit/components/Goals";
 import Pricing from "@/features/courses/components/Edit/components/Pricing";
+import Promotions from "@/features/courses/components/Edit/components/Promotions";
 import Admin from "@/pages";
 import Courses from "@/pages/courses";
 import CreateCourse from "@/pages/courses/create";
@@ -31,6 +32,7 @@ export const adminRoutes = (
         <Route path="pricing" element={<Pricing />} />
         <Route path="availability" element={<Availability />} />
         <Route path="basics" element={<Basics />} />
+        <Route path="promotions" element={<Promotions />} />
       </Route>
     </Route>
   </Route>
