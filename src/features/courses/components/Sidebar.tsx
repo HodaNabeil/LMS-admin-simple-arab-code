@@ -51,7 +51,7 @@ export default function Sidebar() {
         </h2>
         <ul className="space-y-1">
           <li>
-            <Link to="#" className="text-gray-600  hover:text-primary text-sm">
+            <Link to={`/admin/courses/${sluge.slug}/manage/basics`} className="text-gray-600  hover:text-primary text-sm">
               Course landing page
             </Link>
           </li>

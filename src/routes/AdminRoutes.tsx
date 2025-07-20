@@ -1,6 +1,7 @@
 import AdminLayout from "@/components/shared/admin-layout";
 import Availability from "@/features/courses/components/Edit/components/Availability";
-import Goals from "@/features/courses/components/Edit/components/goals";
+import Basics from "@/features/courses/components/Edit/components/Basics";
+import Goals from "@/features/courses/components/Edit/components/Goals";
 import Admin from "@/pages";
 import Courses from "@/pages/courses";
 import CreateCourse from "@/pages/courses/create";
@@ -28,6 +29,7 @@ export const adminRoutes = (
         <Route index path="goals" element={<Goals goals="" />} />
 
         <Route path="availability" element={<Availability />} />
+        <Route path="basics" element={<Basics />} />
       </Route>
     </Route>
   </Route>
