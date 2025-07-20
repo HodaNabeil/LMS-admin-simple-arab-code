@@ -1,10 +1,10 @@
 "use client";
-import Select from "react-select";
 import { useState } from "react";
+import Select from "react-select";
 import TagsInput from "@/components/shared/tags-input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button"; // تأكد أنك مستورد زر من مكتبة UI
+import { Button } from "@/components/ui/button";
 
 type OptionType = { value: string; label: string };
 
@@ -15,45 +15,33 @@ const courseOptions: OptionType[] = [
   { value: "hoda", label: "Hoda Course" },
 ];
 
-const Goals = ({ goals }: { goals: string }) => {
+const Goals = () => {
+
+
   const [formData, setFormData] = useState({
     selectedCourses: [] as OptionType[],
     audienceTags: [] as string[],
-    learnTags: (() => {
-      try {
-        return goals ? JSON.parse(goals)?.data ?? [] : [];
-      } catch {
-        return [];
-      }
-    })(),
-    rawGoals: goals,
+    learnTags: [] as string[],
+    rawGoals: "",
   });
 
-  const handleChange = (key: keyof typeof formData, value: any) => {
+  const handleChange = <K extends keyof typeof formData>(key: K, value: typeof formData[K]) => {
     setFormData((prev) => ({ ...prev, [key]: value }));
+  };
+
+  const handleTextareaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const value = e.target.value;
+    handleChange("rawGoals", value);
+
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-
-    // بناء البيانات الجاهزة للإرسال
-    const payload = {
-      whatWillStudentsLearn: formData.learnTags,
-      prerequisites: formData.rawGoals,
-      recommendedCourses: formData.selectedCourses.map(
-        (course) => course.value
-      ),
-      targetAudience: formData.audienceTags,
-    };
-
-    console.log("بيانات الفورم للإرسال:", payload);
-
-    // هنا تقدر تستخدمي axios أو fetch لإرسال البيانات للسيرفر
-    // api.post('/endpoint', payload)
+    console.log(formData);
   };
 
   return (
-    <form className="" onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="flex flex-col gap-1">
       <h4 className="text-2xl font-extrabold text-blue-800 mb-8">الأهداف</h4>
 
       {/* ماذا سيتعلم الطلاب */}
@@ -63,7 +51,7 @@ const Goals = ({ goals }: { goals: string }) => {
         </Label>
         <TagsInput
           tags={formData.learnTags}
-          setTags={(tags) => handleChange("learnTags", tags)}
+          setTags={(tags) => handleChange("learnTags", tags as string[])}
         />
       </div>
 
@@ -75,15 +63,7 @@ const Goals = ({ goals }: { goals: string }) => {
         <Textarea
           rows={5}
           value={formData.rawGoals}
-          onChange={(e) => {
-            handleChange("rawGoals", e.target.value);
-            try {
-              const parsed = JSON.parse(e.target.value).data;
-              handleChange("learnTags", parsed);
-            } catch {
-              handleChange("learnTags", []);
-            }
-          }}
+          onChange={handleTextareaChange}
           placeholder="مثال: يفضل معرفة أساسيات البرمجة أو HTML"
           className="bg-gray-50 border border-gray-300 focus:border-blue-400 focus:ring-2 focus:ring-blue-100 rounded-md p-3 mt-2"
         />
@@ -114,7 +94,7 @@ const Goals = ({ goals }: { goals: string }) => {
         </Label>
         <TagsInput
           tags={formData.audienceTags}
-          setTags={(tags) => handleChange("audienceTags", tags)}
+          setTags={(tags) => handleChange("audienceTags", tags as string[])}
         />
       </div>
 
