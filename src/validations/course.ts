@@ -87,3 +87,10 @@ export const basicsSchema = z.object({
 });
 
 export type BasicsSchema = z.infer<typeof basicsSchema>;
+
+export const pricingSchema = z.object({
+  priceInCents: z.number().min(0, { message: "Price in cents is required." }),
+  price: z.number().min(0, { message: "Price in dollars is required." }),
+});
+
+export type PricingSchema = z.infer<typeof pricingSchema>;

@@ -277,6 +277,20 @@ const useFormFields = ({ slug }: IFormFieldsVariables) => {
     },
   ];
 
+  const pricingFields = (): IFormField[] => [
+    {
+      name: "priceInCents",
+      label: "السعر بالسنت",
+      type: "number",
+      placeholder: "ادخل السعر بالسنت",
+    },
+    {
+      name: "price",
+      label: "السعر بالدولار",
+      type: "number",
+      placeholder: "ادخل السعر بالدولار",
+    },
+  ];
   const getFormFields = (): IFormField[] => {
     switch (slug) {
       case Pages.SIGNIN:
@@ -299,6 +313,8 @@ const useFormFields = ({ slug }: IFormFieldsVariables) => {
         return goalsFields();
       case Pages.BASICS:
         return basicsFields();
+      case Pages.PRICING:
+        return pricingFields();
       default:
         return [];
     }

@@ -6,11 +6,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import FormFields from "@/components/shared/form-fields/form-fields";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
-import { basicsSchema, type BasicsSchema } from "@/validations/course";
+import type { BasicsSchema } from "@/validations/course";
+import useFormValidations from "@/hooks/useFormValidations";
 
 export default function Basics() {
   const { getFormFields } = useFormFields({ slug: Pages.BASICS });
-
+  const { getValidationSchema } = useFormValidations({ slug: Pages.BASICS });
   const {
     handleSubmit,
     control,
@@ -27,7 +28,7 @@ export default function Basics() {
       level: "",
     },
     mode: "onChange",
-    resolver: zodResolver(basicsSchema),
+    resolver: zodResolver(getValidationSchema()),
   });
 
   const onSubmit = async (data: BasicsSchema) => {

@@ -30,6 +30,7 @@ export enum Pages {
   CREATE_COURSES = "courses/create",
   GOALS = "manage/goals",
   BASICS = "manage/basics",
+  PRICING = "manage/pricing",
 }
 
 export enum InputTypes {

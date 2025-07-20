@@ -40,3 +40,4 @@ export interface Course {
   createdAt: string;
   updatedAt: string;
 } 
+
