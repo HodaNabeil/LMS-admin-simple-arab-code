@@ -26,15 +26,11 @@ const course = {
       message: "Invalid file. Please upload a valid image file.",
     }
   ),
-  heading: z.string().min(1, { message: "Course description is required." }),
-  promoVideoUrl: z.string().url().optional(),
   hours: z.number().min(1, { message: "Hours is required." }),
-  // level: CourseLevelEnum.default(CourseLevel.BEGINNER),
-  // type: CourseTypeEnum.default(CourseType.SINGLE),
+  level: z.string().min(1, { message: "Level is required." }),
+  type: z.string().min(1, { message: "Type is required." }),
   isAvailableForPurchase: z.boolean().default(true),
   priceInCents: z.number().min(0, { message: "Price is required." }),
-  insteadOf: z.number().min(0).optional(),
-  pathId: z.string().min(1, { message: "Path is required." }),
   whatYouWillLearn: z.object({
     data: z
       .array(z.string())
@@ -46,7 +42,6 @@ const course = {
       .min(1, { message: "Who is this for is required." }),
   }),
   knowledgeNeeded: z.string().optional(),
-  // status: CourseStatusEnum.default(CourseStatus.DRAFT),
 };
 export const courseSchema = z.object(course);
 
@@ -70,17 +65,12 @@ export const goalsSchema = z.object({
   whoIsThisFor: course.whoIsThisFor,
 });
 
-
 export type GoalsSchema = z.infer<typeof goalsSchema>;
 export const basicsSchema = z.object({
   name: course.name,
   slug: course.slug,
   image: course.image,
-  heading: course.heading,
-  promoVideoUrl: course.promoVideoUrl,
   hours: course.hours,
-  insteadOf: course.insteadOf,
-  pathId: course.pathId,
   video: z.custom<File>().optional(),
   description: z.string().optional(),
   level: z.string().optional(),

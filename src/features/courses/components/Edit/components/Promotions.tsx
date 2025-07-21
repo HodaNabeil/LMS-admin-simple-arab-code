@@ -1,24 +1,68 @@
-import { useCoupons } from "./hooks/useCoupons";
-import CouponsTable from "../../../components/CouponsTable";
-import CreateCouponDialog from "../../../components/CreateCouponDialog";
+
 import type { Coupon } from "@/types/course";
+import { useState } from "react";
+import type { CouponsResponse } from "@/types/course";
+import CreateCouponDialog from "@/features/courses/components/CreateCouponDialog";
+import CouponsTable from "@/features/courses/components/Edit/components/CouponsTable";
 
 
 export default function Promotions() {
-  const {
-    coupons,
-    isLoading,
-    createCoupon,
-    deleteCoupon,
-    isCreating,
-  } = useCoupons();
+  const [isCreating, setIsCreating] = useState(false);
+  const [coupons, setCoupons] = useState<CouponsResponse>({
+    activeCoupons: [
+      {
+        id: "1",
+        code: "SUMMER2024",
+        discount: 20,
+        type: "PERCENTAGE",
+        createdAt: new Date().toISOString(),
+        expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24 * 30).toISOString(),
+        uses: 0,
+        limit: 100,
+        allCourses: true,
+        isActive: true,
+      },
+    ],
+    expiredCoupons: [
+      {
+        id: "2",
+        code: "WINTER2023",
+        discount: 50,
+        type: "FIXED",
+        createdAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 60).toISOString(),
+        expiresAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 30).toISOString(),
+        uses: 100,
+        limit: 100,
+        allCourses: false,
+        isActive: false,
+      },
+    ],
+  });
 
   const handleCreateCoupon = (couponData: Omit<Coupon, 'id' | 'createdAt' | 'uses' | 'isActive'>) => {
-    createCoupon(couponData);
+    setIsCreating(true);
+    setTimeout(() => {
+      const newCoupon: Coupon = {
+        ...couponData,
+        id: Math.random().toString(36).substr(2, 9),
+        createdAt: new Date().toISOString(),
+        uses: 0,
+        isActive: true,
+      };
+      setCoupons((prev) => ({
+        ...prev,
+        activeCoupons: [newCoupon, ...prev.activeCoupons],
+      }));
+      setIsCreating(false);
+    }, 700);
   };
 
   const handleDeleteCoupon = (id: string) => {
-    deleteCoupon(id);
+    setCoupons((prev) => {
+      const active = prev.activeCoupons.filter((c) => c.id !== id);
+      const expired = prev.expiredCoupons.filter((c) => c.id !== id);
+      return { activeCoupons: active, expiredCoupons: expired };
+    });
   };
 
   const handleEditCoupon = (coupon: Coupon) => {
@@ -45,7 +89,6 @@ export default function Promotions() {
           coupons={coupons?.activeCoupons || []}
           onDelete={handleDeleteCoupon}
           onEdit={handleEditCoupon}
-          isLoading={isLoading}
         />
       </div>
 
@@ -56,7 +99,6 @@ export default function Promotions() {
           coupons={coupons?.expiredCoupons || []}
           onDelete={handleDeleteCoupon}
           onEdit={handleEditCoupon}
-          isLoading={isLoading}
         />
       </div>
     </div>
