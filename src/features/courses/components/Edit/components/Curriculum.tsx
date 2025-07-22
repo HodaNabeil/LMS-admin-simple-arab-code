@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import  { useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Pencil, FileText, FileVideo, Plus, CheckCircle, Trash2 } from "lucide-react";
 import { Label } from "@/components/ui/label";
@@ -43,6 +43,7 @@ interface Lesson {
   id: string;
   name: string;
   video?: File | null;
+  description?: string;
 }
 
 interface Section {
@@ -56,18 +57,68 @@ function randomId() {
   return Math.random().toString(36).substring(2, 9);
 }
 
+// مكون داخلي لمودال رفع الفيديو
+function VideoUploadModalContent({
+  lessonVideo,
+  onSave,
+  onCancel,
+}: {
+  lessonVideo: File | null | undefined;
+  onSave: (file: File | null) => void;
+  onCancel: () => void;
+}) {
+  const [localVideo, setLocalVideo] = useState<File | null>(lessonVideo || null);
+  return (
+    <div className="flex flex-col gap-4">
+      <SimpleVideoUpload
+        value={localVideo}
+        onChange={setLocalVideo}
+      />
+      {localVideo && (
+        <div className="flex items-center gap-2 text-green-700 text-sm">
+          <CheckCircle className="w-4 h-4" />
+          <span>تم اختيار الفيديو: {localVideo.name}</span>
+        </div>
+      )}
+      <div className="flex gap-2 justify-end mt-4">
+        <Button type="button" variant="secondary" onClick={onCancel}>
+          إلغاء
+        </Button>
+        <Button
+          type="button"
+          onClick={() => {
+            onSave(localVideo);
+          }}
+          disabled={!localVideo}
+        >
+          حفظ
+        </Button>
+      </div>
+    </div>
+  );
+}
+
 export default function Curriculum() {
   const [sections, setSections] = useState<Section[]>([]);
   const [sectionName, setSectionName] = useState("");
-  const [lessonNames, setLessonNames] = useState<Record<string, string>>({});
   const [editingLessonId, setEditingLessonId] = useState<string | null>(null);
   const [lessonEditValue, setLessonEditValue] = useState("");
-  const [showContent, setShowContent] = useState<Record<string, boolean>>({});
   const [showSectionModal, setShowSectionModal] = useState(false);
   const sectionInputRef = useRef<HTMLInputElement>(null);
   const [sectionDescription, setSectionDescription] = useState("");
   const [sectionModalMode, setSectionModalMode] = useState<'add' | 'edit'>("add");
   const [editingSection, setEditingSection] = useState<Section | null>(null);
+  const [showDeleteSectionModal, setShowDeleteSectionModal] = useState(false);
+  const [sectionToDelete, setSectionToDelete] = useState<Section | null>(null);
+  // --- new states for lesson modal ---
+  // showLessonModal: { sectionId, mode: 'add' | 'edit', lessonId? }
+  const [showLessonModal, setShowLessonModal] = useState<null | { sectionId: string; mode: 'add' | 'edit'; lessonId?: string }>(null);
+  const [newLessonName, setNewLessonName] = useState("");
+  const [newLessonDescription, setNewLessonDescription] = useState("");
+  // حالة لمودال حذف الدرس
+  const [deleteLessonModal, setDeleteLessonModal] = useState<null | { sectionId: string; lessonId: string; lessonName: string }>(null);
+  // حالة لمودال رفع الفيديو
+  const [videoModal, setVideoModal] = useState<null | { sectionId: string; lessonId: string }>(null);
 
   // إضافة قسم جديد
   const handleAddOrEditSection = () => {
@@ -93,6 +144,8 @@ export default function Curriculum() {
   // حذف قسم
   const handleDeleteSection = (sectionId: string) => {
     setSections(sections.filter((s) => s.id !== sectionId));
+    setShowDeleteSectionModal(false);
+    setSectionToDelete(null);
   };
 
   // بدء تعديل قسم
@@ -119,26 +172,6 @@ export default function Curriculum() {
   // حفظ تعديل وصف القسم
   // لم يعد هناك حاجة لهذا المنطق، التعديل يتم من خلال المودال
 
-  // إضافة درس لقسم
-  const handleAddLesson = (sectionId: string) => {
-    const name = lessonNames[sectionId]?.trim();
-    if (!name) return;
-    setSections(
-      sections.map((s) =>
-        s.id === sectionId
-          ? {
-              ...s,
-              lessons: [
-                ...s.lessons,
-                { id: randomId(), name, video: null },
-              ],
-            }
-          : s
-      )
-    );
-    setLessonNames({ ...lessonNames, [sectionId]: "" });
-  };
-
   // حذف درس
   const handleDeleteLesson = (sectionId: string, lessonId: string) => {
     setSections(
@@ -148,12 +181,6 @@ export default function Curriculum() {
           : s
       )
     );
-  };
-
-  // بدء تعديل درس
-  const handleStartEditLesson = (lesson: Lesson) => {
-    setEditingLessonId(lesson.id);
-    setLessonEditValue(lesson.name);
   };
 
   // حفظ تعديل الدرس
@@ -194,11 +221,6 @@ export default function Curriculum() {
     );
   };
 
-  // إظهار/إخفاء محتوى الدرس (رفع الفيديو)
-  const handleToggleContent = (lessonId: string) => {
-    setShowContent((prev) => ({ ...prev, [lessonId]: !prev[lessonId] }));
-  };
-
   return (
     <div className=" flex flex-col items-center  h-[calc(100vh-200px)] bg-gray-50 p-8 ">
       <h2 className="text-xl font-bold mb-8 text-[#3c45aa] self-start text-right">مقرر الدورة</h2>
@@ -225,7 +247,10 @@ export default function Curriculum() {
               <Button
                 size="sm"
                 variant="ghost"
-                onClick={() => handleDeleteSection(section.id)}
+                onClick={() => {
+                  setSectionToDelete(section);
+                  setShowDeleteSectionModal(true);
+                }}
                 className="text-red-400 hover:text-red-600"
                 title="حذف القسم"
               >
@@ -233,24 +258,6 @@ export default function Curriculum() {
               </Button>
 
                 </div>
-
-              <div className="flex items-center gap-2 mb-2">
-                <Label htmlFor={`sectionDescription-${section.id}`}>وصف القسم</Label>
-                <span className="text-sm text-gray-500">{section.description || "لا يوجد وصف"}</span>
-                <Button
-                  size="sm"
-                  variant="ghost"
-                  onClick={() => handleStartEditSectionDescription(section)}
-                  className="text-gray-700"
-                  title="تعديل وصف القسم"
-                >
-                  <Pencil className="w-4 h-4" />
-                </Button>
-              </div>
-
-         
-
-
             </div>
             {/* الدروس */}
             <div className="space-y-4 mr-8">
@@ -275,12 +282,18 @@ export default function Curriculum() {
                         autoFocus
                       />
                     ) : (
+   <>
                       <span className="text-base text-gray-900">{lesson.name}</span>
+   </>
                     )}
                     <Button
                       size="sm"
                       variant="ghost"
-                      onClick={() => handleStartEditLesson(lesson)}
+                      onClick={() => {
+                        setShowLessonModal({ sectionId: section.id, mode: 'edit', lessonId: lesson.id });
+                        setNewLessonName(lesson.name);
+                        setNewLessonDescription(lesson.description || "");
+                      }}
                       className="text-gray-700"
                       title="تعديل الدرس"
                     >
@@ -289,57 +302,42 @@ export default function Curriculum() {
                     <Button
                       size="sm"
                       variant="ghost"
-                      onClick={() => handleDeleteLesson(section.id, lesson.id)}
+                      onClick={() => setDeleteLessonModal({ sectionId: section.id, lessonId: lesson.id, lessonName: lesson.name })}
                       className="text-red-400 hover:text-red-600"
                       title="حذف الدرس"
                     >
                       <Trash2 className="w-4 h-4" />
                     </Button>
+
                     <div className="flex-1" />
                     <Button
                       size="sm"
                       variant="outline"
                       className="bg-[#f7f7f9] border-gray-300 text-[#1a237e] px-4"
-                      onClick={() => handleToggleContent(lesson.id)}
+                      onClick={() => setVideoModal({ sectionId: section.id, lessonId: lesson.id })}
                     >
                       <Plus className="w-4 h-4 ml-1" /> محتوى
                     </Button>
                   </div>
-                  {/* رفع فيديو عند الضغط على Content */}
-                  {showContent[lesson.id] && (
-                    <div className="flex items-center gap-4 mt-4 flex-row-reverse">
-                      <SimpleVideoUpload
-                        value={lesson.video}
-                        onChange={file => handleUploadVideo(section.id, lesson.id, file)}
-                      />
-                    </div>
-                  )}
+                  {/* مودال رفع الفيديو */}
+                  {/* لا شيء هنا، المودال في الأسفل */}
                 </div>
               ))}
               {/* إضافة درس */}
               <div className="flex items-center gap-2 mt-2 flex-row-reverse">
                 <Button
                   size="sm"
-                  onClick={() => handleAddLesson(section.id)}
+                  onClick={() => {
+                    setShowLessonModal({ sectionId: section.id, mode: 'add' });
+                    setNewLessonName("");
+                    setNewLessonDescription("");
+                  }}
                   variant="secondary"
                   className="bg-white text-[#1a237e] border border-gray-300 hover:bg-gray-100"
                 >
                   <Plus className="w-4 h-4 ml-1" /> إضافة درس
                 </Button>
-                <input
-                  className="border rounded px-2 py-1 text-sm bg-white text-gray-900 border-gray-300"
-                  placeholder="اسم الدرس الجديد"
-                  value={lessonNames[section.id] || ""}
-                  onChange={(e) =>
-                    setLessonNames({
-                      ...lessonNames,
-                      [section.id]: e.target.value,
-                    })
-                  }
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") handleAddLesson(section.id);
-                  }}
-                />
+                {/* تم إزالة input القديم */}
               </div>
             </div>
           </div>
@@ -368,7 +366,7 @@ export default function Curriculum() {
           setEditingSection(null);
         }
       }}>
-        <DialogContent showCloseButton={false}>
+        <DialogContent showCloseButton={false}  >
           <DialogHeader>
             <DialogTitle>{sectionModalMode === "add" ? "إضافة قسم جديد" : "تعديل القسم"}</DialogTitle>
           </DialogHeader>
@@ -403,6 +401,181 @@ export default function Curriculum() {
               {sectionModalMode === "add" ? "إضافة" : "تعديل"}
             </Button>
           </DialogFooter>
+        </DialogContent>
+      </Dialog>
+      {/* مودال تأكيد حذف القسم */}
+      <Dialog open={showDeleteSectionModal} onOpenChange={(open) => {
+        if (!open) {
+          setShowDeleteSectionModal(false);
+          setSectionToDelete(null);
+        }
+      }}>
+        <DialogContent showCloseButton={false}>
+          <DialogHeader>
+            <DialogTitle>تأكيد حذف القسم</DialogTitle>
+          </DialogHeader>
+          <div className="my-4 text-right text-gray-800">
+            هل أنت متأكد أنك تريد حذف القسم {sectionToDelete?.name}؟ لا يمكن التراجع عن هذا الإجراء.
+          </div>
+          <DialogFooter>
+            <DialogClose asChild>
+              <Button type="button" variant="secondary" onClick={() => {
+                setShowDeleteSectionModal(false);
+                setSectionToDelete(null);
+              }}>
+                إلغاء
+              </Button>
+            </DialogClose>
+            <Button type="button" variant="destructive" className="bg-red-500 hover:bg-red-600" onClick={() => sectionToDelete && handleDeleteSection(sectionToDelete.id)}>
+              حذف
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+      {/* مودال إضافة درس */}
+      <Dialog open={!!showLessonModal} onOpenChange={open => {
+        if (!open) {
+          setShowLessonModal(null);
+          setNewLessonName("");
+          setNewLessonDescription("");
+        }
+      }}>
+        <DialogContent showCloseButton={false}>
+          <DialogHeader>
+            <DialogTitle>{showLessonModal?.mode === 'edit' ? 'تعديل الدرس' : 'إضافة درس جديد'}</DialogTitle>
+          </DialogHeader>
+          <input
+            className="w-full border border-gray-300 rounded-lg px-4 py-2 text-base bg-white text-gray-900 focus:outline-none focus:ring-1 focus:ring-[#d4d7f7] focus:border-[#d4d7f7] transition-all duration-150 shadow-sm mt-4"
+            placeholder="اسم الدرس"
+            value={newLessonName}
+            onChange={e => setNewLessonName(e.target.value)}
+            autoFocus
+          />
+          <Label htmlFor="lessonDescription">وصف الدرس</Label>
+          <Textarea
+            className="w-full border border-gray-300 rounded-lg px-4 py-2 text-base bg-white text-gray-900 focus:outline-none focus:ring-1 focus:ring-[#d4d7f7] focus:border-[#d4d7f7] transition-all duration-150 shadow-sm mt-4"
+            placeholder="وصف الدرس"
+            value={newLessonDescription}
+            onChange={e => setNewLessonDescription(e.target.value)}
+          />
+          <DialogFooter>
+            <DialogClose asChild>
+              <Button type="button" variant="secondary" onClick={() => {
+                setShowLessonModal(null);
+                setNewLessonName("");
+                setNewLessonDescription("");
+              }}>
+                إلغاء
+              </Button>
+            </DialogClose>
+            {showLessonModal?.mode === 'edit' ? (
+              <Button
+                type="button"
+                onClick={() => {
+                  if (!newLessonName.trim() || !showLessonModal?.lessonId) return;
+                  setSections(sections => sections.map(s =>
+                    s.id === showLessonModal.sectionId
+                      ? {
+                          ...s,
+                          lessons: s.lessons.map(l =>
+                            l.id === showLessonModal.lessonId
+                              ? { ...l, name: newLessonName, description: newLessonDescription }
+                              : l
+                          ),
+                        }
+                      : s
+                  ));
+                  setShowLessonModal(null);
+                  setNewLessonName("");
+                  setNewLessonDescription("");
+                }}
+                disabled={!newLessonName.trim()}
+              >
+                تعديل
+              </Button>
+            ) : (
+              <Button
+                type="button"
+                onClick={() => {
+                  if (!newLessonName.trim() || !showLessonModal) return;
+                  setSections(sections => sections.map(s =>
+                    s.id === showLessonModal.sectionId
+                      ? {
+                          ...s,
+                          lessons: [
+                            ...s.lessons,
+                            { id: randomId(), name: newLessonName, video: null, description: newLessonDescription },
+                          ],
+                        }
+                      : s
+                  ));
+                  setShowLessonModal(null);
+                  setNewLessonName("");
+                  setNewLessonDescription("");
+                }}
+                disabled={!newLessonName.trim()}
+              >
+                إضافة
+              </Button>
+            )}
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+      {/* مودال تأكيد حذف الدرس */}
+      <Dialog open={!!deleteLessonModal} onOpenChange={open => {
+        if (!open) setDeleteLessonModal(null);
+      }}>
+        <DialogContent showCloseButton={false}>
+          <DialogHeader>
+            <DialogTitle>تأكيد حذف الدرس</DialogTitle>
+          </DialogHeader>
+          <div className="my-4 text-right text-gray-800">
+            هل أنت متأكد أنك تريد حذف الدرس {deleteLessonModal?.lessonName}؟ لا يمكن التراجع عن هذا الإجراء.
+          </div>
+          <DialogFooter>
+            <DialogClose asChild>
+              <Button type="button" variant="secondary" onClick={() => setDeleteLessonModal(null)}>
+                إلغاء
+              </Button>
+            </DialogClose>
+            <Button
+              type="button"
+              variant="destructive"
+              className="bg-red-500 hover:bg-red-600"
+              onClick={() => {
+                if (deleteLessonModal) {
+                  handleDeleteLesson(deleteLessonModal.sectionId, deleteLessonModal.lessonId);
+                  setDeleteLessonModal(null);
+                }
+              }}
+            >
+              حذف
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+      {/* مودال رفع الفيديو */}
+      <Dialog open={!!videoModal} onOpenChange={open => {
+        if (!open) setVideoModal(null);
+      }}>
+        <DialogContent showCloseButton={true}>
+          <DialogHeader>
+            <DialogTitle>رفع فيديو الدرس</DialogTitle>
+          </DialogHeader>
+          {videoModal ? (() => {
+            const section = sections.find(s => s.id === videoModal.sectionId);
+            const lesson = section?.lessons.find(l => l.id === videoModal.lessonId);
+            return (
+              <VideoUploadModalContent
+                lessonVideo={lesson?.video || null}
+                onSave={file => {
+                  handleUploadVideo(videoModal.sectionId, videoModal.lessonId, file);
+                  setVideoModal(null);
+                }}
+                onCancel={() => setVideoModal(null)}
+              />
+            );
+          })() : null}
         </DialogContent>
       </Dialog>
     </div>
