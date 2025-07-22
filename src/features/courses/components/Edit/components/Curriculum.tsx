@@ -324,7 +324,7 @@ export default function Curriculum() {
                 </div>
               ))}
               {/* إضافة درس */}
-              <div className="flex items-center gap-2 mt-2 flex-row-reverse">
+              <div className="flex items-center gap-2 mt-2 ">
                 <Button
                   size="sm"
                   onClick={() => {
