@@ -4,23 +4,41 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import type { CurriculumState } from "@/features/courses/hooks/stateHelper";
+import type {
+  CurriculumState,
+  Lesson,
+  Section,
+} from "@/features/courses/hooks/stateHelper";
 import type { Dispatch } from "react";
 import type { CurriculumAction } from "@/features/courses/hooks/stateHelper";
 import { VideoUploadModalContent } from "../components/Edit/components/VideoUploadModalContent";
 export default function UploadVideoModal({
   state,
   dispatch,
-  handleUploadVideo,
 }: {
   state: CurriculumState;
   dispatch: Dispatch<CurriculumAction>;
-  handleUploadVideo: (
+}) {
+  // رفع فيديو للدرس
+  const handleUploadVideo = (
     sectionId: string,
     lessonId: string,
     file: File | null
-  ) => void;
-}) {
+  ) => {
+    dispatch({
+      type: "SET_SECTIONS",
+      payload: state.sections.map((s: Section) =>
+        s.id === sectionId
+          ? {
+              ...s,
+              lessons: s.lessons.map((l: Lesson) =>
+                l.id === lessonId ? { ...l, video: file } : l
+              ),
+            }
+          : s
+      ),
+    });
+  };
   return (
     <Dialog
       open={!!state.videoModal}
