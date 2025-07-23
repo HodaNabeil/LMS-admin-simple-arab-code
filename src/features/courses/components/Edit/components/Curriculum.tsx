@@ -7,66 +7,29 @@ import {
   type Section,
 } from "@/features/courses/hooks/stateHelper";
 import CreateSection from "./CreateSection";
-import AddSectionModal from "../../modals/AddSectionModal";
-import DeleteSectionModal from "../../modals/DeleteSectionModal";
-import CreateLesson from "./CreateLesson";
-import UploadVideoModal from "../../modals/UploadVideoModal";
 import AddSection from "./AddSection";
+import DeleteSectionModal from "@/features/courses/modals/DeleteSectionModal";
+import CreateLessonModal from "@/features/courses/modals/CreateLessonModal";
+import DeleteLessonModal from "@/features/courses/modals/DeleteLessonModal";
+import UploadVideoModal from "@/features/courses/modals/UploadVideoModal";
+import AddSectionModal from "@/features/courses/modals/AddSectionModal";
+
+
+
+
+
+
+
+
+
+
 
 function randomId() {
   return Math.random().toString(36).substring(2, 9);
 }
-
 export default function Curriculum() {
   const [state, dispatch] = useReducer(reducer, initialState);
-
   const sectionInputRef = useRef<HTMLInputElement | null>(null);
-
-  // إضافة قسم جديد أو تعديل قسم
-  const handleAddOrEditSection = () => {
-    if (!state.sectionName.trim()) return;
-    if (state.sectionModalMode === "add") {
-      dispatch({
-        type: "SET_SECTIONS",
-        payload: [
-          ...state.sections,
-          {
-            id: randomId(),
-            name: state.sectionName,
-            description: state.sectionDescription,
-            lessons: [],
-          },
-        ],
-      });
-    } else if (state.sectionModalMode === "edit" && state.editingSection) {
-      dispatch({
-        type: "SET_SECTIONS",
-        payload: state.sections.map((s: Section) =>
-          s.id === state.editingSection!.id
-            ? {
-                ...s,
-                name: state.sectionName,
-                description: state.sectionDescription,
-              }
-            : s
-        ),
-      });
-    }
-    dispatch({ type: "SET_SECTION_NAME", payload: "" });
-    dispatch({ type: "SET_SECTION_DESCRIPTION", payload: "" });
-    dispatch({ type: "SET_EDITING_SECTION", payload: null });
-    dispatch({ type: "SET_SHOW_SECTION_MODAL", payload: false });
-  };
-
-  // حذف قسم
-  const handleDeleteSection = (sectionId: string) => {
-    dispatch({
-      type: "SET_SECTIONS",
-      payload: state.sections.filter((s: Section) => s.id !== sectionId),
-    });
-    dispatch({ type: "SET_SHOW_DELETE_SECTION_MODAL", payload: false });
-    dispatch({ type: "SET_SECTION_TO_DELETE", payload: null });
-  };
 
   // رفع فيديو للدرس
   const handleUploadVideo = (
@@ -107,7 +70,7 @@ export default function Curriculum() {
       </div>
       {/* إضافة قسم */}
       <div className="flex items-center gap-2 mt-8 self-start ">
-        <AddSection dispatch={dispatch} />
+        <AddSection dispatch={dispatch}  />
       </div>
 
       {/* مودال إضافة قسم */}
@@ -118,13 +81,14 @@ export default function Curriculum() {
         randomId={randomId}
       />
       {/* مودال تأكيد حذف القسم */}
+      <DeleteSectionModal state={state} dispatch={dispatch}  />
+    
+      {/* مودال تأكيد حذف الدرس */}
+      <CreateLessonModal state={state} dispatch={dispatch} randomId={randomId} />
 
-      <DeleteSectionModal
-        state={state}
-        dispatch={dispatch}
-        handleDeleteSection={handleDeleteSection}
-      />
-      <CreateLesson state={state} dispatch={dispatch} randomId={randomId} />
+
+      <DeleteLessonModal state={state} dispatch={dispatch} />
+
 
       {/* مودال رفع الفيديو */}
       <UploadVideoModal
