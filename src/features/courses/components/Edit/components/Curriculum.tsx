@@ -120,7 +120,7 @@ export default function Curriculum() {
         state={state}
         dispatch={dispatch}
         sectionInputRef={sectionInputRef}
-        handleAddOrEditSection={handleAddOrEditSection}
+        randomId={randomId}
       />
       {/* مودال تأكيد حذف القسم */}
  

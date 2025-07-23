@@ -9,14 +9,46 @@ import {
   } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import type { CurriculumAction, CurriculumState } from "@/features/courses/hooks/stateHelper";
+import type { CurriculumAction, CurriculumState, Section } from "@/features/courses/hooks/stateHelper";
 import type { Dispatch } from "react";
 
 
 
 
-export default function AddSectionModal( { state , dispatch , sectionInputRef , handleAddOrEditSection }: 
-    { state : CurriculumState , dispatch : Dispatch<CurriculumAction> , sectionInputRef : React.RefObject<HTMLInputElement> , handleAddOrEditSection : () => void }) {
+export default function AddSectionModal( { state , dispatch , sectionInputRef , randomId }: 
+    { state : CurriculumState , dispatch : Dispatch<CurriculumAction> , sectionInputRef : React.RefObject<HTMLInputElement> , randomId : () => string }) {
+
+        // إضافة قسم جديد أو تعديل قسم
+  const handleAddOrEditSection = () => {
+    if (!state.sectionName.trim()) return;
+    if (state.sectionModalMode === "add") {
+      dispatch({
+        type: "SET_SECTIONS",
+        payload: [
+          ...state.sections,
+          {
+            id: randomId(),
+            name: state.sectionName,
+            description: state.sectionDescription,
+            lessons: [],
+          },
+        ],
+      });
+    } else if (state.sectionModalMode === "edit" && state.editingSection) {
+      dispatch({
+        type: "SET_SECTIONS",
+        payload: state.sections.map((s: Section) =>
+          s.id === state.editingSection!.id
+            ? { ...s, name: state.sectionName, description: state.sectionDescription }
+            : s
+        ),
+      });
+    }
+    dispatch({ type: "SET_SECTION_NAME", payload: "" });
+    dispatch({ type: "SET_SECTION_DESCRIPTION", payload: "" });
+    dispatch({ type: "SET_EDITING_SECTION", payload: null });
+    dispatch({ type: "SET_SHOW_SECTION_MODAL", payload: false });
+  };
   return (
     <Dialog
     open={state.showSectionModal}
