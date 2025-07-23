@@ -3,7 +3,7 @@ import type { CurriculumState } from "@/features/courses/hooks/stateHelper";
 import type { Dispatch } from "react";
 import type { CurriculumAction } from "@/features/courses/hooks/stateHelper";
 import { VideoUploadModalContent } from "../Edit/components/VideoUploadModalContent";
-export default function UploadVideo( { state , dispatch , handleUploadVideo }: 
+export default function UploadVideoModal( { state , dispatch , handleUploadVideo }: 
     { state : CurriculumState , dispatch : Dispatch<CurriculumAction> , handleUploadVideo : (sectionId : string, lessonId : string, file : File | null) => void }) {
   return (
     <Dialog

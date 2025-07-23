@@ -13,8 +13,6 @@ import type { CurriculumAction, CurriculumState, Section } from "@/features/cour
 import type { Dispatch } from "react";
 
 
-
-
 export default function AddSectionModal( { state , dispatch , sectionInputRef , randomId }: 
     { state : CurriculumState , dispatch : Dispatch<CurriculumAction> , sectionInputRef : React.RefObject<HTMLInputElement> , randomId : () => string }) {
 

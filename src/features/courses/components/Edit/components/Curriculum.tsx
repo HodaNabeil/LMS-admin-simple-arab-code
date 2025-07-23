@@ -1,14 +1,17 @@
 import { useReducer, useRef } from "react";
-import { Button } from "@/components/ui/button";
-import {  Plus} from "lucide-react";
 
-import { initialState, reducer, type Lesson, type Section} from "@/features/courses/hooks/stateHelper";
+import {
+  initialState,
+  reducer,
+  type Lesson,
+  type Section,
+} from "@/features/courses/hooks/stateHelper";
 import CreateSection from "./CreateSection";
 import AddSectionModal from "../../modals/AddSectionModal";
 import DeleteSectionModal from "../../modals/DeleteSectionModal";
 import CreateLesson from "./CreateLesson";
 import UploadVideoModal from "../../modals/UploadVideoModal";
-
+import AddSection from "./AddSection";
 
 function randomId() {
   return Math.random().toString(36).substring(2, 9);
@@ -16,7 +19,7 @@ function randomId() {
 
 export default function Curriculum() {
   const [state, dispatch] = useReducer(reducer, initialState);
- 
+
   const sectionInputRef = useRef<HTMLInputElement | null>(null);
 
   // إضافة قسم جديد أو تعديل قسم
@@ -40,7 +43,11 @@ export default function Curriculum() {
         type: "SET_SECTIONS",
         payload: state.sections.map((s: Section) =>
           s.id === state.editingSection!.id
-            ? { ...s, name: state.sectionName, description: state.sectionDescription }
+            ? {
+                ...s,
+                name: state.sectionName,
+                description: state.sectionDescription,
+              }
             : s
         ),
       });
@@ -62,7 +69,11 @@ export default function Curriculum() {
   };
 
   // رفع فيديو للدرس
-  const handleUploadVideo = (sectionId: string, lessonId: string, file: File | null) => {
+  const handleUploadVideo = (
+    sectionId: string,
+    lessonId: string,
+    file: File | null
+  ) => {
     dispatch({
       type: "SET_SECTIONS",
       payload: state.sections.map((s: Section) =>
@@ -93,27 +104,11 @@ export default function Curriculum() {
             state={state}
           />
         ))}
-
       </div>
       {/* إضافة قسم */}
       <div className="flex items-center gap-2 mt-8 self-start ">
-        <Button
-          type="button"
-          variant="link"
-          className="text-[#1a237e] flex items-center gap-1 p-0 h-auto"
-          onClick={() => {
-            dispatch({ type: "SET_SECTION_MODAL_MODE", payload: "add" });
-            dispatch({ type: "SET_SECTION_NAME", payload: "" });
-            dispatch({ type: "SET_SECTION_DESCRIPTION", payload: "" });
-            dispatch({ type: "SET_EDITING_SECTION", payload: null });
-            dispatch({ type: "SET_SHOW_SECTION_MODAL", payload: true });
-          }}
-        >
-          إضافة قسم <Plus className="w-4 h-4 ml-1" />
-        </Button>
+        <AddSection dispatch={dispatch} />
       </div>
-
-
 
       {/* مودال إضافة قسم */}
       <AddSectionModal
@@ -123,25 +118,20 @@ export default function Curriculum() {
         randomId={randomId}
       />
       {/* مودال تأكيد حذف القسم */}
- 
+
       <DeleteSectionModal
         state={state}
         dispatch={dispatch}
         handleDeleteSection={handleDeleteSection}
-        
       />
-      <CreateLesson
-        state={state}
-        dispatch={dispatch}
-        randomId={randomId}
-      />
-       
-        {/* مودال رفع الفيديو */}
-        <UploadVideoModal
+      <CreateLesson state={state} dispatch={dispatch} randomId={randomId} />
+
+      {/* مودال رفع الفيديو */}
+      <UploadVideoModal
         state={state}
         dispatch={dispatch}
         handleUploadVideo={handleUploadVideo}
       />
-        </div>
+    </div>
   );
 }
