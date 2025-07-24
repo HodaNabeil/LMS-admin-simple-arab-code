@@ -2,9 +2,12 @@ import {
   useReactTable,
   getCoreRowModel,
   getPaginationRowModel,
+  getSortedRowModel,
   flexRender,
   type ColumnDef,
+  type SortingState,
 } from "@tanstack/react-table";
+import React from "react";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -15,11 +18,15 @@ export function DataTable<TData, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
+  const [sorting, setSorting] = React.useState<SortingState>([]);
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    state: { sorting },
+    onSortingChange: setSorting,
   });
 
   return (
@@ -28,19 +35,33 @@ export function DataTable<TData, TValue>({
         <thead className="bg-gray-50">
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
-              {headerGroup.headers.map((header) => (
-                <th
-                  key={header.id}
-                  className=" py-2 text-center text-xs font-medium text-gray-800   tracking-wider"
-                >
-                  {header.isPlaceholder
-                    ? null
-                    : flexRender(
-                        header.column.columnDef.header,
-                        header.getContext()
+              {headerGroup.headers.map((header) => {
+                const isSorted = header.column.getIsSorted();
+                return (
+                  <th
+                    key={header.id}
+                    className="py-2 text-center text-xs font-medium text-gray-800 tracking-wider cursor-pointer select-none hover:bg-gray-100 transition"
+                    onClick={header.column.getToggleSortingHandler()}
+                  >
+                    {header.isPlaceholder
+                      ? null
+                      : (
+                        <span className="flex items-center justify-center gap-1">
+                          {flexRender(
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
+                          {isSorted === 'asc' && (
+                            <svg width="12" height="12" fill="none" viewBox="0 0 24 24"><path d="M7 14l5-5 5 5" stroke="#2563eb" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                          )}
+                          {isSorted === 'desc' && (
+                            <svg width="12" height="12" fill="none" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5" stroke="#2563eb" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                          )}
+                        </span>
                       )}
-                </th>
-              ))}
+                  </th>
+                );
+              })}
             </tr>
           ))}
         </thead>

@@ -47,7 +47,7 @@ export default function NewUsersAnalytics() {
       </h2>
       <div style={{ width: 220, height: 220 }}>
         <ResponsivePie
-          data={data}
+          data={data.length > 0 ? data : []}
           margin={{ top: 10, right: 10, bottom: 40, left: 10 }}
           innerRadius={0.6}
           padAngle={1.5}
@@ -73,6 +73,8 @@ export default function NewUsersAnalytics() {
               itemTextColor: 'gray'
             }
           ]}
+
+          
         />
       </div>
     </div>

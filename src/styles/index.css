@@ -115,3 +115,4 @@ textarea:focus {
 .react-tagsinput-remove {
   @apply text-blue-500 hover:text-red-500 cursor-pointer;
 }
+
