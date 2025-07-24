@@ -6,6 +6,7 @@ import Goals from "@/features/courses/components/Edit/components/Goals";
 import Pricing from "@/features/courses/components/Edit/components/Pricing";
 import Promotions from "@/features/courses/components/Edit/components/Promotions";
 import Admin from "@/pages";
+import Analytics from "@/pages/analytics";
 import Courses from "@/pages/courses";
 import CreateCourse from "@/pages/courses/create";
 import EditCourse from "@/pages/courses/edit";
@@ -36,6 +37,9 @@ export const adminRoutes = (
         <Route path="promotions" element={<Promotions />} />
         <Route path="curriculum" element={<Curriculum />} />
       </Route>
+    </Route>
+    <Route path="analytics">
+      <Route path="general" element={<Analytics />} />
     </Route>
   </Route>
 );

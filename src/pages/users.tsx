@@ -1,5 +1,5 @@
 import { User } from "lucide-react";
-import { StatsCard } from "@/features/users/components/StatsCard";
+import { StatsCard } from "@/components/shared/StatsCard";
 import { useUsers } from "@/hooks/useUsers";
 import { CreateNewUser } from "@/features/users/components/CreateNewUser";
 import UserTable from "@/features/users/components/UserTable";

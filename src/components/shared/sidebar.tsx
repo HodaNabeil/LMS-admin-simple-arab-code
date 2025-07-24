@@ -155,7 +155,7 @@ function Sidebar({ isMobile = false, isOpen = true, onClose }: SidebarProps) {
         {
           id: "general-stats",
           title: "إحصائيات عامة",
-          href: "/analytics/general",
+          href: "/admin/analytics/general",
           icon: <PieChart className="w-4 h-4" />,
         },
         {
