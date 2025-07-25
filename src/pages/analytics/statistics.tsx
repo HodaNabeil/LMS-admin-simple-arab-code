@@ -5,6 +5,8 @@ import BarChart from "@/components/shared/BarChart";
 import TopEnrolledCoursesChart from "@/features/analytics/statistics/TopEnrolledCoursesChart";
 import AverageProgressCourse from "@/features/analytics/statistics/AverageProgressCourse";
 import MostWatchedLessons from "../../features/analytics/statistics/MostWatchedLessons";
+import DailyActiveUsers from "@/features/analytics/statistics/DailyActiveUsers";
+import TopCoursesBarChart from "@/features/analytics/statistics/TopCoursesBarChart";
 
 const totalStudentsData = [
   { date: "2024-06-10", value: 100 },
@@ -105,6 +107,16 @@ export default function Statistics() {
         <h2 className="text-lg font-bold text-gray-500">الدروس الأكثر مشاهدة</h2>
         <MostWatchedLessons />
       </div>
+      <div className="flex flex-col gap-4 mt-4 w-full h-full p-4 text-xl font-bold text-gray-500">
+        <h2 className="text-lg font-bold text-gray-500">المستخدمون النشطون يوميًا</h2>
+        <DailyActiveUsers />
+      </div>
+      <div className="flex flex-col gap-4 mt-4 w-full h-full p-4 text-xl font-bold text-gray-500">
+        <h2 className="text-lg font-bold text-gray-500">أكثر الدورات تسجيلاً</h2>
+        <TopCoursesBarChart />
+      </div>
+
+
 
     </section>
     
