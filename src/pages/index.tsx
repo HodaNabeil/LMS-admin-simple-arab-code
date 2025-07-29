@@ -10,7 +10,7 @@ import { useAdminStats } from "@/hooks/useAdminStats";
 import PaymentHistory from "@/components/PaymentHistory";
 
 import { stats } from "@/features/admin/components/stats-data";
-import { CoursesProgressCard } from "@/features/admin/components/CoursesProgressCard";
+// import { CoursesProgressCard } from "@/features/admin/components/CoursesProgressCard";
 import { RecentlyCreatedCoursesCard } from "@/features/admin/components/RecentlyCreatedCoursesCard";
 import { SalesLineChart } from "@/features/admin/components/SalesLineChart";
 import { Button } from "@/components/ui/button";
@@ -95,7 +95,7 @@ export default function Admin() {
       {/* الصف الثالث: متوسط تقدم الدورات + الدورات المنشأة مؤخرًا */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <Card className="rounded-lg bg-white text-gray-800 shadow-md p-6 border-0 flex flex-col items-center justify-center">
-          <CoursesProgressCard data={progressData} />
+          {/* <CoursesProgressCard data={progressData} /> */}
         </Card>
         <Card className="rounded-lg bg-white text-gray-800 shadow-md p-6 border-0 flex flex-col items-center justify-center">
           <RecentlyCreatedCoursesCard courses={recentCourses} />

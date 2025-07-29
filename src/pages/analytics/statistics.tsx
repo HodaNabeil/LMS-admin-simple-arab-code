@@ -1,12 +1,13 @@
-import { StatsCard } from "@/components/shared/StatsCard";
+import { StatsCard } from "@/components/shared/stats-card";
 import NewUsersAnalytics from "@/features/analytics/statistics/Newusers";
 import { User, UserCheck, UserPlus } from "lucide-react";
-import BarChart from "@/components/shared/BarChart";
 import TopEnrolledCoursesChart from "@/features/analytics/statistics/TopEnrolledCoursesChart";
 import AverageProgressCourse from "@/features/analytics/statistics/AverageProgressCourse";
 import MostWatchedLessons from "../../features/analytics/statistics/MostWatchedLessons";
-import DailyActiveUsers from "@/features/analytics/statistics/DailyActiveUsers";
+// import DailyActiveUsers from "@/features/analytics/statistics/DailyActiveUsers";
 import TopCoursesBarChart from "@/features/analytics/statistics/TopCoursesBarChart";
+import BarChart from "@/components/shared/charts/bar-chart";
+import MostActiveUsersChart from "@/features/analytics/statistics/components/MostActiveUsersChart";
 
 const totalStudentsData = [
   { date: "2024-06-10", value: 100 },
@@ -49,78 +50,71 @@ const topCourses = [
   { course: "الدورة الثالثة", value: 5 },
 ];
 
-const topStudents = [
-  { student: "Ahmed", value: 10 },
-  { student: "Sara", value: 15 },
-  { student: "Omar", value: 5 },
-];
-
 export default function Statistics() {
-
-  const topUsers = [...data].sort((a, b) => b.today + b.week - (a.today + a.week)).slice(0, 5);
-
   return (
- 
-
-
-<>
-<section id="statistics" className="p-4">
-      <h2 className="text-xl font-bold mb-4 text-gray-500">إحصائيات عامة</h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full">
-        <StatsCard
-          title="إجمالي الطلاب"
-          value={170}
-          icon={<User className="w-5 h-5 text-blue-500" />}
-          data={totalStudentsData}
-        />
-        <StatsCard
-          title="التسجيلات الجديدة"
-          value={12}
-          icon={<UserPlus className="w-5 h-5 text-green-500" />}
-          data={newSignupsData}
-        />
-        <StatsCard
-          title="الطلاب النشطين (هذا الأسبوع)"
-          value={55}
-          icon={<UserCheck className="w-5 h-5 text-yellow-500" />}
-          data={activeStudentsData}
-        />
-      </div>
-      <div className="w-full h-full rounded-lg p-4 mt-4">
-        <NewUsersAnalytics />
-        <div className="flex flex-col gap-4 mt-4 w-full h-full p-4 text-xl font-bold text-gray-500">
-          <h2 className="text-lg font-bold text-gray-500">أكثر المستخدمين نشاطًا</h2>
-          <BarChart data={topUsers}  />
+    <>
+      <section id="statistics" className="p-4">
+        <h2 className="text-xl font-bold mb-4 text-gray-500">إحصائيات عامة</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full">
+          {/* <StatsCard
+            title="إجمالي الطلاب"
+            value={170}
+            icon={<User className="w-5 h-5 text-blue-500" />}
+            data={totalStudentsData}
+          />
+          <StatsCard
+            title="التسجيلات الجديدة"
+            value={12}
+            icon={<UserPlus className="w-5 h-5 text-green-500" />}
+            data={newSignupsData}
+          />
+          <StatsCard
+            title="الطلاب النشطين (هذا الأسبوع)"
+            value={55}
+            icon={<UserCheck className="w-5 h-5 text-yellow-500" />}
+            data={activeStudentsData}
+          /> */}
         </div>
-      </div>
-    </section>
+        <div className="w-full h-full rounded-lg p-4 mt-4">
+          {/* <NewUsersAnalytics /> */}
+          <div className="flex flex-col gap-4 mt-4 w-full h-full p-4 text-xl font-bold text-gray-500">
+            <h2 className="text-lg font-bold text-gray-500">
+              أكثر المستخدمين نشاطًا
+            </h2>
+            <MostActiveUsersChart />
+          </div>
+        </div>
+      </section>
 
-    <section id="courses" className="p-4">
-      <h2 className="text-xl font-semibold mb-4 text-gray-500">أكثر الدورات تسجيلاً</h2>
-      <TopEnrolledCoursesChart />
+      <section id="courses" className="p-4">
+        <h2 className="text-xl font-semibold mb-4 text-gray-500">
+          أكثر الدورات تسجيلاً
+        </h2>
+        {/* <TopEnrolledCoursesChart /> */}
 
-      <div className="flex flex-col gap-4 mt-4 w-full h-full p-4 text-xl font-bold text-gray-500">
-        <AverageProgressCourse />
-      </div>
+        <div className="flex flex-col gap-4 mt-4 w-full h-full p-4 text-xl font-bold text-gray-500">
+          <AverageProgressCourse />
+        </div>
 
-      <div className="flex flex-col gap-4 mt-4 w-full h-full p-4 text-xl font-bold text-gray-500">
-        <h2 className="text-lg font-bold text-gray-500">الدروس الأكثر مشاهدة</h2>
-        <MostWatchedLessons />
-      </div>
-      <div className="flex flex-col gap-4 mt-4 w-full h-full p-4 text-xl font-bold text-gray-500">
-        <h2 className="text-lg font-bold text-gray-500">المستخدمون النشطون يوميًا</h2>
-        <DailyActiveUsers />
-      </div>
-      <div className="flex flex-col gap-4 mt-4 w-full h-full p-4 text-xl font-bold text-gray-500">
-        <h2 className="text-lg font-bold text-gray-500">أكثر الدورات تسجيلاً</h2>
-        <TopCoursesBarChart />
-      </div>
-
-
-
-    </section>
-    
-
-</>
+        <div className="flex flex-col gap-4 mt-4 w-full h-full p-4 text-xl font-bold text-gray-500">
+          <h2 className="text-lg font-bold text-gray-500">
+            الدروس الأكثر مشاهدة
+          </h2>
+          <MostWatchedLessons />
+        </div>
+        <div className="flex flex-col gap-4 mt-4 w-full h-full p-4 text-xl font-bold text-gray-500">
+          <h2 className="text-lg font-bold text-gray-500">
+            المستخدمون النشطون يوميًا
+          </h2>
+          {/* <DailyActiveUsers /> */}
+        </div>
+        <div className="flex flex-col gap-4 mt-4 w-full h-full p-4 text-xl font-bold text-gray-500">
+          <h2 className="text-lg font-bold text-gray-500">
+            أكثر الدورات تسجيلاً
+          </h2>
+          {/* <TopCoursesBarChart /> */}
+        </div>
+      </section>
+    </>
   );
 }

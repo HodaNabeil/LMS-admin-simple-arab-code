@@ -1,5 +1,5 @@
 import { User } from "lucide-react";
-import { StatsCard } from "@/components/shared/StatsCard";
+import StatsCard from "@/components/shared/stats-card";
 import { useUsers } from "@/hooks/useUsers";
 import { CreateNewUser } from "@/features/users/components/CreateNewUser";
 import UserTable from "@/features/users/components/UserTable";
@@ -49,12 +49,12 @@ export default function Users() {
   return (
     <>
       <div className="grid grid-cols-3 gap-1 p-2">
-        <StatsCard
+        {/* <StatsCard
           title="Total Students"
           value={1}
           icon={<User className="w-5 h-5 text-gray-300" />}
           data={studentsData1}
-        />
+        /> */}
       </div>
 
       <div className="flex justify-between items-center m-4">

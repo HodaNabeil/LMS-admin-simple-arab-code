@@ -9,7 +9,7 @@ import Admin from "@/pages";
 import Statistics from "@/pages/analytics/statistics";
 import Courses from "@/pages/courses";
 import CreateCourse from "@/pages/courses/create";
-import EditCourse from "@/pages/courses/edit";
+import EditCourse from "@/pages/courses/Edit";
 
 import Paths from "@/pages/paths";
 import NewAddPath from "@/pages/paths/create";
@@ -30,7 +30,7 @@ export const adminRoutes = (
       <Route index element={<Courses />} />
       <Route path="create" element={<CreateCourse />}></Route>
       <Route path=":slug/manage" element={<EditCourse />}>
-        <Route index path="goals" element={<Goals  />} />
+        <Route index path="goals" element={<Goals />} />
         <Route path="pricing" element={<Pricing />} />
         <Route path="availability" element={<Availability />} />
         <Route path="basics" element={<Basics />} />

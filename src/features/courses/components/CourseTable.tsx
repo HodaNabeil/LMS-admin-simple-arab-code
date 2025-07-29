@@ -13,7 +13,7 @@ import type {
   SortingState,
   VisibilityState,
 } from "@tanstack/react-table";
-import {  Edit, Trash2 } from "lucide-react";
+import { Edit, Trash2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 
@@ -70,6 +70,7 @@ const columns: ColumnDef<Course>[] = [
         </div>
       </div>
     ),
+    enableSorting: true,
   },
   {
     accessorKey: "category",
@@ -199,7 +200,6 @@ function CourseTable({ courses }: CourseTableProps) {
           }
           className="w-full sm:max-w-sm"
         />
-  
       </div>
 
       {/* Mobile Card View */}
