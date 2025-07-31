@@ -4,8 +4,8 @@ import MostActiveUsersChart from "@/features/analytics/statistics/components/Mos
 import GeneralStats from "@/features/analytics/statistics/components/GeneralStats";
 import NewUsers from "@/features/analytics/statistics/components/NewUsers";
 import MostJoinedCourses from "@/features/analytics/statistics/components/MostJoinedCourses";
-import DailyActiveUsers from "@/features/analytics/statistics/DailyActiveUsers";
-import TopFifthCourses from "@/features/analytics/statistics/TopCoursesBarChart";
+import DailyActiveUsers from "@/features/analytics/statistics/components/DailyActiveUsers";
+import TopFifthCourses from "@/features/analytics/statistics/components/TopCoursesBarChart";
 
 export default function Statistics() {
   return (
