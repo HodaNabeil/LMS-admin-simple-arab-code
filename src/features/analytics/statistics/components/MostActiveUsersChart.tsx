@@ -20,7 +20,6 @@ function MostActiveUsersChart() {
   const months = Object.keys(monthlyData);
   const userData = Object.values(monthlyData);
 
-
   const options = {
     responsive: true,
     maintainAspectRatio: false,
@@ -101,7 +100,7 @@ function MostActiveUsersChart() {
     ],
   };
   return (
-    <div className="w-full h-80">
+    <div className="w-full  h-full">
       <BarChart
         data={chartData}
         options={options as unknown as ChartOptions<"bar">}

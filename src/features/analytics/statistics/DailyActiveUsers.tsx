@@ -1,81 +1,99 @@
-// import { ResponsiveLine } from "@nivo/line";
+import LineChart from "@/components/shared/charts/line-chart";
 
-// const data = [
-//   {
-//     id: "المستخدمون النشطون",
-//     color: "hsl(205, 70%, 50%)",
-//     data: [
-//       { x: "السبت", y: 120 },
-//       { x: "الأحد", y: 140 },
-//       { x: "الإثنين", y: 90 },
-//       { x: "الثلاثاء", y: 170 },
-//       { x: "الأربعاء", y: 200 },
-//       { x: "الخميس", y: 180 },
-//       { x: "الجمعة", y: 220 },
-//     ],
-//   },
-// ];
+const data = {
+  labels: [
+    "السبت",
+    "الأحد",
+    "الإثنين",
+    "الثلاثاء",
+    "الأربعاء",
+    "الخميس",
+    "الجمعة",
+  ],
+  datasets: [
+    {
+      label: "المستخدمون النشطون",
+      data: [120, 140, 90, 170, 200, 180, 220],
+      borderColor: "#60a5fa",
+      backgroundColor: "rgba(96, 165, 250, 0.1)",
+      fill: false,
+      tension: 0.1,
+      pointBackgroundColor: "#60a5fa",
+      pointBorderColor: "#60a5fa",
+      pointRadius: 4,
+      pointHoverRadius: 6,
+      borderWidth: 2,
+    },
+  ],
+};
 
-// export default function DailyActiveUsers() {
-//   return (
-//     <div style={{ height: 400 }}>
-//       <ResponsiveLine
-//         data={data}
-//         margin={{ top: 50, right: 30, bottom: 50, left: 60 }}
-//         xScale={{ type: "point" }}
-//         yScale={{
-//           type: "linear",
-//           min: "auto",
-//           max: "auto",
-//           stacked: false,
-//           reverse: false,
-//         }}
-//         axisTop={null}
-//         axisRight={null}
-//         axisBottom={{
-//           orient: "bottom",
-//           tickSize: 5,
-//           tickPadding: 5,
-//           tickRotation: -20,
-//           legend: "اليوم",
-//           legendOffset: 40,
-//           legendPosition: "middle",
-//         }}
-//         axisLeft={{
-//           orient: "left",
-//           tickSize: 5,
-//           tickPadding: 5,
-//           tickRotation: 0,
-//           legend: "عدد المستخدمين",
-//           legendOffset: -50,
-//           legendPosition: "middle",
-//         }}
-//         colors={{ scheme: "category10" }}
-//         pointSize={8}
-//         pointColor={{ theme: "background" }}
-//         pointBorderWidth={2}
-//         pointBorderColor={{ from: "serieColor" }}
-//         pointLabelYOffset={-12}
-//         useMesh={true}
-//         enableSlices="x"
-//         legends={[
-//           {
-//             anchor: "top-left",
-//             direction: "row",
-//             justify: false,
-//             translateX: 0,
-//             translateY: -40,
-//             itemsSpacing: 10,
-//             itemDirection: "left-to-right",
-//             itemWidth: 100,
-//             itemHeight: 20,
-//             itemOpacity: 0.75,
-//             symbolSize: 12,
-//             symbolShape: "circle",
-//             symbolBorderColor: "rgba(0, 0, 0, .5)",
-//           },
-//         ]}
-//       />
-//     </div>
-//   );
-// }
+const options = {
+  responsive: true,
+  maintainAspectRatio: false,
+  plugins: {
+    legend: {
+      position: "top" as const,
+      labels: {
+        usePointStyle: true,
+        padding: 20,
+        font: {
+          size: 12,
+        },
+      },
+    },
+    title: {
+      display: false, // إزالة العنوان المكرر
+    },
+  },
+  scales: {
+    y: {
+      beginAtZero: true,
+      min: 0,
+      max: 250,
+      ticks: {
+        stepSize: 50,
+        callback: function (tickValue: string | number) {
+          return `${tickValue} مستخدم`;
+        },
+      },
+      grid: {
+        color: "rgba(0, 0, 0, 0.1)",
+      },
+      title: {
+        display: false,
+        font: {
+          size: 12,
+        },
+      },
+    },
+    x: {
+      grid: {
+        color: "rgba(0, 0, 0, 0.1)",
+      },
+      ticks: {
+        font: {
+          size: 11,
+        },
+        maxRotation: 45,
+      },
+    },
+  },
+  elements: {
+    point: {
+      hoverRadius: 8,
+    },
+  },
+};
+
+export default function DailyActiveUsers() {
+  return (
+    <div className="space-y-4">
+      <h3 className="text-lg font-semibold text-gray-500">
+        المستخدمون النشطون يوميًا
+      </h3>
+      <div style={{ height: 400 }}>
+        <LineChart data={data} options={options} />
+      </div>
+    </div>
+  );
+}

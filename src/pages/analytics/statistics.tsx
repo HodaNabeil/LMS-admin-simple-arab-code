@@ -1,68 +1,89 @@
-import AverageProgressCourse from "@/features/analytics/statistics/AverageProgressCourse";
-import MostWatchedLessons from "../../features/analytics/statistics/MostWatchedLessons";
+import AverageProgressCourse from "@/features/analytics/statistics/components/AverageProgressCourse";
+import MostWatchedLessons from "../../features/analytics/statistics/components/MostWatchedLessons";
 import MostActiveUsersChart from "@/features/analytics/statistics/components/MostActiveUsersChart";
 import GeneralStats from "@/features/analytics/statistics/components/GeneralStats";
 import NewUsers from "@/features/analytics/statistics/components/NewUsers";
 import MostJoinedCourses from "@/features/analytics/statistics/components/MostJoinedCourses";
+import DailyActiveUsers from "@/features/analytics/statistics/DailyActiveUsers";
+import TopFifthCourses from "@/features/analytics/statistics/TopCoursesBarChart";
 
 export default function Statistics() {
   return (
-    <>
-      <section className="p-4 ">
-        <h2 className="text-xl font-bold mb-4 text-gray-500">
-          احصائيات المستخدم
+    <div className="space-y-8 p-6">
+      {/* إحصائيات المستخدم */}
+      <section className="space-y-6">
+        <h2 className="text-2xl font-bold text-gray-500 pb-2">
+          إحصائيات المستخدم
         </h2>
+
         <GeneralStats />
 
-        <div className=" grid md:grid-cols-2 p-2 my-5 gap-4">
-          <div className="flex flex-col gap-4 mt-4 w-full h-full p-4 text-xl font-bold text-gray-500">
-            <h2 className="text-lg font-bold text-gray-500">
-              المستخدم الاكثر نشاطا في الشهر
-            </h2>
-            <MostActiveUsersChart />
+        <div className="grid lg:grid-cols-2 gap-6">
+          <div className="card-Statistics">
+            <h3 className="text-lg font-semibold text-gray-500 mb-4">
+              المستخدم الأكثر نشاطاً في الشهر
+            </h3>
+            <div className="h-80">
+              <MostActiveUsersChart />
+            </div>
           </div>
-          <div className="flex flex-col gap-4 mt-4 w-full h-full p-4 text-xl font-bold text-gray-500">
-            <h2 className="text-lg font-bold text-gray-500">
+
+          <div className="card-Statistics">
+            <h3 className="text-lg font-semibold text-gray-500 mb-4">
               المستخدمين الجدد
-            </h2>
-            <NewUsers />
+            </h3>
+            <div className="h-80">
+              <NewUsers />
+            </div>
           </div>
         </div>
       </section>
 
-      <section id="courses" className="p-4">
-        <h2 className="text-xl font-bold mb-4 text-gray-500">
-          احصائيات الدورة
+      {/* إحصائيات الدورات */}
+      <section className="space-y-6">
+        <h2 className="text-2xl font-bold text-gray-500 pb-2">
+          إحصائيات الدورات
         </h2>
-        <div className="flex flex-col gap-4 mt-4 w-full h-full p-4 text-xl font-bold text-gray-500">
-          <h2 className="text-lg font-bold text-gray-500">
-            الدورات الاكثر انضماما
-          </h2>
-          <MostJoinedCourses />
-        </div>
-        <div className="flex flex-col gap-4 mt-4 w-full h-full p-4 text-xl font-bold text-gray-500">
-          <AverageProgressCourse />
+
+        <div className="grid lg:grid-cols-2 gap-6">
+          <div className="card-Statistics">
+            <h3 className="text-lg font-semibold text-gray-500  mb-4">
+              الدورات الأكثر انضماماً
+            </h3>
+            <div className="h-80">
+              <MostJoinedCourses />
+            </div>
+          </div>
+
+          <div className="card-Statistics">
+            <h3 className="text-lg font-semibold text-gray-500  mb-4">
+              متوسط التقدم لكل دورة
+            </h3>
+            <div className="h-80">
+              <AverageProgressCourse />
+            </div>
+          </div>
         </div>
 
-        <div className="flex flex-col gap-4 mt-4 w-full h-full p-4 text-xl font-bold text-gray-500">
-          <h2 className="text-lg font-bold text-gray-500">
-            الدروس الأكثر مشاهدة
-          </h2>
+        <div className="card-Statistics">
           <MostWatchedLessons />
         </div>
-        <div className="flex flex-col gap-4 mt-4 w-full h-full p-4 text-xl font-bold text-gray-500">
-          <h2 className="text-lg font-bold text-gray-500">
-            المستخدمون النشطون يوميًا
-          </h2>
-          {/* <DailyActiveUsers /> */}
-        </div>
-        <div className="flex flex-col gap-4 mt-4 w-full h-full p-4 text-xl font-bold text-gray-500">
-          <h2 className="text-lg font-bold text-gray-500">
-            أكثر الدورات تسجيلاً
-          </h2>
-          {/* <TopCoursesBarChart /> */}
+      </section>
+
+      {/*  احصائيات عامة*/}
+      <section>
+        <h2 className="text-2xl font-bold text-gray-500 pb-2 my-[2rem]">
+          احصائيات عامة
+        </h2>
+        <div className="grid lg:grid-cols-2 gap-6">
+          <div className="card-Statistics">
+            <DailyActiveUsers />
+          </div>
+          <div className="card-Statistics">
+            <TopFifthCourses />
+          </div>
         </div>
       </section>
-    </>
+    </div>
   );
 }

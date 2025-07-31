@@ -1,68 +1,123 @@
-// import { ResponsiveBar } from "@nivo/bar";
+import BarChart from "@/components/shared/charts/bar-chart";
+import type { ChartOptions } from "chart.js";
 
-// const data = [
-//   {
-//     course: "React",
-//     enrollments: 320,
-//   },
-//   {
-//     course: "Vue",
-//     enrollments: 270,
-//   },
-//   {
-//     course: "JavaScript",
-//     enrollments: 450,
-//   },
-//   {
-//     course: "Python",
-//     enrollments: 390,
-//   },
-//   {
-//     course: "Tailwind CSS",
-//     enrollments: 210,
-//   },
-// ];
+export default function TopFifthCourses() {
+  // بيانات أفضل 5 دورات للشهر الحالي
+  const topCoursesData = [
+    {
+      course: "React الأساسيات",
+      students: 245,
+      color: "rgba(59, 130, 246, 0.8)",
+    },
+    {
+      course: "JavaScript المتقدم",
+      students: 298,
+      color: "rgba(236, 72, 153, 0.8)",
+    },
+    {
+      course: "Python للمبتدئين",
+      students: 412,
+      color: "rgba(34, 197, 94, 0.8)",
+    },
+    {
+      course: "Node.js للمبتدئين",
+      students: 356,
+      color: "rgba(251, 146, 60, 0.8)",
+    },
+    {
+      course: "تصميم UI/UX",
+      students: 234,
+      color: "rgba(168, 85, 247, 0.8)",
+    },
+  ];
 
-// export default function TopCoursesBarChart() {
-//   return (
-//     <div style={{ height: 400 }}>
-//       <ResponsiveBar
-//         data={data}
-//         keys={["enrollments"]}
-//         indexBy="course"
-//         margin={{ top: 50, right: 30, bottom: 80, left: 60 }}
-//         padding={0.4}
-//         valueScale={{ type: "linear" }}
-//         indexScale={{ type: "band", round: true }}
-//         colors={{ scheme: "set2" }}
-//         borderColor={{ from: "color", modifiers: [["darker", 1.6]] }}
-//         axisTop={null}
-//         axisRight={null}
-//         axisBottom={{
-//           tickSize: 5,
-//           tickPadding: 10,
-//           tickRotation: 0,
-//           legend: "الدورة",
-//           legendPosition: "middle",
-//           legendOffset: 60,
-//         }}
-//         axisLeft={{
-//           tickSize: 5,
-//           tickPadding: 5,
-//           tickRotation: 0,
-//           legend: "عدد المسجلين",
-//           legendPosition: "middle",
-//           legendOffset: -50,
-//         }}
-//         labelSkipWidth={12}
-//         labelSkipHeight={12}
-//         labelTextColor={{ from: "color", modifiers: [["darker", 1.6]] }}
-//         animate={true}
-//         motionStiffness={90}
-//         motionDamping={15}
-//         role="application"
-//         ariaLabel="Top 5 Courses by Enrollments"
-//       />
-//     </div>
-//   );
-// }
+  const options = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        display: false,
+      },
+      tooltip: {
+        backgroundColor: "rgba(0, 0, 0, 0.9)",
+        titleColor: "#fff",
+        bodyColor: "#fff",
+        borderColor: "rgba(255, 255, 255, 0.1)",
+        borderWidth: 1,
+        cornerRadius: 8,
+        padding: 12,
+        callbacks: {
+          label: (context: { dataIndex: number }) => {
+            const data = topCoursesData[context.dataIndex];
+            return [
+              `الدورة: ${data.course}`,
+              `عدد الطلاب: ${data.students} طالب`,
+            ];
+          },
+        },
+      },
+    },
+    scales: {
+      y: {
+        beginAtZero: true,
+        grid: {
+          color: "rgba(0, 0, 0, 0.05)",
+        },
+        ticks: {
+          font: {
+            size: 12,
+          },
+          color: "#6b7280",
+          callback: (value: number) => `${value} طالب`,
+        },
+      },
+      x: {
+        grid: {
+          display: false,
+        },
+        ticks: {
+          font: {
+            size: 12,
+            weight: "500" as const,
+          },
+          color: "#6b7280",
+          maxRotation: 45,
+        },
+      },
+    },
+    elements: {
+      bar: {
+        borderRadius: 6,
+        borderSkipped: false,
+      },
+    },
+    animation: {
+      duration: 1200,
+      easing: "easeInOutQuart" as const,
+    },
+  };
+
+  const chartData = {
+    labels: topCoursesData.map((item) => item.course),
+    datasets: [
+      {
+        data: topCoursesData.map((item) => item.students),
+        backgroundColor: topCoursesData.map((item) => item.color),
+        hoverBackgroundColor: topCoursesData.map((item) =>
+          item.color.replace("0.8", "1.0")
+        ),
+        borderWidth: 0,
+        maxBarThickness: 60,
+      },
+    ],
+  };
+
+  return (
+    <div className="w-full h-full">
+      <BarChart
+        data={chartData}
+        options={options as unknown as ChartOptions<"bar">}
+      />
+    </div>
+  );
+}

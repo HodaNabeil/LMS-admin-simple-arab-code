@@ -105,6 +105,9 @@
   .shadow-from {
     box-shadow: 0px 0px 15px 0px #544646 !important;
   }
+  .card-Statistics {
+    @apply bg-white rounded-lg shadow-sm border border-gray-200 p-6;
+  }
 }
 textarea:focus {
   outline: none !important;
@@ -115,4 +118,3 @@ textarea:focus {
 .react-tagsinput-remove {
   @apply text-blue-500 hover:text-red-500 cursor-pointer;
 }
-

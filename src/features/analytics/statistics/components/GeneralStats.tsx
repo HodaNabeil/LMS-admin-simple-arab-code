@@ -8,7 +8,7 @@ const statsData = [
     value: 170,
     icon: User2,
     growthPercentage: 10,
-    colorClass: "bg-[#8cb0e3]",
+    colorClass: "bg-[#8cb0e3] ",
   },
   {
     id: "new-registrations",
@@ -38,7 +38,7 @@ export default function GeneralStats() {
           value={stat.value}
           icon={<stat.icon className="w-8 h-8 text-white rounded-full p-1 " />}
           growthPercentage={stat.growthPercentage}
-          className={stat.colorClass}
+          className={` ${stat.colorClass} card-Statistics`}
         />
       ))}
     </div>

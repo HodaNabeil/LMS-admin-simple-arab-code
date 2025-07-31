@@ -1,26 +1,35 @@
-import { User } from "lucide-react";
-import StatsCard from "@/components/shared/stats-card";
 import { useUsers } from "@/hooks/useUsers";
 import { CreateNewUser } from "@/features/users/components/CreateNewUser";
 import UserTable from "@/features/users/components/UserTable";
 import { Loader } from "@/components/shared/loader";
-
-const studentsData1 = [
-  { date: "2025-06-12", value: 1 },
-  { date: "2025-06-16", value: 4 },
-  { date: "2025-06-17", value: 1 },
-  { date: "2025-06-12", value: 1 },
-  { date: "2025-06-16", value: 4 },
-  { date: "2025-06-17", value: 1 },
-
-  { date: "2025-06-12", value: 1 },
-  { date: "2025-06-16", value: 4 },
-  { date: "2025-06-17", value: 1 },
-  { date: "2025-06-12", value: 1 },
-  { date: "2025-06-16", value: 4 },
-  { date: "2025-06-17", value: 1 },
-];
-
+// import StatsCard from "@/components/shared/stats-card";
+// import { User2, UserCheck, UserPlus } from "lucide-react";
+// const statsData = [
+//   {
+//     id: "total-students",
+//     title: "إجمالي الطلاب",
+//     value: 170,
+//     icon: User2,
+//     growthPercentage: 10,
+//     colorClass: "bg-[#8cb0e3] ",
+//   },
+//   {
+//     id: "new-registrations",
+//     title: "التسجيلات الجديدة",
+//     value: 12,
+//     icon: UserPlus,
+//     growthPercentage: 10,
+//     colorClass: "bg-[#8cb0e3]",
+//   },
+//   {
+//     id: "active-students",
+//     title: "الطلاب النشطين (هذا الأسبوع)",
+//     value: 55,
+//     icon: UserCheck,
+//     growthPercentage: 0,
+//     colorClass: "bg-[#8cb0e3]",
+//   },
+// ];
 export default function Users() {
   const { data, isLoading, isError } = useUsers();
 
@@ -53,8 +62,22 @@ export default function Users() {
           title="Total Students"
           value={1}
           icon={<User className="w-5 h-5 text-gray-300" />}
-          data={studentsData1}
+          growthPercentage={9}
+          className={` bg-[#8cb0e3] card-Statistics`}
         /> */}
+
+        {/* {statsData.map((stat) => (
+          <StatsCard
+            key={stat.id}
+            title={stat.title}
+            value={stat.value}
+            icon={
+              <stat.icon className="w-8 h-8 text-white rounded-full p-1 " />
+            }
+            growthPercentage={stat.growthPercentage}
+            className={` ${stat.colorClass} card-Statistics`}
+          />
+        ))} */}
       </div>
 
       <div className="flex justify-between items-center m-4">
