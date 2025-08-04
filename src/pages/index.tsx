@@ -13,39 +13,19 @@ import { stats } from "@/features/admin/components/stats-data";
 // import { CoursesProgressCard } from "@/features/admin/components/CoursesProgressCard";
 import { RecentlyCreatedCoursesCard } from "@/features/admin/components/RecentlyCreatedCoursesCard";
 import { SalesLineChart } from "@/features/admin/components/SalesLineChart";
-import { Button } from "@/components/ui/button";
-import { Menu } from "lucide-react";
-import { useOutletContext } from "react-router-dom";
 
-// بيانات التقدم والبيانات الوهمية للدورات
-const progressData = [
-  { label: "جاري التقدم", color: "#f472b6", value: 10 },
-  { label: "مكتمل", color: "#8b5cf6", value: 5 },
-  { label: "مسجل", color: "#3b82f6", value: 20 },
-];
 const recentCourses = [
   { id: 1, name: "Nodejs", enrolled: 1, status: "منشورة", image: "" },
   { id: 2, name: "إتقان ...", enrolled: 1, status: "منشورة", image: "" },
 ];
 
 export default function Admin() {
-  const { setIsMobileSidebarOpen } = useOutletContext<{
-    setIsMobileSidebarOpen: (open: boolean) => void;
-  }>();
   const { data, isLoading, error } = useAdminStats();
   return (
     <div
       dir="rtl"
       className="flex flex-col min-h-screen bg-[#f8fafc] font-cairo p-4 gap-6"
     >
-      <Button
-        variant="ghost"
-        size="sm"
-        className="lg:hidden flex justify-end"
-        onClick={() => setIsMobileSidebarOpen(true)}
-      >
-        <Menu className="w-5 h-5" />
-      </Button>
       {/* الصف الأول: 3 بطاقات إحصائيات */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {stats.slice(0, 3).map((stat, idx) => (
