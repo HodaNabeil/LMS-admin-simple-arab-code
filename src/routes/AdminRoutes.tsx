@@ -39,7 +39,7 @@ export const adminRoutes = (
       </Route>
     </Route>
     <Route path="analytics">
-      <Route path="general" element={<Statistics />} />
+      <Route index element={<Statistics />} />
     </Route>
   </Route>
 );
