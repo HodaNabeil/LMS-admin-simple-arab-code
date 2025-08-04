@@ -54,8 +54,9 @@ const lessons: LessonAnalytics[] = [
 export default function MostWatchedLessons() {
   return (
     <div className="w-full h-full  mx-auto py-8 px-2">
-      <h2 className="text-2xl font-bold mb-6 text-gray-500">
-        الدروس الأكثر مشاهدة
+      <h2 className="     flex items-center gap-1 text-2xl font-bold mb-6 text-gray-500">
+        <div className="w-2 h-2 bg-teal-400 rounded-full mr-2"></div>
+        <span> الدروس الأكثر مشاهدة</span>
       </h2>
       <LessonTable lessons={lessons} />
     </div>

@@ -6,62 +6,62 @@ export default function MostJoinedCourses() {
     January: {
       course: "React الأساسيات",
       students: 245,
-      color: "rgba(59, 130, 246, 0.8)",
+      color: "rgba(59, 130, 246, 0.6)",
     },
     February: {
       course: "JavaScript المتقدم",
       students: 298,
-      color: "rgba(236, 72, 153, 0.8)",
+      color: "rgba(236, 72, 153, 0.6)",
     },
     March: {
       course: "Html",
       students: 187,
-      color: "rgba(34, 197, 94, 0.8)",
+      color: "rgba(34, 197, 94, 0.6)",
     },
     April: {
       course: "Node.js للمبتدئين",
       students: 356,
-      color: "rgba(251, 146, 60, 0.8)",
+      color: "rgba(251, 146, 60, 0.6)",
     },
     May: {
       course: "React المتقدم",
       students: 289,
-      color: "rgba(59, 130, 246, 0.8)",
+      color: "rgba(59, 130, 246, 0.6)",
     },
     June: {
       course: "قواعد البيانات",
       students: 198,
-      color: "rgba(168, 85, 247, 0.8)",
+      color: "rgba(168, 85, 247, 0.6)",
     },
     July: {
       course: "Python للمبتدئين",
       students: 412,
-      color: "rgba(236, 72, 153, 0.8)",
+      color: "rgba(236, 72, 153, 0.6)",
     },
     August: {
       course: "تصميم UI/UX",
       students: 234,
-      color: "rgba(34, 197, 94, 0.8)",
+      color: "rgba(34, 197, 94, 0.6)",
     },
     September: {
       course: "Php",
       students: 276,
-      color: "rgba(14, 165, 233, 0.8)",
+      color: "rgba(14, 165, 233, 0.6)",
     },
     October: {
       course: "Flutter التطبيقات",
       students: 321,
-      color: "rgba(59, 130, 246, 0.8)",
+      color: "rgba(59, 130, 246, 0.6)",
     },
     November: {
       course: "Css",
       students: 203,
-      color: "rgba(251, 146, 60, 0.8)",
+      color: "rgba(251, 146, 60, 0.6)",
     },
     December: {
       course: "Git",
       students: 267,
-      color: "rgba(236, 72, 153, 0.8)",
+      color: "rgba(236, 72, 153, 0.6)",
     },
   };
 
@@ -77,10 +77,10 @@ export default function MostJoinedCourses() {
       },
 
       tooltip: {
-        backgroundColor: "rgba(0, 0, 0, 0.9)",
-        titleColor: "#fff",
-        bodyColor: "#fff",
-        borderColor: "rgba(255, 255, 255, 0.1)",
+        backgroundColor: "rgba(255, 255, 255, 0.95)",
+        titleColor: "#374151",
+        bodyColor: "#6b7280",
+        borderColor: "rgba(209, 213, 219, 0.5)",
         borderWidth: 1,
         cornerRadius: 8,
         padding: 12,
@@ -100,7 +100,7 @@ export default function MostJoinedCourses() {
       y: {
         beginAtZero: true,
         grid: {
-          color: "rgba(0, 0, 0, 0.05)",
+          color: "rgba(229, 231, 235, 0.5)",
         },
         ticks: {
           font: {
@@ -143,7 +143,7 @@ export default function MostJoinedCourses() {
         data: courseData.map((item) => item.students),
         backgroundColor: courseData.map((item) => item.color),
         hoverBackgroundColor: courseData.map((item) =>
-          item.color.replace("0.8", "1.0")
+          item.color.replace("0.6", "0.8")
         ),
         borderWidth: 0,
         maxBarThickness: 60,
@@ -153,6 +153,10 @@ export default function MostJoinedCourses() {
 
   return (
     <div className="w-full h-80">
+      <h3 className="text-lg font-semibold text-slate-500 mb-4 flex items-center">
+        <div className="w-2 h-2 bg-purple-400 rounded-full mr-2"></div>
+        الدورات الأكثر انضماماً
+      </h3>
       <BarChart
         data={chartData}
         options={options as unknown as ChartOptions<"bar">}

@@ -7,27 +7,27 @@ export default function TopFifthCourses() {
     {
       course: "React الأساسيات",
       students: 245,
-      color: "rgba(59, 130, 246, 0.8)",
+      color: "rgba(59, 130, 246, 0.6)",
     },
     {
       course: "JavaScript المتقدم",
       students: 298,
-      color: "rgba(236, 72, 153, 0.8)",
+      color: "rgba(236, 72, 153, 0.6)",
     },
     {
       course: "Python للمبتدئين",
       students: 412,
-      color: "rgba(34, 197, 94, 0.8)",
+      color: "rgba(34, 197, 94, 0.6)",
     },
     {
       course: "Node.js للمبتدئين",
       students: 356,
-      color: "rgba(251, 146, 60, 0.8)",
+      color: "rgba(251, 146, 60, 0.6)",
     },
     {
       course: "تصميم UI/UX",
       students: 234,
-      color: "rgba(168, 85, 247, 0.8)",
+      color: "rgba(168, 85, 247, 0.6)",
     },
   ];
 
@@ -39,10 +39,10 @@ export default function TopFifthCourses() {
         display: false,
       },
       tooltip: {
-        backgroundColor: "rgba(0, 0, 0, 0.9)",
-        titleColor: "#fff",
-        bodyColor: "#fff",
-        borderColor: "rgba(255, 255, 255, 0.1)",
+        backgroundColor: "rgba(255, 255, 255, 0.95)",
+        titleColor: "#374151",
+        bodyColor: "#6b7280",
+        borderColor: "rgba(209, 213, 219, 0.5)",
         borderWidth: 1,
         cornerRadius: 8,
         padding: 12,
@@ -61,7 +61,7 @@ export default function TopFifthCourses() {
       y: {
         beginAtZero: true,
         grid: {
-          color: "rgba(0, 0, 0, 0.05)",
+          color: "rgba(229, 231, 235, 0.5)",
         },
         ticks: {
           font: {
@@ -104,7 +104,7 @@ export default function TopFifthCourses() {
         data: topCoursesData.map((item) => item.students),
         backgroundColor: topCoursesData.map((item) => item.color),
         hoverBackgroundColor: topCoursesData.map((item) =>
-          item.color.replace("0.8", "1.0")
+          item.color.replace("0.6", "0.8")
         ),
         borderWidth: 0,
         maxBarThickness: 60,
@@ -113,9 +113,11 @@ export default function TopFifthCourses() {
   };
 
   return (
-    <div className=" h-80 w-full  py-8 px-2 ">
-      <h2 className="text-2xl font-bold mb-6 text-gray-500">
+    <div className="h-80 w-full py-8 px-2">
+      <h2 className="flex items-center gap-1 text-2xl font-bold mb-6 text-slate-500">
+        <div className="w-2 h-2 bg-pink-400 rounded-full mr-2"></div>
         أفضل خامسة دورات حسب الانضمام
+        <span></span>
       </h2>
       <BarChart
         data={chartData}

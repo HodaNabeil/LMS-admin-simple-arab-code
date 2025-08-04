@@ -139,7 +139,11 @@ const AverageProgressCourse = () => {
   };
 
   return (
-    <div className="w-full h-full">
+    <div className="w-full h-80">
+      <h3 className="text-lg font-semibold text-slate-500 mb-4 flex items-center">
+        <div className="w-2 h-2 bg-orange-400 rounded-full mr-2"></div>
+        متوسط التقدم لكل دورة
+      </h3>
       <LineChart data={data} options={options} />
     </div>
   );

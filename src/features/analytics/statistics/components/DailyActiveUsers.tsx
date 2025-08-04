@@ -88,8 +88,9 @@ const options = {
 export default function DailyActiveUsers() {
   return (
     <div className="space-y-4">
-      <h3 className="text-lg font-semibold text-gray-500">
-        المستخدمون النشطون يوميًا
+      <h3 className="flex items-center gap-1   text-lg font-semibold text-gray-500">
+        <div className="w-2 h-2 bg-indigo-400 rounded-full mr-2"></div>
+        <span> المستخدمون النشطون يوميًا</span>
       </h3>
       <div style={{ height: 400 }}>
         <LineChart data={data} options={options} />
