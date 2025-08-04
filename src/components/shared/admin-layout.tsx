@@ -9,7 +9,7 @@ function AdminLayout() {
     <ProtectedRoute>
       <SidebarProvider>
         <AppSidebar />
-        <main>
+        <main className="flex-1 ">
           <SidebarTrigger />
           <Outlet />
         </main>

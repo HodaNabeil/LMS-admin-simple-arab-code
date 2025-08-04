@@ -40,23 +40,23 @@ interface LessonTableProps {
 const columns: ColumnDef<LessonAnalytics>[] = [
   {
     accessorKey: "name",
-    header: "اسم الدرس",
+    header: "المحاضرة ",
     cell: ({ row }) => (
-      <span className="font-semibold text-blue-700">
+      <span className="font-semibold text-gray-500">
         {row.getValue("name")}
       </span>
     ),
   },
   {
     accessorKey: "course",
-    header: "اسم الكورس",
+    header: "اسم الدورة ",
     cell: ({ row }) => (
       <span className="text-gray-700">{row.getValue("course")}</span>
     ),
   },
   {
     accessorKey: "instructor",
-    header: "المدرب",
+    header: "المسار التعليمي ",
     cell: ({ row }) => (
       <span className="text-gray-600">{row.getValue("instructor")}</span>
     ),
@@ -167,7 +167,7 @@ export default function LessonTable({ lessons }: LessonTableProps) {
               className="bg-white rounded-lg border border-gray-200 p-4 space-y-3"
             >
               <div className="space-y-2">
-                <h3 className="font-semibold text-blue-700 text-right">
+                <h3 className="font-semibold text-gray-500 text-right">
                   {row.getValue("name")}
                 </h3>
                 <div className="text-sm text-gray-600 text-right">

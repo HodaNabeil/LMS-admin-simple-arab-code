@@ -113,7 +113,10 @@ export default function TopFifthCourses() {
   };
 
   return (
-    <div className="w-full h-full">
+    <div className=" h-80 w-full  py-8 px-2 ">
+      <h2 className="text-2xl font-bold mb-6 text-gray-500">
+        أفضل خامسة دورات حسب الانضمام
+      </h2>
       <BarChart
         data={chartData}
         options={options as unknown as ChartOptions<"bar">}

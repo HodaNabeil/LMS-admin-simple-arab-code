@@ -53,7 +53,7 @@ const lessons: LessonAnalytics[] = [
 ];
 export default function MostWatchedLessons() {
   return (
-    <div className="w-full mx-auto py-8 px-2">
+    <div className="w-full h-full  mx-auto py-8 px-2">
       <h2 className="text-2xl font-bold mb-6 text-gray-500">
         الدروس الأكثر مشاهدة
       </h2>

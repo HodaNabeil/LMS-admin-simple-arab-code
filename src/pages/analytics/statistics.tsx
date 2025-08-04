@@ -66,7 +66,7 @@ export default function Statistics() {
         </div>
 
         <div className="card-Statistics">
-          <MostWatchedLessons />
+          <MostWatchedLessons  />
         </div>
       </section>
 
