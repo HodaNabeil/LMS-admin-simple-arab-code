@@ -85,7 +85,7 @@ export const columns: ColumnDef<Path>[] = [
       const path = row.original;
       return (
         <div className="flex gap-2 items-center">
-          <Link to={`/admin/paths/${path.slug}/manage`} state={{ path }}>
+          <Link to={`/admin/paths/${path.slug}/manage`}>
             <Edit className="h-4 w-4 text-blue-600 hover:text-blue-800" />
           </Link>
           <DeletePath pathId={path.id} />

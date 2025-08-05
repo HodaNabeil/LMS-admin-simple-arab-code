@@ -15,15 +15,15 @@ export function usePaths() {
   });
 }
 
-export function usePathBySlug(slug: string) {
+export function usePath(slug: string | undefined) {
   return useQuery<Path>({
-    queryKey: pathsKeys.detail(slug),
+    queryKey: pathsKeys.detail(slug || ""),
     queryFn: async (): Promise<Path> => {
-      const { data } = await api.get<{ path: Path }>(`/paths/${slug}`);
-      return data.path;
+      const { data } = await api.get<Path>(`/paths/${slug}`);
+      return data;
     },
     enabled: !!slug,
-    staleTime: 5 * 60 * 1000,
-    gcTime: 10 * 60 * 1000,
+    staleTime: 5 * 60 * 1000, // 5 minutes
+    gcTime: 10 * 60 * 1000, // 10 minutes
   });
 }
