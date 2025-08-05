@@ -9,7 +9,7 @@ import { DialogDescription, DialogTitle } from "@radix-ui/react-dialog";
 import { Edit } from "lucide-react";
 import type { User } from "@/types/user";
 import { useState } from "react";
-import { useUpdateUser } from "@/hooks/useUsers";
+import { useUpdateUser } from "../hooks/useUsersMutations";
 
 export function EditUser({ user }: { user: User }) {
   const [userMenu, setUserMenu] = useState(false);

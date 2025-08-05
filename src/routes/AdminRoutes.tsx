@@ -4,7 +4,6 @@ import Paths from "@/pages/paths";
 import CreateNewPath from "@/pages/paths/create";
 import Users from "@/pages/users";
 import { Route } from "react-router-dom";
-
 export const adminRoutes = (
   <Route path="admin" element={<AdminLayout />}>
     <Route index element={<Admin />} />

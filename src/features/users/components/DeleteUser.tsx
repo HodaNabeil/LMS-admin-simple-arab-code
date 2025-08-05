@@ -9,11 +9,11 @@ import {
 import { Trash2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { useDeleteUser } from "@/hooks/useUsers";
 import { toast } from "sonner";
 import { Loader } from "@/components/shared/loader";
 import type { AxiosError } from "axios";
 import { useState } from "react";
+import { useDeleteUser } from "../hooks/useUsersMutations";
 export default function DeleteUser({ userId }: { userId: string }) {
   const [userMenu, setUserMenu] = useState(false);
   const { mutateAsync, isPending } = useDeleteUser();

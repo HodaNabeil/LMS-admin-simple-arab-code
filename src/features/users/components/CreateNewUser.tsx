@@ -8,7 +8,7 @@ import {
 import UserForm from "./UserForm";
 import { DialogDescription, DialogTitle } from "@radix-ui/react-dialog";
 import { useState } from "react";
-import { useCreateUser } from "@/hooks/useUsers";
+import { useCreateUser } from "../hooks/useUsersMutations";
 
 export function CreateNewUser() {
   const [userMenu, setUserMenu] = useState(false);
