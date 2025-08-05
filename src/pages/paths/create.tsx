@@ -5,6 +5,7 @@ export default function NewAddPath() {
   const nav = useNavigate();
   function onCancel() {
     nav("/admin/paths");
+    
   }
   return (
     <div className="!pt-[5rem]">
