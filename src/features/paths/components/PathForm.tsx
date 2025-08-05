@@ -7,7 +7,7 @@ import { ArrowRight, Save, Trash2, Eye, Download } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Pages, Routes } from "@/constants/enums";
 import { useCreatePath, useUpdatePath } from "../hooks/usePathsMutations";
 import type { Path } from "@/types/path";
@@ -113,13 +113,13 @@ const ExistingPDFDisplay = ({
 };
 
 const PathForm = ({ onSubmit, isLoading = false, pathData }: PathFormProps) => {
+  const { pathSlug } = useParams<{ pathSlug: string }>();
   const isEditMode = Boolean(pathData);
   const [isChangingImage, setIsChangingImage] = useState(false);
   const [isChangingRoadmap, setIsChangingRoadmap] = useState(false);
 
-  console.log(isEditMode);
   const createMutation = useCreatePath();
-  const updateMutation = useUpdatePath();
+  const updateMutation = useUpdatePath({ slug: pathSlug || "" });
   const mutation = isEditMode ? updateMutation : createMutation;
   const navigate = useNavigate();
 

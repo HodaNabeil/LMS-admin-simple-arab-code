@@ -12,9 +12,13 @@ export function useCreatePath() {
   const queryClient = useQueryClient();
   return useMutation<PathMutationResponse, Error, FormData>({
     mutationFn: async (formData: FormData): Promise<PathMutationResponse> => {
-      const { data } = await api.post<PathMutationResponse>("/paths", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
+      const { data } = await api.post<PathMutationResponse>(
+        "/paths",
+        formData,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+        }
+      );
       return data;
     },
     onSuccess: (res) => {
@@ -36,13 +40,17 @@ export function useCreatePath() {
   });
 }
 
-export function useUpdatePath() {
+export function useUpdatePath({ slug }: { slug: string }) {
   const queryClient = useQueryClient();
   return useMutation<PathMutationResponse, Error, FormData>({
     mutationFn: async (formData: FormData): Promise<PathMutationResponse> => {
-      const { data } = await api.put<PathMutationResponse>("/paths", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
+      const { data } = await api.put<PathMutationResponse>(
+        `/paths/${slug}`,
+        formData,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+        }
+      );
       return data;
     },
     onSuccess: (res) => {
@@ -67,9 +75,9 @@ export function useUpdatePath() {
 export function useDeletePath() {
   const queryClient = useQueryClient();
   return useMutation<{ message: string }, Error, string>({
-    mutationFn: async (pathId: string): Promise<{ message: string }> => {
-      const { data } = await api.delete<{ message: string }>("/paths", {
-        data: { id: pathId },
+    mutationFn: async (slug: string): Promise<{ message: string }> => {
+      const { data } = await api.delete<{ message: string }>(`/paths/${slug}`, {
+        data: slug,
       });
       return data;
     },
