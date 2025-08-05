@@ -26,6 +26,8 @@ import { columns } from "./columns";
 import { Loader } from "@/components/shared/loader";
 import { usePaths } from "../../hooks/usePathsQueries";
 import DeletePath from "../DeletePath";
+import { Link } from "react-router-dom";
+import { Trash2 } from "lucide-react";
 
 function PathTable() {
   const { data, isPending } = usePaths();
@@ -98,6 +100,9 @@ function PathTable() {
                 </div>
                 <div className="flex gap-2">
                   {/* <EditPath path={row.original} /> */}
+                  <Link to={`/admin/paths/${row.original.id}/manage`}>
+                    تعديل
+                  </Link>
                   <DeletePath pathId={row.original.id} />
                 </div>
               </div>

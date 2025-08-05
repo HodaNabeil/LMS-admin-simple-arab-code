@@ -4,6 +4,7 @@ import DeletePath from "../DeletePath";
 import type { Path } from "@/types/path";
 import { Link } from "react-router-dom";
 import { buttonVariants } from "@/components/ui/button";
+import { Edit } from "lucide-react";
 
 export const columns: ColumnDef<Path>[] = [
   {
@@ -83,6 +84,9 @@ export const columns: ColumnDef<Path>[] = [
     cell: ({ row }) => (
       <div className="flex gap-2 items-center">
         {/* <EditPath path={row.original} /> */}
+        <Link to={`/admin/paths/${row.original.slug}/manage`}>
+          <Edit className="h-4 w-4 text-blue-600 !hover:text-blue-800" />
+        </Link>
         <DeletePath pathId={row.original.id} />
       </div>
     ),

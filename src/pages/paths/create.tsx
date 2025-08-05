@@ -1,5 +1,5 @@
 import { Pages, Routes } from "@/constants/enums";
-import AddPathFrom from "@/features/paths/create/components/AddPathFrom";
+import AddPathFrom from "@/features/paths/create/components/PathFrom";
 import { useNavigate } from "react-router-dom";
 
 export default function CreateNewPath() {
