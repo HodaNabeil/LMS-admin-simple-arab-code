@@ -1,7 +1,7 @@
 import AdminLayout from "@/components/shared/admin-layout";
 import Admin from "@/pages";
 import Paths from "@/pages/paths";
-import NewAddPath from "@/pages/paths/create";
+import CreateNewPath from "@/pages/paths/create";
 import Users from "@/pages/users";
 import { Route } from "react-router-dom";
 
@@ -13,7 +13,7 @@ export const adminRoutes = (
     <Route path="settings" element={<div>Settings Page</div>} />
     <Route path="paths">
       <Route index element={<Paths />} />
-      <Route path="create" element={<NewAddPath />} />
+      <Route path="create" element={<CreateNewPath />} />
     </Route>
   </Route>
 );

@@ -25,7 +25,6 @@ import { useState } from "react";
 import { columns } from "./columns";
 import { Loader } from "@/components/shared/loader";
 import { usePaths } from "../../hooks/usePathsQueries";
-import { EditPath } from "@/pages/paths/edit";
 import DeletePath from "../DeletePath";
 
 function PathTable() {
@@ -98,7 +97,7 @@ function PathTable() {
                   </p>
                 </div>
                 <div className="flex gap-2">
-                  <EditPath path={row.original} />
+                  {/* <EditPath path={row.original} /> */}
                   <DeletePath pathId={row.original.id} />
                 </div>
               </div>

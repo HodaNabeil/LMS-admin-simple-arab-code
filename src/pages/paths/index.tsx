@@ -5,9 +5,7 @@ function Paths() {
   return (
     <div className="space-y-6 p-4">
       <Header pathsCount={0} />
-
       {/* <PathsStats /> */}
-
       <PathTable />
     </div>
   );

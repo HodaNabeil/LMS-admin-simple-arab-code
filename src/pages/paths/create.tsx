@@ -1,9 +1,9 @@
 import AddPathFrom from "@/features/paths/components/AddPathFrom";
 
-export default function NewAddPath() {
+export default function CreateNewPath() {
   return (
-    <div className="!pt-[5rem]">
+    <main className="pt-20">
       <AddPathFrom onSubmit={() => {}} onCancel={() => {}} />
-    </div>
+    </main>
   );
 }
