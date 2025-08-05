@@ -1,6 +1,6 @@
 import api from "@/lib/axios";
 import { pathsKeys } from "@/lib/query-keys";
-import type { PathResponse } from "@/types/path";
+import type { PathResponse, Path } from "@/types/path";
 import { useQuery } from "@tanstack/react-query";
 
 export function usePaths() {
@@ -12,5 +12,18 @@ export function usePaths() {
     },
     staleTime: 5 * 60 * 1000, // 5 minutes
     gcTime: 10 * 60 * 1000, // 10 minutes
+  });
+}
+
+export function usePathBySlug(slug: string) {
+  return useQuery<Path>({
+    queryKey: pathsKeys.detail(slug),
+    queryFn: async (): Promise<Path> => {
+      const { data } = await api.get<{ path: Path }>(`/paths/${slug}`);
+      return data.path;
+    },
+    enabled: !!slug,
+    staleTime: 5 * 60 * 1000,
+    gcTime: 10 * 60 * 1000,
   });
 }

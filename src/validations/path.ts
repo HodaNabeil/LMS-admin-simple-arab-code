@@ -65,4 +65,7 @@ export const pathSchema = z.object({
     }),
 });
 
+export const pathEditSchema = pathSchema.partial();
 export type IPathForm = z.infer<typeof pathSchema>;
+
+export type PathEdit = z.infer<typeof pathEditSchema>;

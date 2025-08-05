@@ -81,14 +81,16 @@ export const columns: ColumnDef<Path>[] = [
     id: "actions",
     header: "الإجراءات",
     enableHiding: false,
-    cell: ({ row }) => (
-      <div className="flex gap-2 items-center">
-        {/* <EditPath path={row.original} /> */}
-        <Link to={`/admin/paths/${row.original.slug}/manage`}>
-          <Edit className="h-4 w-4 text-blue-600 !hover:text-blue-800" />
-        </Link>
-        <DeletePath pathId={row.original.id} />
-      </div>
-    ),
+    cell: ({ row }) => {
+      const path = row.original;
+      return (
+        <div className="flex gap-2 items-center">
+          <Link to={`/admin/paths/${path.slug}/manage`} state={{ path }}>
+            <Edit className="h-4 w-4 text-blue-600 hover:text-blue-800" />
+          </Link>
+          <DeletePath pathId={path.id} />
+        </div>
+      );
+    },
   },
 ];

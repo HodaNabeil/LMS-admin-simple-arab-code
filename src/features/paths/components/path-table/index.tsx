@@ -27,7 +27,6 @@ import { Loader } from "@/components/shared/loader";
 import { usePaths } from "../../hooks/usePathsQueries";
 import DeletePath from "../DeletePath";
 import { Link } from "react-router-dom";
-import { Trash2 } from "lucide-react";
 
 function PathTable() {
   const { data, isPending } = usePaths();
