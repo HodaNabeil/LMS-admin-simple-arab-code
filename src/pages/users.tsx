@@ -1,25 +1,7 @@
-import { User } from "lucide-react";
-import { StatsCard } from "@/features/users/components/StatsCard";
 import { CreateNewUser } from "@/features/users/components/CreateNewUser";
 import UserTable from "@/features/users/components/UserTable";
 import { Loader } from "@/components/shared/loader";
 import { useUsers } from "@/features/users/hooks/useUsersQueries";
-
-const studentsData1 = [
-  { date: "2025-06-12", value: 1 },
-  { date: "2025-06-16", value: 4 },
-  { date: "2025-06-17", value: 1 },
-  { date: "2025-06-12", value: 1 },
-  { date: "2025-06-16", value: 4 },
-  { date: "2025-06-17", value: 1 },
-
-  { date: "2025-06-12", value: 1 },
-  { date: "2025-06-16", value: 4 },
-  { date: "2025-06-17", value: 1 },
-  { date: "2025-06-12", value: 1 },
-  { date: "2025-06-16", value: 4 },
-  { date: "2025-06-17", value: 1 },
-];
 
 export default function Users() {
   const { data, isLoading, isError } = useUsers();

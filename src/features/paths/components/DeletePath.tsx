@@ -13,11 +13,11 @@ import { toast } from "sonner";
 import { Loader } from "@/components/shared/loader";
 import type { AxiosError } from "axios";
 import { useState } from "react";
-import { useDeleteUser } from "../hooks/useUsersMutations";
-export default function DeleteUser({ userId }: { userId: string }) {
+import { useDeletePath } from "../hooks/usePathsMutations";
+export default function DeletePath({ pathId }: { pathId: string }) {
   const [userMenu, setUserMenu] = useState(false);
-  const { mutateAsync, isPending } = useDeleteUser();
-  const handleDeleteUser = async (id: string) => {
+  const { mutateAsync, isPending } = useDeletePath();
+  const handleDeletePath = async (id: string) => {
     try {
       const res = await mutateAsync(id);
       toast.success(res.message);
@@ -39,22 +39,21 @@ export default function DeleteUser({ userId }: { userId: string }) {
   return (
     <Dialog open={userMenu} onOpenChange={(open) => setUserMenu(open)}>
       <DialogTrigger asChild>
-        <Trash2 className="h-4 w-4" />
+        <Button variant="link" className="text-red-600 hover:text-red-800">
+          <Trash2 className="h-4 w-4" />
+        </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader className="!text-right">
-          <DialogTitle>حذف المستخدم</DialogTitle>
-          <DialogDescription>
-            هل أنت متأكد أنك تريد حذف هذا المستخدم؟ هذه العملية لا يمكن التراجع
-            عنها.
-          </DialogDescription>
+          <DialogTitle>حذف المسار</DialogTitle>
+          <DialogDescription>هل انت متاكد من حذف المسار؟</DialogDescription>
         </DialogHeader>
         <Button
           type="submit"
           disabled={isPending}
-          onClick={() => handleDeleteUser(userId)}
+          onClick={() => handleDeletePath(pathId)}
         >
-          حذف المستخدم
+          حذف المسار
           {isPending && <Loader />}
         </Button>
       </DialogContent>

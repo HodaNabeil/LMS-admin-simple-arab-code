@@ -13,6 +13,7 @@ export enum Routes {
   AUTH = "auth",
   PROFILE = "profile",
   ADMIN = "admin",
+  PATHS = "paths",
 }
 
 export enum Pages {
@@ -25,6 +26,7 @@ export enum Pages {
   RESET_PASSWORD = "reset-password",
   LOGOUT = "logout",
   USERS = "users",
+  PATHS = "paths",
 }
 
 export enum InputTypes {

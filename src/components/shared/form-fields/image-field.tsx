@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 interface Props extends IFormField {
   errors: FieldErrors;
   control: Control<Record<string, unknown>>;
+  onImageChange?: () => void;
 }
 
 const ImageField = ({
@@ -18,6 +19,7 @@ const ImageField = ({
   disabled,
   control,
   errors,
+  onImageChange,
 }: Props) => {
   const hasError = Boolean(errors[name]);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -39,6 +41,9 @@ const ImageField = ({
 
       // Pass the file to the form
       onChange(file);
+      if (typeof onImageChange === "function") {
+        onImageChange();
+      }
     }
   };
 
@@ -95,11 +100,11 @@ const ImageField = ({
                       src={preview}
                       alt="Preview"
                       loading="lazy"
-                      className="mx-auto h-32 w-32 rounded-full object-cover border-4 border-background shadow-lg transition-opacity group-hover:opacity-75"
+                      className="mx-auto max-h-48 w-auto rounded-lg object-contain border-2 border-background shadow-lg transition-opacity group-hover:opacity-75"
                     />
                     {/* Overlay icon on hover */}
                     <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                      <div className="bg-black/50 rounded-full p-2">
+                      <div className="bg-black/50 rounded-lg p-3">
                         <svg
                           className="h-6 w-6 text-white"
                           fill="none"
@@ -145,7 +150,7 @@ const ImageField = ({
                   )}
                   onClick={disabled ? undefined : handleFileSelect}
                 >
-                  <div className="mx-auto h-16 w-16 rounded-full bg-muted flex items-center justify-center">
+                  <div className="mx-auto h-16 w-16 rounded-lg bg-muted flex items-center justify-center">
                     <svg
                       className="h-8 w-8 text-muted-foreground"
                       fill="none"
