@@ -1,11 +1,10 @@
-import { Header } from "@/features/paths/components/Header";
+import PathHeader from "@/features/paths/components/PathHeader";
 import PathTable from "@/features/paths/components/path-table";
 
 function Paths() {
   return (
     <div className="space-y-6 p-4">
-      <Header pathsCount={0} />
-      {/* <PathsStats /> */}
+      <PathHeader />
       <PathTable />
     </div>
   );

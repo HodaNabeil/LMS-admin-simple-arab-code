@@ -7,7 +7,7 @@ import { ArrowRight, Save, Trash2 } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { useCreatePath } from "../hooks/usePathsMutations";
+import { useCreatePath } from "../../hooks/usePathsMutations";
 interface AddPathFormProps {
   onSubmit?: (data: IPathForm) => void;
   onCancel?: () => void;

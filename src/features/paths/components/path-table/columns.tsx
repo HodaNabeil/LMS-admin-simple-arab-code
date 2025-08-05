@@ -1,7 +1,6 @@
 import { Badge } from "@/components/ui/badge";
 import type { ColumnDef } from "@tanstack/react-table";
 import DeletePath from "../DeletePath";
-import { EditPath } from "@/pages/paths/edit";
 import type { Path } from "@/types/path";
 import { Link } from "react-router-dom";
 import { buttonVariants } from "@/components/ui/button";
@@ -83,7 +82,7 @@ export const columns: ColumnDef<Path>[] = [
     enableHiding: false,
     cell: ({ row }) => (
       <div className="flex gap-2 items-center">
-        <EditPath path={row.original} />
+        {/* <EditPath path={row.original} /> */}
         <DeletePath pathId={row.original.id} />
       </div>
     ),

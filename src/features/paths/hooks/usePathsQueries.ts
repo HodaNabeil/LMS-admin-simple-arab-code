@@ -10,5 +10,7 @@ export function usePaths() {
       const { data } = await api.get<PathResponse>("/paths");
       return data;
     },
+    staleTime: 5 * 60 * 1000, // 5 minutes
+    gcTime: 10 * 60 * 1000, // 10 minutes
   });
 }
