@@ -8,9 +8,10 @@ import { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { useCreatePath } from "../../hooks/usePathsMutations";
+import { useNavigate } from "react-router-dom";
+import { Pages, Routes } from "@/constants/enums";
 interface AddPathFormProps {
   onSubmit?: (data: IPathForm) => void;
-  onCancel?: () => void;
   isLoading?: boolean;
 }
 // Local storage key for persisting form data
@@ -55,10 +56,11 @@ const removeFromLocalStorage = (key: string) => {
 
 const PathFrom = ({
   onSubmit,
-  onCancel,
+
   isLoading = false,
 }: AddPathFormProps) => {
   const mutation = useCreatePath();
+  const navigate = useNavigate();
   // Get saved step from localStorage or default to 1
   const [currentStep, setCurrentStep] = useState(() => {
     const savedStep = getFromLocalStorage(FORM_STEP_KEY);
@@ -66,7 +68,9 @@ const PathFrom = ({
     return savedStep || 2;
   });
   const totalSteps = 2;
-
+  function onCancel() {
+    navigate(`/${Routes.ADMIN}/${Pages.PATHS}`);
+  }
   // Get saved form data from localStorage
   const getSavedFormData = useCallback(() => {
     const savedData = getFromLocalStorage(FORM_DATA_KEY);
