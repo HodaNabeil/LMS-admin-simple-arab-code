@@ -6,15 +6,14 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Directions } from "@/constants/enums";
 import { Trash2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { useDeleteUser } from "@/hooks/useUsers";
 import { toast } from "sonner";
 import { Loader } from "@/components/shared/loader";
 import type { AxiosError } from "axios";
 import { useState } from "react";
+import { useDeleteUser } from "../hooks/useUsersMutations";
 export default function DeleteUser({ userId }: { userId: string }) {
   const [userMenu, setUserMenu] = useState(false);
   const { mutateAsync, isPending } = useDeleteUser();
@@ -42,7 +41,7 @@ export default function DeleteUser({ userId }: { userId: string }) {
       <DialogTrigger asChild>
         <Trash2 className="h-4 w-4" />
       </DialogTrigger>
-      <DialogContent dir={Directions.RTL} className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[425px]">
         <DialogHeader className="!text-right">
           <DialogTitle>حذف المستخدم</DialogTitle>
           <DialogDescription>

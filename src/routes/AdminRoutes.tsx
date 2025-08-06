@@ -10,10 +10,10 @@ import Courses from "@/pages/courses";
 import CreateCourse from "@/pages/courses/create";
 import ManageCourse from "@/pages/courses/manage";
 import Paths from "@/pages/paths";
-import NewAddPath from "@/pages/paths/create";
+import CreateNewPath from "@/pages/paths/create";
+import ManagePath from "@/pages/paths/manage";
 import Users from "@/pages/users";
 import { Route } from "react-router-dom";
-
 export const adminRoutes = (
   <Route path="admin" element={<AdminLayout />}>
     <Route index element={<Admin />} />
@@ -22,7 +22,8 @@ export const adminRoutes = (
     <Route path="settings" element={<div>Settings Page</div>} />
     <Route path="paths">
       <Route index element={<Paths />} />
-      <Route path="create" element={<NewAddPath />} />
+      <Route path="create" element={<CreateNewPath />} />
+      <Route path=":pathSlug/manage" element={<ManagePath />} />
     </Route>
     <Route path="courses">
       <Route index element={<Courses />} />

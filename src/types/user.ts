@@ -6,6 +6,9 @@ export type User = {
   email: string;
   role: UserType;
 };
+export type UserResponse = {
+  users: User[];
+};
 
 export type AuthResponse = {
   user: User;

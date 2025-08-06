@@ -31,6 +31,7 @@ export enum Pages {
   GOALS = "manage/goals",
   BASICS = "manage/basics",
   PRICING = "manage/pricing",
+  MANAGE = "manage",
 }
 
 export enum InputTypes {
