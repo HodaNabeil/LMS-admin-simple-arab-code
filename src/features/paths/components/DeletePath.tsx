@@ -14,12 +14,12 @@ import { Loader } from "@/components/shared/loader";
 import type { AxiosError } from "axios";
 import { useState } from "react";
 import { useDeletePath } from "../hooks/usePathsMutations";
-export default function DeletePath({ pathId }: { pathId: string }) {
+export default function DeletePath({ pathSlug }: { pathSlug: string }) {
   const [userMenu, setUserMenu] = useState(false);
   const { mutateAsync, isPending } = useDeletePath();
-  const handleDeletePath = async (id: string) => {
+  const handleDeletePath = async (slug: string) => {
     try {
-      const res = await mutateAsync(id);
+      const res = await mutateAsync(slug);
       toast.success(res.message);
       setUserMenu(false);
     } catch (error) {
@@ -51,7 +51,7 @@ export default function DeletePath({ pathId }: { pathId: string }) {
         <Button
           type="submit"
           disabled={isPending}
-          onClick={() => handleDeletePath(pathId)}
+          onClick={() => handleDeletePath(pathSlug)}
         >
           حذف المسار
           {isPending && <Loader />}

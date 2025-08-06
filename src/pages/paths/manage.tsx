@@ -5,40 +5,37 @@ import { Loader } from "@/components/shared/loader";
 
 function ManagePath() {
   const { pathSlug } = useParams<{ pathSlug: string }>();
-  const { data, isLoading, error, isError } = usePath(pathSlug);
-  if (isLoading) {
+  const { data: path, isPending, error, isError } = usePath(pathSlug);
+  if (isPending) {
     return (
-      <div
-        style={{ paddingTop: "5rem" }}
-        className="flex justify-center items-center min-h-screen"
-      >
+      <div className="flex justify-center items-center min-h-screen pt-20">
         <Loader />
       </div>
     );
   }
 
-  if (error || isError) {
+  if (isError) {
     return (
       <div
         style={{ paddingTop: "5rem" }}
         className="flex justify-center items-center min-h-screen"
       >
         <div className="text-red-500">
-          <p>Error loading path data</p>
-          <p className="text-sm mt-2">Slug: {pathSlug}</p>
-          <p className="text-sm">Error: {error?.message || "Unknown error"}</p>
+          <p>Error loading path data. Please try again later.</p>
+          <p>{error.message}</p>
         </div>
       </div>
     );
   }
 
-  if (!error && !isLoading) {
-    return (
+  return (
+    !isPending &&
+    path && (
       <div style={{ paddingTop: "5rem" }}>
-        <PathForm pathData={data.data} />
+        <PathForm pathData={path.data} />
       </div>
-    );
-  }
+    )
+  );
 }
 
 export default ManagePath;

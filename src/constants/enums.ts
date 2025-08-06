@@ -27,6 +27,7 @@ export enum Pages {
   LOGOUT = "logout",
   USERS = "users",
   PATHS = "paths",
+  MANAGE = "manage",
 }
 
 export enum InputTypes {

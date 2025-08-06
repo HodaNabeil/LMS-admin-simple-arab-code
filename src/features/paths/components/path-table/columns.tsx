@@ -88,7 +88,7 @@ export const columns: ColumnDef<Path>[] = [
           <Link to={`/admin/paths/${path.slug}/manage`}>
             <Edit className="h-4 w-4 text-blue-600 hover:text-blue-800" />
           </Link>
-          <DeletePath pathId={path.slug} />
+          <DeletePath pathSlug={path.slug} />
         </div>
       );
     },

@@ -7,16 +7,14 @@ import { ArrowRight, Save, Trash2, Eye, Download } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Pages, Routes } from "@/constants/enums";
 import { useCreatePath, useUpdatePath } from "../hooks/usePathsMutations";
 import type { Path } from "@/types/path";
 import RemoteImage from "@/components/shared/RemoteImage";
 
 interface PathFormProps {
-  onSubmit?: (data: Partial<IPathForm>) => void;
-  isLoading?: boolean;
-  pathData?: Path; // بيانات المسار للتعديل
+  pathData?: Path;
 }
 
 // Local storage key for persisting form data
@@ -112,28 +110,26 @@ const ExistingPDFDisplay = ({
   );
 };
 
-const PathForm = ({ onSubmit, isLoading = false, pathData }: PathFormProps) => {
-  const { pathSlug } = useParams<{ pathSlug: string }>();
+const PathForm = ({ pathData }: PathFormProps) => {
   const isEditMode = Boolean(pathData);
   const [isChangingImage, setIsChangingImage] = useState(false);
   const [isChangingRoadmap, setIsChangingRoadmap] = useState(false);
-
   const createMutation = useCreatePath();
-  const updateMutation = useUpdatePath({ slug: pathSlug || "" });
+  const updateMutation = useUpdatePath({ slug: pathData?.slug || "" });
   const mutation = isEditMode ? updateMutation : createMutation;
   const navigate = useNavigate();
 
   // Get saved step from localStorage or default to 1
   const [currentStep, setCurrentStep] = useState(() => {
+    // In edit mode, don't use saved step from localStorage, always start from step 1
+    if (isEditMode) {
+      return 1;
+    }
     const savedStep = getFromLocalStorage(FORM_STEP_KEY);
     return savedStep || 1;
   });
 
-  const totalSteps = 2;
-
-  function onCancel() {
-    navigate(`/${Routes.ADMIN}/${Pages.PATHS}`);
-  }
+  const totalSteps = isEditMode ? 1 : 2;
 
   // Get saved form data from localStorage or use pathData for edit mode
   const getSavedFormData = useCallback(() => {
@@ -174,7 +170,7 @@ const PathForm = ({ onSubmit, isLoading = false, pathData }: PathFormProps) => {
     defaultValues: getSavedFormData(),
   });
 
-  const formLoading = isSubmitting || isLoading || mutation.isPending;
+  const formLoading = isSubmitting || mutation.isPending;
 
   // Watch all form values for auto-save
   const watchedValues = watch();
@@ -190,53 +186,23 @@ const PathForm = ({ onSubmit, isLoading = false, pathData }: PathFormProps) => {
     }
   }, [watchedValues, isEditMode]);
 
-  // Save current step to localStorage whenever it changes
+  // Save current step to localStorage whenever it changes (only in add mode)
   useEffect(() => {
-    saveToLocalStorage(FORM_STEP_KEY, currentStep);
-  }, [currentStep]);
+    if (!isEditMode) {
+      saveToLocalStorage(FORM_STEP_KEY, currentStep);
+    }
+  }, [currentStep, isEditMode]);
 
   const clearDraftData = useCallback(() => {
     removeFromLocalStorage(FORM_DATA_KEY);
     removeFromLocalStorage(FORM_STEP_KEY);
   }, []);
 
-  const handleFormSubmit = async (data: Partial<IPathForm>) => {
+  const handleFormSubmit = async (data: IPathForm) => {
     try {
-      const formData = new FormData();
+      await mutation.mutateAsync(data);
 
-      // Only append fields that are provided (for edit mode)
-      if (data.name) {
-        formData.append("name", data.name);
-      }
-      if (data.slug) {
-        formData.append("slug", data.slug);
-      }
-      if (data.description) {
-        formData.append("description", data.description);
-      }
-      if (data.heading) {
-        formData.append("heading", data.heading);
-      }
-
-      if (data.image && typeof data.image !== "string") {
-        formData.append("image", data.image);
-      }
-      if (data.roadmap && typeof data.roadmap !== "string") {
-        formData.append("roadmap", data.roadmap);
-      }
-
-      // Add ID for edit mode
-      if (isEditMode && pathData?.id) {
-        formData.append("id", pathData.id);
-      }
-
-      await mutation.mutateAsync(formData);
-
-      if (!isEditMode) {
-        clearDraftData();
-      }
-
-      onSubmit?.(data);
+      clearDraftData();
       navigate(`/${Routes.ADMIN}/${Pages.PATHS}`);
     } catch (error) {
       console.log(error || "Error submitting form");
@@ -245,7 +211,8 @@ const PathForm = ({ onSubmit, isLoading = false, pathData }: PathFormProps) => {
 
   const handleCancel = () => {
     if (isEditMode) {
-      onCancel?.();
+      clearDraftData();
+      navigate(`/${Routes.ADMIN}/${Pages.PATHS}`);
     } else {
       // Show confirmation before clearing draft
       if (
@@ -253,7 +220,7 @@ const PathForm = ({ onSubmit, isLoading = false, pathData }: PathFormProps) => {
       ) {
         clearDraftData();
         reset();
-        onCancel?.();
+        navigate(`/${Routes.ADMIN}/${Pages.PATHS}`);
       }
     }
   };
@@ -283,6 +250,23 @@ const PathForm = ({ onSubmit, isLoading = false, pathData }: PathFormProps) => {
   };
 
   const getFieldsForStep = (step: number): (keyof IPathForm)[] => {
+    if (isEditMode) {
+      // In edit mode, validate all fields that might be changed
+      const fields: (keyof IPathForm)[] = [
+        "name",
+        "slug",
+        "description",
+        "heading",
+      ];
+      if (isChangingImage) {
+        fields.push("image");
+      }
+      if (isChangingRoadmap) {
+        fields.push("roadmap");
+      }
+      return fields;
+    }
+
     switch (step) {
       case 1:
         return ["name", "slug", "description", "heading"];
@@ -302,17 +286,18 @@ const PathForm = ({ onSubmit, isLoading = false, pathData }: PathFormProps) => {
       placeholder: "ادخل اسم المسار التعليمي",
     },
     {
-      name: "heading",
-      label: "عنوان المسار ",
-      type: "text" as const,
-      placeholder: "ادخل عنوان المسار",
-    },
-    {
       name: "slug",
       label: "المُعرّف (Slug)",
       type: "text" as const,
       placeholder: "أدخل مُعرّف المادة (يجب أن يكون فريدًا)",
     },
+    {
+      name: "heading",
+      label: "عنوان المسار ",
+      type: "text" as const,
+      placeholder: "ادخل عنوان المسار",
+    },
+
     {
       name: "description",
       label: "وصف المسار التعليمي (بالتفاصيل)",
@@ -347,6 +332,11 @@ const PathForm = ({ onSubmit, isLoading = false, pathData }: PathFormProps) => {
   ];
 
   const getCurrentFields = () => {
+    if (isEditMode) {
+      // In edit mode, show all fields in one step
+      return [...step1Fields, ...step2Fields];
+    }
+
     switch (currentStep) {
       case 1:
         return step1Fields;
@@ -389,29 +379,31 @@ const PathForm = ({ onSubmit, isLoading = false, pathData }: PathFormProps) => {
 
   return (
     <div className="max-w-4xl mx-auto p-6 space-y-8">
-      {/* Progress Steps */}
-      <div className="flex items-center justify-center mb-8">
-        {Array.from({ length: totalSteps }, (_, index) => (
-          <div key={index + 1} className="flex items-center">
-            <div
-              className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-medium ${
-                currentStep >= index + 1
-                  ? "bg-primary text-primary-foreground"
-                  : "bg-muted text-muted-foreground"
-              }`}
-            >
-              {index + 1}
-            </div>
-            {index < totalSteps - 1 && (
+      {/* Progress Steps - Show in both modes when there are multiple steps */}
+      {totalSteps > 1 ? (
+        <div className="flex items-center justify-center mb-8">
+          {Array.from({ length: totalSteps }, (_, index) => (
+            <div key={index + 1} className="flex items-center">
               <div
-                className={`w-16 h-1 mx-2 ${
-                  currentStep > index + 1 ? "bg-primary" : "bg-muted"
+                className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-medium ${
+                  currentStep >= index + 1
+                    ? "bg-primary text-primary-foreground"
+                    : "bg-muted text-muted-foreground"
                 }`}
-              />
-            )}
-          </div>
-        ))}
-      </div>
+              >
+                {index + 1}
+              </div>
+              {index < totalSteps - 1 && (
+                <div
+                  className={`w-16 h-1 mx-2 ${
+                    currentStep > index + 1 ? "bg-primary" : "bg-muted"
+                  }`}
+                />
+              )}
+            </div>
+          ))}
+        </div>
+      ) : null}
 
       {/* Step Title */}
       <div className="text-center space-y-2">
@@ -433,10 +425,7 @@ const PathForm = ({ onSubmit, isLoading = false, pathData }: PathFormProps) => {
           {getCurrentFields().map((field) => (
             <div key={field.name} className="mb-6">
               {/* Handle Image Field with Toggle Logic */}
-              {isEditMode &&
-              currentStep === 2 &&
-              field.name === "image" &&
-              pathData?.image ? (
+              {isEditMode && field.name === "image" && pathData?.image ? (
                 !isChangingImage ? (
                   <div className="space-y-3">
                     <label className="text-sm font-medium text-foreground block">
@@ -576,12 +565,12 @@ const PathForm = ({ onSubmit, isLoading = false, pathData }: PathFormProps) => {
                   disabled={formLoading}
                   className="flex items-center gap-2"
                 >
+                  {isEditMode ? "تعديل" : "انشاء"}
                   {formLoading ? (
                     <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
                   ) : (
                     <Save className="w-4 h-4" />
                   )}
-                  {isEditMode ? "تعديل" : "انشاء"}
                 </Button>
               )}
             </div>

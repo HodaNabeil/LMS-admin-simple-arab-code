@@ -12,7 +12,8 @@ import TextareaField from "./textarea-field";
 
 interface Props extends IFormField {
   errors: FieldErrors;
-  control: Control<Record<string, unknown>>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  control: Control<Record<string, any>>;
   accept?: string;
   maxSize?: number;
   allowedTypes?: string[];
