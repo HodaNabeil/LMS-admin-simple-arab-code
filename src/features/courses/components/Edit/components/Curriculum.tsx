@@ -1,8 +1,8 @@
 import { useReducer, useRef, type RefObject } from "react";
 
 import { initialState, reducer } from "@/features/courses/hooks/stateHelper";
-import CreateSection from "./CreateSection";
-import AddSection from "./AddSection";
+import CreateSection from "../../../edit/components/CreateSection";
+import AddSection from "../../../edit/components/AddSection";
 import CreateLessonModal from "../../modals/CreateLessonModal";
 import DeleteLessonModal from "../../modals/DeleteLessonModal";
 import UploadVideoModal from "../../modals/UploadVideoModal";
