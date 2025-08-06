@@ -8,8 +8,7 @@ import Promotions from "@/features/courses/components/Edit/components/Promotions
 import Admin from "@/pages";
 import Courses from "@/pages/courses";
 import CreateCourse from "@/pages/courses/create";
-import EditCourse from "@/pages/courses/edit";
-
+import ManageCourse from "@/pages/courses/manage";
 import Paths from "@/pages/paths";
 import NewAddPath from "@/pages/paths/create";
 import Users from "@/pages/users";
@@ -27,9 +26,9 @@ export const adminRoutes = (
     </Route>
     <Route path="courses">
       <Route index element={<Courses />} />
-      <Route path="create" element={<CreateCourse />}></Route>
-      <Route path=":slug/manage" element={<EditCourse />}>
-        <Route index path="goals" element={<Goals  />} />
+      <Route path="create" element={<CreateCourse />} />
+      <Route path=":slug/manage" element={<ManageCourse />}>
+        <Route index path="goals" element={<Goals />} />
         <Route path="pricing" element={<Pricing />} />
         <Route path="availability" element={<Availability />} />
         <Route path="basics" element={<Basics />} />
