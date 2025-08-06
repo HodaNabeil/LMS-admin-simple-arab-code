@@ -1,7 +1,7 @@
 import Sidebar from "@/features/courses/components/Sidebar";
 import { Outlet, useParams } from "react-router-dom";
 
-export default function ManageCourse() {
+export default function ManageLayout() {
   const { slug } = useParams();
   return (
     <div className="min-h-screen bg-background flex flex-col p-4 gap-4">

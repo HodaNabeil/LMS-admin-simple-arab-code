@@ -1,19 +1,20 @@
+import { Route } from "react-router-dom";
 import AdminLayout from "@/components/shared/admin-layout";
-import Availability from "@/features/courses/components/Edit/components/Availability";
-import Basics from "@/features/courses/components/Edit/components/Basics";
-import Curriculum from "@/features/courses/components/Edit/components/Curriculum";
-import Goals from "@/features/courses/components/Edit/components/Goals";
-import Pricing from "@/features/courses/components/Edit/components/Pricing";
-import Promotions from "@/features/courses/components/Edit/components/Promotions";
 import Admin from "@/pages";
 import Courses from "@/pages/courses";
+import Availability from "@/pages/courses/[slug]/manage/availability";
+import Basics from "@/pages/courses/[slug]/manage/basics";
+import Curriculum from "@/pages/courses/[slug]/manage/curriculum";
+import Goals from "@/pages/courses/[slug]/manage/goals";
+import Pricing from "@/pages/courses/[slug]/manage/pricing";
+import Promotions from "@/pages/courses/[slug]/manage/promotions";
 import CreateCourse from "@/pages/courses/create";
-import ManageCourse from "@/pages/courses/manage";
 import Paths from "@/pages/paths";
 import CreateNewPath from "@/pages/paths/create";
 import ManagePath from "@/pages/paths/manage";
 import Users from "@/pages/users";
-import { Route } from "react-router-dom";
+import ManageLayout from "@/features/courses/manage/components/ManageLayout";
+
 export const adminRoutes = (
   <Route path="admin" element={<AdminLayout />}>
     <Route index element={<Admin />} />
@@ -28,7 +29,7 @@ export const adminRoutes = (
     <Route path="courses">
       <Route index element={<Courses />} />
       <Route path="create" element={<CreateCourse />} />
-      <Route path=":slug/manage" element={<ManageCourse />}>
+      <Route path=":slug/manage" element={<ManageLayout />}>
         <Route index path="goals" element={<Goals />} />
         <Route path="pricing" element={<Pricing />} />
         <Route path="availability" element={<Availability />} />

@@ -3,11 +3,11 @@ import { useReducer, useRef, type RefObject } from "react";
 import { initialState, reducer } from "@/features/courses/hooks/stateHelper";
 import CreateSection from "./CreateSection";
 import AddSection from "./AddSection";
-import DeleteSectionModal from "@/features/courses/modals/DeleteSectionModal";
-import CreateLessonModal from "@/features/courses/modals/CreateLessonModal";
-import DeleteLessonModal from "@/features/courses/modals/DeleteLessonModal";
-import UploadVideoModal from "@/features/courses/modals/UploadVideoModal";
-import AddSectionModal from "@/features/courses/modals/AddSectionModal";
+import CreateLessonModal from "../../modals/CreateLessonModal";
+import DeleteLessonModal from "../../modals/DeleteLessonModal";
+import UploadVideoModal from "../../modals/UploadVideoModal";
+import AddSectionModal from "../../modals/AddSectionModal";
+import DeleteSectionModal from "../../modals/DeleteSectionModal";
 
 function randomId() {
   return Math.random().toString(36).substring(2, 9);

@@ -11,7 +11,7 @@ import type {
 } from "@/features/courses/hooks/stateHelper";
 import type { Dispatch } from "react";
 import type { CurriculumAction } from "@/features/courses/hooks/stateHelper";
-import { VideoUploadModalContent } from "../components/Edit/components/VideoUploadModalContent";
+import { VideoUploadModalContent } from "../Edit/components/VideoUploadModalContent";
 export default function UploadVideoModal({
   state,
   dispatch,
