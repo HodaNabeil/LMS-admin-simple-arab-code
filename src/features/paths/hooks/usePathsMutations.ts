@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { queryKeys } from "@/lib/query-keys";
 import {
-  pathService,
+  pathApi,
   type PathMutationResponse,
   type PathRequest,
 } from "@/features/paths/services/pathApi";
@@ -12,7 +12,7 @@ export function useCreatePath() {
   const queryClient = useQueryClient();
   return useMutation<PathMutationResponse, Error, PathRequest>({
     mutationFn: async (data: PathRequest): Promise<PathMutationResponse> => {
-      return await pathService.createPath(data);
+      return await pathApi.createPath(data);
     },
     onSuccess: (res) => {
       queryClient.invalidateQueries({ queryKey: queryKeys.paths.all });
@@ -37,7 +37,7 @@ export function useUpdatePath({ slug }: { slug: string }) {
   const queryClient = useQueryClient();
   return useMutation<PathMutationResponse, Error, PathRequest>({
     mutationFn: async (data: PathRequest): Promise<PathMutationResponse> => {
-      return await pathService.updatePath(data);
+      return await pathApi.updatePath(data);
     },
     onSuccess: (res) => {
       queryClient.invalidateQueries({ queryKey: queryKeys.paths.all });
@@ -63,7 +63,7 @@ export function useDeletePath() {
   const queryClient = useQueryClient();
   return useMutation<{ message: string }, Error, string>({
     mutationFn: async (slug: string): Promise<{ message: string }> => {
-      return await pathService.deletePath(slug);
+      return await pathApi.deletePath(slug);
     },
     onSuccess: (res) => {
       queryClient.invalidateQueries({ queryKey: queryKeys.paths.all });

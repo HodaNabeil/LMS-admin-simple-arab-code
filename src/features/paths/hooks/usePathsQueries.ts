@@ -1,14 +1,13 @@
-import api from "@/lib/axios";
+import { pathApi } from "../services/pathApi";
 import { pathsKeys } from "@/lib/query-keys";
-import type { PathResponse, Path } from "@/types/path";
+import type { Path, PathResponse } from "@/types/path";
 import { useQuery } from "@tanstack/react-query";
 
 export function usePaths() {
-  return useQuery<PathResponse>({
+  return useQuery<{ paths: Path[] }>({
     queryKey: pathsKeys.all,
-    queryFn: async (): Promise<PathResponse> => {
-      const { data } = await api.get<PathResponse>("/paths");
-      return data;
+    queryFn: async (): Promise<{ paths: Path[] }> => {
+      return await pathApi.getAllPaths();
     },
     staleTime: 5 * 60 * 1000, // 5 minutes
     gcTime: 10 * 60 * 1000, // 10 minutes
@@ -16,11 +15,11 @@ export function usePaths() {
 }
 
 export function usePath(slug: string | undefined) {
-  return useQuery<Path>({
+  return useQuery<PathResponse>({
     queryKey: pathsKeys.detail(slug || ""),
-    queryFn: async (): Promise<Path> => {
-      const { data } = await api.get<Path>(`/paths/${slug}`);
-      return data;
+    queryFn: async (): Promise<PathResponse> => {
+      if (!slug) throw new Error("Slug is required");
+      return await pathApi.getPath(slug);
     },
     enabled: !!slug,
     staleTime: 5 * 60 * 1000, // 5 minutes

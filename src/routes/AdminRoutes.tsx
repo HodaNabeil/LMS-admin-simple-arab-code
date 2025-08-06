@@ -11,7 +11,7 @@ import Promotions from "@/pages/courses/[slug]/manage/promotions";
 import CreateCourse from "@/pages/courses/create";
 import Paths from "@/pages/paths";
 import CreateNewPath from "@/pages/paths/create";
-import ManagePath from "@/pages/paths/manage";
+import ManagePath from "@/pages/paths/[pathSlug]/manage";
 import Users from "@/pages/users";
 import ManageLayout from "@/features/courses/manage/components/ManageLayout";
 
