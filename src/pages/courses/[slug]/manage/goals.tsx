@@ -1,5 +1,9 @@
-function Goals() {
-  return <div>Goals</div>;
-}
+import GoalsFrom from "@/features/courses/edit/components/GoalsFrom";
 
-export default Goals;
+export default function Goals() {
+  return (
+    <main>
+      <GoalsFrom />
+    </main>
+  );
+}
