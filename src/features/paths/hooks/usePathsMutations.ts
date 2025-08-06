@@ -1,21 +1,18 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import api from "@/lib/axios";
 import { queryKeys } from "@/lib/query-keys";
-import type { Path } from "@/types/path";
+import {
+  pathService,
+  type PathMutationResponse,
+  type PathRequest,
+} from "@/features/paths/services/pathApi";
 import { toast } from "sonner";
 import type { AxiosError } from "axios";
 
-// Types for mutation operations
-type PathMutationResponse = { path: Path; message?: string };
-
 export function useCreatePath() {
   const queryClient = useQueryClient();
-  return useMutation<PathMutationResponse, Error, FormData>({
-    mutationFn: async (formData: FormData): Promise<PathMutationResponse> => {
-      const { data } = await api.post<PathMutationResponse>("/paths", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
-      return data;
+  return useMutation<PathMutationResponse, Error, PathRequest>({
+    mutationFn: async (data: PathRequest): Promise<PathMutationResponse> => {
+      return await pathService.createPath(data);
     },
     onSuccess: (res) => {
       queryClient.invalidateQueries({ queryKey: queryKeys.paths.all });
@@ -36,17 +33,15 @@ export function useCreatePath() {
   });
 }
 
-export function useUpdatePath() {
+export function useUpdatePath({ slug }: { slug: string }) {
   const queryClient = useQueryClient();
-  return useMutation<PathMutationResponse, Error, FormData>({
-    mutationFn: async (formData: FormData): Promise<PathMutationResponse> => {
-      const { data } = await api.put<PathMutationResponse>("/paths", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
-      return data;
+  return useMutation<PathMutationResponse, Error, PathRequest>({
+    mutationFn: async (data: PathRequest): Promise<PathMutationResponse> => {
+      return await pathService.updatePath(data);
     },
     onSuccess: (res) => {
       queryClient.invalidateQueries({ queryKey: queryKeys.paths.all });
+      queryClient.invalidateQueries({ queryKey: queryKeys.paths.detail(slug) });
       toast.success(res.message || "Path updated successfully");
     },
     onError: (error) => {
@@ -67,18 +62,20 @@ export function useUpdatePath() {
 export function useDeletePath() {
   const queryClient = useQueryClient();
   return useMutation<{ message: string }, Error, string>({
-    mutationFn: async (pathId: string): Promise<{ message: string }> => {
-      const { data } = await api.delete<{ message: string }>("/paths", {
-        data: { id: pathId },
-      });
-      return data;
+    mutationFn: async (slug: string): Promise<{ message: string }> => {
+      return await pathService.deletePath(slug);
     },
     onSuccess: (res) => {
       queryClient.invalidateQueries({ queryKey: queryKeys.paths.all });
       toast.success(res.message || "Path deleted successfully");
     },
     onError: (error) => {
-      toast.error(error.message || "Error deleting path");
+      const axiosError = error as AxiosError<{ message: string }>;
+      if (axiosError.response?.data?.message) {
+        toast.error(axiosError.response.data.message);
+      } else {
+        toast.error(error.message || "Error deleting path");
+      }
       console.error("Error deleting path:", error);
     },
   });

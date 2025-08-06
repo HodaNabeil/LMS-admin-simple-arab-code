@@ -26,6 +26,9 @@ import { columns } from "./columns";
 import { Loader } from "@/components/shared/loader";
 import { usePaths } from "../../hooks/usePathsQueries";
 import DeletePath from "../DeletePath";
+import { Link } from "react-router-dom";
+import { Pages, Routes } from "@/constants/enums";
+import { Edit } from "lucide-react";
 
 function PathTable() {
   const { data, isPending } = usePaths();
@@ -96,9 +99,13 @@ function PathTable() {
                     {row.getValue("slug")}
                   </p>
                 </div>
-                <div className="flex gap-2">
-                  {/* <EditPath path={row.original} /> */}
-                  <DeletePath pathId={row.original.id} />
+                <div className="flex items-center gap-2">
+                  <Link
+                    to={`/${Routes.ADMIN}/${Pages.PATHS}/${row.original.slug}/${Pages.MANAGE}`}
+                  >
+                    <Edit className="h-4 w-4 text-blue-600 hover:text-blue-800" />
+                  </Link>
+                  <DeletePath pathSlug={row.original.slug} />
                 </div>
               </div>
             </div>
