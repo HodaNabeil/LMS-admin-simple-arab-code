@@ -1,5 +1,6 @@
 import AdminLayout from "@/components/shared/admin-layout";
 import Admin from "@/pages";
+import Courses from "@/pages/courses";
 import Paths from "@/pages/paths";
 import CreateNewPath from "@/pages/paths/create";
 import ManagePath from "@/pages/paths/manage";
@@ -16,5 +17,6 @@ export const adminRoutes = (
       <Route path="create" element={<CreateNewPath />} />
       <Route path=":pathSlug/manage" element={<ManagePath />} />
     </Route>
+    <Route path="courses"  element ={<Courses/>} />
   </Route>
 );
