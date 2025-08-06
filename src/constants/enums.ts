@@ -32,6 +32,7 @@ export enum Pages {
   BASICS = "manage/basics",
   PRICING = "manage/pricing",
   MANAGE = "manage",
+  COURSES = "courses",
 }
 
 export enum InputTypes {

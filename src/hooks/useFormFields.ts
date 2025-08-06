@@ -195,18 +195,18 @@ const useFormFields = ({ slug }: IFormFieldsVariables) => {
     },
   ];
 
-  const goalsFields = (): IFormField[] =>[
+  const goalsFields = (): IFormField[] => [
     {
       name: "whatWillStudentsLearn",
       label: "ما الذي سيتعلمه الطلاب في هذا الكورس؟",
       type: "text",
-      placeholder: "مثال: أساسيات البرمجة، استخدام React..."
+      placeholder: "مثال: أساسيات البرمجة، استخدام React...",
     },
     {
       name: "requirements",
       label: "ما هي المتطلبات اللازمة للالتحاق بهذا الكورس؟",
       type: "textarea",
-      placeholder: "مثال: معرفة سابقة بـ HTML و CSS"
+      placeholder: "مثال: معرفة سابقة بـ HTML و CSS",
     },
     {
       name: "prerequisiteCourse",
@@ -215,16 +215,16 @@ const useFormFields = ({ slug }: IFormFieldsVariables) => {
       options: [
         { value: "hodaCourse", label: "كورس Hoda" },
         { value: "hodaCourse4", label: "كورس Hoda4" },
-      ]
+      ],
     },
-      {
-        name: "targetAudience",
-        label: "لمن هذا الكورس؟",
-        type: "text",
-        placeholder: "مثال: للمبتدئين، للمطورين المتوسطين، للطلاب..."
-      }
-    ];
-  
+    {
+      name: "targetAudience",
+      label: "لمن هذا الكورس؟",
+      type: "text",
+      placeholder: "مثال: للمبتدئين، للمطورين المتوسطين، للطلاب...",
+    },
+  ];
+
   const basicsFields = (): IFormField[] => [
     {
       name: "name",
@@ -257,7 +257,7 @@ const useFormFields = ({ slug }: IFormFieldsVariables) => {
       ],
     },
     {
-      name:"hours",
+      name: "hours",
       label: "مدة الدورة (بالساعات)",
       type: "number",
       placeholder: "ادخل مدة الدورة (بالساعات)",
@@ -273,7 +273,6 @@ const useFormFields = ({ slug }: IFormFieldsVariables) => {
       label: "فيديو الدورة",
       type: "file",
       placeholder: "اختر فيديو الدورة",
-  
     },
   ];
 
