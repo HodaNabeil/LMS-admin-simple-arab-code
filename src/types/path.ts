@@ -3,14 +3,16 @@ export interface Path {
   name: string;
   slug: string;
   order: number;
-  createdAt: string;
-  updatedAt: string;
-  image: null;
+  createdAt: string; // ISO date string
+  updatedAt: string; // ISO date string
+  image: string | null;
   heading: string;
   roadmapUrl: string | null;
   description: string;
 }
 
 export interface PathResponse {
-  paths: Path[];
+  status: "success";
+  message: string;
+  data: Path;
 }

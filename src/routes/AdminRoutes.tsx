@@ -3,7 +3,7 @@ import Admin from "@/pages";
 import Courses from "@/pages/courses";
 import Paths from "@/pages/paths";
 import CreateNewPath from "@/pages/paths/create";
-import ManagePath from "@/pages/paths/manage";
+import ManagePath from "@/pages/paths/[pathSlug]/manage";
 import Users from "@/pages/users";
 import { Route } from "react-router-dom";
 export const adminRoutes = (
@@ -17,6 +17,6 @@ export const adminRoutes = (
       <Route path="create" element={<CreateNewPath />} />
       <Route path=":pathSlug/manage" element={<ManagePath />} />
     </Route>
-    <Route path="courses"  element ={<Courses/>} />
+    <Route path="courses" element={<Courses />} />
   </Route>
 );

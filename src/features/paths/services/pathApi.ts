@@ -17,16 +17,16 @@ export interface PathMutationResponse {
   message?: string;
 }
 
-export const pathService = {
+export const pathApi = {
   // Get all paths
-  async getAllPaths(): Promise<PathResponse> {
-    const response = await api.get<PathResponse>("/paths");
+  async getAllPaths(): Promise<{ paths: Path[] }> {
+    const response = await api.get<{ paths: Path[] }>("/paths");
     return response.data;
   },
 
   // Get single path by slug
-  async getPath(slug: string): Promise<Path> {
-    const response = await api.get<Path>(`/paths/${slug}`);
+  async getPath(slug: string): Promise<PathResponse> {
+    const response = await api.get<PathResponse>(`/paths/${slug}`);
     return response.data;
   },
 

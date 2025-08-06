@@ -31,14 +31,14 @@ import { Pages, Routes } from "@/constants/enums";
 import { Edit } from "lucide-react";
 
 function PathTable() {
-  const { data, isPending } = usePaths();
+  const { data: paths, isPending } = usePaths();
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
 
   const table = useReactTable({
-    data: !isPending && data ? data.paths : [],
+    data: !isPending && paths ? paths.paths : [],
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
