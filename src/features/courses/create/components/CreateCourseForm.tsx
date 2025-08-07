@@ -3,7 +3,8 @@ import { Loader } from "@/components/shared/loader";
 import { Pages } from "@/constants/enums";
 import useFormFields from "@/hooks/useFormFields";
 import useFormValidations from "@/hooks/useFormValidations";
-import type { ICreateCourseForm } from "@/validations/createcourse";
+import { createSectionCourseSchema } from "@/validations/course";
+import { type ICreateCourseForm } from "@/validations/createcourse";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, type Control } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
@@ -25,7 +26,9 @@ export default function CreateCourseForm() {
       selectedPath: "",
     },
     mode: "onChange",
-    resolver: zodResolver(getValidationSchema()),
+    resolver: zodResolver(
+      getValidationSchema() as typeof createSectionCourseSchema
+    ),
   });
 
   const handleFormSubmit = async (data: ICreateCourseForm) => {

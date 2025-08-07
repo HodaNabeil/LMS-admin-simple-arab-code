@@ -35,7 +35,10 @@ const SelectField = ({
   return (
     <div className="flex flex-col gap-2">
       {label && (
-        <Label htmlFor={name} className="text-sm font-medium leading-none">
+        <Label
+          htmlFor={name}
+          className="text-sm font-medium leading-none mb-1 text-card-foreground"
+        >
           {label}
         </Label>
       )}
@@ -50,7 +53,7 @@ const SelectField = ({
           >
             <SelectTrigger
               ref={ref}
-              className={`   ${
+              className={`text-gray-600 focus:outline-none focus:ring-0 focus:border-transparent ${
                 hasError ? "border-destructive focus:ring-destructive/20" : ""
               }`}
               aria-invalid={hasError ? "true" : "false"}
@@ -58,10 +61,10 @@ const SelectField = ({
             >
               <SelectValue placeholder={placeholder} />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className=" border-gray-300  ">
               {options.map((option) => (
                 <SelectItem
-                  className="!text-sm !font-bold text-gray-900 p-[0.8rem]"
+                  className="!text-sm  text-gray-600 p-[0.8rem] cursor-pointer hover:bg-gray-100"
                   key={option.value}
                   value={option.value}
                 >
