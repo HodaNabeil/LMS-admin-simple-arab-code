@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Pages } from "@/constants/enums";
 import useFormFields from "@/hooks/useFormFields";
 import useFormValidations from "@/hooks/useFormValidations";
-import type { BasicsSchema } from "@/validations/course";
+import type { basicsSchema, BasicsSchema } from "@/validations/course";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, type Control } from "react-hook-form";
 import { toast } from "sonner";
@@ -27,7 +27,7 @@ export default function BasicsForm() {
       level: "",
     },
     mode: "onChange",
-    resolver: zodResolver(getValidationSchema()),
+    resolver: zodResolver(getValidationSchema() as typeof basicsSchema),
   });
 
   const onSubmit = async (data: BasicsSchema) => {

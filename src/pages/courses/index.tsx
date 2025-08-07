@@ -3,7 +3,7 @@ import React from "react";
 import CourseFilters from "@/features/courses/components/CourseFilters";
 import CourseStats from "@/features/courses/components/CourseStats";
 import CourseTable from "@/features/courses/components/CourseTable";
-import Header from "./Header";
+import Header from "../../features/courses/components/Header";
 import { useCourseFilters } from "@/features/courses/hooks/useCourseFilters";
 import { MOCK_COURSES } from "@/features/courses/components/courses";
 

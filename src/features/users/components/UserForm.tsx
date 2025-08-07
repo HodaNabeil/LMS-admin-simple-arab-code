@@ -6,11 +6,11 @@ import { Pages } from "@/constants/enums";
 import FormFields from "@/components/shared/form-fields/form-fields";
 import { Button } from "@/components/ui/button";
 import type { User } from "@/types/user";
-import type { Control } from "react-hook-form";
 import useFormValidations from "@/hooks/useFormValidations";
 import type { UseMutationResult } from "@tanstack/react-query";
 import { toast } from "sonner";
 import type { AxiosError } from "axios";
+import type { userSchema } from "@/validations/user";
 
 function UserForm({
   user,
@@ -35,7 +35,7 @@ function UserForm({
       role: user?.role || "",
     },
     mode: "onChange",
-    resolver: zodResolver(getValidationSchema()),
+    resolver: zodResolver(getValidationSchema() as typeof userSchema),
   });
 
   const onSubmit = async (data: Record<string, string>) => {
@@ -65,11 +65,7 @@ function UserForm({
     <form onSubmit={handleSubmit(onSubmit)}>
       {getFormFields().map((field, index) => (
         <div key={index} className="mb-4">
-          <FormFields
-            {...field}
-            control={control as Control<Record<string, unknown>>}
-            errors={errors}
-          />
+          <FormFields {...field} control={control} errors={errors} />
         </div>
       ))}
       <Button type="submit" disabled={formLoading}>

@@ -1,4 +1,5 @@
 import { buttonVariants } from "@/components/ui/button";
+import { Pages, Routes } from "@/constants/enums";
 import { Plus, Users } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -17,7 +18,10 @@ export default function Header({ coursesCount }: { coursesCount: number }) {
         </div>
       </div>
       <div className="flex items-center gap-4">
-        <Link to={`/`} className={buttonVariants()}>
+        <Link
+          to={`/${Routes.ADMIN}/${Pages.CREATE_COURSES}`}
+          className={buttonVariants()}
+        >
           <Plus className="w-4 h-4 mr-2" />
           إضافة دورة جديدة
         </Link>

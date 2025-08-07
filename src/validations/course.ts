@@ -31,6 +31,7 @@ const course = {
       .min(1, { message: "Who is this for is required." }),
   }),
   knowledgeNeeded: z.string().optional(),
+  prerequisites: z.array(z.string()).optional(),
 };
 export const courseSchema = z.object(course);
 
@@ -57,6 +58,7 @@ export const goalsSchema = z.object({
   whatYouWillLearn: course.whatYouWillLearn,
   knowledgeNeeded: course.knowledgeNeeded,
   whoIsThisFor: course.whoIsThisFor,
+  prerequisites: course.prerequisites,
 });
 
 export type GoalsSchema = z.infer<typeof goalsSchema>;

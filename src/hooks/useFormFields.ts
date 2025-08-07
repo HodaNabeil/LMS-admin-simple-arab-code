@@ -212,31 +212,10 @@ const useFormFields = ({ slug }: IFormFieldsVariables) => {
 
   const goalsFields = (): IFormField[] => [
     {
-      name: "whatWillStudentsLearn",
-      label: "ما الذي سيتعلمه الطلاب في هذا الكورس؟",
-      type: "text",
-      placeholder: "مثال: أساسيات البرمجة، استخدام React...",
-    },
-    {
-      name: "requirements",
-      label: "ما هي المتطلبات اللازمة للالتحاق بهذا الكورس؟",
+      name: "knowledgeNeeded",
+      label: "ما ينبغي عليك معرفته",
       type: "textarea",
-      placeholder: "مثال: معرفة سابقة بـ HTML و CSS",
-    },
-    {
-      name: "prerequisiteCourse",
-      label: "اختر كورسًا يجب تعلمه أولًا",
-      type: "select",
-      options: [
-        { value: "hodaCourse", label: "كورس Hoda" },
-        { value: "hodaCourse4", label: "كورس Hoda4" },
-      ],
-    },
-    {
-      name: "targetAudience",
-      label: "لمن هذا الكورس؟",
-      type: "text",
-      placeholder: "مثال: للمبتدئين، للمطورين المتوسطين، للطلاب...",
+      placeholder: "مثال: يفضل معرفة أساسيات البرمجة أو HTML",
     },
   ];
 

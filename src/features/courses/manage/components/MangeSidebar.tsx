@@ -1,14 +1,12 @@
 import { Link, useParams } from "react-router-dom";
 
-export default function Sidebar() {
+export default function MangeSidebar() {
   const sluge = useParams();
   return (
     <aside className=" w-[20%]  min-h-full p-6 flex flex-col gap-4   ">
       {/* Plan your course */}
       <div>
-        <h2 className="text-base font-bold    text-gray-600">
-          خطط لدورتك
-        </h2>
+        <h2 className="text-base font-bold    text-gray-600">خطط لدورتك</h2>
         <ul className="">
           <li>
             <Link
@@ -46,12 +44,13 @@ export default function Sidebar() {
       </div>
       {/* Publish your course */}
       <div>
-        <h2 className="text-base font-bold  mb-2  text-gray-600">
-          انشر دورتك
-        </h2>
+        <h2 className="text-base font-bold  mb-2  text-gray-600">انشر دورتك</h2>
         <ul className="space-y-1">
           <li>
-            <Link to={`/admin/courses/${sluge.slug}/manage/basics`} className="text-gray-600  hover:text-primary text-sm">
+            <Link
+              to={`/admin/courses/${sluge.slug}/manage/basics`}
+              className="text-gray-600  hover:text-primary text-sm"
+            >
               صفحة هبوط الدورة
             </Link>
           </li>

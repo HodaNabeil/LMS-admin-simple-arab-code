@@ -30,7 +30,7 @@ export const adminRoutes = (
       <Route index element={<Courses />} />
       <Route path="create" element={<CreateCourse />} />
       <Route path=":slug/manage" element={<ManageLayout />}>
-        <Route index path="goals" element={<Goals />} />
+        <Route path="goals" element={<Goals />} />
         <Route path="pricing" element={<Pricing />} />
         <Route path="availability" element={<Availability />} />
         <Route path="basics" element={<Basics />} />

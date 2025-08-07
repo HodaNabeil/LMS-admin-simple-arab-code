@@ -1,8 +1,8 @@
 import type { Coupon } from "@/types/course";
 import { useState } from "react";
 import type { CouponsResponse } from "@/types/course";
-import CreateCouponDialog from "@/features/courses/components/CreateCouponDialog";
-import CouponsTable from "@/features/courses/edit/components/CouponsTable";
+import CreateCouponDialog from "@/features/courses/manage/components/promotions/CreateCouponDialog";
+import CouponsTable from "@/features/courses/manage/components/promotions/CouponsTable";
 
 export default function Promotions() {
   const [isCreating, setIsCreating] = useState(false);

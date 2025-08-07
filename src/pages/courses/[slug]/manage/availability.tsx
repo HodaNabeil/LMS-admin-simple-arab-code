@@ -1,4 +1,4 @@
-import AvailabilityForm from "@/features/courses/edit/components/AvailabilityForm";
+import AvailabilityForm from "@/features/courses/manage/components/availability/AvailabilityForm";
 
 export default function Availability() {
   return (

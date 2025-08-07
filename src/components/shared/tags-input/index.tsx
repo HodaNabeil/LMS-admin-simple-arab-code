@@ -1,7 +1,7 @@
 "use client";
 import { Input } from "@/components/ui/input";
-import {  useRef, useState } from "react";
-import ReactTagsInput, { RenderInputProps } from "react-tagsinput";
+import { useRef, useState } from "react";
+import ReactTagsInput, { type RenderInputProps } from "react-tagsinput";
 import "react-tagsinput/react-tagsinput.css";
 
 const TagsInput = ({
@@ -24,7 +24,7 @@ const TagsInput = ({
   };
 
   const renderInput = (props: RenderInputProps) => {
-    const { onChange, value, addTag, ...other } = props;
+    const { onChange, value, ...other } = props;
     return (
       <Input
         id="tags"
