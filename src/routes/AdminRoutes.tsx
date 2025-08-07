@@ -6,7 +6,6 @@ import Availability from "@/pages/courses/[slug]/manage/availability";
 import Basics from "@/pages/courses/[slug]/manage/basics";
 import Curriculum from "@/pages/courses/[slug]/manage/curriculum";
 import Goals from "@/pages/courses/[slug]/manage/goals";
-import Pricing from "@/pages/courses/[slug]/manage/pricing";
 import Promotions from "@/pages/courses/[slug]/manage/promotions";
 import CreateCourse from "@/pages/courses/create";
 import Paths from "@/pages/paths";
@@ -14,6 +13,7 @@ import CreateNewPath from "@/pages/paths/create";
 import ManagePath from "@/pages/paths/[pathSlug]/manage";
 import Users from "@/pages/users";
 import ManageLayout from "@/features/courses/manage/components/ManageLayout";
+import Pricing from "@/pages/courses/[slug]/manage/pricing";
 
 export const adminRoutes = (
   <Route path="admin" element={<AdminLayout />}>

@@ -1,5 +1,9 @@
-function Basics() {
-  return <div></div>;
-}
+import BasicsForm from "@/features/courses/edit/components/BasicsForm";
 
-export default Basics;
+export default function Basics() {
+  return (
+    <main>
+      <BasicsForm />
+    </main>
+  );
+}
