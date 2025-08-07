@@ -1,9 +1,9 @@
-import GoalsFrom from "@/features/courses/edit/components/GoalsFrom";
+import GoalsForm from "@/features/courses/edit/components/GoalsForm";
 
 export default function Goals() {
   return (
     <main>
-      <GoalsFrom />
+      <GoalsForm />
     </main>
   );
 }

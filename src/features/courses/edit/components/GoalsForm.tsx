@@ -14,7 +14,7 @@ const courseOptions: OptionType[] = [
   { value: "hoda", label: "Hoda Course" },
 ];
 
-export default function GoalsFrom() {
+export default function GoalsForm() {
   const [formData, setFormData] = useState({
     selectedCourses: [] as OptionType[],
     audienceTags: [] as string[],
