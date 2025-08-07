@@ -2,7 +2,7 @@ import { useReducer, useRef, type RefObject } from "react";
 
 import { initialState, reducer } from "@/features/courses/hooks/stateHelper";
 
-import AddSectionModal from "@/features/courses/components/modals/AddSectionModal";
+import AddSectionModal from "@/features/courses/edit/components/AddSectionModal";
 import DeleteSectionModal from "@/features/courses/components/modals/DeleteSectionModal";
 import CreateLessonModal from "@/features/courses/components/modals/CreateLessonModal";
 import DeleteLessonModal from "@/features/courses/components/modals/DeleteLessonModal";

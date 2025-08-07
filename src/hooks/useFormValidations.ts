@@ -7,7 +7,11 @@ import { userSchema } from "@/validations/user";
 import { pathSchema } from "@/validations/path";
 import { createCourseSchema } from "@/validations/createcourse";
 import { goalsSchema } from "@/validations/goals";
-import { basicsSchema, pricingSchema } from "@/validations/course";
+import {
+  basicsSchema,
+  createSectionCourseSchema,
+  pricingSchema,
+} from "@/validations/course";
 
 const useFormValidations = (props: IFormFieldsVariables) => {
   const { slug } = props;
@@ -33,6 +37,8 @@ const useFormValidations = (props: IFormFieldsVariables) => {
         return basicsSchema;
       case Pages.PRICING:
         return pricingSchema;
+      case Pages.CURRICULUM:
+        return createSectionCourseSchema;
       default:
         return z.object({});
     }

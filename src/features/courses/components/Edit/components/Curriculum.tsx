@@ -6,7 +6,7 @@ import AddSection from "../../../edit/components/AddSection";
 import CreateLessonModal from "../../modals/CreateLessonModal";
 import DeleteLessonModal from "../../modals/DeleteLessonModal";
 import UploadVideoModal from "../../modals/UploadVideoModal";
-import AddSectionModal from "../../modals/AddSectionModal";
+import AddSectionModal from "../../../edit/components/AddSectionModal";
 import DeleteSectionModal from "../../modals/DeleteSectionModal";
 
 function randomId() {

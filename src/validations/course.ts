@@ -1,15 +1,4 @@
 import { z } from "zod";
-// import { CourseLevel, CourseStatus, CourseType } from "../types/course";
-
-// const CourseLevelEnum = z.enum([
-//   CourseLevel.ALL,
-//   CourseLevel.ADVANCED,
-//   CourseLevel.BEGINNER,
-//   CourseLevel.INTERMEDIATE,
-// ]);
-
-// const CourseTypeEnum = z.enum([CourseType.BUNDLE, CourseType.SINGLE]);
-// const CourseStatusEnum = z.enum([CourseStatus.DRAFT, CourseStatus.PUBLISHED]);
 
 const course = {
   name: z.string().min(1, { message: "Course name is required." }),
@@ -48,6 +37,11 @@ export const courseSchema = z.object(course);
 export const sectionSchema = z.object({
   name: z.string(),
   heading: z.string(),
+});
+
+export const createSectionCourseSchema = z.object({
+  name: z.string(),
+  description: z.string(),
 });
 
 export const lessonSchema = z.object({

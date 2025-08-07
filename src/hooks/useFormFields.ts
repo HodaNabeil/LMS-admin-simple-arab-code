@@ -18,6 +18,21 @@ const useFormFields = ({ slug }: IFormFieldsVariables) => {
     },
   ];
 
+  const CreateSectionFormFields = (): IFormField[] => [
+    {
+      name: "sectionName",
+      label: "اسم القسم",
+      type: "text",
+      placeholder: "ادخل اسم القسم",
+    },
+    {
+      name: "sectionDescription",
+      label: "وصف القسم",
+      type: "textarea",
+      placeholder: "ادخل وصف القسم",
+    },
+  ];
+
   const signupFields = (): IFormField[] => [
     {
       label: "نوع الحساب",
@@ -314,6 +329,8 @@ const useFormFields = ({ slug }: IFormFieldsVariables) => {
         return basicsFields();
       case Pages.PRICING:
         return pricingFields();
+      case Pages.CURRICULUM:
+        return CreateSectionFormFields();
       default:
         return [];
     }
