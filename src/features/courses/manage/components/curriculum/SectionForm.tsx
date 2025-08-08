@@ -5,18 +5,17 @@ import useFormFields from "@/hooks/useFormFields";
 import useFormValidations from "@/hooks/useFormValidations";
 import type { createSectionCourseSchema } from "@/validations/course";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm, type Control } from "react-hook-form";
-interface ManageFormSectionProps {
-  mode: "add" | "edit";
+import { useForm } from "react-hook-form";
+
+interface SectionFormProps {
+  section?: {
+    title: string;
+    description: string;
+  };
   setOpen: (open: boolean) => void;
-  open: boolean;
 }
 
-export default function ManageFormSection({
-  mode,
-  setOpen,
-  open,
-}: ManageFormSectionProps) {
+export default function SectionForm({ section, setOpen }: SectionFormProps) {
   const { getFormFields } = useFormFields({ slug: Pages.CURRICULUM });
   const { getValidationSchema } = useFormValidations({
     slug: Pages.CURRICULUM,
@@ -37,9 +36,7 @@ export default function ManageFormSection({
     ),
   });
 
-  const handleFormSubmit = (data: { name: string; description: string }) => {
-    // console.log(data);
-  };
+  const handleFormSubmit = (data: any) => {};
   const onCancel = () => {
     setOpen(false);
   };
@@ -48,18 +45,12 @@ export default function ManageFormSection({
       {getFormFields().map((field, index) => (
         <div key={index} className="mb-4">
           <div key={index} className="mb-4">
-            <FormFields
-              {...field}
-              control={control as Control<Record<string, unknown>>}
-              errors={errors}
-            />
+            <FormFields {...field} control={control} errors={errors} />
           </div>
         </div>
       ))}
       <div className="flex justify-end mt-4 gap-2 items-center">
-        <Button type="submit">
-          {mode === "add" ? "إضافة القسم" : "تعديل القسم"}
-        </Button>
+        <Button type="submit">{section ? "تعديل القسم" : "إضافة قسم"}</Button>
         <Button type="button" variant="secondary" onClick={onCancel}>
           إلغاء
         </Button>

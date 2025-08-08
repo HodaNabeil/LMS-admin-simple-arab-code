@@ -6,39 +6,33 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { DialogTitle } from "@radix-ui/react-dialog";
-import ManageFormSection from "./ManageFormSection";
 import { Button } from "@/components/ui/button";
-function MangeSection({
-  title,
-  open,
-  setOpen,
-  description,
-}: {
-  title?: string | null;
-  open: boolean;
-  setOpen: (open: boolean) => void;
-  description?: string;
-}) {
+import { useState } from "react";
+import SectionForm from "./SectionForm";
+
+function AddSection() {
+  const [open, setOpen] = useState(false);
+
   return (
     <div>
       <Dialog open={open} onOpenChange={(open) => setOpen(open)}>
         <DialogTrigger asChild>
-          <Button variant="secondary" className="text-right">
-            {title || "اضافة قسم جديد"}
-          </Button>
+          <Button variant="secondary">اضافة قسم جديد</Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader className="!text-right">
             <DialogTitle className="text-card-foreground text-lg font-semibold">
-              {title}
+              إضافة قسم جديد
             </DialogTitle>
-            <DialogDescription>{description}</DialogDescription>
+            <DialogDescription className="text-card-foreground text-sm">
+              يمكنك إضافة قسم جديد إلى المنهج الدراسي من هنا.
+            </DialogDescription>
           </DialogHeader>
-          <ManageFormSection mode="add" setOpen={setOpen} open={open} />
+          <SectionForm setOpen={setOpen} />
         </DialogContent>
       </Dialog>
     </div>
   );
 }
 
-export default MangeSection;
+export default AddSection;

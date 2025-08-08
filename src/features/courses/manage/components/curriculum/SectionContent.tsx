@@ -1,7 +1,6 @@
 import { Card } from "@/components/ui/card";
-import { Edit3 } from "lucide-react";
 import { useState } from "react";
-import MangeSection from "@/features/courses/manage/components/curriculum/MangeSection";
+import EditSection from "@/features/courses/manage/components/curriculum/EditSection";
 import Delete from "./Delete";
 import MangeLesson from "./MangeLesson";
 
@@ -17,25 +16,8 @@ export default function SectionContent() {
             <span className="text-sm text-gray-600"> اسم القسم</span>
           </div>
           <div className="flex items-center gap-2">
-            <div onClick={() => setOpen(true)} className="cursor-pointer">
-              <span>
-                <Edit3 className="h-4 w-4  " />
-              </span>
-
-              {/*الزرار لتعديل */}
-              {open && (
-                <MangeSection
-                  open={open}
-                  setOpen={setOpen}
-                  title="   تعديل قسم"
-                  key={1}
-                  description="يمكنك تعديل اسم القسم ووصفه"
-                />
-              )}
-            </div>
-            <div className="cursor-pointer">
-              <Delete />
-            </div>
+            <EditSection />
+            <Delete />
           </div>
         </div>
         {/* زرار اضافة درس */}
