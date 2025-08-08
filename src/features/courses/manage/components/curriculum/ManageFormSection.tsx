@@ -15,7 +15,8 @@ interface ManageFormSectionProps {
 export default function ManageFormSection({
   mode,
   setOpen,
-}: Omit<ManageFormSectionProps, "open">) {
+  open,
+}: ManageFormSectionProps) {
   const { getFormFields } = useFormFields({ slug: Pages.CURRICULUM });
   const { getValidationSchema } = useFormValidations({
     slug: Pages.CURRICULUM,
