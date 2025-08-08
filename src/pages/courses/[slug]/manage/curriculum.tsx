@@ -1,4 +1,3 @@
-import Delete from "@/features/courses/manage/components/curriculum/Delete";
 import SectionContent from "../../../../features/courses/manage/components/curriculum/SectionContent";
 import MangeSection from "@/features/courses/manage/components/curriculum/MangeSection";
 import { useState } from "react";
@@ -20,7 +19,6 @@ export default function Curriculum() {
         />
         <div className=" mt-6 space-y-4">
           <SectionContent />
-          <Delete />
         </div>
       </main>
     </div>

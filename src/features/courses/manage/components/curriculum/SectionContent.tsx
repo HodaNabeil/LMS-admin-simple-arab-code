@@ -21,6 +21,8 @@ export default function SectionContent() {
               <span>
                 <Edit3 className="h-4 w-4  " />
               </span>
+
+              {/*الزرار لتعديل */}
               {open && (
                 <MangeSection
                   open={open}
