@@ -20,13 +20,13 @@ const useFormFields = ({ slug }: IFormFieldsVariables) => {
 
   const CreateSectionFormFields = (): IFormField[] => [
     {
-      name: "sectionName",
+      name: "name",
       label: "اسم القسم",
       type: "text",
       placeholder: "ادخل اسم القسم",
     },
     {
-      name: "sectionDescription",
+      name: "description",
       label: "وصف القسم",
       type: "textarea",
       placeholder: "ادخل وصف القسم",
