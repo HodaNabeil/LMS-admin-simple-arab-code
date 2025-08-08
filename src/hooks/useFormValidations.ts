@@ -8,6 +8,7 @@ import { pathSchema } from "@/validations/path";
 import { createCourseSchema } from "@/validations/createcourse";
 import {
   basicsSchema,
+  createLessonCourseSchema,
   createSectionCourseSchema,
   goalsSchema,
   pricingSchema,
@@ -56,6 +57,9 @@ const useFormValidations = (
         return pricingSchema;
       case Pages.CURRICULUM:
         return createSectionCourseSchema;
+
+      case Pages.LESSONS:
+        return createLessonCourseSchema;
       default:
         return z.object({});
     }

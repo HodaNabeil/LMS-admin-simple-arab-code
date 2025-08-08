@@ -1,4 +1,4 @@
-import { Pages, UserType } from "@/constants/enums";
+import { Pages, StatusLesson, UserType } from "@/constants/enums";
 import type { IFormField, IFormFieldsVariables } from "@/types/app";
 
 const useFormFields = ({ slug }: IFormFieldsVariables) => {
@@ -284,6 +284,34 @@ const useFormFields = ({ slug }: IFormFieldsVariables) => {
       placeholder: "ادخل السعر بالدولار",
     },
   ];
+
+  const lessonFields = (): IFormField[] => [
+    {
+      name: "name",
+      label: "المحاضرة اسم  ",
+      type: "text",
+      placeholder: "ادخل اسم المحاضرة التعليمي",
+    },
+
+    {
+      name: "description",
+      label: " وصف المحاضرة",
+      type: "textarea",
+      placeholder: "ادخل وصف المحاضرة التعليمي",
+    },
+    {
+      label: "معاينه المحاضرة",
+      name: "role",
+      type: "select",
+      placeholder: "اختر معاينه المحاضرة",
+      options: [
+        { value: StatusLesson.LOCKED, label: StatusLesson.LOCKED },
+        { value: StatusLesson.UNLOCKED, label: StatusLesson.UNLOCKED },
+        { value: StatusLesson.PREVIEW, label: StatusLesson.PREVIEW },
+      ],
+    },
+  ];
+
   const getFormFields = (): IFormField[] => {
     switch (slug) {
       case Pages.SIGNIN:
@@ -310,6 +338,8 @@ const useFormFields = ({ slug }: IFormFieldsVariables) => {
         return pricingFields();
       case Pages.CURRICULUM:
         return CreateSectionFormFields();
+      case Pages.LESSONS:
+        return lessonFields();
       default:
         return [];
     }

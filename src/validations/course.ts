@@ -72,6 +72,12 @@ export const basicsSchema = z.object({
   level: z.string().optional(),
 });
 
+export const createLessonCourseSchema = z.object({
+  name: course.name,
+  description: z.string().optional(),
+  select: z.string().optional(),
+});
+
 export type BasicsSchema = z.infer<typeof basicsSchema>;
 
 export const pricingSchema = z.object({
