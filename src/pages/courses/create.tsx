@@ -2,8 +2,10 @@ import CreateCourseForm from "@/features/courses/create/components/CreateCourseF
 
 export default function CreateCourse() {
   return (
-    <div className="min-h-screen flex items-center justify-center p-4">
-      <CreateCourseForm />
-    </div>
+    <main>
+      <div className="min-h-screen flex items-center justify-center p-4">
+        <CreateCourseForm />
+      </div>
+    </main>
   );
 }

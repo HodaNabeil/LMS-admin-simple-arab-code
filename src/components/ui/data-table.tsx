@@ -8,10 +8,9 @@ import {
   type SortingState,
 } from "@tanstack/react-table";
 import React from "react";
-import Select from "react-select";
+import Select, { type CSSObjectWithLabel, type OptionProps, type StylesConfig } from "react-select";
 import { Button } from "../ui/button";
 
-// أنواع البيانات
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
@@ -98,7 +97,6 @@ export function DataTable<TData, TValue>({
         </tbody>
       </table>
 
-      {/* Pagination Controls */}
       <div className="flex items-center justify-between px-3 py-1.5 bg-gray-50 border-t border-gray-100 text-[11px]">
         <div className="text-gray-400">
           {table.getFilteredRowModel().rows.length} of{" "}
@@ -132,7 +130,6 @@ export function DataTable<TData, TValue>({
   );
 }
 
-// ---------- Filters Component ----------
 interface FilterOptions {
   category: Array<{ label: string; value: string }>;
   teacher: Array<{ label: string; value: string }>;
@@ -149,28 +146,33 @@ interface FiltersProps {
   resultCount: number;
 }
 
-const customSelectStyles = {
-  control: (base: any, state: any) => ({
+type OptionType = { label: string; value: string };
+
+const customSelectStyles: StylesConfig<OptionType, false> = {
+  control: (base: CSSObjectWithLabel) => ({
     ...base,
-    boxShadow: state.isFocused ? "0 0 0 2px #2563eb22" : "none",
-    borderColor: state.isFocused ? "#2563eb" : "#e5e7eb",
+    boxShadow: "none",
+    borderColor: "#e5e7eb",
     minHeight: 32,
     fontSize: 13,
     borderRadius: 8,
+    "&:hover": {
+      borderColor: "#2563eb",
+    },
   }),
-  option: (base: any, state: any) => ({
+  option: (base: CSSObjectWithLabel, state: OptionProps<OptionType, false>) => ({
     ...base,
     fontSize: 13,
     backgroundColor: state.isSelected
       ? "#2563eb"
       : state.isFocused
-      ? "#f1f5f9"
-      : undefined,
+        ? "#f1f5f9"
+        : undefined,
     color: state.isSelected ? "#fff" : "#222",
   }),
-  placeholder: (base: any) => ({ ...base, fontSize: 13, color: "#888" }),
-  singleValue: (base: any) => ({ ...base, fontSize: 13 }),
-  input: (base: any) => ({ ...base, fontSize: 13 }),
+  placeholder: (base: CSSObjectWithLabel) => ({ ...base, fontSize: 13, color: "#888" }),
+  singleValue: (base: CSSObjectWithLabel) => ({ ...base, fontSize: 13 }),
+  input: (base: CSSObjectWithLabel) => ({ ...base, fontSize: 13 }),
 };
 
 export function Filters({

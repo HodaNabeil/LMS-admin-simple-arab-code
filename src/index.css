@@ -1,5 +1,5 @@
-@import 'tailwindcss';
-@import 'tw-animate-css';
+@import "tailwindcss";
+@import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -98,7 +98,13 @@
 
   body {
     @apply font-normal;
-    font-family: 'Noto Kufi Arabic', sans-serif;
+    font-family: "Noto Kufi Arabic", sans-serif;
+  }
+  .section-gap {
+    @apply py-10;
+  }
+  .padding-card-statistics {
+    @apply py-[50px] px-[15px];
   }
 }
 

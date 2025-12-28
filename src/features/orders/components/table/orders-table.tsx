@@ -1,6 +1,5 @@
 import React from "react";
 import {
-  flexRender,
   getCoreRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
@@ -13,29 +12,12 @@ import type {
   SortingState,
   VisibilityState,
 } from "@tanstack/react-table";
-import { Edit, Trash2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import EditOrder from "./EditOrder";
-
-interface Order {
-  id: number;
-  date: string;
-  PaymentMethod: string;
-  price: number;
-  Status: string;
-  Amount: number;
-  Currency: string;
-}
+import EditOrder from "../edit-order";
+import { OrdersTableMobile } from "./OrdersTableMobile";
+import { OrdersTableDesktop } from "./OrdersTableDesktop";
+import type { Order } from "../../types";
 
 interface OrdersTableProps {
   orders: Order[];
@@ -134,100 +116,8 @@ function OrdersTable({ orders }: OrdersTableProps) {
 
   return (
     <div className="w-full">
-      {/* Mobile Card View */}
-      <div className="block lg:hidden space-y-4">
-        {table.getRowModel().rows?.length ? (
-          table.getRowModel().rows.map((row) => (
-            <div
-              key={row.id}
-              className="bg-white rounded-lg border border-gray-200 p-4 space-y-3"
-            >
-              <div className="flex items-start gap-3">
-                <div className="flex-1 min-w-0"></div>
-                <div className="flex gap-2">
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="h-8 w-8 p-0 text-blue-600"
-                  >
-                    <Edit className="h-4 w-4" />
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="h-8 w-8 p-0 text-red-600"
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
-                </div>
-              </div>
-            </div>
-          ))
-        ) : (
-          <div className="text-center py-8 text-muted-foreground">
-            لا توجد نتائج.
-          </div>
-        )}
-      </div>
-
-      {/* Desktop Table View */}
-      <div className="hidden lg:block rounded-lg border border-gray-200 bg-white overflow-hidden">
-        <Table>
-          <TableHeader className="bg-gray-50">
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow
-                key={headerGroup.id}
-                className="border-b border-gray-200"
-              >
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead
-                      key={header.id}
-                      className="text-right font-semibold text-gray-700 py-4"
-                    >
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
-                    </TableHead>
-                  );
-                })}
-              </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody>
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  className="border-b border-gray-100 hover:bg-gray-50 transition-colors"
-                  data-state={row.getIsSelected() && "selected"}
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id} className="text-right py-4">
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center text-gray-500"
-                >
-                  لا توجد نتائج.
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
-      </div>
+      <OrdersTableMobile table={table} />
+      <OrdersTableDesktop table={table} />
 
       <div className="flex flex-col sm:flex-row items-center justify-between gap-4 py-4">
         <div className="text-sm text-muted-foreground">

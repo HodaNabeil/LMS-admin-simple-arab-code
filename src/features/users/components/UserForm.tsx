@@ -62,13 +62,13 @@ function UserForm({
   const formLoading = isSubmitting || mutation.isPending;
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(onSubmit)} className="max-h-[calc(100vh-200px)] overflow-y-auto">
       {getFormFields().map((field, index) => (
         <div key={index} className="mb-4">
           <FormFields {...field} control={control} errors={errors} />
         </div>
       ))}
-      <Button type="submit" disabled={formLoading}>
+      <Button type="submit" disabled={formLoading} className='w-full'>
         {user ? 'تحديث المستخدم' : 'انشاء مستخدم جديد'}
         {formLoading && <Loader />}
       </Button>

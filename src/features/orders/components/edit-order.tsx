@@ -9,7 +9,7 @@ import {
     DialogTrigger,
 } from "@/components/ui/dialog";
 import { Edit } from "lucide-react";
-import FormOrder from "./FormOrder";
+import FormOrder from "./form-order";
 import type { OrderFormData } from "../types";
 
 interface EditOrderProps {

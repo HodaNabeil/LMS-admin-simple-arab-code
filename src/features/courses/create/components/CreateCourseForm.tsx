@@ -10,6 +10,7 @@ import {
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm, type Control } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 
 export default function CreateCourseForm() {
   const { getFormFields } = useFormFields({ slug: Pages.CREATE_COURSES });
@@ -31,18 +32,33 @@ export default function CreateCourseForm() {
     resolver: zodResolver(getValidationSchema() as typeof createCourseSchema),
   });
 
+  const [submitError, setSubmitError] = useState<string | null>(null);
+
   const handleFormSubmit = async (data: ICreateCourseForm) => {
     try {
+      setSubmitError(null);
       navigate(`/admin/${Pages.COURSES}/${data.slug}/${Pages.GOALS}`);
     } catch (error) {
-      console.error('Navigation error:', error);
+      console.error('Course creation error:', error);
+      const errorMessage = error instanceof Error
+        ? error.message
+        : 'حدث خطأ أثناء إنشاء الكورس. يرجى المحاولة مرة أخرى.';
+      setSubmitError(errorMessage);
     }
   };
+
+
   return (
     <div className="flex flex-col gap-4 w-full max-w-2xl  p-6 bg-white rounded-lg shadow-md border border-gray-200">
       <h1 className="text-xl font-bold text-gray-600 mb-4 text-center border-b border-gray-200 pb-4 w-full">
         إضافة كورس جديد
       </h1>
+
+      {submitError && (
+        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded relative" role="alert">
+          <span className="block sm:inline">{submitError}</span>
+        </div>
+      )}
       <form
         onSubmit={handleSubmit(handleFormSubmit)}
         className="flex flex-col gap-4"

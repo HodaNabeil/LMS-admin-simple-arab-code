@@ -1,5 +1,15 @@
 import type { OptionType } from "./utils/orderOptions";
 
+export interface Order {
+    id: number;
+    date: string;
+    PaymentMethod: string;
+    price: number;
+    Status: string;
+    Amount: number;
+    Currency: string;
+}
+
 export interface OrderFormData {
     price: number;
     discountCode: string;

@@ -52,9 +52,7 @@ export default function Admin() {
             <PaymentHistory />
           </div>
           <div className="flex flex-col gap-4 ">
-            <AverageCourseProgress
-              averageCourseProgress={data?.averageCourseProgress}
-            />
+            <AverageCourseProgress />
             {/* <RecentlyCreatedCoursesCard
               courses={data?.recentlyCreatedCourses}
             /> */}

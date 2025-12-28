@@ -1,13 +1,12 @@
-import React from "react";
 
 import CourseFilters from "@/features/courses/components/CourseFilters";
 import CourseStats from "@/features/courses/components/CourseStats";
-import CourseTable from "@/features/courses/components/CourseTable";
+import CourseTable from "@/features/courses/components/table/CourseTable";
 import Header from "../../features/courses/components/Header";
 import { useCourseFilters } from "@/features/courses/hooks/useCourseFilters";
 import { MOCK_COURSES } from "@/features/courses/components/courses";
 
-const Courses: React.FC = () => {
+const Courses = () => {
   const { filters, filteredCourses, updateFilter, clearFilters } =
     useCourseFilters(MOCK_COURSES);
 
@@ -27,12 +26,12 @@ const Courses: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6 p-3">
+    <main className="space-y-6 p-3">
       <Header coursesCount={filteredCourses.length} />
       <CourseStats courses={filteredCourses} />
       <CourseFilters {...courseFiltersProps} />
       <CourseTable courses={filteredCourses} />
-    </div>
+    </main>
   );
 };
 
