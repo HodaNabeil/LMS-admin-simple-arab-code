@@ -1,17 +1,17 @@
 import { Badge } from "@/components/ui/badge";
 import type { ColumnDef } from "@tanstack/react-table";
 import DeletePath from "../DeletePath";
-import { EditPath } from "@/pages/paths/edit";
 import type { Path } from "@/types/path";
 import { Link } from "react-router-dom";
 import { buttonVariants } from "@/components/ui/button";
+import { Edit } from "lucide-react";
 
 export const columns: ColumnDef<Path>[] = [
   {
     accessorKey: "image",
     header: "الصورة",
     cell: ({ row }) => (
-      <div className="flex items-center justify-center">
+      <div>
         <img
           src={row.getValue("image")}
           alt={row.getValue("name")}
@@ -81,11 +81,16 @@ export const columns: ColumnDef<Path>[] = [
     id: "actions",
     header: "الإجراءات",
     enableHiding: false,
-    cell: ({ row }) => (
-      <div className="flex gap-2 items-center">
-        <EditPath path={row.original} />
-        <DeletePath pathId={row.original.id} />
-      </div>
-    ),
+    cell: ({ row }) => {
+      const path = row.original;
+      return (
+        <div className="flex gap-2 items-center">
+          <Link to={`/admin/paths/${path.slug}/manage`}>
+            <Edit className="h-4 w-4 text-blue-600 hover:text-blue-800" />
+          </Link>
+          <DeletePath pathSlug={path.slug} />
+        </div>
+      );
+    },
   },
 ];

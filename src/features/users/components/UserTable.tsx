@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState } from 'react';
 import {
   flexRender,
   getCoreRowModel,
@@ -6,15 +6,15 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
-} from "@tanstack/react-table";
+} from '@tanstack/react-table';
 import type {
   ColumnDef,
   ColumnFiltersState,
   SortingState,
   VisibilityState,
-} from "@tanstack/react-table";
+} from '@tanstack/react-table';
 
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/button';
 
 import {
   Table,
@@ -23,51 +23,44 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { Badge } from "@/components/ui/badge";
-import type { TableColumnUsers } from "@/types/users-table";
-import { EditUser } from "./EditUser";
-import DeleteUser from "./DeleteUser";
-import type { User } from "@/types/user";
-import UsersFilters from "./UsersFilters";
+} from '@/components/ui/table';
+import { Badge } from '@/components/ui/badge';
+import { EditUser } from './EditUser';
+import DeleteUser from './DeleteUser';
+import type { User } from '@/types/user';
+import UsersFilters from './UsersFilters';
 
 interface UsersTableProps {
-  users: TableColumnUsers[];
+  users: User[];
 }
 
-const columns: ColumnDef<TableColumnUsers>[] = [
+const columns: ColumnDef<User>[] = [
   {
-    accessorKey: "id",
-    header: "ID",
+    accessorKey: 'id',
+    header: 'ID',
   },
 
   {
-    accessorKey: "image",
-    header: "الصورة",
+    accessorKey: 'image',
+    header: 'الصورة',
     cell: ({ row }) => {
-      const image = row.getValue("image") as string;
-      const name = row.getValue("name") as string;
       return (
-        <div className="flex items-center justify-center">
-          {typeof image === "string" && image.trim() !== "" ? (
-            <img
-              src={image}
-              alt={name}
-              className="h-12 w-12 rounded-lg object-cover"
-            />
-          ) : null}
-        </div>
+        <img
+          src={row.getValue('image')}
+          alt={row.getValue('name')}
+          className="h-12 w-12 rounded-lg object-cover"
+        />
       );
     },
     enableSorting: false,
   },
   {
-    accessorKey: "name",
-    header: "اسم المستخدم",
+    accessorKey: 'name',
+    header: 'اسم المستخدم',
     cell: ({ row }) => {
-      const name = row.getValue("name") as string;
+      const name = row.getValue('name') as string;
       return (
-        <div className="max-w-[300px]">
+        <div className="max-w-75">
           <div className="font-medium text-right truncate">{name}</div>
         </div>
       );
@@ -75,22 +68,22 @@ const columns: ColumnDef<TableColumnUsers>[] = [
   },
 
   {
-    accessorKey: "email",
-    header: "Email",
+    accessorKey: 'email',
+    header: 'Email',
   },
   {
-    accessorKey: "role",
-    header: "نوعة المستخدم",
+    accessorKey: 'role',
+    header: 'نوعة المستخدم',
     cell: ({ row }) => (
       <Badge variant="outline" className="border-blue-200 text-blue-800">
-        {row.getValue("role")}
+        {row.getValue('role')}
       </Badge>
     ),
   },
 
   {
-    id: "actions",
-    header: "الإجراءات",
+    id: 'actions',
+    header: 'الإجراءات',
     enableHiding: false,
     cell: ({ row }) => (
       <div className="flex gap-2 items-center">
@@ -114,26 +107,28 @@ function UserTable({ users }: UsersTableProps) {
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
-  const [searchTerm, setSearchTerm] = useState(""); // قيمة افتراضية فارغة
-  const [selectedCategory, setSelectedCategory] = useState("الكل");
+  const [searchTerm, setSearchTerm] = useState(''); // قيمة افتراضية فارغة
+  const [selectedCategory, setSelectedCategory] = useState('الكل');
 
   const filteredUsers = useMemo(() => {
-    return users.filter(
-      (user: { id: { toString: () => string | string[] }; role: string }) => {
-        // البحث فقط في id
-        const matchesSearch = user.id?.toString().includes(searchTerm);
+    const term = searchTerm.toLowerCase().trim();
 
-        const matchesCategory =
-          selectedCategory === "الكل" || user.role === selectedCategory;
+    return users.filter((user: { id: string; role: string; email: string }) => {
+      const matchesSearchId = user.id?.toString().includes(term);
+      const matchesSearchEmail = user.email?.toLowerCase().includes(term);
 
-        return matchesSearch && matchesCategory;
-      }
-    );
-  }, [users, searchTerm, selectedCategory]); // أضيفي users للدوال التابعة
+      const matchesCategory =
+        selectedCategory === 'الكل' || user.role === selectedCategory;
+
+      const matchesSearch = matchesSearchId || matchesSearchEmail;
+
+      return matchesSearch && matchesCategory;
+    });
+  }, [users, searchTerm, selectedCategory]);
 
   const handleClearFilters = () => {
-    setSearchTerm(""); // أعيديها فارغة
-    setSelectedCategory("الكل");
+    setSearchTerm('');
+    setSelectedCategory('الكل');
   };
 
   const table = useReactTable({
@@ -173,17 +168,17 @@ function UserTable({ users }: UsersTableProps) {
               className="bg-white rounded-lg border border-gray-200 p-4 space-y-3"
             >
               <div className="flex items-start gap-3">
-                {(row.getValue("image") as string) && (
+                {(row.getValue('image') as string) && (
                   <img
-                    src={row.getValue("image") as string}
-                    alt={row.getValue("name") as string}
-                    className="h-16 w-16 rounded-lg object-cover flex-shrink-0"
+                    src={row.getValue('image') as string}
+                    alt={row.getValue('name') as string}
+                    className="h-16 w-16 rounded-lg object-cover shrink-0"
                   />
                 )}
 
                 <div className="flex-1 min-w-0">
                   <h3 className="font-medium text-sm leading-5 line-clamp-2 text-right">
-                    {row.getValue("name")}
+                    {row.getValue('name')}
                   </h3>
                 </div>
                 <div className="flex gap-2 items-center">
@@ -238,7 +233,7 @@ function UserTable({ users }: UsersTableProps) {
                 <TableRow
                   key={row.id}
                   className="border-b border-gray-100 hover:bg-gray-50 transition-colors"
-                  data-state={row.getIsSelected() && "selected"}
+                  data-state={row.getIsSelected() && 'selected'}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id} className="text-right py-4">
@@ -266,7 +261,7 @@ function UserTable({ users }: UsersTableProps) {
 
       <div className="flex flex-col sm:flex-row items-center justify-between gap-4 py-4">
         <div className="text-sm text-muted-foreground">
-          {table.getFilteredSelectedRowModel().rows.length} من{" "}
+          {table.getFilteredSelectedRowModel().rows.length} من{' '}
           {table.getFilteredRowModel().rows.length} صف محدد.
         </div>
         <div className="flex gap-2">

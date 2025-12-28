@@ -6,7 +6,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Directions } from "@/constants/enums";
 import { Trash2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -15,12 +14,12 @@ import { Loader } from "@/components/shared/loader";
 import type { AxiosError } from "axios";
 import { useState } from "react";
 import { useDeletePath } from "../hooks/usePathsMutations";
-export default function DeletePath({ pathId }: { pathId: string }) {
+export default function DeletePath({ pathSlug }: { pathSlug: string }) {
   const [userMenu, setUserMenu] = useState(false);
   const { mutateAsync, isPending } = useDeletePath();
-  const handleDeletePath = async (id: string) => {
+  const handleDeletePath = async (slug: string) => {
     try {
-      const res = await mutateAsync(id);
+      const res = await mutateAsync(slug);
       toast.success(res.message);
       setUserMenu(false);
     } catch (error) {
@@ -44,7 +43,7 @@ export default function DeletePath({ pathId }: { pathId: string }) {
           <Trash2 className="h-4 w-4" />
         </Button>
       </DialogTrigger>
-      <DialogContent dir={Directions.RTL} className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[425px]">
         <DialogHeader className="!text-right">
           <DialogTitle>حذف المسار</DialogTitle>
           <DialogDescription>هل انت متاكد من حذف المسار؟</DialogDescription>
@@ -52,7 +51,7 @@ export default function DeletePath({ pathId }: { pathId: string }) {
         <Button
           type="submit"
           disabled={isPending}
-          onClick={() => handleDeletePath(pathId)}
+          onClick={() => handleDeletePath(pathSlug)}
         >
           حذف المسار
           {isPending && <Loader />}

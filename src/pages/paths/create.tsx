@@ -1,9 +1,9 @@
-import AddPathFrom from "@/features/paths/components/AddPathFrom";
+import PathForm from "@/features/paths/components/PathForm";
 
-export default function NewAddPath() {
+export default function CreateNewPath() {
   return (
-    <div className="!pt-[5rem]">
-      <AddPathFrom onSubmit={() => {}} onCancel={() => {}} />
+    <div className="pt-20">
+      <PathForm  />
     </div>
   );
 }

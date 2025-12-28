@@ -15,31 +15,31 @@ export enum CourseStatus {
   PUBLISHED = "PUBLISHED",
 }
 
-export interface Course {
-  id: string;
-  name: string;
-  slug: string;
-  image?: File | string;
-  heading: string;
-  promoVideoUrl?: string;
-  hours: number;
-  level: CourseLevel;
-  type: CourseType;
-  isAvailableForPurchase: boolean;
-  priceInCents: number;
-  insteadOf?: number;
-  pathId: string;
-  whatYouWillLearn: {
-    data: string[];
-  };
-  whoIsThisFor: {
-    data: string[];
-  };
-  knowledgeNeeded?: string;
-  status: CourseStatus;
-  createdAt: string;
-  updatedAt: string;
-}
+// export interface Course {
+//   id: string;
+//   name: string;
+//   slug: string;
+//   image?: File | string;
+//   heading: string;
+//   promoVideoUrl?: string;
+//   hours: number;
+//   level: CourseLevel;
+//   type: CourseType;
+//   isAvailableForPurchase: boolean;
+//   priceInCents: number;
+//   insteadOf?: number;
+//   pathId: string;
+//   whatYouWillLearn: {
+//     data: string[];
+//   };
+//   whoIsThisFor: {
+//     data: string[];
+//   };
+//   knowledgeNeeded?: string;
+//   status: CourseStatus;
+//   createdAt: string;
+//   updatedAt: string;
+// }
 
 export interface Coupon {
   id: string;
@@ -59,3 +59,25 @@ export interface CouponsResponse {
   expiredCoupons: Coupon[];
 } 
 
+
+
+export interface Course {
+  id: number;
+  title: string;
+  category: string;
+  type: string;
+  level: string;
+  instructor: string;
+  price: number;
+  image: string;
+  students?: number;
+  rating?: number;
+}
+
+export interface CourseFilters {
+  searchTerm: string;
+  selectedCategory: string;
+  selectedLevel: string;
+  selectedType: string;
+  minPrice: number;
+}

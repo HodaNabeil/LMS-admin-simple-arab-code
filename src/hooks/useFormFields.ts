@@ -1,133 +1,148 @@
-import { Pages, UserType } from "@/constants/enums";
-import type { IFormField, IFormFieldsVariables } from "@/types/app";
+import { Pages, StatusLesson, UserType } from '@/constants/enums';
+import type { IFormField, IFormFieldsVariables } from '@/types/app';
 
 const useFormFields = ({ slug }: IFormFieldsVariables) => {
   const signinFields = (): IFormField[] => [
     {
-      label: "البريد الإلكتروني",
-      name: "email",
-      type: "email",
-      placeholder: "أدخل بريدك الإلكتروني",
+      label: 'البريد الإلكتروني',
+      name: 'email',
+      type: 'email',
+      placeholder: 'أدخل بريدك الإلكتروني',
       autoFocus: true,
     },
     {
-      label: "كلمة المرور",
-      name: "password",
-      placeholder: "••••••••",
-      type: "password",
+      label: 'كلمة المرور',
+      name: 'password',
+      placeholder: '••••••••',
+      type: 'password',
+    },
+  ];
+
+  const CreateSectionFormFields = (): IFormField[] => [
+    {
+      name: 'name',
+      label: 'اسم القسم',
+      type: 'text',
+      placeholder: 'ادخل اسم القسم',
+    },
+    {
+      name: 'description',
+      label: 'وصف القسم',
+      type: 'textarea',
+      placeholder: 'ادخل وصف القسم',
     },
   ];
 
   const signupFields = (): IFormField[] => [
     {
-      label: "نوع الحساب",
-      name: "user_type",
-      type: "select",
-      placeholder: "اختر نوع حسابك",
+      label: 'نوع الحساب',
+      name: 'user_type',
+      type: 'select',
+      placeholder: 'اختر نوع حسابك',
       autoFocus: true,
       options: [
-        { value: UserType.USER, label: "" },
-        { value: UserType.ADMIN, label: "" },
+        { value: UserType.USER, label: '' },
+        { value: UserType.ADMIN, label: '' },
       ],
     },
     {
-      label: "صورة الملف الشخصي",
-      name: "profile_picture",
-      type: "image",
-      placeholder: "اختر صورة شخصية",
+      label: 'صورة الملف الشخصي',
+      name: 'profile_picture',
+      type: 'image',
+      placeholder: 'اختر صورة شخصية',
     },
     {
-      label: "الاسم",
-      name: "name",
-      type: "text",
-      placeholder: "أدخل اسمك الكامل",
+      label: 'الاسم',
+      name: 'name',
+      type: 'text',
+      placeholder: 'أدخل اسمك الكامل',
     },
     {
-      label: "رقم الهاتف",
-      name: "phone",
-      type: "phone",
-      placeholder: "أدخل رقم هاتفك",
+      label: 'رقم الهاتف',
+      name: 'phone',
+      type: 'phone',
+      placeholder: 'أدخل رقم هاتفك',
     },
     {
-      label: "البريد الإلكتروني",
-      name: "email",
-      type: "email",
-      placeholder: "أدخل بريدك الإلكتروني",
+      label: 'البريد الإلكتروني',
+      name: 'email',
+      type: 'email',
+      placeholder: 'أدخل بريدك الإلكتروني',
     },
     {
-      label: "كلمة المرور",
-      name: "password",
-      type: "password",
-      placeholder: "••••••••",
+      label: 'كلمة المرور',
+      name: 'password',
+      type: 'password',
+      placeholder: '••••••••',
     },
     {
-      label: "تأكيد كلمة المرور",
-      name: "confirm_password",
-      type: "password",
-      placeholder: "••••••••",
+      label: 'تأكيد كلمة المرور',
+      name: 'confirm_password',
+      type: 'password',
+      placeholder: '••••••••',
     },
   ];
 
   const forgotFields = (): IFormField[] => [
     {
-      label: "البريد الإلكتروني",
-      name: "email",
-      type: "text",
-      placeholder: "أدخل بريدك الإلكتروني",
+      label: 'البريد الإلكتروني',
+      name: 'email',
+      type: 'text',
+      placeholder: 'أدخل بريدك الإلكتروني',
       autoFocus: true,
     },
   ];
 
   const resetFields = (): IFormField[] => [
     {
-      label: "كلمة المرور الجديدة",
-      name: "password",
-      type: "password",
-      placeholder: "أدخل كلمة المرور الجديدة",
+      label: 'كلمة المرور الجديدة',
+      name: 'password',
+      type: 'password',
+      placeholder: 'أدخل كلمة المرور الجديدة',
       autoFocus: true,
     },
     {
-      label: "تأكيد كلمة المرور",
-      name: "confirm_password",
-      type: "password",
-      placeholder: "أعد إدخال كلمة المرور",
+      label: 'تأكيد كلمة المرور',
+      name: 'confirm_password',
+      type: 'password',
+      placeholder: 'أعد إدخال كلمة المرور',
     },
   ];
   const loginFields = (): IFormField[] => [
     {
-      label: "البريد الإلكتروني",
-      name: "email",
-      type: "email",
-      placeholder: "أدخل بريدك الإلكتروني",
+      label: 'البريد الإلكتروني',
+      name: 'email',
+      type: 'email',
+      placeholder: 'أدخل بريدك الإلكتروني',
       autoFocus: true,
     },
     {
-      label: "كلمة المرور",
-      name: "password",
-      type: "password",
-      placeholder: "••••••••",
+      label: 'كلمة المرور',
+      name: 'password',
+      type: 'password',
+      placeholder: '••••••••',
     },
   ];
 
   const userFields = (): IFormField[] => [
     {
-      label: "الاسم",
-      name: "name",
-      type: "text",
-      placeholder: "أدخل اسمك الكامل",
+      label: 'الاسم',
+      name: 'name',
+      type: 'text',
+      placeholder: 'أدخل اسمك الكامل',
       autoFocus: true,
     },
     {
-      label: "البريد الإلكتروني",
-      name: "email",
-      type: "email",
-      placeholder: "أدخل بريدك الإلكتروني",
+      label: 'البريد الإلكتروني',
+      name: 'email',
+      type: 'email',
+      placeholder: 'أدخل بريدك الإلكتروني',
     },
     {
-      label: "نوع الحساب",
-      name: "role",
-      type: "select",
-      placeholder: "اختر نوع حسابك",
+      label: 'نوع الحساب',
+      name: 'role',
+      type: 'select',
+      placeholder: 'اختر نوع حسابك',
       options: [
         { value: UserType.USER, label: UserType.USER },
         { value: UserType.ADMIN, label: UserType.ADMIN },
@@ -137,160 +152,166 @@ const useFormFields = ({ slug }: IFormFieldsVariables) => {
 
   const pathFields = (): IFormField[] => [
     {
-      name: "name",
-      label: "اسم المسار التعليمي",
-      type: "text",
-      placeholder: "ادخل اسم المسار التعليمي",
+      name: 'name',
+      label: 'اسم المسار التعليمي',
+      type: 'text',
+      placeholder: 'ادخل اسم المسار التعليمي',
     },
     {
-      name: "heading",
-      label: "عنوان المسار",
-      type: "text",
-      placeholder: "ادخل عنوان المسار",
+      name: 'heading',
+      label: 'عنوان المسار',
+      type: 'text',
+      placeholder: 'ادخل عنوان المسار',
     },
     {
-      name: "slug",
-      label: "Slug",
-      type: "text",
-      placeholder: "أدخل مُعرّف المادة (يجب أن يكون فريدًا)",
+      name: 'slug',
+      label: 'Slug',
+      type: 'text',
+      placeholder: 'أدخل مُعرّف المادة (يجب أن يكون فريدًا)',
     },
 
     {
-      name: "description",
-      label: "وصف المسار التعليمي",
-      type: "textarea",
-      placeholder: "ادخل وصف المسار التعليمي",
+      name: 'description',
+      label: 'وصف المسار التعليمي',
+      type: 'textarea',
+      placeholder: 'ادخل وصف المسار التعليمي',
     },
     {
-      name: "image",
-      label: "اختار صورة المسار التعليمي",
-      type: "image",
-      placeholder: "اختار صورة المسار التعليمي",
+      name: 'image',
+      label: 'اختار صورة المسار التعليمي',
+      type: 'image',
+      placeholder: 'اختار صورة المسار التعليمي',
     },
     {
-      name: "roadmap",
-      label: "رابط المسار التعليمي",
-      type: "file",
-      placeholder: "ادخل رابط المسار التعليمي",
+      name: 'roadmap',
+      label: 'رابط المسار التعليمي',
+      type: 'file',
+      placeholder: 'ادخل رابط المسار التعليمي',
     },
   ];
 
   const createCourseFields = (): IFormField[] => [
     {
-      name: "selectedPath", // تصحيح اسم الحقل
-      label: "اختار المسار التعليمي",
-      type: "select",
-      placeholder: "اختر المسار التعليمي",
+      name: 'selectedPath', // تصحيح اسم الحقل
+      label: 'اختار المسار التعليمي',
+      type: 'select',
+      placeholder: 'اختر المسار التعليمي',
       options: [
-        { value: "1", label: "المسار التعليمي 1" },
-        { value: "2", label: "المسار التعليمي 2" },
-        { value: "3", label: "المسار التعليمي 3" },
+        { value: '1', label: 'المسار التعليمي 1' },
+        { value: '2', label: 'المسار التعليمي 2' },
+        { value: '3', label: 'المسار التعليمي 3' },
       ],
     },
     {
-      name: "slug",
-      label: "اسم الكورس (Slug)",
-      type: "text",
-      placeholder: "ادخل اسم الكورس يجب أن يكون فريد!",
+      name: 'slug',
+      label: 'اسم الكورس (Slug)',
+      type: 'text',
+      placeholder: 'ادخل اسم الكورس يجب أن يكون فريد!',
     },
   ];
 
-  const goalsFields = (): IFormField[] =>[
+  const goalsFields = (): IFormField[] => [
     {
-      name: "whatWillStudentsLearn",
-      label: "ما الذي سيتعلمه الطلاب في هذا الكورس؟",
-      type: "text",
-      placeholder: "مثال: أساسيات البرمجة، استخدام React..."
+      name: 'knowledgeNeeded',
+      label: 'ما ينبغي عليك معرفته',
+      type: 'textarea',
+      placeholder: 'مثال: يفضل معرفة أساسيات البرمجة أو HTML',
     },
-    {
-      name: "requirements",
-      label: "ما هي المتطلبات اللازمة للالتحاق بهذا الكورس؟",
-      type: "textarea",
-      placeholder: "مثال: معرفة سابقة بـ HTML و CSS"
-    },
-    {
-      name: "prerequisiteCourse",
-      label: "اختر كورسًا يجب تعلمه أولًا",
-      type: "select",
-      options: [
-        { value: "hodaCourse", label: "كورس Hoda" },
-        { value: "hodaCourse4", label: "كورس Hoda4" },
-      ]
-    },
-      {
-        name: "targetAudience",
-        label: "لمن هذا الكورس؟",
-        type: "text",
-        placeholder: "مثال: للمبتدئين، للمطورين المتوسطين، للطلاب..."
-      }
-    ];
-  
+  ];
+
   const basicsFields = (): IFormField[] => [
     {
-      name: "name",
-      label: "اسم الدورة",
-      type: "text",
-      placeholder: "ادخل اسم الدورة",
+      name: 'name',
+      label: 'اسم الدورة',
+      type: 'text',
+      placeholder: 'ادخل اسم الدورة',
     },
     {
-      name: "description",
-      label: "وصف الدورة",
-      type: "textarea",
-      placeholder: "ادخل وصف الدورة",
+      name: 'description',
+      label: 'وصف الدورة',
+      type: 'textarea',
+      placeholder: 'ادخل وصف الدورة',
     },
     {
-      name: "slug",
-      label: "اسم الدورة (Slug)",
-      type: "text",
-      placeholder: "ادخل اسم الدورة (يجب أن يكون فريد)",
+      name: 'slug',
+      label: 'اسم الدورة (Slug)',
+      type: 'text',
+      placeholder: 'ادخل اسم الدورة (يجب أن يكون فريد)',
     },
     {
-      name: "level",
-      label: "مستوى الدورة",
-      type: "select",
-      placeholder: "اختر مستوى الدورة",
+      name: 'level',
+      label: 'مستوى الدورة',
+      type: 'select',
+      placeholder: 'اختر مستوى الدورة',
       options: [
-        { value: "all", label: "جميع المستويات" },
-        { value: "beginner", label: "مبتدئ" },
-        { value: "intermediate", label: "متوسط" },
-        { value: "advanced", label: "متقدم" },
+        { value: 'all', label: 'جميع المستويات' },
+        { value: 'beginner', label: 'مبتدئ' },
+        { value: 'intermediate', label: 'متوسط' },
+        { value: 'advanced', label: 'متقدم' },
       ],
     },
     {
-      name:"hours",
-      label: "مدة الدورة (بالساعات)",
-      type: "number",
-      placeholder: "ادخل مدة الدورة (بالساعات)",
+      name: 'hours',
+      label: 'مدة الدورة (بالساعات)',
+      type: 'number',
+      placeholder: 'ادخل مدة الدورة (بالساعات)',
     },
     {
-      name: "image",
-      label: "صورة الدورة",
-      type: "image",
-      placeholder: "اختار صورة الدورة",
+      name: 'image',
+      label: 'صورة الدورة',
+      type: 'image',
+      placeholder: 'اختار صورة الدورة',
     },
     {
-      name: "video",
-      label: "فيديو الدورة",
-      type: "file",
-      placeholder: "اختر فيديو الدورة",
-  
+      name: 'video',
+      label: 'فيديو الدورة',
+      type: 'file',
+      placeholder: 'اختر فيديو الدورة',
     },
   ];
 
   const pricingFields = (): IFormField[] => [
     {
-      name: "priceInCents",
-      label: "السعر بالسنت",
-      type: "number",
-      placeholder: "ادخل السعر بالسنت",
+      name: 'priceInCents',
+      label: 'السعر بالسنت',
+      type: 'number',
+      placeholder: 'ادخل السعر بالسنت',
     },
     {
-      name: "price",
-      label: "السعر بالدولار",
-      type: "number",
-      placeholder: "ادخل السعر بالدولار",
+      name: 'price',
+      label: 'السعر بالدولار',
+      type: 'number',
+      placeholder: 'ادخل السعر بالدولار',
     },
   ];
+
+  const lessonFields = (): IFormField[] => [
+    {
+      name: 'name',
+      label: 'المحاضرة اسم  ',
+      type: 'text',
+      placeholder: 'ادخل اسم المحاضرة التعليمي',
+    },
+
+    {
+      name: 'description',
+      label: ' وصف المحاضرة',
+      type: 'textarea',
+      placeholder: 'ادخل وصف المحاضرة التعليمي',
+    },
+    {
+      label: 'معاينه المحاضرة',
+      name: 'role',
+      type: 'select',
+      placeholder: 'اختر معاينه المحاضرة',
+      options: [
+        { value: StatusLesson.LOCKED, label: StatusLesson.LOCKED },
+        { value: StatusLesson.UNLOCKED, label: StatusLesson.UNLOCKED },
+        { value: StatusLesson.PREVIEW, label: StatusLesson.PREVIEW },
+      ],
+    },
+  ];
+
   const getFormFields = (): IFormField[] => {
     switch (slug) {
       case Pages.SIGNIN:
@@ -307,6 +328,7 @@ const useFormFields = ({ slug }: IFormFieldsVariables) => {
         return loginFields();
       case Pages.PATHS:
         return pathFields();
+
       case Pages.CREATE_COURSES:
         return createCourseFields();
       case Pages.GOALS:
@@ -315,6 +337,10 @@ const useFormFields = ({ slug }: IFormFieldsVariables) => {
         return basicsFields();
       case Pages.PRICING:
         return pricingFields();
+      case Pages.CURRICULUM:
+        return CreateSectionFormFields();
+      case Pages.LESSONS:
+        return lessonFields();
       default:
         return [];
     }

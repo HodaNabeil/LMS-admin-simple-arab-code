@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   flexRender,
   getCoreRowModel,
@@ -6,18 +6,18 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
-} from "@tanstack/react-table";
+} from '@tanstack/react-table';
 import type {
   ColumnDef,
   ColumnFiltersState,
   SortingState,
   VisibilityState,
-} from "@tanstack/react-table";
-import { Edit, Trash2 } from "lucide-react";
+} from '@tanstack/react-table';
+import { Edit, Trash2 } from 'lucide-react';
 
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/button';
 
-import { Input } from "@/components/ui/input";
+import { Input } from '@/components/ui/input';
 import {
   Table,
   TableBody,
@@ -25,8 +25,8 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { Badge } from "@/components/ui/badge";
+} from '@/components/ui/table';
+import { Badge } from '@/components/ui/badge';
 
 interface Course {
   id: number;
@@ -47,13 +47,13 @@ interface CourseTableProps {
 
 const columns: ColumnDef<Course>[] = [
   {
-    accessorKey: "image",
-    header: "الصورة",
+    accessorKey: 'image',
+    header: 'الصورة',
     cell: ({ row }) => (
       <div className="flex items-center justify-center">
         <img
-          src={row.getValue("image")}
-          alt={row.getValue("title")}
+          src={row.getValue('image')}
+          alt={row.getValue('title')}
           className="h-12 w-12 rounded-lg object-cover"
         />
       </div>
@@ -61,53 +61,53 @@ const columns: ColumnDef<Course>[] = [
     enableSorting: false,
   },
   {
-    accessorKey: "title",
-    header: "اسم المادة",
+    accessorKey: 'title',
+    header: 'اسم المادة',
     cell: ({ row }) => (
       <div className="max-w-[300px]">
         <div className="font-medium text-right truncate">
-          {row.getValue("title")}
+          {row.getValue('title')}
         </div>
       </div>
     ),
     enableSorting: true,
   },
   {
-    accessorKey: "category",
-    header: "الفئة",
+    accessorKey: 'category',
+    header: 'الفئة',
     cell: ({ row }) => (
       <Badge variant="outline" className="border-blue-200 text-blue-800">
-        {row.getValue("category")}
+        {row.getValue('category')}
       </Badge>
     ),
   },
   {
-    accessorKey: "type",
-    header: "النوع",
+    accessorKey: 'type',
+    header: 'النوع',
     cell: ({ row }) => (
       <Badge
         variant="secondary"
         className="bg-purple-100 text-purple-800 border-purple-200"
       >
-        {row.getValue("type")}
+        {row.getValue('type')}
       </Badge>
     ),
   },
   {
-    accessorKey: "level",
-    header: "المستوى",
+    accessorKey: 'level',
+    header: 'المستوى',
     cell: ({ row }) => {
-      const level = row.getValue("level") as string;
+      const level = row.getValue('level') as string;
       const levelColors = {
-        مبتدئ: "bg-green-100 text-green-800 border-green-200",
-        متوسط: "bg-yellow-100 text-yellow-800 border-yellow-200",
-        متقدم: "bg-red-100 text-red-800 border-red-200",
+        مبتدئ: 'bg-green-100 text-green-800 border-green-200',
+        متوسط: 'bg-yellow-100 text-yellow-800 border-yellow-200',
+        متقدم: 'bg-red-100 text-red-800 border-red-200',
       };
       return (
         <Badge
           className={`${
             levelColors[level as keyof typeof levelColors] ||
-            "bg-gray-100 text-gray-800 border-gray-200"
+            'bg-gray-100 text-gray-800 border-gray-200'
           }`}
         >
           {level}
@@ -116,27 +116,27 @@ const columns: ColumnDef<Course>[] = [
     },
   },
   {
-    accessorKey: "instructor",
-    header: "اسم المدرب",
+    accessorKey: 'instructor',
+    header: 'اسم المدرب',
     cell: ({ row }) => (
-      <div className="font-medium text-right">{row.getValue("instructor")}</div>
+      <div className="font-medium text-right">{row.getValue('instructor')}</div>
     ),
   },
   {
-    accessorKey: "price",
-    header: "السعر",
+    accessorKey: 'price',
+    header: 'السعر',
     cell: ({ row }) => {
-      const price = parseFloat(row.getValue("price"));
+      const price = parseFloat(row.getValue('price'));
       return (
         <div className="font-medium text-right">
-          {price === 0 ? "مجاني" : `${price} ر.س`}
+          {price === 0 ? 'مجاني' : `${price} ر.س`}
         </div>
       );
     },
   },
   {
-    id: "actions",
-    header: "الإجراءات",
+    id: 'actions',
+    header: 'الإجراءات',
     enableHiding: false,
     cell: () => {
       return (
@@ -194,9 +194,9 @@ function CourseTable({ courses }: CourseTableProps) {
       <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 py-4">
         <Input
           placeholder="البحث في الدورات..."
-          value={(table.getColumn("title")?.getFilterValue() as string) ?? ""}
+          value={(table.getColumn('title')?.getFilterValue() as string) ?? ''}
           onChange={(event) =>
-            table.getColumn("title")?.setFilterValue(event.target.value)
+            table.getColumn('title')?.setFilterValue(event.target.value)
           }
           className="w-full sm:max-w-sm"
         />
@@ -212,16 +212,16 @@ function CourseTable({ courses }: CourseTableProps) {
             >
               <div className="flex items-start gap-3">
                 <img
-                  src={row.getValue("image")}
-                  alt={row.getValue("title")}
+                  src={row.getValue('image')}
+                  alt={row.getValue('title')}
                   className="h-16 w-16 rounded-lg object-cover flex-shrink-0"
                 />
                 <div className="flex-1 min-w-0">
                   <h3 className="font-medium text-sm leading-5 line-clamp-2 text-right">
-                    {row.getValue("title")}
+                    {row.getValue('title')}
                   </h3>
                   <p className="text-sm text-muted-foreground mt-1 text-right">
-                    {row.getValue("instructor")}
+                    {row.getValue('instructor')}
                   </p>
                 </div>
                 <div className="flex gap-2">
@@ -247,34 +247,34 @@ function CourseTable({ courses }: CourseTableProps) {
                   variant="secondary"
                   className="bg-purple-100 text-purple-800 text-xs"
                 >
-                  {row.getValue("category")}
+                  {row.getValue('category')}
                 </Badge>
                 <Badge
                   variant="outline"
                   className="border-blue-200 text-blue-800 text-xs"
                 >
-                  {row.getValue("type")}
+                  {row.getValue('type')}
                 </Badge>
                 <Badge
                   className={`text-xs ${
-                    row.getValue("level") === "مبتدئ"
-                      ? "bg-green-100 text-green-800"
-                      : row.getValue("level") === "متوسط"
-                      ? "bg-yellow-100 text-yellow-800"
-                      : row.getValue("level") === "متقدم"
-                      ? "bg-red-100 text-red-800"
-                      : "bg-gray-100 text-gray-800"
+                    row.getValue('level') === 'مبتدئ'
+                      ? 'bg-green-100 text-green-800'
+                      : row.getValue('level') === 'متوسط'
+                      ? 'bg-yellow-100 text-yellow-800'
+                      : row.getValue('level') === 'متقدم'
+                      ? 'bg-red-100 text-red-800'
+                      : 'bg-gray-100 text-gray-800'
                   }`}
                 >
-                  {row.getValue("level")}
+                  {row.getValue('level')}
                 </Badge>
               </div>
 
               <div className="flex justify-end pt-2 border-t">
                 <div className="text-sm font-medium">
-                  {parseFloat(row.getValue("price")) === 0
-                    ? "مجاني"
-                    : `${row.getValue("price")} ر.س`}
+                  {parseFloat(row.getValue('price')) === 0
+                    ? 'مجاني'
+                    : `${row.getValue('price')} ر.س`}
                 </div>
               </div>
             </div>
@@ -319,7 +319,7 @@ function CourseTable({ courses }: CourseTableProps) {
                 <TableRow
                   key={row.id}
                   className="border-b border-gray-100 hover:bg-gray-50 transition-colors"
-                  data-state={row.getIsSelected() && "selected"}
+                  data-state={row.getIsSelected() && 'selected'}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id} className="text-right py-4">
@@ -347,7 +347,7 @@ function CourseTable({ courses }: CourseTableProps) {
 
       <div className="flex flex-col sm:flex-row items-center justify-between gap-4 py-4">
         <div className="text-sm text-muted-foreground">
-          {table.getFilteredSelectedRowModel().rows.length} من{" "}
+          {table.getFilteredSelectedRowModel().rows.length} من{' '}
           {table.getFilteredRowModel().rows.length} صف محدد.
         </div>
         <div className="flex gap-2">

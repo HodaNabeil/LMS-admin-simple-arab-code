@@ -1,15 +1,4 @@
 import { z } from "zod";
-// import { CourseLevel, CourseStatus, CourseType } from "../types/course";
-
-// const CourseLevelEnum = z.enum([
-//   CourseLevel.ALL,
-//   CourseLevel.ADVANCED,
-//   CourseLevel.BEGINNER,
-//   CourseLevel.INTERMEDIATE,
-// ]);
-
-// const CourseTypeEnum = z.enum([CourseType.BUNDLE, CourseType.SINGLE]);
-// const CourseStatusEnum = z.enum([CourseStatus.DRAFT, CourseStatus.PUBLISHED]);
 
 const course = {
   name: z.string().min(1, { message: "Course name is required." }),
@@ -42,12 +31,18 @@ const course = {
       .min(1, { message: "Who is this for is required." }),
   }),
   knowledgeNeeded: z.string().optional(),
+  prerequisites: z.array(z.string()).optional(),
 };
 export const courseSchema = z.object(course);
 
 export const sectionSchema = z.object({
   name: z.string(),
   heading: z.string(),
+});
+
+export const createSectionCourseSchema = z.object({
+  name: z.string(),
+  description: z.string(),
 });
 
 export const lessonSchema = z.object({
@@ -63,6 +58,7 @@ export const goalsSchema = z.object({
   whatYouWillLearn: course.whatYouWillLearn,
   knowledgeNeeded: course.knowledgeNeeded,
   whoIsThisFor: course.whoIsThisFor,
+  prerequisites: course.prerequisites,
 });
 
 export type GoalsSchema = z.infer<typeof goalsSchema>;
@@ -74,6 +70,12 @@ export const basicsSchema = z.object({
   video: z.custom<File>().optional(),
   description: z.string().optional(),
   level: z.string().optional(),
+});
+
+export const createLessonCourseSchema = z.object({
+  name: course.name,
+  description: z.string().optional(),
+  select: z.string().optional(),
 });
 
 export type BasicsSchema = z.infer<typeof basicsSchema>;

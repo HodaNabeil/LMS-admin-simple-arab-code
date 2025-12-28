@@ -10,6 +10,7 @@ import { useAuthStore } from "@/features/auth/store";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import type { LoginRequest } from "@/types/user";
+import type { loginSchema } from "@/validations/login";
 function Login() {
   const { getFormFields } = useFormFields({ slug: Pages.LOGIN });
   const { getValidationSchema } = useFormValidations({ slug: Pages.LOGIN });
@@ -27,7 +28,7 @@ function Login() {
     control,
     formState: { errors, isSubmitting },
   } = useForm({
-    resolver: zodResolver(getValidationSchema()),
+    resolver: zodResolver(getValidationSchema() as typeof loginSchema),
     mode: "onChange",
     defaultValues: DEFAULT_VALUES,
   });

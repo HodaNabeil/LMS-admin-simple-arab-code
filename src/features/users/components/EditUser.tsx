@@ -4,13 +4,12 @@ import {
   DialogHeader,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Directions } from "@/constants/enums";
 import UserForm from "./UserForm";
 import { DialogDescription, DialogTitle } from "@radix-ui/react-dialog";
 import { Edit } from "lucide-react";
 import type { User } from "@/types/user";
 import { useState } from "react";
-import { useUpdateUser } from "@/hooks/useUsers";
+import { useUpdateUser } from "../hooks/useUsersMutations";
 
 export function EditUser({ user }: { user: User }) {
   const [userMenu, setUserMenu] = useState(false);
@@ -20,7 +19,7 @@ export function EditUser({ user }: { user: User }) {
       <DialogTrigger asChild>
         <Edit className="h-4 w-4" />
       </DialogTrigger>
-      <DialogContent dir={Directions.RTL} className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[425px]">
         <DialogHeader className="!text-right">
           <DialogTitle>تعديل المستخدم</DialogTitle>
           <DialogDescription>

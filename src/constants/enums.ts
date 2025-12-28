@@ -31,6 +31,10 @@ export enum Pages {
   GOALS = "manage/goals",
   BASICS = "manage/basics",
   PRICING = "manage/pricing",
+  MANAGE = "manage",
+  COURSES = "courses",
+  CURRICULUM = "curriculum",
+  LESSONS = "lessons",
 }
 
 export enum InputTypes {
@@ -109,4 +113,10 @@ export enum Environments {
 export enum UserType {
   USER = "USER",
   ADMIN = "ADMIN",
+}
+
+export enum StatusLesson {
+  LOCKED = "locked",
+  UNLOCKED = "unlocked",
+  PREVIEW = "preview",
 }
