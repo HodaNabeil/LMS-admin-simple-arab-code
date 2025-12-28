@@ -1,11 +1,11 @@
-import FormFields from "@/components/shared/form-fields/form-fields";
-import { Button } from "@/components/ui/button";
-import { Pages } from "@/constants/enums";
-import useFormFields from "@/hooks/useFormFields";
-import useFormValidations from "@/hooks/useFormValidations";
-import type { createSectionCourseSchema } from "@/validations/course";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import FormFields from '@/components/shared/form-fields/form-fields';
+import { Button } from '@/components/ui/button';
+import { Pages } from '@/constants/enums';
+import useFormFields from '@/hooks/useFormFields';
+import useFormValidations from '@/hooks/useFormValidations';
+import type { createSectionCourseSchema } from '@/validations/course';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
 
 interface SectionFormProps {
   section?: {
@@ -27,16 +27,16 @@ export default function SectionForm({ section, setOpen }: SectionFormProps) {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      name: "",
-      description: "",
+      name: '',
+      description: '',
     },
-    mode: "onChange",
+    mode: 'onChange',
     resolver: zodResolver(
       getValidationSchema() as typeof createSectionCourseSchema
     ),
   });
 
-  const handleFormSubmit = (data: any) => {};
+  const handleFormSubmit = () => {};
   const onCancel = () => {
     setOpen(false);
   };
@@ -50,7 +50,7 @@ export default function SectionForm({ section, setOpen }: SectionFormProps) {
         </div>
       ))}
       <div className="flex justify-end mt-4 gap-2 items-center">
-        <Button type="submit">{section ? "تعديل القسم" : "إضافة قسم"}</Button>
+        <Button type="submit">{section ? 'تعديل القسم' : 'إضافة قسم'}</Button>
         <Button type="button" variant="secondary" onClick={onCancel}>
           إلغاء
         </Button>

@@ -1,13 +1,13 @@
-import FormFields from "@/components/shared/form-fields/form-fields";
-import { Button } from "@/components/ui/button";
-import { Pages } from "@/constants/enums";
-import useFormFields from "@/hooks/useFormFields";
-import useFormValidations from "@/hooks/useFormValidations";
-import type { createSectionCourseSchema } from "@/validations/course";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm, type Control } from "react-hook-form";
+import FormFields from '@/components/shared/form-fields/form-fields';
+import { Button } from '@/components/ui/button';
+import { Pages } from '@/constants/enums';
+import useFormFields from '@/hooks/useFormFields';
+import useFormValidations from '@/hooks/useFormValidations';
+import type { createSectionCourseSchema } from '@/validations/course';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
 interface ManageFormSectionProps {
-  mode: "add" | "edit";
+  mode: 'add' | 'edit';
   setOpen: (open: boolean) => void;
   open: boolean;
 }
@@ -15,7 +15,6 @@ interface ManageFormSectionProps {
 export default function ManageFormLesson({
   mode,
   setOpen,
-  open,
 }: ManageFormSectionProps) {
   const { getFormFields } = useFormFields({ slug: Pages.LESSONS });
   const { getValidationSchema } = useFormValidations({
@@ -28,13 +27,13 @@ export default function ManageFormLesson({
     formState: { errors },
   } = useForm({
     defaultValues: {},
-    mode: "onChange",
+    mode: 'onChange',
     resolver: zodResolver(
       getValidationSchema() as typeof createSectionCourseSchema
     ),
   });
 
-  const handleFormSubmit = (data: { name: string; description: string }) => {
+  const handleFormSubmit = () => {
     // console.log(data);
   };
   const onCancel = () => {
@@ -45,16 +44,12 @@ export default function ManageFormLesson({
       {getFormFields().map((field, index) => (
         <div key={index} className="mb-4">
           <div key={index} className="mb-4">
-            <FormFields
-              {...field}
-              control={control as Control<Record<string, unknown>>}
-              errors={errors}
-            />
+            <FormFields {...field} control={control} errors={errors} />
           </div>
         </div>
       ))}
       <div className="flex justify-end mt-4 gap-2 items-center">
-        <Button type="submit">{mode === "add" ? "إضافة  " : " تحديث"}</Button>
+        <Button type="submit">{mode === 'add' ? 'إضافة  ' : ' تحديث'}</Button>
         <Button type="button" variant="secondary" onClick={onCancel}>
           إلغاء
         </Button>

@@ -1,18 +1,18 @@
-import * as z from "zod";
-import { signinSchema, signupSchema } from "@/validations/auth";
-import type { IFormFieldsVariables } from "@/types/app";
-import { Pages } from "@/constants/enums";
-import { loginSchema } from "@/validations/login";
-import { userSchema } from "@/validations/user";
-import { pathSchema } from "@/validations/path";
-import { createCourseSchema } from "@/validations/createcourse";
+import * as z from 'zod';
+import { signinSchema, signupSchema } from '@/validations/auth';
+import type { IFormFieldsVariables } from '@/types/app';
+import { Pages } from '@/constants/enums';
+import { loginSchema } from '@/validations/login';
+import { userSchema } from '@/validations/user';
+import { pathSchema } from '@/validations/path';
+import { createCourseSchema } from '@/validations/createcourse';
 import {
   basicsSchema,
   createLessonCourseSchema,
   createSectionCourseSchema,
   goalsSchema,
   pricingSchema,
-} from "@/validations/course";
+} from '@/validations/course';
 
 type ValidationSchema =
   | typeof signinSchema

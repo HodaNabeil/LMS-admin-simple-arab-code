@@ -1,21 +1,20 @@
-import TagsInput from "@/components/shared/tags-input";
-import { Label } from "@/components/ui/label";
-import Select from "react-select";
-import { useState } from "react";
-import FormFields from "@/components/shared/form-fields/form-fields";
-import useFormFields from "@/hooks/useFormFields";
-import { Pages } from "@/constants/enums";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { goalsSchema, type GoalsSchema } from "@/validations/course";
+import { Label } from '@/components/ui/label';
+import Select from 'react-select';
+import { useState } from 'react';
+import FormFields from '@/components/shared/form-fields/form-fields';
+import useFormFields from '@/hooks/useFormFields';
+import { Pages } from '@/constants/enums';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { goalsSchema, type GoalsSchema } from '@/validations/course';
 
 type OptionType = { value: string; label: string };
 
 const courseOptions: OptionType[] = [
-  { value: "react", label: "Mastering ReactJS: Build Dynamic Web Apps" },
-  { value: "nodejs", label: "NodeJS" },
-  { value: "html", label: "Learn HTML in 5 mins" },
-  { value: "hoda", label: "Hoda Course" },
+  { value: 'react', label: 'Mastering ReactJS: Build Dynamic Web Apps' },
+  { value: 'nodejs', label: 'NodeJS' },
+  { value: 'html', label: 'Learn HTML in 5 mins' },
+  { value: 'hoda', label: 'Hoda Course' },
 ];
 
 type FormDataType = {
@@ -28,7 +27,7 @@ type FormDataType = {
 
 export default function GoalsForm() {
   const { getFormFields } = useFormFields({ slug: Pages.GOALS });
-  const [formData, setFormData] = useState<FormDataType>({
+  const [formData] = useState<FormDataType>({
     whatYouWillLearn: [],
     whoIsThisFor: [],
     prerequisites: [],
@@ -43,12 +42,12 @@ export default function GoalsForm() {
   } = useForm<GoalsSchema>({
     resolver: zodResolver(goalsSchema),
     defaultValues: {
-      knowledgeNeeded: "",
+      knowledgeNeeded: '',
     },
-    mode: "onChange",
+    mode: 'onChange',
   });
   const onSubmit = (data: GoalsSchema) => {
-    console.log("Form submitted with data:", data);
+    console.log('Form submitted with data:', data);
   };
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-1">
@@ -56,12 +55,12 @@ export default function GoalsForm() {
         <Label className="text-sm font-medium text-card-foreground mb-2 block">
           ما ستتعلمه
         </Label>
-        <TagsInput
+        {/* <TagsInput
           tags={formData.whatYouWillLearn}
           setTags={(tags) =>
             setFormData({ ...formData, whatYouWillLearn: tags })
           }
-        />
+        /> */}
       </div>
 
       {getFormFields().map((field) => (
@@ -78,9 +77,9 @@ export default function GoalsForm() {
           options={courseOptions}
           isMulti
           value={formData.selectedCourses}
-          onChange={(option) =>
-            handleChange("selectedCourses", option as OptionType[])
-          }
+          // onChange={(option) =>
+          //   handleChange('selectedCourses', option as OptionType[])
+          // }
           className="react-select-container"
           classNamePrefix="react-select"
           placeholder="اختر..."
@@ -90,10 +89,10 @@ export default function GoalsForm() {
         <Label className="text-sm font-medium text-card-foreground mb-2 block">
           لمن هذه الدورة
         </Label>
-        <TagsInput
+        {/* <TagsInput
           tags={formData.audienceTags}
-          setTags={(tags) => handleChange("audienceTags", tags as string[])}
-        />
+          setTags={(tags) => handleChange('audienceTags', tags as string[])}
+        /> */}
       </div>
     </form>
   );

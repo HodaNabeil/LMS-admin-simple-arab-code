@@ -1,19 +1,19 @@
-import { InputTypes } from "@/constants/enums";
-import type { IFormField } from "@/types/app";
-import PasswordField from "./password-field";
-import SelectField from "./select-field";
-import PhoneField from "./phone-field";
-import type { Control, FieldErrors } from "react-hook-form";
-import Checkbox from "./checkbox";
-import ImageField from "./image-field";
-import FileUploadField from "./file-upload-field";
-import TextField from "./text-field";
-import TextareaField from "./textarea-field";
+import { InputTypes } from '@/constants/enums';
+import type { IFormField } from '@/types/app';
+import PasswordField from './password-field';
+import SelectField from './select-field';
+import PhoneField from './phone-field';
+import type { Control, FieldErrors } from 'react-hook-form';
+import Checkbox from './checkbox';
+import ImageField from './image-field';
+import FileUploadField from './file-upload-field';
+import TextField from './text-field';
+import TextareaField from './textarea-field';
 
 interface Props extends IFormField {
   errors: FieldErrors;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  control: Control<Record<any, any>>;
+  control: Control<any>;
   accept?: string;
   maxSize?: number;
   allowedTypes?: string[];
@@ -47,7 +47,7 @@ const FormFields = (props: Props) => {
       return <TextareaField {...props} />;
     }
 
-    if (type === "file") {
+    if (type === 'file') {
       return <FileUploadField {...props} />;
     }
 

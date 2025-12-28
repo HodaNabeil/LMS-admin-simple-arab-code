@@ -1,13 +1,15 @@
-import FormFields from "@/components/shared/form-fields/form-fields";
-import { Loader } from "@/components/shared/loader";
-import { Pages } from "@/constants/enums";
-import useFormFields from "@/hooks/useFormFields";
-import useFormValidations from "@/hooks/useFormValidations";
-import { createSectionCourseSchema } from "@/validations/course";
-import { type ICreateCourseForm } from "@/validations/createcourse";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm, type Control } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import FormFields from '@/components/shared/form-fields/form-fields';
+import { Loader } from '@/components/shared/loader';
+import { Pages } from '@/constants/enums';
+import useFormFields from '@/hooks/useFormFields';
+import useFormValidations from '@/hooks/useFormValidations';
+import {
+  createCourseSchema,
+  type ICreateCourseForm,
+} from '@/validations/createcourse';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm, type Control } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 
 export default function CreateCourseForm() {
   const { getFormFields } = useFormFields({ slug: Pages.CREATE_COURSES });
@@ -22,20 +24,18 @@ export default function CreateCourseForm() {
     formState: { errors, isSubmitting },
   } = useForm<ICreateCourseForm>({
     defaultValues: {
-      slug: "",
-      selectedPath: "",
+      slug: '',
+      selectedPath: '',
     },
-    mode: "onChange",
-    resolver: zodResolver(
-      getValidationSchema() as typeof createSectionCourseSchema
-    ),
+    mode: 'onChange',
+    resolver: zodResolver(getValidationSchema() as typeof createCourseSchema),
   });
 
   const handleFormSubmit = async (data: ICreateCourseForm) => {
     try {
       navigate(`/admin/${Pages.COURSES}/${data.slug}/${Pages.GOALS}`);
     } catch (error) {
-      console.error("Navigation error:", error);
+      console.error('Navigation error:', error);
     }
   };
   return (
@@ -61,7 +61,7 @@ export default function CreateCourseForm() {
           disabled={isSubmitting}
           className="bg-primary text-white rounded px-4 py-2 text-sm hover:bg-primary/90 transition disabled:opacity-50 flex items-center justify-center gap-2"
         >
-          {isSubmitting ? <Loader /> : "إضافة كورس"}
+          {isSubmitting ? <Loader /> : 'إضافة كورس'}
         </button>
       </form>
     </div>
