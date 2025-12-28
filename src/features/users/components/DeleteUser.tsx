@@ -6,7 +6,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Directions, UserType } from "@/constants/enums";
+import { Directions } from "@/constants/enums";
 import { Delete } from "lucide-react";
 import UserForm from "./UserForm";
 export default function DeleteUser({ user }: { user: any }) {

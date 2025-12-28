@@ -1,6 +1,5 @@
 import { User } from "lucide-react";
 import { StatsCard } from "@/features/users/components/StatsCard";
-import UsersTable from "@/features/users/components/UsersTable";
 import OrdersFilters from "@/features/users/components/OrdersFilters";
 import { useMemo, useState } from "react";
 import OrdersTable from "@/features/users/components/OrdersTable";

@@ -1,6 +1,5 @@
 import { Card } from "@/components/ui/card";
 import { LineChart, Line, ResponsiveContainer, Tooltip } from "recharts";
-import { User } from "lucide-react";
 import React from "react";
 
 interface StatsCardProps {

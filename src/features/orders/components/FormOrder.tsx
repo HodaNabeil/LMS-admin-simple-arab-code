@@ -12,8 +12,8 @@ import {
     getCurrencyOptions,
     getCourseOptions,
     getUserOptions,
-    OptionType,
 } from "../utils/orderOptions";
+import type { OptionType } from "../utils/orderOptions";
 import { CustomOption, selectStyles, selectTheme } from "../utils/selectConfig";
 import { mockCourses, mockUsers } from "../utils/mockData";
 import type { FormOrderProps, OrderFormData } from "../types";

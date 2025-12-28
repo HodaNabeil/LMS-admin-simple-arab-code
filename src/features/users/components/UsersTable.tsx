@@ -1,13 +1,5 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { DataTable } from "@/components/ui/data-table";
-import { Edit, Trash2 } from "lucide-react";
-import { Dialog, DialogContent, DialogTitle } from "@radix-ui/react-dialog";
-import { DialogHeader } from "@/components/ui/dialog";
-import { useForm } from "react-hook-form";
-
-import { Button } from "@/components/ui/button";
-import { InputTypes } from "@/constants/enums";
-import FormFields from "@/components/shared/form-fields/form-fields";
 import { CreateNewUser } from "./CreateNewUser";
 import { EditUser } from "./EditUser";
 import DeleteUser from "./DeleteUser";
@@ -21,11 +13,7 @@ const mockData = [
 ];
 
 export default function UsersTable() {
-  const [data, setData] = useState(mockData);
-  const [dialogOpen, setDialogOpen] = useState(false);
-  const [dialogType, setDialogType] = useState(""); // "edit" | "delete" | "create"
-  const [selectedUser, setSelectedUser] = useState<any>(null);
-  const { control, handleSubmit, reset, formState } = useForm();
+  const [data] = useState(mockData);
 
   // جلب البيانات من API
   // useEffect(() => {
@@ -34,25 +22,7 @@ export default function UsersTable() {
   //     .then(setData);
   // }, []);
 
-  // فتح المودال
-  const handleEdit = (user: any) => {
-    setSelectedUser(user);
-    setDialogType("edit");
-    setDialogOpen(true);
-  };
-  const handleDelete = (user: any) => {
-    setSelectedUser(user);
-    setDialogType("delete");
-    setDialogOpen(true);
-  };
-  const handleCreate = () => {
-    setSelectedUser(null);
-    setDialogType("create");
-    setDialogOpen(true);
-    reset(); // إعادة تعيين الحقول عند الفتح
-  };
-
-  const columns = (onEdit: any, onDelete: any) => [
+  const columns = [
     {
       accessorKey: "id",
       header: "ID",
@@ -88,8 +58,7 @@ export default function UsersTable() {
         <h2 className="text-2xl font-bold text-blue-800">Users</h2>
         <CreateNewUser />
       </div>
-      <DataTable columns={columns(handleEdit, handleDelete)} data={data} />
-      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}></Dialog>
+      <DataTable columns={columns} data={data} />
     </div>
   );
 }
