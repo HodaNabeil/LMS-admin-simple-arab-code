@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo, useState } from 'react';
 import {
   flexRender,
   getCoreRowModel,
@@ -6,16 +6,15 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
-} from "@tanstack/react-table";
+} from '@tanstack/react-table';
 import type {
   ColumnDef,
   ColumnFiltersState,
   SortingState,
   VisibilityState,
-} from "@tanstack/react-table";
-import { Edit, Trash2 } from "lucide-react";
+} from '@tanstack/react-table';
 
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/button';
 
 import {
   Table,
@@ -24,87 +23,83 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import EditOrder from "./EditOrder";
+} from '@/components/ui/table';
+import { Badge } from '@/components/ui/badge';
+import { EditUser } from './EditUser';
+import DeleteUser from './DeleteUser';
+import type { User } from '@/types/user';
+import UsersFilters from './UsersFilters';
 
-interface Order {
-  id: number;
-  date: string;
-  PaymentMethod: string;
-  price: number;
-  Status: string;
-  Amount: number;
-  Currency: string;
+interface UsersTableProps {
+  users: User[];
 }
 
-interface OrdersTableProps {
-  orders: Order[];
-}
+const columns: ColumnDef<User>[] = [
+  {
+    accessorKey: 'id',
+    header: 'ID',
+  },
 
-const columns: ColumnDef<Order>[] = [
   {
-    accessorKey: "id",
-    header: "ID",
-    cell: ({ row }) => <div>{row.getValue("id")}</div>,
-  },
-  {
-    accessorKey: "date",
-    header: "التاريح",
-    cell: ({ row }) => <div>{row.getValue("date")}</div>,
-  },
-  {
-    accessorKey: "PaymentMethod",
-    header: "طريقة الدفع",
-    cell: ({ row }) => <div>{row.getValue("PaymentMethod")}</div>,
-  },
-  {
-    accessorKey: "Status",
-    header: "الحالة",
-    cell: ({ row }) => <div>{row.getValue("Status")}</div>,
-  },
-  {
-    accessorKey: "Amount",
-    header: "المبلغ",
-    cell: ({ row }) => <div>{row.getValue("Amount")}</div>,
-  },
-  {
-    accessorKey: "Currency",
-    header: "العملة",
-    cell: ({ row }) => <div>{row.getValue("Currency")}</div>,
-  },
-  {
-    id: "actions",
-    header: "الإجراءات",
-    enableHiding: false,
+    accessorKey: 'image',
+    header: 'الصورة',
     cell: ({ row }) => {
-      // Transform Order to OrderFormData
-      const order = row.original;
-      const orderFormData = {
-        price: order.price,
-        discountCode: "", // Default empty since not in Order
-        orderStatus: order.Status ? { value: order.Status, label: order.Status } : null,
-        paymentMethod: order.PaymentMethod ? { value: order.PaymentMethod, label: order.PaymentMethod } : null,
-        currency: order.Currency ? { value: order.Currency, label: order.Currency } : null,
-        courses: [], // Default empty since not in Order
-        user: null, // Default null since not in Order
-      };
-
       return (
-        <Button
-          variant="ghost"
-          size="sm"
-          className="h-8 w-8 p-0 text-blue-600 hover:text-blue-800 hover:bg-blue-50"
-        >
-          <EditOrder orderId={row.getValue("id")}
-            initialData={orderFormData}
-          />
-        </Button>
+        <img
+          src={row.getValue('image')}
+          alt={row.getValue('name')}
+          className="h-12 w-12 rounded-lg object-cover"
+        />
+      );
+    },
+    enableSorting: false,
+  },
+  {
+    accessorKey: 'name',
+    header: 'اسم المستخدم',
+    cell: ({ row }) => {
+      const name = row.getValue('name') as string;
+      return (
+        <div className="max-w-[300px]">
+          <div className="font-medium text-right truncate">{name}</div>
+        </div>
       );
     },
   },
+
+  {
+    accessorKey: 'email',
+    header: 'Email',
+  },
+  {
+    accessorKey: 'role',
+    header: 'نوعة المستخدم',
+    cell: ({ row }) => (
+      <Badge variant="outline" className="border-blue-200 text-blue-800">
+        {row.getValue('role')}
+      </Badge>
+    ),
+  },
+
+  {
+    id: 'actions',
+    header: 'الإجراءات',
+    enableHiding: false,
+    cell: ({ row }) => (
+      <div className="flex gap-2 items-center">
+        <button className="text-blue-600 hover:text-blue-800">
+          <EditUser user={row.original as User} />
+        </button>
+
+        <button className="text-red-600 hover:text-red-800">
+          <DeleteUser userId={row.original.id} />
+        </button>
+      </div>
+    ),
+  },
 ];
 
-function OrdersTable({ orders }: OrdersTableProps) {
+function UserTable({ users }: UsersTableProps) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -112,9 +107,32 @@ function OrdersTable({ orders }: OrdersTableProps) {
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
+  const [searchTerm, setSearchTerm] = useState(''); // قيمة افتراضية فارغة
+  const [selectedCategory, setSelectedCategory] = useState('الكل');
+
+  const filteredUsers = useMemo(() => {
+    const term = searchTerm.toLowerCase().trim();
+
+    return users.filter((user: { id: string; role: string; email: string }) => {
+      const matchesSearchId = user.id?.toString().includes(term);
+      const matchesSearchEmail = user.email?.toLowerCase().includes(term);
+
+      const matchesCategory =
+        selectedCategory === 'الكل' || user.role === selectedCategory;
+
+      const matchesSearch = matchesSearchId || matchesSearchEmail;
+
+      return matchesSearch && matchesCategory;
+    });
+  }, [users, searchTerm, selectedCategory]);
+
+  const handleClearFilters = () => {
+    setSearchTerm('');
+    setSelectedCategory('الكل');
+  };
 
   const table = useReactTable({
-    data: orders,
+    data: filteredUsers,
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -134,6 +152,13 @@ function OrdersTable({ orders }: OrdersTableProps) {
 
   return (
     <div className="w-full">
+      <UsersFilters
+        searchTerm={searchTerm}
+        onSearchChange={setSearchTerm}
+        selectedCategory={selectedCategory}
+        onCategoryChange={setSelectedCategory}
+        onClearFilters={handleClearFilters}
+      />
       {/* Mobile Card View */}
       <div className="block lg:hidden space-y-4">
         {table.getRowModel().rows?.length ? (
@@ -143,22 +168,27 @@ function OrdersTable({ orders }: OrdersTableProps) {
               className="bg-white rounded-lg border border-gray-200 p-4 space-y-3"
             >
               <div className="flex items-start gap-3">
-                <div className="flex-1 min-w-0"></div>
-                <div className="flex gap-2">
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="h-8 w-8 p-0 text-blue-600"
-                  >
-                    <Edit className="h-4 w-4" />
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="h-8 w-8 p-0 text-red-600"
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
+                {(row.getValue('image') as string) && (
+                  <img
+                    src={row.getValue('image') as string}
+                    alt={row.getValue('name') as string}
+                    className="h-16 w-16 rounded-lg object-cover flex-shrink-0"
+                  />
+                )}
+
+                <div className="flex-1 min-w-0">
+                  <h3 className="font-medium text-sm leading-5 line-clamp-2 text-right">
+                    {row.getValue('name')}
+                  </h3>
+                </div>
+                <div className="flex gap-2 items-center">
+                  <button className="text-blue-600 hover:text-blue-800">
+                    <EditUser user={row.original as User} />
+                  </button>
+
+                  <button className="text-red-600 hover:text-red-800">
+                    <DeleteUser userId={row.original.id} />
+                  </button>
                 </div>
               </div>
             </div>
@@ -188,9 +218,9 @@ function OrdersTable({ orders }: OrdersTableProps) {
                       {header.isPlaceholder
                         ? null
                         : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
                     </TableHead>
                   );
                 })}
@@ -203,7 +233,7 @@ function OrdersTable({ orders }: OrdersTableProps) {
                 <TableRow
                   key={row.id}
                   className="border-b border-gray-100 hover:bg-gray-50 transition-colors"
-                  data-state={row.getIsSelected() && "selected"}
+                  data-state={row.getIsSelected() && 'selected'}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id} className="text-right py-4">
@@ -231,7 +261,7 @@ function OrdersTable({ orders }: OrdersTableProps) {
 
       <div className="flex flex-col sm:flex-row items-center justify-between gap-4 py-4">
         <div className="text-sm text-muted-foreground">
-          {table.getFilteredSelectedRowModel().rows.length} من{" "}
+          {table.getFilteredSelectedRowModel().rows.length} من{' '}
           {table.getFilteredRowModel().rows.length} صف محدد.
         </div>
         <div className="flex gap-2">
@@ -257,4 +287,4 @@ function OrdersTable({ orders }: OrdersTableProps) {
   );
 }
 
-export default OrdersTable;
+export default UserTable;

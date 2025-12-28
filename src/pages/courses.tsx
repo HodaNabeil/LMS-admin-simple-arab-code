@@ -1,12 +1,10 @@
-import { buttonVariants } from "@/components/ui/button";
-import CourseFilters from "@/features/courses/CourseFilters";
-import CourseStats from "@/features/courses/CourseStats";
-import CourseTable from "@/features/courses/CourseTable";
-import { Plus, Users } from "lucide-react";
-import { useMemo, useState } from "react";
-import { Link } from "react-router-dom";
-
-
+import { buttonVariants } from '@/components/ui/button';
+import CourseFilters from '@/features/courses/CourseFilters';
+import CourseStats from '@/features/courses/CourseStats';
+import CourseTable from '@/features/courses/CourseTable';
+import { Plus, Users } from 'lucide-react';
+import { useMemo, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 interface Course {
   id: number;
@@ -25,47 +23,47 @@ const courses: Course[] = [
   {
     id: 1,
     title:
-      "دورة تطوير تطبيقات باستخدام Flutter - بناء واجهات احترافية لأنظمة iOS و Android",
-    category: "تطوير التطبيقات",
-    type: "تفاعلية",
-    level: "متوسط",
-    instructor: "أحمد محمد",
+      'دورة تطوير تطبيقات باستخدام Flutter - بناء واجهات احترافية لأنظمة iOS و Android',
+    category: 'تطوير التطبيقات',
+    type: 'تفاعلية',
+    level: 'متوسط',
+    instructor: 'أحمد محمد',
     price: 299,
-    image: "https://i.ibb.co/Zzr165m4/Chat-GPT-Image-8-2025-04-06-00.png",
+    image: 'https://i.ibb.co/Zzr165m4/Chat-GPT-Image-8-2025-04-06-00.png',
     students: 145,
     rating: 4.8,
   },
   {
     id: 2,
     title:
-      "دورة تطوير مواقع الويب باستخدام React و Next.js - من المبتدئ إلى المحترف",
-    category: "تطوير الويب",
-    type: "تقنية",
-    level: "متقدم",
-    instructor: "سارة أحمد",
+      'دورة تطوير مواقع الويب باستخدام React و Next.js - من المبتدئ إلى المحترف',
+    category: 'تطوير الويب',
+    type: 'تقنية',
+    level: 'متقدم',
+    instructor: 'سارة أحمد',
     price: 450,
-    image: "https://i.ibb.co/Zzr165m4/Chat-GPT-Image-8-2025-04-06-00.png",
+    image: 'https://i.ibb.co/Zzr165m4/Chat-GPT-Image-8-2025-04-06-00.png',
     students: 298,
     rating: 4.9,
   },
   {
     id: 3,
-    title: "دورة تصميم واجهات المستخدم UX/UI - إنشاء تجارب مستخدم مميزة",
-    category: "تصميم",
-    type: "إبداعية",
-    level: "مبتدئ",
-    instructor: "محمد علي",
+    title: 'دورة تصميم واجهات المستخدم UX/UI - إنشاء تجارب مستخدم مميزة',
+    category: 'تصميم',
+    type: 'إبداعية',
+    level: 'مبتدئ',
+    instructor: 'محمد علي',
     price: 199,
-    image: "https://i.ibb.co/Zzr165m4/Chat-GPT-Image-8-2025-04-06-00.png",
+    image: 'https://i.ibb.co/Zzr165m4/Chat-GPT-Image-8-2025-04-06-00.png',
     students: 89,
     rating: 4.7,
   },
-]; 
-export default  function Courses() {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("الكل");
-  const [selectedLevel, setSelectedLevel] = useState("الكل");
-  const [selectedType, setSelectedType] = useState("الكل");
+];
+export default function Courses() {
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('الكل');
+  const [selectedLevel, setSelectedLevel] = useState('الكل');
+  const [selectedType, setSelectedType] = useState('الكل');
   const [minPrice, setMinPrice] = useState(0);
 
   const filteredCourses = useMemo(() => {
@@ -75,13 +73,13 @@ export default  function Courses() {
         course.instructor.toLowerCase().includes(searchTerm.toLowerCase());
 
       const matchesCategory =
-        selectedCategory === "الكل" || course.category === selectedCategory;
+        selectedCategory === 'الكل' || course.category === selectedCategory;
 
       const matchesLevel =
-        selectedLevel === "الكل" || course.level === selectedLevel;
+        selectedLevel === 'الكل' || course.level === selectedLevel;
 
       const matchesType =
-        selectedType === "الكل" || course.type === selectedType;
+        selectedType === 'الكل' || course.type === selectedType;
 
       const matchesPrice =
         minPrice === 0 ||
@@ -99,10 +97,10 @@ export default  function Courses() {
   }, [searchTerm, selectedCategory, selectedLevel, selectedType, minPrice]);
 
   const handleClearFilters = () => {
-    setSearchTerm("");
-    setSelectedCategory("الكل");
-    setSelectedLevel("الكل");
-    setSelectedType("الكل");
+    setSearchTerm('');
+    setSelectedCategory('الكل');
+    setSelectedLevel('الكل');
+    setSelectedType('الكل');
     setMinPrice(0);
   };
 
@@ -128,8 +126,6 @@ export default  function Courses() {
   );
 }
 
-  
-
 function Header({ coursesCount }: { coursesCount: number }) {
   return (
     <div className="flex flex-col sm:space-y-0 sm:flex-row sm:items-center sm:justify-between gap-4 bg-white p-4 lg:p-6 rounded-xl shadow-sm border border-gray-100">
@@ -145,10 +141,7 @@ function Header({ coursesCount }: { coursesCount: number }) {
         </div>
       </div>
       <div className="flex items-center gap-4">
-        <Link
-          to={`/`}
-          className={buttonVariants()}
-        >
+        <Link to="/admin/courses/create" className={buttonVariants()}>
           <Plus className="w-4 h-4 mr-2" />
           إضافة دورة جديدة
         </Link>

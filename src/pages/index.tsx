@@ -4,19 +4,39 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
+} from '@/components/ui/card';
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+} from 'chart.js';
 
-import { Button } from "@/components/ui/button";
-import { Menu } from "lucide-react";
-import { useOutletContext } from "react-router-dom";
+import { Button } from '@/components/ui/button';
+import { Menu } from 'lucide-react';
+import { useOutletContext } from 'react-router-dom';
 // import { useAdminStats } from "@/features/stats/hooks/useAdminStats";
-import PaymentHistory from "@/features/stats/components/PaymentHistory";
-import { RecentlyCreatedCoursesCard } from "@/features/stats/components/RecentlyCreatedCoursesCard";
+import PaymentHistory from '@/features/stats/components/PaymentHistory';
+import { RecentlyCreatedCoursesCard } from '@/features/stats/components/RecentlyCreatedCoursesCard';
 
 const recentCourses = [
-  { id: 1, name: "Nodejs", enrolled: 1, status: "منشورة", image: "" },
-  { id: 2, name: "إتقان ...", enrolled: 1, status: "منشورة", image: "" },
+  { id: 1, name: 'Nodejs', enrolled: 1, status: 'منشورة', image: '' },
+  { id: 2, name: 'إتقان ...', enrolled: 1, status: 'منشورة', image: '' },
 ];
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 export default function Admin() {
   const { setIsMobileSidebarOpen } = useOutletContext<{
@@ -75,7 +95,42 @@ export default function Admin() {
             ) : error ? (
               <span>حدث خطأ في جلب البيانات</span>
             ) : (
-              <SalesLineChart data={data?.values || [0, 0, 0, 0, 0, 0, 0, 0]} />
+              <Line
+                data={{
+                  labels: [
+                    "يناير",
+                    "فبراير",
+                    "مارس",
+                    "أبريل",
+                    "مايو",
+                    "يونيو",
+                    "يوليو",
+                    "أغسطس",
+                  ],
+                  datasets: [
+                    {
+                      label: "الإيرادات (ر.س)",
+                      data: data?.values || [0, 0, 0, 0, 0, 0, 0, 0],
+                      borderColor: "#22c55e",
+                      backgroundColor: "rgba(34,197,94,0.1)",
+                      tension: 0.4,
+                      fill: true,
+                    },
+                  ],
+                }}
+                options={{
+                  responsive: true,
+                  plugins: {
+                    legend: { display: false },
+                    title: { display: false },
+                  },
+                  scales: {
+                    x: { grid: { display: false } },
+                    y: { grid: { color: "#e5e7eb" } },
+                  },
+                }}
+                height={220}
+              />
             )}
           </div> */}
         </CardContent>

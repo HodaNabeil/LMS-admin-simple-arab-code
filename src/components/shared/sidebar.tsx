@@ -1,4 +1,4 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation } from 'react-router-dom';
 import {
   Home,
   ChevronDown,
@@ -29,11 +29,11 @@ import {
   RotateCcw,
   Wrench,
   UserCog,
-} from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { cn } from "@/lib/utils";
-import { useState } from "react";
+} from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { cn } from '@/lib/utils';
+import { useState } from 'react';
 
 interface SidebarSubItem {
   id: string;
@@ -75,263 +75,263 @@ function Sidebar({ isMobile = false, isOpen = true, onClose }: SidebarProps) {
 
   const sidebarItems: SidebarItem[] = [
     {
-      id: "dashboard",
-      title: "لوحة التحكم الرئيسية",
-      href: "/",
+      id: 'dashboard',
+      title: 'لوحة التحكم الرئيسية',
+      href: '/',
       icon: <Home className="w-5 h-5" />,
     },
     {
-      id: "coursesManagement",
-      title: "إدارة الدورات",
+      id: 'coursesManagement',
+      title: 'إدارة الدورات',
       icon: <BookOpen className="w-5 h-5" />,
       isExpandable: true,
       subItems: [
         {
-          id: "all-courses",
-          title: "جميع الدورات",
-          href: "/admin/courses",
+          id: 'all-courses',
+          title: 'جميع الدورات',
+          href: '/admin/courses',
           icon: <BookOpen className="w-4 h-4" />,
         },
         {
-          id: "add-course",
-          title: "إضافة دورة جديدة",
-          href: "/courses/create",
+          id: 'add-course',
+          title: 'إضافة دورة جديدة',
+          href: '/admin/courses/create',
           icon: <Plus className="w-4 h-4" />,
         },
         {
-          id: "courses-status",
-          title: "حالة الدورات",
-          href: "/courses/status",
+          id: 'courses-status',
+          title: 'حالة الدورات',
+          href: '/courses/status',
           icon: <PlayCircle className="w-4 h-4" />,
         },
       ],
     },
     {
-      id: "pathsManagement",
-      title: "إدارة المسارات التعليمية",
+      id: 'pathsManagement',
+      title: 'إدارة المسارات التعليمية',
       icon: <FileText className="w-5 h-5" />,
       isExpandable: true,
       subItems: [
         {
-          id: "all-paths",
-          title: "جميع المسارات التعليمية",
-          href: "/admin/paths",
+          id: 'all-paths',
+          title: 'جميع المسارات التعليمية',
+          href: '/admin/paths',
           icon: <FileText className="w-4 h-4" />,
         },
         {
-          id: "add-path",
-          title: "إضافة مسار جديد",
-          href: "/admin/paths/create", // <-- الصحيح
+          id: 'add-path',
+          title: 'إضافة مسار جديد',
+          href: '/admin/paths/create', // <-- الصحيح
           icon: <Plus className="w-4 h-4" />,
         },
       ],
     },
     {
-      id: "contentManagement",
-      title: "إدارة المحتوى",
+      id: 'contentManagement',
+      title: 'إدارة المحتوى',
       icon: <FolderOpen className="w-5 h-5" />,
       isExpandable: true,
       subItems: [
         {
-          id: "video-management",
-          title: "إدارة الفيديوهات",
-          href: "/content/videos",
+          id: 'video-management',
+          title: 'إدارة الفيديوهات',
+          href: '/content/videos',
           icon: <FileVideo className="w-4 h-4" />,
         },
         {
-          id: "files-management",
-          title: "إدارة الملفات والمرفقات",
-          href: "/content/files",
+          id: 'files-management',
+          title: 'إدارة الملفات والمرفقات',
+          href: '/content/files',
           icon: <FolderOpen className="w-4 h-4" />,
         },
       ],
     },
     {
-      id: "analyticsReports",
-      title: "التحليلات والتقارير",
+      id: 'analyticsReports',
+      title: 'التحليلات والتقارير',
       icon: <BarChart3 className="w-5 h-5" />,
       isExpandable: true,
       subItems: [
         {
-          id: "general-stats",
-          title: "إحصائيات عامة",
-          href: "/analytics/general",
+          id: 'general-stats',
+          title: 'إحصائيات عامة',
+          href: '/analytics/general',
           icon: <PieChart className="w-4 h-4" />,
         },
         {
-          id: "sales-reports",
-          title: "تقارير المبيعات",
-          href: "/analytics/sales",
+          id: 'sales-reports',
+          title: 'تقارير المبيعات',
+          href: '/analytics/sales',
           icon: <TrendingUp className="w-4 h-4" />,
         },
         {
-          id: "orders-reports",
-          title: "تقارير الطلبات",
-          href: "/analytics/orders",
+          id: 'orders-reports',
+          title: 'تقارير الطلبات',
+          href: '/analytics/orders',
           icon: <ShoppingCart className="w-4 h-4" />,
         },
         {
-          id: "users-reports",
-          title: "تقارير المستخدمين",
-          href: "/analytics/users",
+          id: 'users-reports',
+          title: 'تقارير المستخدمين',
+          href: '/analytics/users',
           icon: <Users className="w-4 h-4" />,
         },
       ],
     },
     {
-      id: "userManagement",
-      title: "إدارة المستخدمين",
+      id: 'userManagement',
+      title: 'إدارة المستخدمين',
       icon: <Users className="w-5 h-5" />,
       isExpandable: true,
       subItems: [
         {
-          id: "all-users",
-          title: "جميع المستخدمين",
-          href: "/admin/users",
+          id: 'all-users',
+          title: 'جميع المستخدمين',
+          href: '/admin/users',
           icon: <Users className="w-4 h-4" />,
         },
         {
-          id: "admin-permissions",
-          title: "صلاحيات المشرفين",
-          href: "/users/admins",
+          id: 'admin-permissions',
+          title: 'صلاحيات المشرفين',
+          href: '/users/admins',
           icon: <UserCheck className="w-4 h-4" />,
         },
       ],
     },
     {
-      id: "ordersPayments",
-      title: "إدارة الطلبات والمدفوعات",
+      id: 'ordersPayments',
+      title: 'إدارة الطلبات والمدفوعات',
       icon: <ShoppingCart className="w-5 h-5" />,
       isExpandable: true,
       subItems: [
         {
-          id: "all-orders",
-          title: "جميع الطلبات",
-          href: "/orders",
+          id: 'all-orders',
+          title: 'جميع الطلبات',
+          href: '/admin/orders',
           icon: <ShoppingCart className="w-4 h-4" />,
         },
         {
-          id: "payments",
-          title: "المدفوعات والمعاملات المالية",
-          href: "/payments",
+          id: 'payments',
+          title: 'المدفوعات والمعاملات المالية',
+          href: '/payments',
           icon: <CreditCard className="w-4 h-4" />,
         },
         {
-          id: "refunds",
-          title: "سجل المرتجعات",
-          href: "/refunds",
+          id: 'refunds',
+          title: 'سجل المرتجعات',
+          href: '/refunds',
           icon: <RotateCcw className="w-4 h-4" />,
         },
       ],
     },
     {
-      id: "couponsManagement",
-      title: "إدارة الكوبونات والخصومات",
+      id: 'couponsManagement',
+      title: 'إدارة الكوبونات والخصومات',
       icon: <Ticket className="w-5 h-5" />,
       isExpandable: true,
       subItems: [
         {
-          id: "all-coupons",
-          title: "جميع الكوبونات",
-          href: "/coupons",
+          id: 'all-coupons',
+          title: 'جميع الكوبونات',
+          href: '/coupons',
           icon: <Ticket className="w-4 h-4" />,
         },
         {
-          id: "add-coupon",
-          title: "إضافة كوبون جديد",
-          href: "/coupons/create",
+          id: 'add-coupon',
+          title: 'إضافة كوبون جديد',
+          href: '/coupons/create',
           icon: <Plus className="w-4 h-4" />,
         },
       ],
     },
     {
-      id: "reviewsFeedback",
-      title: "إدارة المراجعات والتعليقات",
+      id: 'reviewsFeedback',
+      title: 'إدارة المراجعات والتعليقات',
       icon: <Star className="w-5 h-5" />,
       isExpandable: true,
       subItems: [
         {
-          id: "all-reviews",
-          title: "جميع المراجعات",
-          href: "/reviews",
+          id: 'all-reviews',
+          title: 'جميع المراجعات',
+          href: '/reviews',
           icon: <Star className="w-4 h-4" />,
         },
         {
-          id: "all-comments",
-          title: "جميع التعليقات",
-          href: "/comments",
+          id: 'all-comments',
+          title: 'جميع التعليقات',
+          href: '/comments',
           icon: <MessageSquare className="w-4 h-4" />,
         },
       ],
     },
     {
-      id: "messagesNotifications",
-      title: "إدارة الرسائل والإشعارات",
+      id: 'messagesNotifications',
+      title: 'إدارة الرسائل والإشعارات',
       icon: <Mail className="w-5 h-5" />,
       isExpandable: true,
       subItems: [
         {
-          id: "email-settings",
-          title: "إعداد رسائل البريد الإلكتروني",
-          href: "/messages/email",
+          id: 'email-settings',
+          title: 'إعداد رسائل البريد الإلكتروني',
+          href: '/messages/email',
           icon: <Mail className="w-4 h-4" />,
         },
         {
-          id: "notification-settings",
-          title: "إعداد الإشعارات داخل المنصة",
-          href: "/messages/notifications",
+          id: 'notification-settings',
+          title: 'إعداد الإشعارات داخل المنصة',
+          href: '/messages/notifications',
           icon: <Bell className="w-4 h-4" />,
         },
       ],
     },
     {
-      id: "settings",
-      title: "الإعدادات",
+      id: 'settings',
+      title: 'الإعدادات',
       icon: <Settings className="w-5 h-5" />,
       isExpandable: true,
       subItems: [
         {
-          id: "platform-settings",
-          title: "إعدادات المنصة",
-          href: "/settings/platform",
+          id: 'platform-settings',
+          title: 'إعدادات المنصة',
+          href: '/settings/platform',
           icon: <Wrench className="w-4 h-4" />,
         },
         {
-          id: "payment-settings",
-          title: "إعدادات الدفع",
-          href: "/settings/payment",
+          id: 'payment-settings',
+          title: 'إعدادات الدفع',
+          href: '/settings/payment',
           icon: <DollarSign className="w-4 h-4" />,
         },
         {
-          id: "locale-settings",
-          title: "إعدادات اللغة والمنطقة الزمنية",
-          href: "/settings/locale",
+          id: 'locale-settings',
+          title: 'إعدادات اللغة والمنطقة الزمنية',
+          href: '/settings/locale',
           icon: <Globe className="w-4 h-4" />,
         },
         {
-          id: "security-settings",
-          title: "إعدادات الحماية",
-          href: "/settings/security",
+          id: 'security-settings',
+          title: 'إعدادات الحماية',
+          href: '/settings/security',
           icon: <Shield className="w-4 h-4" />,
         },
       ],
     },
     {
-      id: "teamManagement",
-      title: "إدارة الفريق",
+      id: 'teamManagement',
+      title: 'إدارة الفريق',
       icon: <UserCog className="w-5 h-5" />,
       isExpandable: true,
       subItems: [
         {
-          id: "team-members",
-          title: "إدارة الأعضاء والمشرفين",
-          href: "/team/members",
+          id: 'team-members',
+          title: 'إدارة الأعضاء والمشرفين',
+          href: '/team/members',
           icon: <UserCog className="w-4 h-4" />,
         },
         {
-          id: "invite-member",
-          title: "دعوة عضو جديد",
-          href: "/team/invite",
+          id: 'invite-member',
+          title: 'دعوة عضو جديد',
+          href: '/team/invite',
           icon: <UserPlus className="w-4 h-4" />,
         },
       ],
@@ -339,8 +339,8 @@ function Sidebar({ isMobile = false, isOpen = true, onClose }: SidebarProps) {
   ];
 
   const isActivePath = (href: string) => {
-    if (href === "/admin") {
-      return location.pathname === "/admin";
+    if (href === '/admin') {
+      return location.pathname === '/admin';
     }
     return location.pathname.startsWith(href);
   };
@@ -359,19 +359,19 @@ function Sidebar({ isMobile = false, isOpen = true, onClose }: SidebarProps) {
             variant="ghost"
             onClick={() => toggleExpanded(item.id)}
             className={cn(
-              "w-full justify-between h-auto px-4 py-3 text-right rounded-xl transition-all duration-200 group",
+              'w-full justify-between h-auto px-4 py-3 text-right rounded-xl transition-all duration-200 group',
               hasActiveSubItem || isExpanded
-                ? "bg-blue-50 text-primary"
-                : "text-foreground hover:bg-blue-50 hover:text-primary"
+                ? 'bg-blue-50 text-primary'
+                : 'text-foreground hover:bg-blue-50 hover:text-primary'
             )}
           >
             <div className="flex items-center gap-3">
               <div
                 className={cn(
-                  "transition-colors",
+                  'transition-colors',
                   hasActiveSubItem || isExpanded
-                    ? "text-primary"
-                    : "text-muted-foreground group-hover:text-primary"
+                    ? 'text-primary'
+                    : 'text-muted-foreground group-hover:text-primary'
                 )}
               >
                 {item.icon}
@@ -380,11 +380,11 @@ function Sidebar({ isMobile = false, isOpen = true, onClose }: SidebarProps) {
             </div>
             <ChevronDown
               className={cn(
-                "w-4 h-4 transition-transform duration-200",
-                isExpanded ? "rotate-180" : "rotate-0",
+                'w-4 h-4 transition-transform duration-200',
+                isExpanded ? 'rotate-180' : 'rotate-0',
                 hasActiveSubItem || isExpanded
-                  ? "text-primary"
-                  : "text-muted-foreground"
+                  ? 'text-primary'
+                  : 'text-muted-foreground'
               )}
             />
           </Button>
@@ -397,8 +397,8 @@ function Sidebar({ isMobile = false, isOpen = true, onClose }: SidebarProps) {
                   {subItem.comingSoon ? (
                     <div
                       className={cn(
-                        "flex items-center justify-between w-full px-4 py-2 text-right rounded-lg transition-colors",
-                        "text-muted-foreground bg-gray-50 cursor-not-allowed"
+                        'flex items-center justify-between w-full px-4 py-2 text-right rounded-lg transition-colors',
+                        'text-muted-foreground bg-gray-50 cursor-not-allowed'
                       )}
                     >
                       <div className="flex items-center gap-3">
@@ -424,19 +424,19 @@ function Sidebar({ isMobile = false, isOpen = true, onClose }: SidebarProps) {
                       <Button
                         variant="ghost"
                         className={cn(
-                          "w-full justify-between h-auto px-4 py-2 text-right rounded-lg transition-all duration-200 group",
+                          'w-full justify-between h-auto px-4 py-2 text-right rounded-lg transition-all duration-200 group',
                           isActivePath(subItem.href!)
-                            ? "bg-primary text-white hover:bg-primary/90"
-                            : "text-foreground hover:bg-blue-50 hover:text-primary"
+                            ? 'bg-primary text-white hover:bg-primary/90'
+                            : 'text-foreground hover:bg-blue-50 hover:text-primary'
                         )}
                       >
                         <div className="flex items-center gap-3">
                           <div
                             className={cn(
-                              "transition-colors",
+                              'transition-colors',
                               isActivePath(subItem.href!)
-                                ? "text-white group-hover:text-foreground"
-                                : "text-muted-foreground group-hover:text-primary"
+                                ? 'text-white group-hover:text-foreground'
+                                : 'text-muted-foreground group-hover:text-primary'
                             )}
                           >
                             {subItem.icon}
@@ -462,8 +462,8 @@ function Sidebar({ isMobile = false, isOpen = true, onClose }: SidebarProps) {
         <div
           key={item.id}
           className={cn(
-            "flex items-center justify-between w-full px-4 py-3 text-right rounded-xl transition-colors",
-            "text-muted-foreground bg-gray-50 cursor-not-allowed"
+            'flex items-center justify-between w-full px-4 py-3 text-right rounded-xl transition-colors',
+            'text-muted-foreground bg-gray-50 cursor-not-allowed'
           )}
         >
           <div className="flex items-center gap-3">
@@ -493,19 +493,19 @@ function Sidebar({ isMobile = false, isOpen = true, onClose }: SidebarProps) {
         <Button
           variant="ghost"
           className={cn(
-            "w-full justify-between h-auto px-4 py-3 text-right rounded-xl transition-all duration-200 group",
+            'w-full justify-between h-auto px-4 py-3 text-right rounded-xl transition-all duration-200 group',
             isActivePath(item.href!)
-              ? "bg-primary text-white hover:bg-primary/90 shadow-md"
-              : "text-foreground hover:bg-blue-50 hover:text-primary"
+              ? 'bg-primary text-white hover:bg-primary/90 shadow-md'
+              : 'text-foreground hover:bg-blue-50 hover:text-primary'
           )}
         >
           <div className="flex items-center gap-3">
             <div
               className={cn(
-                "transition-colors",
+                'transition-colors',
                 isActivePath(item.href!)
-                  ? ""
-                  : "text-muted-foreground group-hover:text-primary"
+                  ? ''
+                  : 'text-muted-foreground group-hover:text-primary'
               )}
             >
               {item.icon}
@@ -565,8 +565,8 @@ function Sidebar({ isMobile = false, isOpen = true, onClose }: SidebarProps) {
         {/* Mobile Sidebar */}
         <aside
           className={cn(
-            "fixed top-0 right-0 h-full w-80 bg-white shadow-xl transform transition-transform duration-300 z-50 lg:hidden",
-            isOpen ? "translate-x-0" : "translate-x-full"
+            'fixed top-0 right-0 h-full w-80 bg-white shadow-xl transform transition-transform duration-300 z-50 lg:hidden',
+            isOpen ? 'translate-x-0' : 'translate-x-full'
           )}
         >
           {sidebarContent}

@@ -1,11 +1,13 @@
-import AdminLayout from "@/components/shared/admin-layout";
-import Admin from "@/pages";
-import Courses from "@/pages/courses";
-import Paths from "@/pages/paths";
-import CreateNewPath from "@/pages/paths/create";
-import ManagePath from "@/pages/paths/[pathSlug]/manage";
-import Users from "@/pages/users";
-import { Route } from "react-router-dom";
+import AdminLayout from '@/components/shared/admin-layout';
+import Admin from '@/pages';
+import Courses from '@/pages/courses';
+import Paths from '@/pages/paths';
+import CreateNewPath from '@/pages/paths/create';
+import ManagePath from '@/pages/paths/[pathSlug]/manage';
+import Orders from '@/pages/orders';
+import Users from '@/pages/users';
+import { Route } from 'react-router-dom';
+
 export const adminRoutes = (
   <Route path="admin" element={<AdminLayout />}>
     <Route index element={<Admin />} />
@@ -18,5 +20,6 @@ export const adminRoutes = (
       <Route path=":pathSlug/manage" element={<ManagePath />} />
     </Route>
     <Route path="courses" element={<Courses />} />
+    <Route path="orders" element={<Orders />} />
   </Route>
 );

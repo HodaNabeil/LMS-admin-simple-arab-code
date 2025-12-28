@@ -25,7 +25,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import EditOrder from "./EditOrder";
 
 interface Order {
   id: number;
@@ -49,55 +48,41 @@ const columns: ColumnDef<Order>[] = [
   },
   {
     accessorKey: "date",
-    header: "التاريح",
+    header: "Date",
     cell: ({ row }) => <div>{row.getValue("date")}</div>,
   },
   {
     accessorKey: "PaymentMethod",
-    header: "طريقة الدفع",
+    header: "Payment Method",
     cell: ({ row }) => <div>{row.getValue("PaymentMethod")}</div>,
   },
   {
     accessorKey: "Status",
-    header: "الحالة",
+    header: "Status",
     cell: ({ row }) => <div>{row.getValue("Status")}</div>,
   },
   {
     accessorKey: "Amount",
-    header: "المبلغ",
+    header: "Amount",
     cell: ({ row }) => <div>{row.getValue("Amount")}</div>,
   },
   {
     accessorKey: "Currency",
-    header: "العملة",
+    header: "Currency",
     cell: ({ row }) => <div>{row.getValue("Currency")}</div>,
   },
   {
     id: "actions",
     header: "الإجراءات",
     enableHiding: false,
-    cell: ({ row }) => {
-      // Transform Order to OrderFormData
-      const order = row.original;
-      const orderFormData = {
-        price: order.price,
-        discountCode: "", // Default empty since not in Order
-        orderStatus: order.Status ? { value: order.Status, label: order.Status } : null,
-        paymentMethod: order.PaymentMethod ? { value: order.PaymentMethod, label: order.PaymentMethod } : null,
-        currency: order.Currency ? { value: order.Currency, label: order.Currency } : null,
-        courses: [], // Default empty since not in Order
-        user: null, // Default null since not in Order
-      };
-
+    cell: () => {
       return (
         <Button
           variant="ghost"
           size="sm"
           className="h-8 w-8 p-0 text-blue-600 hover:text-blue-800 hover:bg-blue-50"
         >
-          <EditOrder orderId={row.getValue("id")}
-            initialData={orderFormData}
-          />
+          <Edit className="h-4 w-4" />
         </Button>
       );
     },
@@ -188,9 +173,9 @@ function OrdersTable({ orders }: OrdersTableProps) {
                       {header.isPlaceholder
                         ? null
                         : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
                     </TableHead>
                   );
                 })}

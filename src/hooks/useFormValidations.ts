@@ -1,10 +1,10 @@
-import * as z from "zod";
-import { signinSchema, signupSchema } from "@/validations/auth";
-import type { IFormFieldsVariables } from "@/types/app";
-import { Pages } from "@/constants/enums";
-import { loginSchema } from "@/validations/login";
-import { userSchema } from "@/validations/user";
-import { pathSchema } from "@/validations/path";
+import * as z from 'zod';
+import { signinSchema, signupSchema } from '@/validations/auth';
+import type { IFormFieldsVariables } from '@/types/app';
+import { Pages } from '@/constants/enums';
+import { loginSchema } from '@/validations/login';
+import { userSchema } from '@/validations/user';
+import { pathSchema } from '@/validations/path';
 
 const useFormValidations = (props: IFormFieldsVariables) => {
   const { slug } = props;

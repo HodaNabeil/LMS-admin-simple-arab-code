@@ -1,7 +1,7 @@
-import { CreateNewUser } from "@/features/users/components/CreateNewUser";
-import UserTable from "@/features/users/components/UserTable";
-import { Loader } from "@/components/shared/loader";
-import { useUsers } from "@/features/users/hooks/useUsersQueries";
+import { CreateNewUser } from '@/features/users/components/CreateNewUser';
+import UserTable from '@/features/users/components/UserTable';
+import { Loader } from '@/components/shared/loader';
+import { useUsers } from '@/features/users/hooks/useUsersQueries';
 
 export default function Users() {
   const { data, isLoading, isError } = useUsers();
