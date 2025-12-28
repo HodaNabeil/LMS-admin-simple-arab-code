@@ -2,8 +2,7 @@ import { CreateNewUser } from '@/features/users/components/CreateNewUser';
 import UserTable from '@/features/users/components/UserTable';
 import { Loader } from '@/components/shared/loader';
 import { useUsers } from '@/features/users/hooks/useUsersQueries';
-import StatsCard from '@/components/shared/stats-card';
-import { User } from 'lucide-react';
+
 import UsersStats from '@/features/users/components/users-stats';
 
 export default function Users() {

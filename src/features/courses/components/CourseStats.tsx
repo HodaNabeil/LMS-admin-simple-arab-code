@@ -1,17 +1,6 @@
 import { BookOpen, Users, Star, TrendingUp, DollarSign } from "lucide-react";
 
-interface Course {
-  id: number;
-  title: string;
-  category: string;
-  type: string;
-  level: string;
-  instructor: string;
-  price: number;
-  image: string;
-  students?: number;
-  rating?: number;
-}
+import type { Course } from "@/types/course";
 
 interface CourseStatsProps {
   courses: Course[];
@@ -34,9 +23,8 @@ function StatCard({ title, value, icon, change, changeType }: StatCardProps) {
           <p className="text-2xl font-bold text-gray-900 mt-2">{value}</p>
           {change && (
             <p
-              className={`text-sm mt-2 flex items-center gap-1 ${
-                changeType === "positive" ? "text-green-600" : "text-red-600"
-              }`}
+              className={`text-sm mt-2 flex items-center gap-1 ${changeType === "positive" ? "text-green-600" : "text-red-600"
+                }`}
             >
               <TrendingUp className="w-4 h-4" />
               {change}

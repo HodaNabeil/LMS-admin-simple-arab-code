@@ -15,31 +15,7 @@ export enum CourseStatus {
   PUBLISHED = "PUBLISHED",
 }
 
-// export interface Course {
-//   id: string;
-//   name: string;
-//   slug: string;
-//   image?: File | string;
-//   heading: string;
-//   promoVideoUrl?: string;
-//   hours: number;
-//   level: CourseLevel;
-//   type: CourseType;
-//   isAvailableForPurchase: boolean;
-//   priceInCents: number;
-//   insteadOf?: number;
-//   pathId: string;
-//   whatYouWillLearn: {
-//     data: string[];
-//   };
-//   whoIsThisFor: {
-//     data: string[];
-//   };
-//   knowledgeNeeded?: string;
-//   status: CourseStatus;
-//   createdAt: string;
-//   updatedAt: string;
-// }
+
 
 export interface Coupon {
   id: string;

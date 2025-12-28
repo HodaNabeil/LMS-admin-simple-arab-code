@@ -54,7 +54,7 @@ function CourseForm({ course, setCourseMenu, mutation }: CourseFormProps) {
                 if (axiosError.response?.data?.message) {
                     toast.error(axiosError.response.data.message);
                 } else {
-                    toast.error('حدث خطأ أثناء حفظ الكورس');
+                    toast.error('حدث خطأ أثناء حفظ الدورة');
                 }
             } else {
                 toast.error('حدث خطأ غير متوقع');
@@ -72,7 +72,7 @@ function CourseForm({ course, setCourseMenu, mutation }: CourseFormProps) {
                 </div>
             ))}
             <Button type="submit" disabled={formLoading} className='w-full'>
-                {course ? 'تحديث الكورس' : 'إنشاء كورس جديد'}
+                {course ? 'تحديث الدورة' : 'إنشاء دورة جديدة'}
                 {formLoading && <Loader />}
             </Button>
         </form>

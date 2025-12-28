@@ -7,20 +7,7 @@ import {
     TableRow,
 } from '@/components/ui/table';
 import { flexRender, type Table as TableType } from '@tanstack/react-table';
-
-// Define the interface locally if not imported
-interface Course {
-    id: number;
-    title: string;
-    category: string;
-    type: string;
-    level: string;
-    instructor: string;
-    price: number;
-    image: string;
-    students?: number;
-    rating?: number;
-}
+import type { Course } from '@/types/course';
 
 interface CourseTableDesktopProps {
     table: TableType<Course>;

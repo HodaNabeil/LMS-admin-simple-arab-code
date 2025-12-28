@@ -42,7 +42,7 @@ export default function CreateCourseForm() {
       console.error('Course creation error:', error);
       const errorMessage = error instanceof Error
         ? error.message
-        : 'حدث خطأ أثناء إنشاء الكورس. يرجى المحاولة مرة أخرى.';
+        : 'حدث خطأ أثناء إنشاء الدورة. يرجى المحاولة مرة أخرى.';
       setSubmitError(errorMessage);
     }
   };
@@ -51,7 +51,7 @@ export default function CreateCourseForm() {
   return (
     <div className="flex flex-col gap-4 w-full max-w-2xl  p-6 bg-white rounded-lg shadow-md border border-gray-200">
       <h1 className="text-xl font-bold text-gray-600 mb-4 text-center border-b border-gray-200 pb-4 w-full">
-        إضافة كورس جديد
+        إضافة دورة جديدة
       </h1>
 
       {submitError && (
@@ -77,7 +77,7 @@ export default function CreateCourseForm() {
           disabled={isSubmitting}
           className="bg-primary text-white rounded px-4 py-2 text-sm hover:bg-primary/90 transition disabled:opacity-50 flex items-center justify-center gap-2"
         >
-          {isSubmitting ? <Loader /> : 'إضافة كورس'}
+          {isSubmitting ? <Loader /> : 'إضافة دورة'}
         </button>
       </form>
     </div>

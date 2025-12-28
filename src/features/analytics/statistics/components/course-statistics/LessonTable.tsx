@@ -93,7 +93,7 @@ export default function LessonTable({ lessons }: LessonTableProps) {
 
   const filteredLessons = useMemo(() => {
     return lessons.filter((lesson) => {
-      // البحث في اسم الدرس واسم الكورس
+      // البحث في اسم الدرس واسم الدورة
       const matchesSearch =
         lesson.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         lesson.course.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -173,7 +173,7 @@ export default function LessonTable({ lessons }: LessonTableProps) {
                   {row.getValue("name")}
                 </h3>
                 <div className="text-sm text-slate-600 text-right">
-                  <span className="font-medium">الكورس:</span>{" "}
+                  <span className="font-medium">الدورة:</span>{" "}
                   {row.getValue("course")}
                 </div>
                 <div className="text-sm text-slate-600 text-right">
@@ -214,9 +214,9 @@ export default function LessonTable({ lessons }: LessonTableProps) {
                       {header.isPlaceholder
                         ? null
                         : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
                     </TableHead>
                   );
                 })}

@@ -204,9 +204,9 @@ const useFormFields = ({ slug }: IFormFieldsVariables) => {
     },
     {
       name: 'slug',
-      label: 'اسم الكورس (Slug)',
+      label: 'اسم الدورة (Slug)',
       type: 'text',
-      placeholder: 'ادخل اسم الكورس يجب أن يكون فريد!',
+      placeholder: 'ادخل اسم الدورة يجب أن يكون فريد!',
     },
   ];
 
@@ -279,9 +279,9 @@ const useFormFields = ({ slug }: IFormFieldsVariables) => {
     },
     {
       name: 'price',
-      label: 'السعر بالدولار',
+      label: 'السعر',
       type: 'number',
-      placeholder: 'ادخل السعر بالدولار',
+      placeholder: 'ادخل السعر',
     },
   ];
 

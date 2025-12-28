@@ -12,8 +12,8 @@ import { Button } from "@/components/ui/button";
 type OptionType = { value: string; label: string };
 
 const selectOptions: OptionType[] = [
-  { value: "available", label: "متاح" },
-  { value: "unavailable", label: "غير متاح" },
+  { value: "published", label: "منشور" },
+  { value: "draft", label: "مسودة" },
 ];
 
 const customStyles: StylesConfig<OptionType, false> = {
@@ -45,8 +45,8 @@ const customStyles: StylesConfig<OptionType, false> = {
     backgroundColor: state.isSelected
       ? "#297bff"
       : state.isFocused
-      ? "#297bff3b"
-      : "#fff",
+        ? "#297bff3b"
+        : "#fff",
     color: state.isSelected ? "#fff" : "#7e9fe9",
     fontWeight: state.isSelected ? "bold" : "normal",
     fontSize: 16,
@@ -111,7 +111,7 @@ export default function AvailabilityForm() {
           htmlFor="status-select"
           className="block mb-2 text-base font-bold !text-[#297bff]"
         >
-          حالة الكورس
+          حالة الدورة
         </Label>
         <ReactSelect
           inputId="status-select"

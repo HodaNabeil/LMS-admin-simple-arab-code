@@ -22,7 +22,7 @@ export function EditCourse({ course }: { course: Course }) {
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader className="!text-right">
-                    <DialogTitle>تعديل الكورس</DialogTitle>
+                    <DialogTitle>تعديل الدورة</DialogTitle>
                 </DialogHeader>
                 <CourseForm course={course}
                     setCourseMenu={setCourseMenu}

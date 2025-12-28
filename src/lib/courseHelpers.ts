@@ -9,7 +9,7 @@ export const searchCourses = (
   const lowerSearchTerm = searchTerm.toLowerCase();
   return courses.filter(
     (course) =>
-      course.title.toLowerCase().includes(lowerSearchTerm) ||
+      course.name.toLowerCase().includes(lowerSearchTerm) ||
       course.instructor.toLowerCase().includes(lowerSearchTerm)
   );
 };

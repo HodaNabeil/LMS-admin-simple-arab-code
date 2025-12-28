@@ -21,19 +21,7 @@ import { Badge } from '@/components/ui/badge';
 import { CourseTableMobile } from './CourseTableMobile';
 import { CourseTableDesktop } from './CourseTableDesktop';
 import { EditCourse } from '../EditCourse';
-
-export interface Course {
-  id: number;
-  title: string;
-  category: string;
-  type: string;
-  level: string;
-  instructor: string;
-  price: number;
-  image: string;
-  students?: number;
-  rating?: number;
-}
+import type { Course } from '@/types/course';
 
 interface CourseTableProps {
   courses: Course[];
@@ -47,7 +35,7 @@ const columns: ColumnDef<Course>[] = [
       <div className="flex items-center justify-center">
         <img
           src={row.getValue('image')}
-          alt={row.getValue('title')}
+          alt={row.getValue('name')}
           className="h-12 w-12 rounded-lg object-cover"
         />
       </div>
@@ -55,12 +43,12 @@ const columns: ColumnDef<Course>[] = [
     enableSorting: false,
   },
   {
-    accessorKey: 'title',
+    accessorKey: 'name',
     header: 'اسم المادة',
     cell: ({ row }) => (
       <div className="max-w-[300px]">
         <div className="font-medium text-right truncate">
-          {row.getValue('title')}
+          {row.getValue('name')}
         </div>
       </div>
     ),
@@ -183,9 +171,9 @@ function CourseTable({ courses }: CourseTableProps) {
       <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 py-4">
         <Input
           placeholder="البحث في الدورات..."
-          value={(table.getColumn('title')?.getFilterValue() as string) ?? ''}
+          value={(table.getColumn('name')?.getFilterValue() as string) ?? ''}
           onChange={(event) =>
-            table.getColumn('title')?.setFilterValue(event.target.value)
+            table.getColumn('name')?.setFilterValue(event.target.value)
           }
           className="w-full sm:max-w-sm"
         />

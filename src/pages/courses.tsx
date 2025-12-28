@@ -5,25 +5,14 @@ import CourseTable from '@/features/courses/components/table/CourseTable';
 import { Plus, Users } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
-
-interface Course {
-  id: number;
-  title: string;
-  category: string;
-  type: string;
-  level: string;
-  instructor: string;
-  price: number;
-  image: string;
-  students?: number;
-  rating?: number;
-}
+import type { Course } from '@/types/course';
 
 const courses: Course[] = [
   {
     id: 1,
-    title:
+    name:
       'دورة تطوير تطبيقات باستخدام Flutter - بناء واجهات احترافية لأنظمة iOS و Android',
+    slug: 'flutter-development',
     category: 'تطوير التطبيقات',
     type: 'تفاعلية',
     level: 'متوسط',
@@ -32,11 +21,13 @@ const courses: Course[] = [
     image: 'https://i.ibb.co/Zzr165m4/Chat-GPT-Image-8-2025-04-06-00.png',
     students: 145,
     rating: 4.8,
+    hours: 20
   },
   {
     id: 2,
-    title:
+    name:
       'دورة تطوير مواقع الويب باستخدام React و Next.js - من المبتدئ إلى المحترف',
+    slug: 'react-nextjs-development',
     category: 'تطوير الويب',
     type: 'تقنية',
     level: 'متقدم',
@@ -45,10 +36,12 @@ const courses: Course[] = [
     image: 'https://i.ibb.co/Zzr165m4/Chat-GPT-Image-8-2025-04-06-00.png',
     students: 298,
     rating: 4.9,
+    hours: 35
   },
   {
     id: 3,
-    title: 'دورة تصميم واجهات المستخدم UX/UI - إنشاء تجارب مستخدم مميزة',
+    name: 'دورة تصميم واجهات المستخدم UX/UI - إنشاء تجارب مستخدم مميزة',
+    slug: 'ui-ux-design',
     category: 'تصميم',
     type: 'إبداعية',
     level: 'مبتدئ',
@@ -57,6 +50,7 @@ const courses: Course[] = [
     image: 'https://i.ibb.co/Zzr165m4/Chat-GPT-Image-8-2025-04-06-00.png',
     students: 89,
     rating: 4.7,
+    hours: 15
   },
 ];
 export default function Courses() {
@@ -69,7 +63,7 @@ export default function Courses() {
   const filteredCourses = useMemo(() => {
     return courses.filter((course) => {
       const matchesSearch =
-        course.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        course.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         course.instructor.toLowerCase().includes(searchTerm.toLowerCase());
 
       const matchesCategory =

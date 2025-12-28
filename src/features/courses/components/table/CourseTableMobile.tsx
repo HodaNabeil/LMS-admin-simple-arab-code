@@ -2,19 +2,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Edit, Trash2 } from 'lucide-react';
 import type { Table as TableType } from '@tanstack/react-table';
-
-interface Course {
-    id: number;
-    title: string;
-    category: string;
-    type: string;
-    level: string;
-    instructor: string;
-    price: number;
-    image: string;
-    students?: number;
-    rating?: number;
-}
+import type { Course } from '@/types/course';
 
 interface CourseTableMobileProps {
     table: TableType<Course>;
@@ -32,12 +20,12 @@ export function CourseTableMobile({ table }: CourseTableMobileProps) {
                         <div className="flex items-start gap-3">
                             <img
                                 src={row.getValue('image')}
-                                alt={row.getValue('title')}
+                                alt={row.getValue('name')}
                                 className="h-16 w-16 rounded-lg object-cover flex-shrink-0"
                             />
                             <div className="flex-1 min-w-0">
                                 <h3 className="font-medium text-sm leading-5 line-clamp-2 text-right">
-                                    {row.getValue('title')}
+                                    {row.getValue('name')}
                                 </h3>
                                 <p className="text-sm text-muted-foreground mt-1 text-right">
                                     {row.getValue('instructor')}
