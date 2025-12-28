@@ -42,10 +42,15 @@ const PathForm = ({ pathData }: PathFormProps) => {
   const getSavedFormData = useCallback(() => {
     if (isEditMode && pathData) {
       return {
-        heading: pathData.heading || "",
-        description: pathData.description || "",
-        name: pathData.name || "",
+        title: pathData.title || "",
         slug: pathData.slug || "",
+        summary: pathData.summary || "",
+        description: pathData.description || "",
+        thumbnailUrl: pathData.thumbnailUrl || "",
+        parentId: pathData.parentId || "",
+        icon: pathData.icon || "",
+        metatitle: pathData.metatitle || "",
+        metaDescription: pathData.metaDescription || "",
         image: pathData.image || null,
         roadmap: pathData.roadmapUrl || null,
       };
@@ -54,10 +59,15 @@ const PathForm = ({ pathData }: PathFormProps) => {
     const savedData = getFromLocalStorage(FORM_DATA_KEY);
     return (
       savedData || {
-        heading: "",
-        description: "",
-        name: "",
+        title: "",
         slug: "",
+        summary: "",
+        description: "",
+        thumbnailUrl: "",
+        parentId: "",
+        icon: "",
+        metatitle: "",
+        metaDescription: "",
         image: null,
         roadmap: null,
       }
@@ -130,10 +140,15 @@ const PathForm = ({ pathData }: PathFormProps) => {
   const getFieldsForStep = (step: number): (keyof IPathForm)[] => {
     if (isEditMode) {
       const fields: (keyof IPathForm)[] = [
-        "name",
+        "title",
         "slug",
+        "summary",
         "description",
-        "heading",
+        "thumbnailUrl",
+        "parentId",
+        "icon",
+        "metatitle",
+        "metaDescription",
       ];
       if (isChangingImage) fields.push("image");
       if (isChangingRoadmap) fields.push("roadmap");
@@ -142,7 +157,7 @@ const PathForm = ({ pathData }: PathFormProps) => {
 
     switch (step) {
       case 1:
-        return ["name", "slug", "description", "heading"];
+        return ["title", "slug", "summary", "description", "thumbnailUrl", "parentId", "icon", "metatitle", "metaDescription"];
       case 2:
         return ["image", "roadmap"];
       default:

@@ -1,14 +1,19 @@
 export interface Path {
   id: string;
-  name: string;
+  title: string;
   slug: string;
   order: number;
   createdAt: string; // ISO date string
   updatedAt: string; // ISO date string
   image: string | null;
-  heading: string;
+  summary: string;
   roadmapUrl: string | null;
   description: string;
+  thumbnailUrl?: string | null;
+  parentId?: string | null;
+  icon?: string | null;
+  metatitle?: string | null;
+  metaDescription?: string | null;
 }
 
 export interface PathResponse {

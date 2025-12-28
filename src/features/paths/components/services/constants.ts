@@ -3,10 +3,10 @@ export const FORM_STEP_KEY = "addPathForm_step";
 
 export const step1Fields = [
     {
-        name: "name",
-        label: "اسم المسار التعليمي",
+        name: "title",
+        label: "عنوان المسار التعليمي",
         type: "text" as const,
-        placeholder: "ادخل اسم المسار التعليمي",
+        placeholder: "ادخل عنوان المسار التعليمي",
     },
     {
         name: "slug",
@@ -15,16 +15,46 @@ export const step1Fields = [
         placeholder: "أدخل مُعرّف المادة (يجب أن يكون فريدًا)",
     },
     {
-        name: "heading",
-        label: "عنوان المسار ",
+        name: "summary",
+        label: "ملخص المسار",
         type: "text" as const,
-        placeholder: "ادخل عنوان المسار",
+        placeholder: "ادخل ملخص المسار",
     },
     {
         name: "description",
         label: "وصف المسار التعليمي (بالتفاصيل)",
         type: "textarea" as const,
         placeholder: "ادخل وصف المسار التعليمي",
+    },
+    {
+        name: "thumbnailUrl",
+        label: "رابط الصورة المصغرة",
+        type: "text" as const,
+        placeholder: "https://example.com/images/path-cover.jpg",
+    },
+    {
+        name: "parentId",
+        label: "معرف المسار الأب (اختياري)",
+        type: "text" as const,
+        placeholder: "123e4567-e89b-12d3-a456-426614174000",
+    },
+    {
+        name: "icon",
+        label: "أيقونة المسار",
+        type: "text" as const,
+        placeholder: "book-open",
+    },
+    {
+        name: "metatitle",
+        label: "عنوان SEO",
+        type: "text" as const,
+        placeholder: "تعلم أساسيات اللغة العربية - مسار تعليمي شامل",
+    },
+    {
+        name: "metaDescription",
+        label: "وصف SEO",
+        type: "textarea" as const,
+        placeholder: "مسار تعليمي شامل لإتقان أساسيات اللغة العربية مع إرشادات الخبراء",
     },
 ];
 

@@ -21,12 +21,12 @@ export function PathTableMobile({ table }: PathTableMobileProps) {
                         <div className="flex items-start gap-3">
                             <img
                                 src={row.getValue("image")}
-                                alt={row.getValue("name")}
+                                alt={row.getValue("title")}
                                 className="h-16 w-16 rounded-lg object-cover flex-shrink-0"
                             />
                             <div className="flex-1 min-w-0">
                                 <h3 className="font-medium text-sm leading-5 line-clamp-2 text-right">
-                                    {row.getValue("name")}
+                                    {row.getValue("title")}
                                 </h3>
                                 <p className="text-sm text-muted-foreground mt-1 text-right">
                                     {row.getValue("slug")}

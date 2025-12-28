@@ -4,12 +4,17 @@ import type { Path, PathResponse } from "@/types/path";
 
 // Types for API requests and responses
 export interface PathRequest {
-  name: string;
+  title: string;
   slug: string;
-  heading: string;
+  summary: string;
   description: string;
-  roadmap?: string;
-  image?: File;
+  thumbnailUrl?: string;
+  parentId?: string;
+  icon?: string;
+  metatitle?: string;
+  metaDescription?: string;
+  roadmap?: File | string;
+  image?: File | string;
 }
 
 export interface PathMutationResponse {

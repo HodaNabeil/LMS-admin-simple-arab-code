@@ -14,7 +14,7 @@ export const columns: ColumnDef<Path>[] = [
       <div>
         <img
           src={row.getValue("image")}
-          alt={row.getValue("name")}
+          alt={row.getValue("title")}
           className="h-12 w-12 roundend-lg object-cover"
         />
       </div>
@@ -22,12 +22,12 @@ export const columns: ColumnDef<Path>[] = [
     enableSorting: false,
   },
   {
-    accessorKey: "name",
+    accessorKey: "title",
     header: "اسم المسار",
     cell: ({ row }) => (
       <div className="max-w-[300px]">
         <div className="font-medium text-right truncate">
-          {row.getValue("name")}
+          {row.getValue("title")}
         </div>
       </div>
     ),
@@ -54,11 +54,11 @@ export const columns: ColumnDef<Path>[] = [
     ),
   },
   {
-    accessorKey: "heading",
+    accessorKey: "summary",
     header: "العنوان",
     cell: ({ row }) => (
       <p className="text-foreground truncate max-w-64">
-        {row.getValue("heading")}
+        {row.getValue("summary")}
       </p>
     ),
   },

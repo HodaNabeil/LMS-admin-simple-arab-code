@@ -2,6 +2,9 @@ import { CreateNewUser } from '@/features/users/components/CreateNewUser';
 import UserTable from '@/features/users/components/UserTable';
 import { Loader } from '@/components/shared/loader';
 import { useUsers } from '@/features/users/hooks/useUsersQueries';
+import StatsCard from '@/components/shared/stats-card';
+import { User } from 'lucide-react';
+import UsersStats from '@/features/users/components/users-stats';
 
 export default function Users() {
   const { data, isLoading, isError } = useUsers();
@@ -29,21 +32,15 @@ export default function Users() {
     );
   }
   return (
-    <>
-      <div className="grid grid-cols-3 gap-1 p-2">
-        {/* <StatsCard
-          title="Total Students"
-          value={1}
-          icon={<User className="w-5 h-5 text-gray-300" />}
-          data={studentsData1}
-        /> */}
-      </div>
+    <div className='p-4'>
+
+      <UsersStats users={data?.users || []} />
 
       <div className="flex justify-between items-center m-4">
         <h2 className="text-2xl font-bold text-blue-800">Users</h2>
         <CreateNewUser />
       </div>
       {userTable}
-    </>
+    </div>
   );
 }
