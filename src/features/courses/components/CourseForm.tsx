@@ -10,6 +10,7 @@ import useFormValidations from '@/hooks/useFormValidations';
 import type { UseMutationResult } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import type { AxiosError } from 'axios';
+import { courseSchema } from '@/validations/course';
 
 interface CourseFormProps {
     course?: Course;
@@ -27,16 +28,18 @@ function CourseForm({ course, setCourseMenu, mutation }: CourseFormProps) {
         formState: { errors, isSubmitting },
     } = useForm({
         defaultValues: {
-            title: course?.title || '',
-            category: course?.category || '',
+            name: course?.name || '',
+            slug: course?.slug || '',
             type: course?.type || '',
             level: course?.level || '',
             instructor: course?.instructor || '',
             price: course?.price || 0,
             image: course?.image || '',
+            hours: course?.hours || 0,
         },
         mode: 'onChange',
-        resolver: zodResolver(getValidationSchema()),
+
+        resolver: zodResolver(getValidationSchema() as typeof courseSchema),
     });
 
     const onSubmit = async (data: Record<string, unknown>) => {

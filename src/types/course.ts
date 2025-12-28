@@ -57,13 +57,14 @@ export interface Coupon {
 export interface CouponsResponse {
   activeCoupons: Coupon[];
   expiredCoupons: Coupon[];
-} 
+}
 
 
 
 export interface Course {
   id: number;
-  title: string;
+  name: string;
+  slug: string;
   category: string;
   type: string;
   level: string;
@@ -72,6 +73,7 @@ export interface Course {
   image: string;
   students?: number;
   rating?: number;
+  hours: number;
 }
 
 export interface CourseFilters {
