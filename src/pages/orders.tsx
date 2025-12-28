@@ -1,3 +1,4 @@
+import CourseStats from "@/features/orders/components/orderStats";
 import { NewOrder } from "@/features/orders/components/NewOrder";
 import OrdersFilters from "@/features/orders/components/OrdersFilters";
 import OrdersTable from "@/features/orders/components/OrdersTable";
@@ -106,6 +107,7 @@ export default function Orders() {
         <h1 className="text-2xl font-bold mb-4">كل الطلبات </h1>
         <NewOrder />
       </div>
+      <CourseStats orders={orders} />
       <OrdersFilters
         selectedPaymentMethod={selectedPaymentMethod}
         searchTerm={searchTerm}
