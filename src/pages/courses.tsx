@@ -1,7 +1,7 @@
 import { buttonVariants } from '@/components/ui/button';
-import CourseFilters from '@/features/courses/CourseFilters';
-import CourseStats from '@/features/courses/CourseStats';
-import CourseTable from '@/features/courses/CourseTable';
+import CourseFilters from '@/features/courses/components/CourseFilters';
+import CourseStats from '@/features/courses/components/CourseStats';
+import CourseTable from '@/features/courses/components/CourseTable';
 import { Plus, Users } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -136,7 +136,7 @@ function Header({ coursesCount }: { coursesCount: number }) {
             الدورات التدريبية
           </span>
         </div>
-        <div className="bg-gradient-to-r from-blue-100 to-blue-200 text-blue-700 px-3 lg:px-4 py-1.5 lg:py-2 rounded-full text-sm font-medium border border-blue-300 shadow-sm">
+        <div className="bg-linear-to-r from-blue-100 to-blue-200 text-blue-700 px-3 lg:px-4 py-1.5 lg:py-2 rounded-full text-sm font-medium border border-blue-300 shadow-sm">
           الدورات ({coursesCount})
         </div>
       </div>

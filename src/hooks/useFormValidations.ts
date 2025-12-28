@@ -5,8 +5,33 @@ import { Pages } from '@/constants/enums';
 import { loginSchema } from '@/validations/login';
 import { userSchema } from '@/validations/user';
 import { pathSchema } from '@/validations/path';
+import { createCourseSchema } from '@/validations/createcourse';
+import {
+  basicsSchema,
+  createLessonCourseSchema,
+  createSectionCourseSchema,
+  goalsSchema,
+  pricingSchema,
+} from '@/validations/course';
 
-const useFormValidations = (props: IFormFieldsVariables) => {
+type ValidationSchema =
+  | typeof signinSchema
+  | typeof signupSchema
+  | typeof loginSchema
+  | typeof userSchema
+  | typeof pathSchema
+  | typeof createCourseSchema
+  | typeof basicsSchema
+  | typeof createSectionCourseSchema
+  | typeof goalsSchema
+  | typeof pricingSchema
+  | z.ZodObject<Record<string, never>>;
+
+const useFormValidations = (
+  props: IFormFieldsVariables
+): {
+  getValidationSchema: () => ValidationSchema;
+} => {
   const { slug } = props;
 
   const getValidationSchema = () => {
@@ -22,6 +47,19 @@ const useFormValidations = (props: IFormFieldsVariables) => {
 
       case Pages.PATHS:
         return pathSchema;
+      case Pages.CREATE_COURSES:
+        return createCourseSchema;
+      case Pages.GOALS:
+        return goalsSchema;
+      case Pages.BASICS:
+        return basicsSchema;
+      case Pages.PRICING:
+        return pricingSchema;
+      case Pages.CURRICULUM:
+        return createSectionCourseSchema;
+
+      case Pages.LESSONS:
+        return createLessonCourseSchema;
       default:
         return z.object({});
     }

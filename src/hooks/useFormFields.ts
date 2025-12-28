@@ -1,4 +1,4 @@
-import { Pages, UserType } from '@/constants/enums';
+import { Pages, StatusLesson, UserType } from '@/constants/enums';
 import type { IFormField, IFormFieldsVariables } from '@/types/app';
 
 const useFormFields = ({ slug }: IFormFieldsVariables) => {
@@ -15,6 +15,21 @@ const useFormFields = ({ slug }: IFormFieldsVariables) => {
       name: 'password',
       placeholder: '••••••••',
       type: 'password',
+    },
+  ];
+
+  const CreateSectionFormFields = (): IFormField[] => [
+    {
+      name: 'name',
+      label: 'اسم القسم',
+      type: 'text',
+      placeholder: 'ادخل اسم القسم',
+    },
+    {
+      name: 'description',
+      label: 'وصف القسم',
+      type: 'textarea',
+      placeholder: 'ادخل وصف القسم',
     },
   ];
 
@@ -175,6 +190,128 @@ const useFormFields = ({ slug }: IFormFieldsVariables) => {
     },
   ];
 
+  const createCourseFields = (): IFormField[] => [
+    {
+      name: 'selectedPath', // تصحيح اسم الحقل
+      label: 'اختار المسار التعليمي',
+      type: 'select',
+      placeholder: 'اختر المسار التعليمي',
+      options: [
+        { value: '1', label: 'المسار التعليمي 1' },
+        { value: '2', label: 'المسار التعليمي 2' },
+        { value: '3', label: 'المسار التعليمي 3' },
+      ],
+    },
+    {
+      name: 'slug',
+      label: 'اسم الكورس (Slug)',
+      type: 'text',
+      placeholder: 'ادخل اسم الكورس يجب أن يكون فريد!',
+    },
+  ];
+
+  const goalsFields = (): IFormField[] => [
+    {
+      name: 'knowledgeNeeded',
+      label: 'ما ينبغي عليك معرفته',
+      type: 'textarea',
+      placeholder: 'مثال: يفضل معرفة أساسيات البرمجة أو HTML',
+    },
+  ];
+
+  const basicsFields = (): IFormField[] => [
+    {
+      name: 'name',
+      label: 'اسم الدورة',
+      type: 'text',
+      placeholder: 'ادخل اسم الدورة',
+    },
+    {
+      name: 'description',
+      label: 'وصف الدورة',
+      type: 'textarea',
+      placeholder: 'ادخل وصف الدورة',
+    },
+    {
+      name: 'slug',
+      label: 'اسم الدورة (Slug)',
+      type: 'text',
+      placeholder: 'ادخل اسم الدورة (يجب أن يكون فريد)',
+    },
+    {
+      name: 'level',
+      label: 'مستوى الدورة',
+      type: 'select',
+      placeholder: 'اختر مستوى الدورة',
+      options: [
+        { value: 'all', label: 'جميع المستويات' },
+        { value: 'beginner', label: 'مبتدئ' },
+        { value: 'intermediate', label: 'متوسط' },
+        { value: 'advanced', label: 'متقدم' },
+      ],
+    },
+    {
+      name: 'hours',
+      label: 'مدة الدورة (بالساعات)',
+      type: 'number',
+      placeholder: 'ادخل مدة الدورة (بالساعات)',
+    },
+    {
+      name: 'image',
+      label: 'صورة الدورة',
+      type: 'image',
+      placeholder: 'اختار صورة الدورة',
+    },
+    {
+      name: 'video',
+      label: 'فيديو الدورة',
+      type: 'file',
+      placeholder: 'اختر فيديو الدورة',
+    },
+  ];
+
+  const pricingFields = (): IFormField[] => [
+    {
+      name: 'priceInCents',
+      label: 'السعر بالسنت',
+      type: 'number',
+      placeholder: 'ادخل السعر بالسنت',
+    },
+    {
+      name: 'price',
+      label: 'السعر بالدولار',
+      type: 'number',
+      placeholder: 'ادخل السعر بالدولار',
+    },
+  ];
+
+  const lessonFields = (): IFormField[] => [
+    {
+      name: 'name',
+      label: 'المحاضرة اسم  ',
+      type: 'text',
+      placeholder: 'ادخل اسم المحاضرة التعليمي',
+    },
+
+    {
+      name: 'description',
+      label: ' وصف المحاضرة',
+      type: 'textarea',
+      placeholder: 'ادخل وصف المحاضرة التعليمي',
+    },
+    {
+      label: 'معاينه المحاضرة',
+      name: 'role',
+      type: 'select',
+      placeholder: 'اختر معاينه المحاضرة',
+      options: [
+        { value: StatusLesson.LOCKED, label: StatusLesson.LOCKED },
+        { value: StatusLesson.UNLOCKED, label: StatusLesson.UNLOCKED },
+        { value: StatusLesson.PREVIEW, label: StatusLesson.PREVIEW },
+      ],
+    },
+  ];
+
   const getFormFields = (): IFormField[] => {
     switch (slug) {
       case Pages.SIGNIN:
@@ -192,6 +329,18 @@ const useFormFields = ({ slug }: IFormFieldsVariables) => {
       case Pages.PATHS:
         return pathFields();
 
+      case Pages.CREATE_COURSES:
+        return createCourseFields();
+      case Pages.GOALS:
+        return goalsFields();
+      case Pages.BASICS:
+        return basicsFields();
+      case Pages.PRICING:
+        return pricingFields();
+      case Pages.CURRICULUM:
+        return CreateSectionFormFields();
+      case Pages.LESSONS:
+        return lessonFields();
       default:
         return [];
     }

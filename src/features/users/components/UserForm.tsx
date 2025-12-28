@@ -1,16 +1,16 @@
-import useFormFields from "@/hooks/useFormFields";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Loader } from "@/components/shared/loader";
-import { Pages } from "@/constants/enums";
-import FormFields from "@/components/shared/form-fields/form-fields";
-import { Button } from "@/components/ui/button";
-import type { User } from "@/types/user";
-import type { Control } from "react-hook-form";
-import useFormValidations from "@/hooks/useFormValidations";
-import type { UseMutationResult } from "@tanstack/react-query";
-import { toast } from "sonner";
-import type { AxiosError } from "axios";
+import useFormFields from '@/hooks/useFormFields';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Loader } from '@/components/shared/loader';
+import { Pages, UserType } from '@/constants/enums';
+import FormFields from '@/components/shared/form-fields/form-fields';
+import { Button } from '@/components/ui/button';
+import type { User } from '@/types/user';
+import useFormValidations from '@/hooks/useFormValidations';
+import type { UseMutationResult } from '@tanstack/react-query';
+import { toast } from 'sonner';
+import type { AxiosError } from 'axios';
+import type { userSchema } from '@/validations/user';
 
 function UserForm({
   user,
@@ -30,12 +30,12 @@ function UserForm({
     formState: { errors, isSubmitting },
   } = useForm({
     defaultValues: {
-      name: user?.name || "",
-      email: user?.email || "",
-      role: user?.role || "",
+      name: user?.name || '',
+      email: user?.email || '',
+      role: user?.role || UserType.USER,
     },
-    mode: "onChange",
-    resolver: zodResolver(getValidationSchema()),
+    mode: 'onChange',
+    resolver: zodResolver(getValidationSchema() as typeof userSchema),
   });
 
   const onSubmit = async (data: Record<string, string>) => {
@@ -51,10 +51,10 @@ function UserForm({
         if (axiosError.response?.data?.message) {
           toast.error(axiosError.response.data.message);
         } else {
-          toast.error("An error occurred");
+          toast.error('An error occurred');
         }
       } else {
-        toast.error("An unexpected error occurred");
+        toast.error('An unexpected error occurred');
       }
     }
   };
@@ -65,15 +65,11 @@ function UserForm({
     <form onSubmit={handleSubmit(onSubmit)}>
       {getFormFields().map((field, index) => (
         <div key={index} className="mb-4">
-          <FormFields
-            {...field}
-            control={control as Control<Record<string, unknown>>}
-            errors={errors}
-          />
+          <FormFields {...field} control={control} errors={errors} />
         </div>
       ))}
       <Button type="submit" disabled={formLoading}>
-        {user ? "تحديث المستخدم" : "انشاء مستخدم جديد"}
+        {user ? 'تحديث المستخدم' : 'انشاء مستخدم جديد'}
         {formLoading && <Loader />}
       </Button>
     </form>
