@@ -35,6 +35,7 @@ export enum Pages {
   COURSES = "courses",
   CURRICULUM = "curriculum",
   LESSONS = "lessons",
+  EDIT_COURSE = "courses/edit",
 }
 
 export enum InputTypes {
@@ -111,8 +112,8 @@ export enum Environments {
   DEV = "development",
 }
 export enum UserType {
-  USER = "USER",
-  ADMIN = "ADMIN",
+  USER = "user",
+  ADMIN = "admin",
 }
 
 export enum StatusLesson {

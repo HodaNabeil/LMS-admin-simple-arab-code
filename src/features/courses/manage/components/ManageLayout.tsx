@@ -8,7 +8,7 @@ export default function ManageLayout() {
     <div className="min-h-screen bg-background flex flex-col p-4 gap-4">
       <header className="sticky top-0 z-30 w-full bg-accent p-4 rounded-md backdrop-blur flex items-center justify-between">
         <h1 className="text-lg font-semibold text-foreground">
-          تعديل الكورس: {slug}
+          تعديل الدورة: {slug}
         </h1>
         <Actions />
       </header>

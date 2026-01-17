@@ -1,6 +1,6 @@
 import * as z from "zod";
 
-export const  createCourseSchema = z.object({
+export const createCourseSchema = z.object({
   slug: z
     .string()
     .trim()

@@ -1,58 +1,58 @@
-import { Card } from "@/components/ui/card";
+import StatsCard from "@/components/shared/stats-card";
 import { formatCurrency } from "@/lib/formatters";
 import type { AdminStats } from "@/types/stats";
-import { FaUserGraduate, FaBookOpen, FaMoneyBillWave } from "react-icons/fa";
+import { GraduationCap, BookOpen, DollarSign } from "lucide-react";
 
 export default function StatsSummary({
   summary,
 }: {
   summary: AdminStats["summary"];
 }) {
-  const stats = [
+  const statsData = [
     {
-      label: "إجمالي الطلاب",
-      icon: <FaUserGraduate className="text-white text-lg" />,
-      iconBg: "bg-blue-500",
+      id: "total-students",
+      title: "إجمالي الطلاب",
       value: summary.students.count,
-      increaseLastMonth: summary.students.increaseLastMonth,
+      icon: GraduationCap,
+      growthPercentage: summary.students.increaseLastMonth,
+      colorClass:
+        "bg-gradient-to-br from-blue-50 to-blue-100 border border-blue-200",
+      iconColor: "bg-blue-400",
     },
     {
-      label: "إجمالي المسجلين في الدورات",
-      icon: <FaBookOpen className="text-white text-lg" />,
-      iconBg: "bg-pink-500",
+      id: "course-enrollments",
+      title: "إجمالي المسجلين في الدورات",
       value: summary.courseEnrollments.count,
-      increaseLastMonth: summary.courseEnrollments.increaseLastMonth,
+      icon: BookOpen,
+      growthPercentage: summary.courseEnrollments.increaseLastMonth,
+      colorClass:
+        "bg-gradient-to-br from-pink-50 to-pink-100 border border-pink-200",
+      iconColor: "bg-pink-400",
     },
     {
-      label: "إجمالي الإيرادات",
-      icon: <FaMoneyBillWave className="text-white text-lg" />,
-      iconBg: "bg-green-500",
+      id: "total-revenue",
+      title: "إجمالي الإيرادات",
       value: formatCurrency(summary.revenue.total),
-      increaseLastMonth: summary.revenue.increaseLastMonth,
+      icon: DollarSign,
+      growthPercentage: summary.revenue.increaseLastMonth,
+      colorClass:
+        "bg-gradient-to-br from-green-50 to-green-100 border border-green-200",
+      iconColor: "bg-green-400",
     },
   ];
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-      {stats.map((stat, idx) => (
-        <Card
-          key={idx}
-          className="rounded-lg bg-white text-gray-800 shadow-md p-6 border-0"
-        >
-          <div className="flex items-center justify-between mb-4">
-            <div className="text-lg font-bold text-gray-800">{stat.label}</div>
-            <div
-              className={`w-12 h-12 ${stat.iconBg} rounded-full flex items-center justify-center shadow-lg`}
-            >
-              {stat.icon}
-            </div>
-          </div>
-          <div className="text-4xl font-black text-gray-800">{stat.value}</div>
-
-          <div className="text-xs text-gray-500 mt-1">
-            {stat.increaseLastMonth} زيادة في الشهر الماضي
-          </div>
-        </Card>
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full">
+      {statsData.map((stat) => (
+        <StatsCard
+          key={stat.id}
+          title={stat.title}
+          value={stat.value}
+          icon={<stat.icon className="w-8 h-8 text-white rounded-full p-1" />}
+          growthPercentage={stat.growthPercentage}
+          className={stat.colorClass}
+          iconClassName={stat.iconColor}
+        />
       ))}
     </div>
   );

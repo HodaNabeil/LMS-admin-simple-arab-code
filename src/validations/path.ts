@@ -2,26 +2,51 @@ import * as z from "zod";
 
 // Base fields that are required in both create and edit schemas
 const basePathFields = {
-  name: z
+  title: z
     .string()
     .trim()
-    .min(4, { message: "الاسم يجب أن يكون على الأقل 4 أحرف" }),
+    .min(1, { message: "العنوان مطلوب" })
+    .max(255, { message: "العنوان يجب أن يكون أقل من 255 حرف" }),
   slug: z
     .string()
     .trim()
-    .min(2, { message: "المُعرّف (slug) يجب أن يكون على الأقل 2 أحرف" })
-    .regex(/^[a-z0-9-]+$/, {
+    .min(1, { message: "المُعرّف (slug) يجب أن يكون على الأقل حرف واحد" })
+    .max(100, { message: "المُعرّف يجب أن يكون أقل من 100 حرف" })
+    .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, {
       message:
         "المُعرّف يجب أن يحتوي فقط على حروف إنجليزية صغيرة، أرقام، وشرطات (-)",
     }),
+  summary: z
+    .string()
+    .trim()
+    .min(1, { message: "الملخص مطلوب" })
+    .max(200, { message: "الملخص يجب أن يكون أقل من 200 حرف" }),
   description: z
     .string()
     .min(1, { message: "الوصف التفصيلي مطلوب" })
     .min(20, { message: "الوصف التفصيلي يجب أن يكون 20 حرف على الأقل" }),
-  heading: z
+  thumbnailUrl: z
     .string()
-    .min(1, { message: "المحتوى المختصر مطلوب" })
-    .min(10, { message: "المحتوى المختصر يجب أن يكون 10 أحرف على الأقل" }),
+    .url({ message: "رابط الصورة المصغرة يجب أن يكون رابط صحيح" })
+    .optional(),
+  parentId: z
+    .string()
+    .uuid({ message: "معرف المسار الأب يجب أن يكون UUID صحيح" })
+    .optional(),
+  icon: z
+    .string()
+    .trim()
+    .optional(),
+  metatitle: z
+    .string()
+    .trim()
+    .max(255, { message: "عنوان SEO يجب أن يكون أقل من 255 حرف" })
+    .optional(),
+  metaDescription: z
+    .string()
+    .trim()
+    .max(500, { message: "وصف SEO يجب أن يكون أقل من 500 حرف" })
+    .optional(),
 };
 
 export const pathSchema = z.object({

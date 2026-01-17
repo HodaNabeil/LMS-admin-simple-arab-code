@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Dialog,
   DialogContent,
@@ -11,15 +11,17 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
-import { PercentIcon, DollarSignIcon, HashIcon, ClockIcon, BookOpenIcon } from "lucide-react";
+import { PercentIcon, DollarSignIcon, HashIcon, ClockIcon, BookOpenIcon, CheckCircleIcon } from "lucide-react";
 import type { Coupon } from "@/types/course";
 
-interface CreateCouponDialogProps {
-  onCreate: (couponData: Omit<Coupon, 'id' | 'createdAt' | 'uses' | 'isActive'>) => void;
+interface CouponFormDialogProps {
+  onSubmit: (couponData: Omit<Coupon, 'id' | 'createdAt' | 'uses'>) => void;
   isLoading?: boolean;
+  initialData?: Coupon | null;
+  children?: React.ReactNode;
 }
 
-export default function CreateCouponDialog({ onCreate, isLoading = false }: CreateCouponDialogProps) {
+export default function CouponFormDialog({ onSubmit, isLoading = false, initialData, children }: CouponFormDialogProps) {
   const [open, setOpen] = useState(false);
   const [formData, setFormData] = useState({
     code: "",
@@ -28,11 +30,28 @@ export default function CreateCouponDialog({ onCreate, isLoading = false }: Crea
     expiresAt: "",
     limit: "",
     allCourses: false,
+    isActive: true,
   });
+
+  useEffect(() => {
+    if (initialData) {
+      setFormData({
+        code: initialData.code,
+        discount: initialData.discount.toString(),
+        type: initialData.type,
+        expiresAt: initialData.expiresAt.split('T')[0], // Formatting for date input
+        limit: initialData.limit.toString(),
+        allCourses: initialData.allCourses,
+        isActive: initialData.isActive,
+      });
+    } else {
+      resetForm();
+    }
+  }, [initialData, open]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     const couponData = {
       code: formData.code,
       discount: Number(formData.discount),
@@ -40,9 +59,10 @@ export default function CreateCouponDialog({ onCreate, isLoading = false }: Crea
       expiresAt: formData.expiresAt,
       limit: Number(formData.limit),
       allCourses: formData.allCourses,
+      isActive: formData.isActive,
     };
 
-    onCreate(couponData);
+    onSubmit(couponData);
     setOpen(false);
     resetForm();
   };
@@ -55,27 +75,34 @@ export default function CreateCouponDialog({ onCreate, isLoading = false }: Crea
       expiresAt: "",
       limit: "",
       allCourses: false,
+      isActive: true,
     });
   };
+
+  const isEditMode = !!initialData;
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold px-6 py-2 rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105">
-          إنشاء كوبون جديد
-        </Button>
+        {children ? children : (
+          <Button className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold px-6 py-2 rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105">
+            إنشاء كوبون جديد
+          </Button>
+        )}
       </DialogTrigger>
       <DialogContent className="sm:max-w-[500px] bg-white rounded-2xl shadow-2xl border-0 p-0 overflow-hidden">
         <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-6 text-white">
           <DialogHeader className="text-center">
             <DialogTitle className="text-2xl font-bold text-white flex items-center justify-center gap-2">
               <HashIcon className="w-6 h-6" />
-              إنشاء كوبون جديد
+              {isEditMode ? "تعديل الكوبون" : "إنشاء كوبون جديد"}
             </DialogTitle>
-            <p className="text-blue-100 mt-2">أضف كوبون خصم جديد لجذب المزيد من الطلاب</p>
+            <p className="text-blue-100 mt-2">
+              {isEditMode ? "قم بتعديل بيانات الكوبون" : "أضف كوبون خصم جديد لجذب المزيد من الطلاب"}
+            </p>
           </DialogHeader>
         </div>
-        
+
         <form onSubmit={handleSubmit} className="p-6 space-y-6  overflow-y-auto h-[500px]">
           {/* Coupon Code Section */}
           <div className="space-y-3">
@@ -122,7 +149,7 @@ export default function CreateCouponDialog({ onCreate, isLoading = false }: Crea
               </Label>
               <Select
                 value={formData.type}
-                onValueChange={(value: 'FIXED' | 'PERCENTAGE') => 
+                onValueChange={(value: 'FIXED' | 'PERCENTAGE') =>
                   setFormData({ ...formData, type: value })
                 }
               >
@@ -172,20 +199,37 @@ export default function CreateCouponDialog({ onCreate, isLoading = false }: Crea
             />
           </div>
 
-          {/* All Courses Checkbox */}
-          <div className="flex items-center space-x-3 p-4 bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl border border-blue-100">
-            <Checkbox
-              id="allCourses"
-              checked={formData.allCourses}
-              onCheckedChange={(checked) => 
-                setFormData({ ...formData, allCourses: checked as boolean })
-              }
-              className="w-5 h-5 text-blue-600 border-2 border-blue-300 rounded-md"
-            />
-            <Label htmlFor="allCourses" className="text-sm font-medium text-gray-700 flex items-center gap-2 cursor-pointer">
-              <BookOpenIcon className="w-4 h-4 text-blue-600" />
-              ينطبق على جميع الدورات
-            </Label>
+          {/* All Courses & Active Status Checkboxes */}
+          <div className="grid grid-cols-2 gap-4">
+            <div className="flex items-center space-x-3 p-4 bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl border border-blue-100">
+              <Checkbox
+                id="allCourses"
+                checked={formData.allCourses}
+                onCheckedChange={(checked) =>
+                  setFormData({ ...formData, allCourses: checked as boolean })
+                }
+                className="w-5 h-5 text-blue-600 border-2 border-blue-300 rounded-md"
+              />
+              <Label htmlFor="allCourses" className="text-sm font-medium text-gray-700 flex items-center gap-2 cursor-pointer">
+                <BookOpenIcon className="w-4 h-4 text-blue-600" />
+                جميع الدورات
+              </Label>
+            </div>
+
+            <div className="flex items-center space-x-3 p-4 bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl border border-green-100">
+              <Checkbox
+                id="isActive"
+                checked={formData.isActive}
+                onCheckedChange={(checked) =>
+                  setFormData({ ...formData, isActive: checked as boolean })
+                }
+                className="w-5 h-5 text-green-600 border-2 border-green-300 rounded-md"
+              />
+              <Label htmlFor="isActive" className="text-sm font-medium text-gray-700 flex items-center gap-2 cursor-pointer">
+                <CheckCircleIcon className="w-4 h-4 text-green-600" />
+                تفعيل الكوبون
+              </Label>
+            </div>
           </div>
 
           {/* Action Buttons */}
@@ -198,16 +242,16 @@ export default function CreateCouponDialog({ onCreate, isLoading = false }: Crea
             >
               إلغاء
             </Button>
-            <Button 
-              type="submit" 
+            <Button
+              type="submit"
               disabled={isLoading}
               className="px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {isLoading ? "إنشاء..." : "إنشاء الكوبون"}
+              {isLoading ? (isEditMode ? "جاري التعديل..." : "جاري الإنشاء...") : (isEditMode ? "حفظ التعديلات" : "إنشاء الكوبون")}
             </Button>
           </div>
         </form>
       </DialogContent>
     </Dialog>
   );
-} 
+}

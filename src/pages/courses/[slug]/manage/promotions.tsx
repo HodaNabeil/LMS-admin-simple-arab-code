@@ -44,7 +44,7 @@ export default function Promotions() {
   });
 
   const handleCreateCoupon = (
-    couponData: Omit<Coupon, "id" | "createdAt" | "uses" | "isActive">
+    couponData: Omit<Coupon, "id" | "createdAt" | "uses">
   ) => {
     setIsCreating(true);
     setTimeout(() => {
@@ -53,7 +53,7 @@ export default function Promotions() {
         id: Math.random().toString(36).substr(2, 9),
         createdAt: new Date().toISOString(),
         uses: 0,
-        isActive: true,
+        // isActive is now included in couponData
       };
       setCoupons((prev) => ({
         ...prev,
@@ -72,7 +72,6 @@ export default function Promotions() {
   };
 
   const handleEditCoupon = (coupon: Coupon) => {
-    // يمكن إضافة منطق التعديل هنا
     console.log("تعديل الكوبون:", coupon);
   };
 
@@ -83,12 +82,11 @@ export default function Promotions() {
           التخفيضات
         </h2>
         <CreateCouponDialog
-          onCreate={handleCreateCoupon}
+          onSubmit={handleCreateCoupon}
           isLoading={isCreating}
         />
       </div>
 
-      {/* الكوبونات النشطة */}
       <div className="space-y-4">
         <h3 className="text-lg font-semibold">الكوبونات النشطة</h3>
         <CouponsTable
@@ -98,7 +96,6 @@ export default function Promotions() {
         />
       </div>
 
-      {/* الكوبونات المنتهية الصلاحية */}
       <div className="space-y-4">
         <h3 className="text-lg font-semibold">الكوبونات المنتهية الصلاحية</h3>
         <CouponsTable

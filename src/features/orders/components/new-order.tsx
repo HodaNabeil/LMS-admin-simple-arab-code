@@ -8,7 +8,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import FormOrder from "./FormOrder";
+import FormOrder from "./form-order";
 import type { OrderFormData } from "../types";
 
 export function NewOrder() {

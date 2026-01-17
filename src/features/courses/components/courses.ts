@@ -3,7 +3,7 @@ import type { Course, CourseFilters } from "@/types/course";
 export const MOCK_COURSES: Course[] = [
   {
     id: 1,
-    title:
+    name:
       "دورة تطوير تطبيقات باستخدام Flutter - بناء واجهات احترافية لأنظمة iOS و Android",
     category: "تطوير التطبيقات",
     type: "تفاعلية",
@@ -13,10 +13,13 @@ export const MOCK_COURSES: Course[] = [
     image: "https://i.ibb.co/Zzr165m4/Chat-GPT-Image-8-2025-04-06-00.png",
     students: 145,
     rating: 4.8,
+    hours: 15,
+    slug: "flutter-app-development",
+
   },
   {
     id: 2,
-    title:
+    name:
       "دورة تطوير مواقع الويب باستخدام React و Next.js - من المبتدئ إلى المحترف",
     category: "تطوير الويب",
     type: "تقنية",
@@ -26,10 +29,13 @@ export const MOCK_COURSES: Course[] = [
     image: "https://i.ibb.co/Zzr165m4/Chat-GPT-Image-8-2025-04-06-00.png",
     students: 298,
     rating: 4.9,
+    hours: 15,
+    slug: "react-web-development",
+
   },
   {
     id: 3,
-    title: "دورة تصميم واجهات المستخدم UX/UI - إنشاء تجارب مستخدم مميزة",
+    name: "دورة تصميم واجهات المستخدم UX/UI - إنشاء تجارب مستخدم مميزة",
     category: "تصميم",
     type: "إبداعية",
     level: "مبتدئ",
@@ -38,6 +44,9 @@ export const MOCK_COURSES: Course[] = [
     image: "https://i.ibb.co/Zzr165m4/Chat-GPT-Image-8-2025-04-06-00.png",
     students: 89,
     rating: 4.7,
+    hours: 15,
+    slug: "ux-ui-design",
+
   },
 ];
 
@@ -47,4 +56,5 @@ export const DEFAULT_FILTERS: CourseFilters = {
   selectedLevel: "الكل",
   selectedType: "الكل",
   minPrice: 0,
+
 };

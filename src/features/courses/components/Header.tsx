@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 
 export default function Header({ coursesCount }: { coursesCount: number }) {
   return (
-    <div className="flex flex-col sm:space-y-0 sm:flex-row sm:items-center sm:justify-between gap-4 bg-white p-4 lg:p-6 rounded-xl shadow-sm border border-gray-100">
+    <header className="flex flex-col sm:space-y-0 sm:flex-row sm:items-center sm:justify-between gap-4 bg-white p-4 lg:p-6 rounded-xl shadow-sm border border-gray-100">
       <div className="flex flex-col sm:flex-row sm:items-center gap-3 lg:gap-4">
         <div className="flex items-center gap-2 text-gray-600">
           <Users className="w-5 h-5 text-blue-600" />
@@ -26,6 +26,6 @@ export default function Header({ coursesCount }: { coursesCount: number }) {
           إضافة دورة جديدة
         </Link>
       </div>
-    </div>
+    </header>
   );
 }

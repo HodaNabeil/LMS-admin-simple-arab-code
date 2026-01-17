@@ -1,7 +1,6 @@
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -44,10 +43,6 @@ export default function DeleteUser({ userId }: { userId: string }) {
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader className="!text-right">
           <DialogTitle>حذف المستخدم</DialogTitle>
-          <DialogDescription>
-            هل أنت متأكد أنك تريد حذف هذا المستخدم؟ هذه العملية لا يمكن التراجع
-            عنها.
-          </DialogDescription>
         </DialogHeader>
         <Button
           type="submit"

@@ -15,31 +15,7 @@ export enum CourseStatus {
   PUBLISHED = "PUBLISHED",
 }
 
-// export interface Course {
-//   id: string;
-//   name: string;
-//   slug: string;
-//   image?: File | string;
-//   heading: string;
-//   promoVideoUrl?: string;
-//   hours: number;
-//   level: CourseLevel;
-//   type: CourseType;
-//   isAvailableForPurchase: boolean;
-//   priceInCents: number;
-//   insteadOf?: number;
-//   pathId: string;
-//   whatYouWillLearn: {
-//     data: string[];
-//   };
-//   whoIsThisFor: {
-//     data: string[];
-//   };
-//   knowledgeNeeded?: string;
-//   status: CourseStatus;
-//   createdAt: string;
-//   updatedAt: string;
-// }
+
 
 export interface Coupon {
   id: string;
@@ -57,13 +33,14 @@ export interface Coupon {
 export interface CouponsResponse {
   activeCoupons: Coupon[];
   expiredCoupons: Coupon[];
-} 
+}
 
 
 
 export interface Course {
   id: number;
-  title: string;
+  name: string;
+  slug: string;
   category: string;
   type: string;
   level: string;
@@ -72,6 +49,7 @@ export interface Course {
   image: string;
   students?: number;
   rating?: number;
+  hours: number;
 }
 
 export interface CourseFilters {

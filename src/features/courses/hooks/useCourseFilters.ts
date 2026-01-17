@@ -19,7 +19,7 @@ export const useCourseFilters = (courses: Course[]) => {
   const filteredCourses = useMemo(() => {
     return courses.filter((course) => {
       const matchesSearch =
-        course.title.toLowerCase().includes(filters.searchTerm.toLowerCase()) ||
+        course.name.toLowerCase().includes(filters.searchTerm.toLowerCase()) ||
         course.instructor
           .toLowerCase()
           .includes(filters.searchTerm.toLowerCase());

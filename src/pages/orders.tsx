@@ -1,9 +1,9 @@
-import CourseStats from "@/features/orders/components/orderStats";
-import { NewOrder } from "@/features/orders/components/NewOrder";
-import OrdersFilters from "@/features/orders/components/OrdersFilters";
-import OrdersTable from "@/features/orders/components/OrdersTable";
+import { NewOrder } from "@/features/orders/components/new-order";
+import OrdersFilters from "@/features/orders/components/orders-filters";
+import OrdersTable from "@/features/orders/components/table/orders-table";
 
 import { useMemo, useState } from "react";
+import OrderStats from "@/features/orders/components/order-stats";
 
 const orders = [
   {
@@ -102,12 +102,12 @@ export default function Orders() {
   };
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="container p-4">
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-2xl font-bold mb-4">كل الطلبات </h1>
         <NewOrder />
       </div>
-      <CourseStats orders={orders} />
+      <OrderStats orders={orders} />
       <OrdersFilters
         selectedPaymentMethod={selectedPaymentMethod}
         searchTerm={searchTerm}

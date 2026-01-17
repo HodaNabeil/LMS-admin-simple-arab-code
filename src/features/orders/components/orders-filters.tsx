@@ -199,7 +199,7 @@ function OrdersFilters({
         {/* Amount Filter */}
         <Select value={selectedAmount} onValueChange={onAmountChange}>
           <SelectTrigger>
-            <SelectValue placeholder="عدد الكورسات" />
+            <SelectValue placeholder="عدد الدورات" />
           </SelectTrigger>
           <SelectContent>
             {amountOptions.map((option) => (
@@ -299,9 +299,9 @@ function OrdersFilters({
               variant="secondary"
               className="gap-1 text-xs px-2 py-1 flex items-center"
             >
-              عدد الكورسات:{" "}
+              عدد الدورات:{" "}
               {amountOptions.find((a) => a.value === selectedAmount)?.label}
-              <button type="button" aria-label="مسح عدد الكورسات">
+              <button type="button" aria-label="مسح عدد الدورات">
                 <X
                   className="w-3 h-3 cursor-pointer text-gray-500 hover:text-red-500 transition"
                   onClick={() => onAmountChange("all")}

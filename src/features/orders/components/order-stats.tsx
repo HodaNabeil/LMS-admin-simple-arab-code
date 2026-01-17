@@ -45,7 +45,7 @@ function StatCard({ title, value, icon, change, changeType }: StatCardProps) {
   );
 }
 
-function CourseStats({ orders }: CourseStatsProps) {
+function OrderStats({ orders }: CourseStatsProps) {
   const totalOrders = orders.length;
   const totalAmount = orders.reduce(
     (sum, order) => sum + order.Amount,
@@ -99,4 +99,4 @@ function CourseStats({ orders }: CourseStatsProps) {
   );
 }
 
-export default CourseStats;
+export default OrderStats;

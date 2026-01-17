@@ -32,6 +32,8 @@ const course = {
   }),
   knowledgeNeeded: z.string().optional(),
   prerequisites: z.array(z.string()).optional(),
+  instructor: z.string().optional(),
+  price: z.number().min(0, { message: "Price is required." }),
 };
 export const courseSchema = z.object(course);
 
