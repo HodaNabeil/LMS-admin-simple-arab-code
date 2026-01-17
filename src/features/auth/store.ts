@@ -1,14 +1,10 @@
 import { create } from "zustand";
-import type {
-  User,
-  LoginRequest,
-  SignupRequest,
-  AuthResponse,
-} from "@/types/user";
+
 import { authService } from "./services/authService";
 import { authCookies } from "@/lib/cookies";
-import { Pages, Routes } from "@/constants/enums";
-
+import type { User } from "@/types/user";
+import type { LoginRequest, LoginResponse } from "@/types/auth";
+import { Routes } from "@/constants/enums";
 interface AuthState {
   // State
   user: User | null;
@@ -19,12 +15,8 @@ interface AuthState {
 
   // Actions
   setUser: (user: User | null) => void;
-  setTokens: (accessToken: string | null, refreshToken: string | null) => void;
-  setAccessToken: (token: string | null) => void;
-  setRefreshToken: (token: string | null) => void;
   setLoading: (loading: boolean) => void;
-  login: (credentials: LoginRequest) => Promise<AuthResponse>;
-  signup: (userData: SignupRequest) => Promise<void>;
+  login: (credentials: LoginRequest) => Promise<LoginResponse>;
   logout: () => Promise<void>;
   refreshUser: () => Promise<void>;
   refreshTokens: () => Promise<void>;
@@ -53,23 +45,7 @@ export const useAuthStore = create<AuthState>()((set, get) => ({
       isAuthenticated: !!user && !!get().accessToken,
     })),
 
-  setTokens: (accessToken, refreshToken) =>
-    set(() => ({
-      accessToken,
-      refreshToken,
-      isAuthenticated: !!get().user && !!accessToken,
-    })),
 
-  setAccessToken: (accessToken) =>
-    set(() => ({
-      accessToken,
-      isAuthenticated: !!get().user && !!accessToken,
-    })),
-
-  setRefreshToken: (refreshToken) =>
-    set(() => ({
-      refreshToken,
-    })),
 
   setLoading: (loading) =>
     set(() => ({
@@ -83,14 +59,15 @@ export const useAuthStore = create<AuthState>()((set, get) => ({
       const response = await authService.login(credentials);
 
       set(() => ({
-        user: response.user,
-        accessToken: response.access_token,
-        refreshToken: response.refresh_token,
+        user: response.data.user,
+        accessToken: response.data.accessToken,
         isAuthenticated: true,
         isLoading: false,
       }));
       // Store in cookies
-      authCookies.setTokens(response.access_token);
+      if (response.data.accessToken) {
+        authCookies.setAccessToken(response.data.accessToken);
+      }
       return response;
     } catch (error) {
       set(() => ({ isLoading: false }));
@@ -98,27 +75,6 @@ export const useAuthStore = create<AuthState>()((set, get) => ({
     }
   },
 
-  signup: async (userData) => {
-    set(() => ({ isLoading: true }));
-
-    try {
-      const response = await authService.signup(userData);
-
-      set(() => ({
-        user: response.user,
-        accessToken: response.access_token,
-        refreshToken: response.refresh_token,
-        isAuthenticated: true,
-        isLoading: false,
-      }));
-
-      // Store in cookies
-      authCookies.setTokens(response.access_token, response.refresh_token);
-    } catch (error) {
-      set(() => ({ isLoading: false }));
-      throw error;
-    }
-  },
 
   logout: async () => {
     try {
@@ -139,7 +95,7 @@ export const useAuthStore = create<AuthState>()((set, get) => ({
       authCookies.clearAll();
 
       // Redirect to login
-      window.location.href = `/${Routes.AUTH}/${Pages.SIGNIN}`;
+      window.location.href = Routes.ROOT;
     }
   },
 
@@ -177,12 +133,12 @@ export const useAuthStore = create<AuthState>()((set, get) => ({
       const response = await authService.refreshToken(refreshToken);
 
       set(() => ({
-        accessToken: response.access_token,
-        refreshToken: response.refresh_token,
+        accessToken: response.data.accessToken,
       }));
 
-      // Update tokens in cookies
-      authCookies.setTokens(response.access_token, response.refresh_token);
+      if (response.data.accessToken) {
+        authCookies.setAccessToken(response.data.accessToken);
+      }
     } catch (error) {
       console.error("Failed to refresh tokens:", error);
       // If token refresh fails, clear auth state
@@ -223,7 +179,6 @@ export const useTokens = () =>
 
 // Individual action selectors - more stable than returning an object
 export const useLogin = () => useAuthStore((state) => state.login);
-export const useSignup = () => useAuthStore((state) => state.signup);
 export const useLogout = () => useAuthStore((state) => state.logout);
 export const useRefreshUser = () => useAuthStore((state) => state.refreshUser);
 export const useRefreshTokens = () =>
