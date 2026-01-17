@@ -11,18 +11,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "default": true
-                    },
-                    "data": {
-                      "$ref": "#/components/schemas/UserProfileResponseDto"
-                    },
-                    "message": {
-                      "type": "string"
-                    }
-                  }
+                  "$ref": "#/components/schemas/WrappedResponseUserProfileResponseDto"
                 }
               }
             }
@@ -91,18 +80,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "default": true
-                    },
-                    "data": {
-                      "$ref": "#/components/schemas/UpdateProfileResponseDto"
-                    },
-                    "message": {
-                      "type": "string"
-                    }
-                  }
+                  "$ref": "#/components/schemas/WrappedResponseUpdateProfileResponseDto"
                 }
               }
             }
@@ -154,18 +132,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "default": true
-                    },
-                    "data": {
-                      "$ref": "#/components/schemas/ChangePasswordResponseDto"
-                    },
-                    "message": {
-                      "type": "string"
-                    }
-                  }
+                  "$ref": "#/components/schemas/WrappedResponseChangePasswordResponseDto"
                 }
               }
             }
@@ -217,18 +184,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "default": true
-                    },
-                    "data": {
-                      "$ref": "#/components/schemas/ChangeEmailResponseDto"
-                    },
-                    "message": {
-                      "type": "string"
-                    }
-                  }
+                  "$ref": "#/components/schemas/WrappedResponseChangeEmailResponseDto"
                 }
               }
             }
@@ -280,18 +236,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "default": true
-                    },
-                    "data": {
-                      "$ref": "#/components/schemas/VerifyEmailChangeResponseDto"
-                    },
-                    "message": {
-                      "type": "string"
-                    }
-                  }
+                  "$ref": "#/components/schemas/WrappedResponseVerifyEmailChangeResponseDto"
                 }
               }
             }
@@ -343,18 +288,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "default": true
-                    },
-                    "data": {
-                      "$ref": "#/components/schemas/AuthDataDto"
-                    },
-                    "message": {
-                      "type": "string"
-                    }
-                  }
+                  "$ref": "#/components/schemas/WrappedResponseAuthResponseDto"
                 }
               }
             }
@@ -401,18 +335,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "default": true
-                    },
-                    "data": {
-                      "$ref": "#/components/schemas/LoginDataDto"
-                    },
-                    "message": {
-                      "type": "string"
-                    }
-                  }
+                  "$ref": "#/components/schemas/WrappedResponseAuthResponseDto"
                 }
               }
             }
@@ -459,18 +382,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "default": true
-                    },
-                    "data": {
-                      "$ref": "#/components/schemas/AuthDataDto"
-                    },
-                    "message": {
-                      "type": "string"
-                    }
-                  }
+                  "$ref": "#/components/schemas/WrappedResponseAuthResponseDto"
                 }
               }
             }
@@ -517,18 +429,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "default": true
-                    },
-                    "data": {
-                      "$ref": "#/components/schemas/AuthDataDto"
-                    },
-                    "message": {
-                      "type": "string"
-                    }
-                  }
+                  "$ref": "#/components/schemas/WrappedResponseAuthResponseDto"
                 }
               }
             }
@@ -565,18 +466,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "default": true
-                    },
-                    "data": {
-                      "$ref": "#/components/schemas/RefreshTokenDataDto"
-                    },
-                    "message": {
-                      "type": "string"
-                    }
-                  }
+                  "$ref": "#/components/schemas/WrappedResponseRefreshTokenDataDto"
                 }
               }
             }
@@ -613,18 +503,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "default": true
-                    },
-                    "data": {
-                      "$ref": "#/components/schemas/AuthDataDto"
-                    },
-                    "message": {
-                      "type": "string"
-                    }
-                  }
+                  "$ref": "#/components/schemas/WrappedResponseAuthResponseDto"
                 }
               }
             }
@@ -661,18 +540,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "default": true
-                    },
-                    "data": {
-                      "$ref": "#/components/schemas/AuthDataDto"
-                    },
-                    "message": {
-                      "type": "string"
-                    }
-                  }
+                  "$ref": "#/components/schemas/WrappedResponseAuthResponseDto"
                 }
               }
             }
@@ -724,18 +592,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "default": true
-                    },
-                    "data": {
-                      "$ref": "#/components/schemas/AuthDataDto"
-                    },
-                    "message": {
-                      "type": "string"
-                    }
-                  }
+                  "$ref": "#/components/schemas/WrappedResponseAuthResponseDto"
                 }
               }
             }
@@ -782,18 +639,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "default": true
-                    },
-                    "data": {
-                      "$ref": "#/components/schemas/AuthDataDto"
-                    },
-                    "message": {
-                      "type": "string"
-                    }
-                  }
+                  "$ref": "#/components/schemas/WrappedResponseAuthResponseDto"
                 }
               }
             }
@@ -840,18 +686,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "default": true
-                    },
-                    "data": {
-                      "$ref": "#/components/schemas/AuthDataDto"
-                    },
-                    "message": {
-                      "type": "string"
-                    }
-                  }
+                  "$ref": "#/components/schemas/WrappedResponseAuthResponseDto"
                 }
               }
             }
@@ -898,18 +733,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "default": true
-                    },
-                    "data": {
-                      "$ref": "#/components/schemas/AuthDataDto"
-                    },
-                    "message": {
-                      "type": "string"
-                    }
-                  }
+                  "$ref": "#/components/schemas/WrappedResponseAuthResponseDto"
                 }
               }
             }
@@ -1012,23 +836,12 @@
           }
         },
         "responses": {
-          "201": {
+          "200": {
             "description": "Course created successfully",
             "content": {
               "application/json": {
                 "schema": {
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "default": true
-                    },
-                    "data": {
-                      "$ref": "#/components/schemas/CourseResponseDto"
-                    },
-                    "message": {
-                      "type": "string"
-                    }
-                  }
+                  "$ref": "#/components/schemas/WrappedResponseCourseResponseDto"
                 }
               }
             }
@@ -1190,18 +1003,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "default": true
-                    },
-                    "data": {
-                      "$ref": "#/components/schemas/CourseListResponseDto"
-                    },
-                    "message": {
-                      "type": "string"
-                    }
-                  }
+                  "$ref": "#/components/schemas/WrappedResponseCourseListResponseDto"
                 }
               }
             }
@@ -1250,18 +1052,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "default": true
-                    },
-                    "data": {
-                      "$ref": "#/components/schemas/CourseOverviewResponseDto"
-                    },
-                    "message": {
-                      "type": "string"
-                    }
-                  }
+                  "$ref": "#/components/schemas/WrappedResponseCourseOverviewResponseDto"
                 }
               }
             }
@@ -1310,18 +1101,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "default": true
-                    },
-                    "data": {
-                      "$ref": "#/components/schemas/CourseResponseDto"
-                    },
-                    "message": {
-                      "type": "string"
-                    }
-                  }
+                  "$ref": "#/components/schemas/WrappedResponseCourseResponseDto"
                 }
               }
             }
@@ -1378,18 +1158,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "default": true
-                    },
-                    "data": {
-                      "$ref": "#/components/schemas/CourseResponseDto"
-                    },
-                    "message": {
-                      "type": "string"
-                    }
-                  }
+                  "$ref": "#/components/schemas/WrappedResponseCourseResponseDto"
                 }
               }
             }
@@ -1441,18 +1210,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "default": true
-                    },
-                    "data": {
-                      "$ref": "#/components/schemas/DeleteResponseDto"
-                    },
-                    "message": {
-                      "type": "string"
-                    }
-                  }
+                  "$ref": "#/components/schemas/WrappedResponseDeleteResponseDto"
                 }
               }
             }
@@ -1506,18 +1264,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "default": true
-                    },
-                    "data": {
-                      "$ref": "#/components/schemas/CourseResponseDto"
-                    },
-                    "message": {
-                      "type": "string"
-                    }
-                  }
+                  "$ref": "#/components/schemas/WrappedResponseCourseResponseDto"
                 }
               }
             }
@@ -1587,23 +1334,12 @@
           }
         },
         "responses": {
-          "201": {
+          "200": {
             "description": "Section created successfully",
             "content": {
               "application/json": {
                 "schema": {
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "default": true
-                    },
-                    "data": {
-                      "$ref": "#/components/schemas/SectionResponseDto"
-                    },
-                    "message": {
-                      "type": "string"
-                    }
-                  }
+                  "$ref": "#/components/schemas/WrappedResponseSectionResponseDto"
                 }
               }
             }
@@ -1655,18 +1391,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "default": true
-                    },
-                    "data": {
-                      "$ref": "#/components/schemas/SectionListResponseDto"
-                    },
-                    "message": {
-                      "type": "string"
-                    }
-                  }
+                  "$ref": "#/components/schemas/WrappedResponseSectionListResponseDto"
                 }
               }
             }
@@ -1729,18 +1454,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "default": true
-                    },
-                    "data": {
-                      "$ref": "#/components/schemas/SectionResponseDto"
-                    },
-                    "message": {
-                      "type": "string"
-                    }
-                  }
+                  "$ref": "#/components/schemas/WrappedResponseSectionResponseDto"
                 }
               }
             }
@@ -1801,18 +1515,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "default": true
-                    },
-                    "data": {
-                      "$ref": "#/components/schemas/SectionDeleteResponseDto"
-                    },
-                    "message": {
-                      "type": "string"
-                    }
-                  }
+                  "$ref": "#/components/schemas/WrappedResponseSectionDeleteResponseDto"
                 }
               }
             }
@@ -1901,18 +1604,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "default": true
-                    },
-                    "data": {
-                      "$ref": "#/components/schemas/SectionResponseDto"
-                    },
-                    "message": {
-                      "type": "string"
-                    }
-                  }
+                  "$ref": "#/components/schemas/WrappedResponseSectionResponseDto"
                 }
               }
             }
@@ -2017,18 +1709,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "default": true
-                    },
-                    "data": {
-                      "$ref": "#/components/schemas/SectionDeleteResponseDto"
-                    },
-                    "message": {
-                      "type": "string"
-                    }
-                  }
+                  "$ref": "#/components/schemas/WrappedResponseSectionDeleteResponseDto"
                 }
               }
             }
@@ -2113,23 +1794,12 @@
           }
         },
         "responses": {
-          "201": {
+          "200": {
             "description": "Lecture created successfully",
             "content": {
               "application/json": {
                 "schema": {
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "default": true
-                    },
-                    "data": {
-                      "$ref": "#/components/schemas/LectureResponseDto"
-                    },
-                    "message": {
-                      "type": "string"
-                    }
-                  }
+                  "$ref": "#/components/schemas/WrappedResponseLectureResponseDto"
                 }
               }
             }
@@ -2183,18 +1853,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "default": true
-                    },
-                    "data": {
-                      "$ref": "#/components/schemas/LectureResponseDto"
-                    },
-                    "message": {
-                      "type": "string"
-                    }
-                  }
+                  "$ref": "#/components/schemas/WrappedResponseLectureResponseDto"
                 }
               }
             }
@@ -3903,7 +3562,8 @@
             "example": "2024-01-15T10:30:00.000Z"
           },
           "passwordChangedAt": {
-            "type": "object",
+            "format": "date-time",
+            "type": "string",
             "example": "2024-01-20T14:45:00.000Z"
           },
           "timezone": {
@@ -3937,6 +3597,24 @@
           "isActive",
           "createdAt",
           "updatedAt"
+        ]
+      },
+      "WrappedResponseUserProfileResponseDto": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "data": {
+            "$ref": "#/components/schemas/UserProfileResponseDto"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "success",
+          "data"
         ]
       },
       "UpdateProfileResponseDto": {
@@ -3989,7 +3667,8 @@
             "example": "2024-01-15T10:30:00.000Z"
           },
           "passwordChangedAt": {
-            "type": "object",
+            "format": "date-time",
+            "type": "string",
             "example": "2024-01-20T14:45:00.000Z"
           },
           "timezone": {
@@ -4025,9 +3704,23 @@
           "updatedAt"
         ]
       },
-      "ChangePasswordResponseDto": {
+      "WrappedResponseUpdateProfileResponseDto": {
         "type": "object",
-        "properties": {}
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "data": {
+            "$ref": "#/components/schemas/UpdateProfileResponseDto"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "success",
+          "data"
+        ]
       },
       "ChangePasswordDto": {
         "type": "object",
@@ -4048,21 +3741,26 @@
           "newPassword"
         ]
       },
-      "ChangeEmailResponseDto": {
+      "ChangePasswordResponseDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "WrappedResponseChangePasswordResponseDto": {
         "type": "object",
         "properties": {
-          "newEmail": {
-            "type": "string",
-            "example": "newemail@example.com"
+          "success": {
+            "type": "boolean"
           },
-          "currentEmail": {
-            "type": "string",
-            "example": "user@example.com"
+          "data": {
+            "$ref": "#/components/schemas/ChangePasswordResponseDto"
+          },
+          "message": {
+            "type": "string"
           }
         },
         "required": [
-          "newEmail",
-          "currentEmail"
+          "success",
+          "data"
         ]
       },
       "ChangeEmailDto": {
@@ -4084,15 +3782,39 @@
           "password"
         ]
       },
-      "VerifyEmailChangeResponseDto": {
+      "ChangeEmailResponseDto": {
         "type": "object",
         "properties": {
-          "user": {
-            "$ref": "#/components/schemas/UserProfileResponseDto"
+          "newEmail": {
+            "type": "string",
+            "example": "newemail@example.com"
+          },
+          "currentEmail": {
+            "type": "string",
+            "example": "user@example.com"
           }
         },
         "required": [
-          "user"
+          "newEmail",
+          "currentEmail"
+        ]
+      },
+      "WrappedResponseChangeEmailResponseDto": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "data": {
+            "$ref": "#/components/schemas/ChangeEmailResponseDto"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "success",
+          "data"
         ]
       },
       "VerifyEmailChangeDto": {
@@ -4112,6 +3834,61 @@
         "required": [
           "token",
           "newEmail"
+        ]
+      },
+      "VerifyEmailChangeResponseDto": {
+        "type": "object",
+        "properties": {
+          "user": {
+            "$ref": "#/components/schemas/UserProfileResponseDto"
+          }
+        },
+        "required": [
+          "user"
+        ]
+      },
+      "WrappedResponseVerifyEmailChangeResponseDto": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "data": {
+            "$ref": "#/components/schemas/VerifyEmailChangeResponseDto"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "success",
+          "data"
+        ]
+      },
+      "RegisterDto": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "user@example.com"
+          },
+          "password": {
+            "type": "string",
+            "example": "Password123!",
+            "description": "Password must be at least 8 characters with uppercase, lowercase, number, and special character"
+          },
+          "firstName": {
+            "type": "string",
+            "example": "John"
+          },
+          "lastName": {
+            "type": "string",
+            "example": "Doe"
+          }
+        },
+        "required": [
+          "email",
+          "password"
         ]
       },
       "UserResponseDto": {
@@ -4165,41 +3942,7 @@
           "createdAt"
         ]
       },
-      "AuthDataDto": {
-        "type": "object",
-        "properties": {
-          "user": {
-            "$ref": "#/components/schemas/UserResponseDto"
-          }
-        }
-      },
-      "RegisterDto": {
-        "type": "object",
-        "properties": {
-          "email": {
-            "type": "string",
-            "example": "user@example.com"
-          },
-          "password": {
-            "type": "string",
-            "example": "Password123!",
-            "description": "Password must be at least 8 characters with uppercase, lowercase, number, and special character"
-          },
-          "firstName": {
-            "type": "string",
-            "example": "John"
-          },
-          "lastName": {
-            "type": "string",
-            "example": "Doe"
-          }
-        },
-        "required": [
-          "email",
-          "password"
-        ]
-      },
-      "LoginDataDto": {
+      "AuthResponseDto": {
         "type": "object",
         "properties": {
           "user": {
@@ -4217,11 +3960,24 @@
             "type": "object",
             "example": "/dashboard"
           }
+        }
+      },
+      "WrappedResponseAuthResponseDto": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "data": {
+            "$ref": "#/components/schemas/AuthResponseDto"
+          },
+          "message": {
+            "type": "string"
+          }
         },
         "required": [
-          "user",
-          "accessToken",
-          "expiresIn"
+          "success",
+          "data"
         ]
       },
       "LoginDto": {
@@ -4288,6 +4044,24 @@
           "expiresIn"
         ]
       },
+      "WrappedResponseRefreshTokenDataDto": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "data": {
+            "$ref": "#/components/schemas/RefreshTokenDataDto"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "success",
+          "data"
+        ]
+      },
       "ForgotPasswordDto": {
         "type": "object",
         "properties": {
@@ -4346,6 +4120,134 @@
         "required": [
           "token",
           "password"
+        ]
+      },
+      "CreateCourseDto": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Course title",
+            "example": "Learn Arabic for Beginners"
+          },
+          "slug": {
+            "type": "string",
+            "description": "URL-friendly slug for the course. If not provided, will be auto-generated from the title.",
+            "example": "learn-arabic-for-beginners",
+            "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+          },
+          "description": {
+            "type": "string",
+            "description": "Course description",
+            "example": "Complete Arabic course for beginners"
+          },
+          "shortDescription": {
+            "type": "string",
+            "description": "Short description"
+          },
+          "thumbnailUrl": {
+            "type": "string",
+            "description": "Course thumbnail image URL",
+            "example": "https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=800"
+          },
+          "previewVideo": {
+            "type": "string",
+            "description": "Course preview video URL",
+            "example": "https://example.com/videos/course-preview.mp4"
+          },
+          "duration": {
+            "type": "number",
+            "description": "Total course duration in minutes",
+            "example": 1200
+          },
+          "metaTitle": {
+            "type": "string",
+            "description": "SEO meta title"
+          },
+          "metaDescription": {
+            "type": "string",
+            "description": "SEO meta description"
+          },
+          "price": {
+            "type": "number",
+            "description": "Course price",
+            "example": 99.99
+          },
+          "compareAtPrice": {
+            "type": "number",
+            "description": "Compare at price"
+          },
+          "currency": {
+            "type": "string",
+            "description": "Currency code",
+            "enum": [
+              "USD",
+              "EGP"
+            ],
+            "example": "USD",
+            "default": "USD"
+          },
+          "level": {
+            "type": "string",
+            "description": "Course level",
+            "enum": [
+              "BEGINNER",
+              "INTERMEDIATE",
+              "ADVANCED",
+              "ALL_LEVELS"
+            ]
+          },
+          "pathId": {
+            "type": "string",
+            "description": "Learning Path ID - The course must be associated with a learning path",
+            "example": "clx1234567890abcdefghij"
+          },
+          "requirements": {
+            "description": "Course requirements",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "objectives": {
+            "description": "Course objectives",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "tags": {
+            "description": "Course tags",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "visibility": {
+            "type": "string",
+            "description": "Visibility",
+            "enum": [
+              "PUBLIC",
+              "PRIVATE",
+              "UNLISTED"
+            ]
+          },
+          "certificateEnabled": {
+            "type": "boolean",
+            "description": "Certificate enabled"
+          },
+          "maxStudents": {
+            "type": "number",
+            "description": "Maximum students (0 for unlimited)"
+          }
+        },
+        "required": [
+          "title",
+          "description",
+          "thumbnailUrl",
+          "price",
+          "level",
+          "pathId"
         ]
       },
       "CourseDto": {
@@ -4560,132 +4462,22 @@
           "course"
         ]
       },
-      "CreateCourseDto": {
+      "WrappedResponseCourseResponseDto": {
         "type": "object",
         "properties": {
-          "title": {
-            "type": "string",
-            "description": "Course title",
-            "example": "Learn Arabic for Beginners"
+          "success": {
+            "type": "boolean"
           },
-          "slug": {
-            "type": "string",
-            "description": "URL-friendly slug for the course. If not provided, will be auto-generated from the title.",
-            "example": "learn-arabic-for-beginners",
-            "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+          "data": {
+            "$ref": "#/components/schemas/CourseResponseDto"
           },
-          "description": {
-            "type": "string",
-            "description": "Course description",
-            "example": "Complete Arabic course for beginners"
-          },
-          "shortDescription": {
-            "type": "string",
-            "description": "Short description"
-          },
-          "thumbnailUrl": {
-            "type": "string",
-            "description": "Course thumbnail image URL",
-            "example": "https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=800"
-          },
-          "previewVideo": {
-            "type": "string",
-            "description": "Course preview video URL",
-            "example": "https://example.com/videos/course-preview.mp4"
-          },
-          "duration": {
-            "type": "number",
-            "description": "Total course duration in minutes",
-            "example": 1200
-          },
-          "metaTitle": {
-            "type": "string",
-            "description": "SEO meta title"
-          },
-          "metaDescription": {
-            "type": "string",
-            "description": "SEO meta description"
-          },
-          "price": {
-            "type": "number",
-            "description": "Course price",
-            "example": 99.99
-          },
-          "compareAtPrice": {
-            "type": "number",
-            "description": "Compare at price"
-          },
-          "currency": {
-            "type": "string",
-            "description": "Currency code",
-            "enum": [
-              "USD",
-              "EGP"
-            ],
-            "example": "USD",
-            "default": "USD"
-          },
-          "level": {
-            "type": "string",
-            "description": "Course level",
-            "enum": [
-              "BEGINNER",
-              "INTERMEDIATE",
-              "ADVANCED",
-              "ALL_LEVELS"
-            ]
-          },
-          "pathId": {
-            "type": "string",
-            "description": "Learning Path ID - The course must be associated with a learning path",
-            "example": "clx1234567890abcdefghij"
-          },
-          "requirements": {
-            "description": "Course requirements",
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "objectives": {
-            "description": "Course objectives",
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "tags": {
-            "description": "Course tags",
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "visibility": {
-            "type": "string",
-            "description": "Visibility",
-            "enum": [
-              "PUBLIC",
-              "PRIVATE",
-              "UNLISTED"
-            ]
-          },
-          "certificateEnabled": {
-            "type": "boolean",
-            "description": "Certificate enabled"
-          },
-          "maxStudents": {
-            "type": "number",
-            "description": "Maximum students (0 for unlimited)"
+          "message": {
+            "type": "string"
           }
         },
         "required": [
-          "title",
-          "description",
-          "thumbnailUrl",
-          "price",
-          "level",
-          "pathId"
+          "success",
+          "data"
         ]
       },
       "CourseOverviewDto": {
@@ -4759,6 +4551,24 @@
           "overview"
         ]
       },
+      "WrappedResponseCourseOverviewResponseDto": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "data": {
+            "$ref": "#/components/schemas/CourseOverviewResponseDto"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "success",
+          "data"
+        ]
+      },
       "CourseListResponseDto": {
         "type": "object",
         "properties": {
@@ -4783,6 +4593,24 @@
         "required": [
           "courses",
           "pagination"
+        ]
+      },
+      "WrappedResponseCourseListResponseDto": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "data": {
+            "$ref": "#/components/schemas/CourseListResponseDto"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "success",
+          "data"
         ]
       },
       "UpdateCourseDto": {
@@ -4918,6 +4746,24 @@
           "message"
         ]
       },
+      "WrappedResponseDeleteResponseDto": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "data": {
+            "$ref": "#/components/schemas/DeleteResponseDto"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "success",
+          "data"
+        ]
+      },
       "SectionPositionDto": {
         "type": "object",
         "properties": {
@@ -4965,6 +4811,30 @@
         },
         "required": [
           "sections"
+        ]
+      },
+      "CreateSectionDto": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Section title",
+            "example": "Introduction to Node.js"
+          },
+          "description": {
+            "type": "string",
+            "description": "Section description",
+            "example": "Learn the basics of Node.js"
+          },
+          "position": {
+            "type": "number",
+            "description": "Section position in the course (0-based index). If not provided, will be auto-assigned.",
+            "minimum": 0,
+            "example": 0
+          }
+        },
+        "required": [
+          "title"
         ]
       },
       "LectureType": {
@@ -5385,28 +5255,22 @@
           "section"
         ]
       },
-      "CreateSectionDto": {
+      "WrappedResponseSectionResponseDto": {
         "type": "object",
         "properties": {
-          "title": {
-            "type": "string",
-            "description": "Section title",
-            "example": "Introduction to Node.js"
+          "success": {
+            "type": "boolean"
           },
-          "description": {
-            "type": "string",
-            "description": "Section description",
-            "example": "Learn the basics of Node.js"
+          "data": {
+            "$ref": "#/components/schemas/SectionResponseDto"
           },
-          "position": {
-            "type": "number",
-            "description": "Section position in the course (0-based index). If not provided, will be auto-assigned.",
-            "minimum": 0,
-            "example": 0
+          "message": {
+            "type": "string"
           }
         },
         "required": [
-          "title"
+          "success",
+          "data"
         ]
       },
       "SectionListResponseDto": {
@@ -5468,6 +5332,24 @@
           "total"
         ]
       },
+      "WrappedResponseSectionListResponseDto": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "data": {
+            "$ref": "#/components/schemas/SectionListResponseDto"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "success",
+          "data"
+        ]
+      },
       "UpdateSectionDto": {
         "type": "object",
         "properties": {
@@ -5498,20 +5380,22 @@
           "message"
         ]
       },
-      "LectureResponseDto": {
+      "WrappedResponseSectionDeleteResponseDto": {
         "type": "object",
         "properties": {
-          "lecture": {
-            "description": "Detailed lecture data",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/LectureDto"
-              }
-            ]
+          "success": {
+            "type": "boolean"
+          },
+          "data": {
+            "$ref": "#/components/schemas/SectionDeleteResponseDto"
+          },
+          "message": {
+            "type": "string"
           }
         },
         "required": [
-          "lecture"
+          "success",
+          "data"
         ]
       },
       "CreateLectureDto": {
@@ -5605,6 +5489,40 @@
         "required": [
           "title",
           "type"
+        ]
+      },
+      "LectureResponseDto": {
+        "type": "object",
+        "properties": {
+          "lecture": {
+            "description": "Detailed lecture data",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/LectureDto"
+              }
+            ]
+          }
+        },
+        "required": [
+          "lecture"
+        ]
+      },
+      "WrappedResponseLectureResponseDto": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "data": {
+            "$ref": "#/components/schemas/LectureResponseDto"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "success",
+          "data"
         ]
       },
       "PathDto": {
@@ -6245,6 +6163,118 @@
           "addedAt"
         ]
       },
+      "CartCouponDto": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "Coupon code"
+          },
+          "type": {
+            "type": "string",
+            "description": "Coupon type",
+            "enum": [
+              "PERCENTAGE",
+              "FIXED"
+            ]
+          },
+          "value": {
+            "type": "number",
+            "description": "Discount value"
+          },
+          "description": {
+            "type": "string",
+            "description": "Coupon description"
+          }
+        },
+        "required": [
+          "code",
+          "type",
+          "value"
+        ]
+      },
+      "CartResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Cart ID"
+          },
+          "userId": {
+            "type": "string",
+            "description": "User ID"
+          },
+          "subtotal": {
+            "type": "number",
+            "description": "Subtotal amount",
+            "example": 199.99
+          },
+          "discount": {
+            "type": "number",
+            "description": "Discount amount",
+            "example": 20
+          },
+          "total": {
+            "type": "number",
+            "description": "Total amount",
+            "example": 179.99
+          },
+          "currency": {
+            "type": "string",
+            "description": "Currency",
+            "example": "USD"
+          },
+          "items": {
+            "description": "Cart items",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CartItemResponseDto"
+            }
+          },
+          "coupon": {
+            "description": "Applied coupon",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CartCouponDto"
+              }
+            ]
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Cart created date"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Cart updated date"
+          }
+        },
+        "required": [
+          "id",
+          "userId",
+          "subtotal",
+          "discount",
+          "total",
+          "currency",
+          "items",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "AddToCartDto": {
+        "type": "object",
+        "properties": {
+          "courseId": {
+            "type": "string",
+            "description": "Course ID to add to cart",
+            "example": "clxxxxx"
+          }
+        },
+        "required": [
+          "courseId"
+        ]
+      },
       "CouponResponseDto": {
         "type": "object",
         "properties": {
@@ -6309,88 +6339,6 @@
           "value",
           "isActive",
           "courseIds"
-        ]
-      },
-      "CartResponseDto": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "description": "Cart ID"
-          },
-          "userId": {
-            "type": "string",
-            "description": "User ID"
-          },
-          "subtotal": {
-            "type": "number",
-            "description": "Subtotal amount",
-            "example": 199.99
-          },
-          "discount": {
-            "type": "number",
-            "description": "Discount amount",
-            "example": 20
-          },
-          "total": {
-            "type": "number",
-            "description": "Total amount",
-            "example": 179.99
-          },
-          "currency": {
-            "type": "string",
-            "description": "Currency",
-            "example": "USD"
-          },
-          "items": {
-            "description": "Cart items",
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/CartItemResponseDto"
-            }
-          },
-          "coupon": {
-            "description": "Applied coupon",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/CouponResponseDto"
-              }
-            ]
-          },
-          "createdAt": {
-            "format": "date-time",
-            "type": "string",
-            "description": "Cart created date"
-          },
-          "updatedAt": {
-            "format": "date-time",
-            "type": "string",
-            "description": "Cart updated date"
-          }
-        },
-        "required": [
-          "id",
-          "userId",
-          "subtotal",
-          "discount",
-          "total",
-          "currency",
-          "items",
-          "createdAt",
-          "updatedAt"
-        ]
-      },
-      "AddToCartDto": {
-        "type": "object",
-        "properties": {
-          "courseId": {
-            "type": "string",
-            "description": "Course ID to add to cart",
-            "example": "clxxxxx"
-          }
-        },
-        "required": [
-          "courseId"
         ]
       },
       "CouponValidationResponseDto": {

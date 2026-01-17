@@ -1,7 +1,7 @@
 /**
 * AUTO-GENERATED FILE - DO NOT EDIT MANUALLY
 * Generated from OpenAPI schema
-* Last updated: 2026-01-14T02:28:29.644Z
+* Last updated: 2026-01-17T19:41:03.503Z
 * Schema URL: https://simple-arab-code-backend-production.up.railway.app/api/docs-json
 */
  
@@ -1041,8 +1041,27 @@ export type components = {
          * @enum {string}
          */
         AttachmentType: AttachmentType;
-        AuthDataDto: {
+        AuthResponseDto: {
+            /** @example eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9... */
+            accessToken?: string;
+            /** @example 15m */
+            expiresIn?: string;
+            /** @example /dashboard */
+            redirectTo?: Record<string, never>;
             user?: components["schemas"]["UserResponseDto"];
+        };
+        CartCouponDto: {
+            /** @description Coupon code */
+            code: string;
+            /** @description Coupon description */
+            description?: string;
+            /**
+             * @description Coupon type
+             * @enum {string}
+             */
+            type: CartCouponDtoType;
+            /** @description Discount value */
+            value: number;
         };
         CartItemResponseDto: {
             /**
@@ -1067,7 +1086,7 @@ export type components = {
         };
         CartResponseDto: {
             /** @description Applied coupon */
-            coupon?: components["schemas"]["CouponResponseDto"];
+            coupon?: components["schemas"]["CartCouponDto"];
             /**
              * Format: date-time
              * @description Cart created date
@@ -1982,15 +2001,6 @@ export type components = {
          * @enum {string}
          */
         LectureType: LectureType;
-        LoginDataDto: {
-            /** @example eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9... */
-            accessToken: string;
-            /** @example 15m */
-            expiresIn: string;
-            /** @example /dashboard */
-            redirectTo?: Record<string, never>;
-            user: components["schemas"]["UserResponseDto"];
-        };
         LoginDto: {
             /** @example user@example.com */
             email: string;
@@ -2672,8 +2682,11 @@ export type components = {
             lastName?: string;
             /** @example google */
             oauthProvider?: string;
-            /** @example 2024-01-20T14:45:00.000Z */
-            passwordChangedAt?: Record<string, never>;
+            /**
+             * Format: date-time
+             * @example 2024-01-20T14:45:00.000Z
+             */
+            passwordChangedAt?: string;
             /** @example https://example.com/avatar.jpg */
             profilePicture?: string;
             /**
@@ -2738,8 +2751,11 @@ export type components = {
             lastName?: string;
             /** @example google */
             oauthProvider?: string;
-            /** @example 2024-01-20T14:45:00.000Z */
-            passwordChangedAt?: Record<string, never>;
+            /**
+             * Format: date-time
+             * @example 2024-01-20T14:45:00.000Z
+             */
+            passwordChangedAt?: string;
             /** @example https://example.com/avatar.jpg */
             profilePicture?: string;
             /**
@@ -2805,6 +2821,81 @@ export type components = {
             /** @example abc123token */
             token: string;
         };
+        WrappedResponseAuthResponseDto: {
+            data: components["schemas"]["AuthResponseDto"];
+            message?: string;
+            success: boolean;
+        };
+        WrappedResponseChangeEmailResponseDto: {
+            data: components["schemas"]["ChangeEmailResponseDto"];
+            message?: string;
+            success: boolean;
+        };
+        WrappedResponseChangePasswordResponseDto: {
+            data: components["schemas"]["ChangePasswordResponseDto"];
+            message?: string;
+            success: boolean;
+        };
+        WrappedResponseCourseListResponseDto: {
+            data: components["schemas"]["CourseListResponseDto"];
+            message?: string;
+            success: boolean;
+        };
+        WrappedResponseCourseOverviewResponseDto: {
+            data: components["schemas"]["CourseOverviewResponseDto"];
+            message?: string;
+            success: boolean;
+        };
+        WrappedResponseCourseResponseDto: {
+            data: components["schemas"]["CourseResponseDto"];
+            message?: string;
+            success: boolean;
+        };
+        WrappedResponseDeleteResponseDto: {
+            data: components["schemas"]["DeleteResponseDto"];
+            message?: string;
+            success: boolean;
+        };
+        WrappedResponseLectureResponseDto: {
+            data: components["schemas"]["LectureResponseDto"];
+            message?: string;
+            success: boolean;
+        };
+        WrappedResponseRefreshTokenDataDto: {
+            data: components["schemas"]["RefreshTokenDataDto"];
+            message?: string;
+            success: boolean;
+        };
+        WrappedResponseSectionDeleteResponseDto: {
+            data: components["schemas"]["SectionDeleteResponseDto"];
+            message?: string;
+            success: boolean;
+        };
+        WrappedResponseSectionListResponseDto: {
+            data: components["schemas"]["SectionListResponseDto"];
+            message?: string;
+            success: boolean;
+        };
+        WrappedResponseSectionResponseDto: {
+            data: components["schemas"]["SectionResponseDto"];
+            message?: string;
+            success: boolean;
+        };
+        WrappedResponseUpdateProfileResponseDto: {
+            data: components["schemas"]["UpdateProfileResponseDto"];
+            message?: string;
+            success: boolean;
+        };
+        WrappedResponseUserProfileResponseDto: {
+            data: components["schemas"]["UserProfileResponseDto"];
+            message?: string;
+            success: boolean;
+        };
+        WrappedResponseVerifyEmailChangeResponseDto: {
+            data: components["schemas"]["VerifyEmailChangeResponseDto"];
+            message?: string;
+            success: boolean;
+        };
     };
     responses: never;
     parameters: never;
@@ -2833,12 +2924,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
-                        data?: components["schemas"]["AuthDataDto"];
-                        message?: string;
-                        /** @default true */
-                        success: boolean;
-                    };
+                    "application/json": components["schemas"]["WrappedResponseAuthResponseDto"];
                 };
             };
             /** @description Bad request */
@@ -2897,12 +2983,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
-                        data?: components["schemas"]["LoginDataDto"];
-                        message?: string;
-                        /** @default true */
-                        success: boolean;
-                    };
+                    "application/json": components["schemas"]["WrappedResponseAuthResponseDto"];
                 };
             };
             /** @description Bad request */
@@ -2957,12 +3038,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
-                        data?: components["schemas"]["AuthDataDto"];
-                        message?: string;
-                        /** @default true */
-                        success: boolean;
-                    };
+                    "application/json": components["schemas"]["WrappedResponseAuthResponseDto"];
                 };
             };
             /** @description Bad request */
@@ -3017,12 +3093,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
-                        data?: components["schemas"]["AuthDataDto"];
-                        message?: string;
-                        /** @default true */
-                        success: boolean;
-                    };
+                    "application/json": components["schemas"]["WrappedResponseAuthResponseDto"];
                 };
             };
             /** @description Bad request */
@@ -3149,12 +3220,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
-                        data?: components["schemas"]["RefreshTokenDataDto"];
-                        message?: string;
-                        /** @default true */
-                        success: boolean;
-                    };
+                    "application/json": components["schemas"]["WrappedResponseRefreshTokenDataDto"];
                 };
             };
             /** @description Bad request */
@@ -3213,12 +3279,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
-                        data?: components["schemas"]["AuthDataDto"];
-                        message?: string;
-                        /** @default true */
-                        success: boolean;
-                    };
+                    "application/json": components["schemas"]["WrappedResponseAuthResponseDto"];
                 };
             };
             /** @description Bad request */
@@ -3277,12 +3338,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
-                        data?: components["schemas"]["AuthDataDto"];
-                        message?: string;
-                        /** @default true */
-                        success: boolean;
-                    };
+                    "application/json": components["schemas"]["WrappedResponseAuthResponseDto"];
                 };
             };
             /** @description Bad request */
@@ -3341,12 +3397,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
-                        data?: components["schemas"]["AuthDataDto"];
-                        message?: string;
-                        /** @default true */
-                        success: boolean;
-                    };
+                    "application/json": components["schemas"]["WrappedResponseAuthResponseDto"];
                 };
             };
             /** @description Bad request */
@@ -3405,12 +3456,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
-                        data?: components["schemas"]["AuthDataDto"];
-                        message?: string;
-                        /** @default true */
-                        success: boolean;
-                    };
+                    "application/json": components["schemas"]["WrappedResponseAuthResponseDto"];
                 };
             };
             /** @description Bad request */
@@ -3469,12 +3515,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
-                        data?: components["schemas"]["AuthDataDto"];
-                        message?: string;
-                        /** @default true */
-                        success: boolean;
-                    };
+                    "application/json": components["schemas"]["WrappedResponseAuthResponseDto"];
                 };
             };
             /** @description Bad request */
@@ -3533,12 +3574,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
-                        data?: components["schemas"]["AuthDataDto"];
-                        message?: string;
-                        /** @default true */
-                        success: boolean;
-                    };
+                    "application/json": components["schemas"]["WrappedResponseAuthResponseDto"];
                 };
             };
             /** @description Bad request */
@@ -4171,12 +4207,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
-                        data?: components["schemas"]["CourseListResponseDto"];
-                        message?: string;
-                        /** @default true */
-                        success: boolean;
-                    };
+                    "application/json": components["schemas"]["WrappedResponseCourseListResponseDto"];
                 };
             };
             /** @description Bad request */
@@ -4230,17 +4261,12 @@ export interface operations {
         };
         responses: {
             /** @description Course created successfully */
-            201: {
+            200: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
-                        data?: components["schemas"]["CourseResponseDto"];
-                        message?: string;
-                        /** @default true */
-                        success: boolean;
-                    };
+                    "application/json": components["schemas"]["WrappedResponseCourseResponseDto"];
                 };
             };
             /** @description Bad request */
@@ -4298,12 +4324,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
-                        data?: components["schemas"]["CourseOverviewResponseDto"];
-                        message?: string;
-                        /** @default true */
-                        success: boolean;
-                    };
+                    "application/json": components["schemas"]["WrappedResponseCourseOverviewResponseDto"];
                 };
             };
             /** @description Bad request */
@@ -4622,12 +4643,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
-                        data?: components["schemas"]["SectionListResponseDto"];
-                        message?: string;
-                        /** @default true */
-                        success: boolean;
-                    };
+                    "application/json": components["schemas"]["WrappedResponseSectionListResponseDto"];
                 };
             };
             /** @description Bad request */
@@ -4685,17 +4701,12 @@ export interface operations {
         };
         responses: {
             /** @description Section created successfully */
-            201: {
+            200: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
-                        data?: components["schemas"]["SectionResponseDto"];
-                        message?: string;
-                        /** @default true */
-                        success: boolean;
-                    };
+                    "application/json": components["schemas"]["WrappedResponseSectionResponseDto"];
                 };
             };
             /** @description Bad request */
@@ -4755,12 +4766,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
-                        data?: components["schemas"]["SectionResponseDto"];
-                        message?: string;
-                        /** @default true */
-                        success: boolean;
-                    };
+                    "application/json": components["schemas"]["WrappedResponseSectionResponseDto"];
                 };
             };
             /** @description Bad request */
@@ -4820,12 +4826,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
-                        data?: components["schemas"]["SectionDeleteResponseDto"];
-                        message?: string;
-                        /** @default true */
-                        success: boolean;
-                    };
+                    "application/json": components["schemas"]["WrappedResponseSectionDeleteResponseDto"];
                 };
             };
             /** @description Bad request */
@@ -4890,12 +4891,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
-                        data?: components["schemas"]["SectionResponseDto"];
-                        message?: string;
-                        /** @default true */
-                        success: boolean;
-                    };
+                    "application/json": components["schemas"]["WrappedResponseSectionResponseDto"];
                 };
             };
             /** @description Bad request */
@@ -4958,12 +4954,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
-                        data?: components["schemas"]["SectionDeleteResponseDto"];
-                        message?: string;
-                        /** @default true */
-                        success: boolean;
-                    };
+                    "application/json": components["schemas"]["WrappedResponseSectionDeleteResponseDto"];
                 };
             };
             /** @description Bad request */
@@ -5021,12 +5012,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
-                        data?: components["schemas"]["CourseResponseDto"];
-                        message?: string;
-                        /** @default true */
-                        success: boolean;
-                    };
+                    "application/json": components["schemas"]["WrappedResponseCourseResponseDto"];
                 };
             };
             /** @description Bad request */
@@ -5084,12 +5070,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
-                        data?: components["schemas"]["DeleteResponseDto"];
-                        message?: string;
-                        /** @default true */
-                        success: boolean;
-                    };
+                    "application/json": components["schemas"]["WrappedResponseDeleteResponseDto"];
                 };
             };
             /** @description Bad request */
@@ -5151,12 +5132,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
-                        data?: components["schemas"]["CourseResponseDto"];
-                        message?: string;
-                        /** @default true */
-                        success: boolean;
-                    };
+                    "application/json": components["schemas"]["WrappedResponseCourseResponseDto"];
                 };
             };
             /** @description Bad request */
@@ -5214,12 +5190,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
-                        data?: components["schemas"]["CourseResponseDto"];
-                        message?: string;
-                        /** @default true */
-                        success: boolean;
-                    };
+                    "application/json": components["schemas"]["WrappedResponseCourseResponseDto"];
                 };
             };
             /** @description Bad request */
@@ -5428,12 +5399,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
-                        data?: components["schemas"]["LectureResponseDto"];
-                        message?: string;
-                        /** @default true */
-                        success: boolean;
-                    };
+                    "application/json": components["schemas"]["WrappedResponseLectureResponseDto"];
                 };
             };
             /** @description Bad request */
@@ -6012,17 +5978,12 @@ export interface operations {
         };
         responses: {
             /** @description Lecture created successfully */
-            201: {
+            200: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
-                        data?: components["schemas"]["LectureResponseDto"];
-                        message?: string;
-                        /** @default true */
-                        success: boolean;
-                    };
+                    "application/json": components["schemas"]["WrappedResponseLectureResponseDto"];
                 };
             };
             /** @description Bad request */
@@ -6077,12 +6038,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
-                        data?: components["schemas"]["UserProfileResponseDto"];
-                        message?: string;
-                        /** @default true */
-                        success: boolean;
-                    };
+                    "application/json": components["schemas"]["WrappedResponseUserProfileResponseDto"];
                 };
             };
             /** @description Bad request */
@@ -6153,12 +6109,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
-                        data?: components["schemas"]["UpdateProfileResponseDto"];
-                        message?: string;
-                        /** @default true */
-                        success: boolean;
-                    };
+                    "application/json": components["schemas"]["WrappedResponseUpdateProfileResponseDto"];
                 };
             };
             /** @description Bad request */
@@ -6217,12 +6168,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
-                        data?: components["schemas"]["ChangeEmailResponseDto"];
-                        message?: string;
-                        /** @default true */
-                        success: boolean;
-                    };
+                    "application/json": components["schemas"]["WrappedResponseChangeEmailResponseDto"];
                 };
             };
             /** @description Bad request */
@@ -6281,12 +6227,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
-                        data?: components["schemas"]["VerifyEmailChangeResponseDto"];
-                        message?: string;
-                        /** @default true */
-                        success: boolean;
-                    };
+                    "application/json": components["schemas"]["WrappedResponseVerifyEmailChangeResponseDto"];
                 };
             };
             /** @description Bad request */
@@ -6345,12 +6286,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
-                        data?: components["schemas"]["ChangePasswordResponseDto"];
-                        message?: string;
-                        /** @default true */
-                        success: boolean;
-                    };
+                    "application/json": components["schemas"]["WrappedResponseChangePasswordResponseDto"];
                 };
             };
             /** @description Bad request */
@@ -6452,6 +6388,10 @@ export enum AttachmentType {
     CODE = "CODE",
     HTML = "HTML",
     OTHER = "OTHER"
+}
+export enum CartCouponDtoType {
+    PERCENTAGE = "PERCENTAGE",
+    FIXED = "FIXED"
 }
 export enum CouponResponseDtoType {
     PERCENTAGE = "PERCENTAGE",
