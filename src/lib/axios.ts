@@ -11,7 +11,7 @@ import { Pages, Routes } from "@/constants/enums";
 export const api = axios.create({
   baseURL:
     import.meta.env.VITE_API_URL ||
-    "https://simplearabcode.vercel.app/api/admin",
+    "https://simple-arab-code-backend-production.up.railway.app",
   headers: {
     "Content-Type": "application/json",
   },

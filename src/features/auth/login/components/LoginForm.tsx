@@ -1,7 +1,7 @@
 import { Pages } from '@/constants/enums';
 import useFormFields from '@/hooks/useFormFields';
 import useFormValidations from '@/hooks/useFormValidations';
-import { useForm, type DefaultValues } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@/components/ui/button';
 import { LoadingButton } from '@/components/shared/loader';
@@ -9,22 +9,21 @@ import FormFields from '@/components/shared/form-fields/form-fields';
 import { useAuthStore } from '@/features/auth/store';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
-import type { LoginRequest } from '@/types/user';
 import { loginSchema } from '@/validations/login';
 import type { z } from 'zod';
 
+
+
 type LoginSchema = z.infer<typeof loginSchema>;
 
-export default function FormLogin() {
+export default function LoginForm() {
+
+
     const { getFormFields } = useFormFields({ slug: Pages.LOGIN });
     const { getValidationSchema } = useFormValidations({ slug: Pages.LOGIN });
     const navigate = useNavigate();
     const { login, isLoading } = useAuthStore();
 
-    const DEFAULT_VALUES: Record<string, unknown> = {};
-    for (const field of getFormFields()) {
-        DEFAULT_VALUES[field.name] = "";
-    }
 
     const {
         handleSubmit,
@@ -33,16 +32,18 @@ export default function FormLogin() {
     } = useForm<LoginSchema>({
         resolver: zodResolver(getValidationSchema() as typeof loginSchema),
         mode: "onChange",
-        defaultValues: DEFAULT_VALUES as DefaultValues<LoginSchema>,
+        defaultValues: {
+            email: "",
+            password: "",
+        },
     });
 
-    const onSubmit = async (data: Record<string, unknown>) => {
+    const onSubmit = async (data: LoginSchema) => {
         try {
-            const { message } = await login(data as LoginRequest);
+            const { message } = await login(data);
             toast.success(message);
             navigate("/admin");
         } catch (error: unknown) {
-            // Handle error
             const errorMessage =
                 (error as Error & { response?: { data?: { message?: string } } })
                     ?.response?.data?.message || "حدث خطأ أثناء تسجيل الدخول";
@@ -56,9 +57,10 @@ export default function FormLogin() {
             onSubmit={handleSubmit(onSubmit)}
             className="flex flex-col bg-[#ffffff] p-4 rounded-lg shadow w-full max-w-md"
         >
-            {getFormFields().map((field, index) => (
-                <div key={index}>
-                    <FormFields {...field} control={control} errors={errors} />
+            {getFormFields().map((field) => (
+                <div key={field.name}>
+                    <FormFields {...field}
+                        control={control} errors={errors} />
                 </div>
             ))}
             <Button
