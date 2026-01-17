@@ -1,4 +1,4 @@
-import FormLogin from "@/features/login/components/form-login";
+import LoginForm from "@/features/auth/login/components/LoginForm";
 
 function Login() {
 
@@ -7,7 +7,7 @@ function Login() {
     <main>
       <div className="container element-center min-h-screen">
 
-        <FormLogin />
+        <LoginForm />
       </div>
     </main >
   );

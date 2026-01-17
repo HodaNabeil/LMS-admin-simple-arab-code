@@ -11,7 +11,7 @@ import { Pages, Routes } from "@/constants/enums";
 export const api = axios.create({
   baseURL:
     import.meta.env.VITE_API_URL ||
-    "https://simplearabcode.vercel.app/api/admin",
+    "https://simple-arab-code-backend-production.up.railway.app",
   headers: {
     "Content-Type": "application/json",
   },
@@ -68,13 +68,13 @@ api.interceptors.response.use(
           console.error("Token refresh failed:", refreshError);
           // Clear invalid auth cookies and redirect to login
           authCookies.clearAll();
-          window.location.href = `${Routes.AUTH}/${Pages.SIGNIN}`;
+          // window.location.href = `${Routes.AUTH}/${Pages.SIGNIN}`;
           return Promise.reject(refreshError);
         }
       } else {
         // No refresh token available, clear auth and redirect
         authCookies.clearAll();
-        window.location.href = `${Routes.AUTH}/${Pages.SIGNIN}`;
+        // window.location.href = `${Routes.AUTH}/${Pages.SIGNIN}`;
       }
     }
 
