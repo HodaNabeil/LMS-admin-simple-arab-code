@@ -1,46 +1,19 @@
 import { api } from "@/lib/axios";
-import type {
-  AuthResponse,
-  LoginRequest,
-  SignupRequest,
-  User,
-  TokenRefreshResponse,
-} from "@/types/user";
+
 import { AUTH_ENDPOINTS } from "@/constants/auth";
+import type { LoginRequest, LoginResponse, RefreshTokenResponse } from "@/types/auth";
+import type { User } from "@/types/user";
 
 export const authService = {
   // Login user
-  async login(credentials: LoginRequest): Promise<AuthResponse> {
-    const response = await api.post<AuthResponse>(AUTH_ENDPOINTS.LOGIN, credentials);
+  async login(credentials: LoginRequest): Promise<LoginResponse> {
+    const response = await api.post<LoginResponse>(AUTH_ENDPOINTS.LOGIN, credentials);
     console.log("response", response);
     return response.data;
   },
 
-  // Register user
-  async signup(userData: SignupRequest): Promise<AuthResponse> {
-    const formData = new FormData();
 
-    // Append text fields
-    formData.append("name", userData.name);
-    formData.append("email", userData.email);
-    formData.append("phone", userData.phone);
-    formData.append("password", userData.password);
-    formData.append("user_type", userData.user_type);
-
-    // Append file if exists
-    if (userData.profile_picture) {
-      formData.append("profile_picture", userData.profile_picture);
-    }
-
-    const response = await api.post<AuthResponse>(AUTH_ENDPOINTS.REGISTER, formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
-    return response.data;
-  },
-
-  // Get current user
+  // Get current userRegisterRequest
   async getCurrentUser(): Promise<User> {
     const response = await api.get<User>(AUTH_ENDPOINTS.ME);
     return response.data;
@@ -52,8 +25,8 @@ export const authService = {
   },
 
   // Refresh token
-  async refreshToken(refreshToken: string): Promise<TokenRefreshResponse> {
-    const response = await api.post<TokenRefreshResponse>(AUTH_ENDPOINTS.REFRESH, {
+  async refreshToken(refreshToken: string): Promise<RefreshTokenResponse> {
+    const response = await api.post<RefreshTokenResponse>(AUTH_ENDPOINTS.REFRESH, {
       refresh_token: refreshToken,
     });
     return response.data;

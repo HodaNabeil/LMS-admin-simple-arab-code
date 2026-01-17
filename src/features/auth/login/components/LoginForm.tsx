@@ -43,6 +43,7 @@ export default function LoginForm() {
             const { message } = await login(data);
             toast.success(message);
             navigate("/admin");
+
         } catch (error: unknown) {
             const errorMessage =
                 (error as Error & { response?: { data?: { message?: string } } })

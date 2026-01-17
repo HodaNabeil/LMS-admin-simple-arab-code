@@ -5,7 +5,9 @@ import type {
   InternalAxiosRequestConfig,
 } from "axios";
 import { authCookies } from "@/lib/cookies";
-import { Pages, Routes } from "@/constants/enums";
+import { Routes } from "@/constants/enums";
+import { AUTH_ENDPOINTS } from "@/constants/auth";
+import type { RefreshTokenResponse } from "@/types/auth";
 
 // Create axios instance
 export const api = axios.create({
@@ -15,6 +17,7 @@ export const api = axios.create({
   headers: {
     "Content-Type": "application/json",
   },
+  withCredentials: true,
 });
 
 // Request interceptor to add auth token
@@ -46,21 +49,24 @@ api.interceptors.response.use(
       if (refreshToken) {
         try {
           // Try to refresh the token
-          const response = await axios.post(
-            `${api.defaults.baseURL}/auth/refresh`,
+          const response = await axios.post<RefreshTokenResponse>(
+            `${api.defaults.baseURL}${AUTH_ENDPOINTS.REFRESH}`,
             {
               refresh_token: refreshToken,
             }
           );
 
-          const { access_token, refresh_token: newRefreshToken } =
+          const { data } =
             response.data;
 
           // Update tokens in cookies
-          authCookies.setTokens(access_token, newRefreshToken);
+          if (data.accessToken) {
+            authCookies.setAccessToken(data.accessToken);
+
+          }
 
           // Update the original request with new token
-          originalRequest.headers.Authorization = `Bearer ${access_token}`;
+          originalRequest.headers.Authorization = `Bearer ${data.accessToken}`;
 
           // Retry the original request
           return api(originalRequest);
@@ -68,13 +74,13 @@ api.interceptors.response.use(
           console.error("Token refresh failed:", refreshError);
           // Clear invalid auth cookies and redirect to login
           authCookies.clearAll();
-          window.location.href = `${Routes.AUTH}/${Pages.SIGNIN}`;
+          window.location.href = Routes.ROOT;
           return Promise.reject(refreshError);
         }
       } else {
         // No refresh token available, clear auth and redirect
         authCookies.clearAll();
-        window.location.href = `${Routes.AUTH}/${Pages.SIGNIN}`;
+        window.location.href = Routes.ROOT;
       }
     }
 

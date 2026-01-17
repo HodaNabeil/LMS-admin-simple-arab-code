@@ -1,10 +1,12 @@
-import type { components } from "./api.generated";
+import type { components } from './api.generated';
 
-// Auth DTOs from the new schema
+// ============================================
+// Schema Types (DTOs)
+// ============================================
+
+export type AuthResponse = components['schemas']['AuthResponseDto'];
 export type LoginRequest = components['schemas']['LoginDto'];
-export type LoginResponse = components['schemas']['AuthResponseDto'];
 export type RegisterRequest = components['schemas']['RegisterDto'];
-export type RegisterResponse = components['schemas']['AuthResponseDto'];
 export type VerifyEmailRequest = components['schemas']['VerifyEmailDto'];
 export type ForgotPasswordRequest = components['schemas']['ForgotPasswordDto'];
 export type ResetPasswordRequest = components['schemas']['ResetPasswordDto'];
@@ -15,11 +17,25 @@ export type SetOAuthPasswordRequest =
 export type ResendVerificationRequest =
     components['schemas']['ResendVerificationDto'];
 
-// Response types derived from paths
-export type ForgotPasswordResponse = components['schemas']['AuthResponseDto'];
-export type ResetPasswordResponse = components['schemas']['AuthResponseDto'];
+// ============================================
+// Response Types
+// ============================================
+
+export type LoginResponse =
+    components['schemas']['WrappedResponseAuthResponseDto'];
+export type RegisterResponse =
+    components['schemas']['WrappedResponseAuthResponseDto'];
+export type VerifyEmailResponse =
+    components['schemas']['WrappedResponseAuthResponseDto'];
+export type ForgotPasswordResponse =
+    components['schemas']['WrappedResponseAuthResponseDto'];
+export type ResetPasswordResponse =
+    components['schemas']['WrappedResponseAuthResponseDto'];
 export type RequestPasswordSetupResponse =
-    components['schemas']['AuthResponseDto'];
-export type SetOAuthPasswordResponse = components['schemas']['AuthResponseDto'];
-export type VerifyEmailResponse = components['schemas']['AuthResponseDto'];
-export type RefreshTokenResponse = ResponseData<'/api/auth/refresh', 'post'>;
+    components['schemas']['WrappedResponseAuthResponseDto'];
+export type SetOAuthPasswordResponse =
+    components['schemas']['WrappedResponseAuthResponseDto'];
+export type RefreshTokenResponse =
+    components['schemas']['WrappedResponseAuthResponseDto'];
+export type ResendVerificationResponse =
+    components['schemas']['WrappedResponseAuthResponseDto'];
