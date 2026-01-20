@@ -6,7 +6,7 @@ import { useUsers } from '@/features/users/hooks/useUsersQueries';
 import UsersStats from '@/features/users/components/users-stats';
 
 export default function Users() {
-  const { data, isLoading, isError } = useUsers();
+  const { data: users, isLoading, isError } = useUsers();
 
   let userTable;
   if (isLoading) {
@@ -23,17 +23,17 @@ export default function Users() {
       </div>
     );
   }
-  if (!isLoading && data) {
+  if (!isLoading && users) {
     userTable = (
       <>
-        <UserTable users={data.users} />
+        <UserTable users={users} />
       </>
     );
   }
   return (
     <div className='p-4'>
 
-      <UsersStats users={data?.users || []} />
+      <UsersStats users={users || []} />
 
       <div className="flex justify-between items-center m-4">
         <h2 className="text-2xl font-bold text-blue-800">Users</h2>

@@ -3,3 +3,4 @@ import { UserResponseDtoRole } from './api.generated';
 
 export type User = components['schemas']['UserResponseDto'];
 export type UserRole = UserResponseDtoRole;
+export type UserResponse = User[];

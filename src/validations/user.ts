@@ -15,7 +15,7 @@ export const userSchema = z.object({
       message: 'يجب أن يكون بريد إلكتروني صحيح',
     }),
   role: z
-    .enum([UserType.ADMIN, UserType.USER], {
+    .enum([UserType.ADMIN, UserType.USER, UserType.INSTRUCTOR], {
       errorMap: () => ({ message: 'نوع الحساب غير صحيح' }),
     })
     .optional(),

@@ -30,16 +30,26 @@ function UserForm({
     formState: { errors, isSubmitting },
   } = useForm({
     defaultValues: {
-      name: user?.name || '',
+      name: user?.firstName ? `${user.firstName} ${user.lastName || ''}`.trim() : '',
       email: user?.email || '',
-      role: user?.role || UserType.USER,
+      role: (user?.role as unknown as UserType) || UserType.USER,
     },
     mode: 'onChange',
     resolver: zodResolver(getValidationSchema() as typeof userSchema),
   });
 
   const onSubmit = async (data: Record<string, string>) => {
-    const mutationData = user ? { ...data, id: user.id } : data;
+    const nameParts = data.name.split(' ');
+    const firstName = nameParts[0];
+    const lastName = nameParts.slice(1).join(' ');
+
+    const mutationData = {
+      ...data,
+      firstName,
+      lastName,
+      ...(user ? { id: user.id } : {}),
+    };
+    delete (mutationData as any).name;
     try {
       const res = await mutation.mutateAsync(mutationData);
       toast.success(res.message);
