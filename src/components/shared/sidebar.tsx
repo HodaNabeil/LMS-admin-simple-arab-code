@@ -34,6 +34,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
 import { useState } from 'react';
+import { Routes, Pages } from '@/constants/enums';
 
 interface SidebarSubItem {
   id: string;
@@ -77,7 +78,7 @@ function Sidebar({ isMobile = false, isOpen = true, onClose }: SidebarProps) {
     {
       id: 'dashboard',
       title: 'لوحة التحكم الرئيسية',
-      href: '/admin',
+      href: `/${Routes.ADMIN}`,
       icon: <Home className="w-5 h-5" />,
     },
     {
@@ -89,19 +90,19 @@ function Sidebar({ isMobile = false, isOpen = true, onClose }: SidebarProps) {
         {
           id: 'all-courses',
           title: 'جميع الدورات',
-          href: '/admin/courses',
+          href: `/${Routes.ADMIN}/${Pages.COURSES}`,
           icon: <BookOpen className="w-4 h-4" />,
         },
         {
           id: 'add-course',
           title: 'إضافة دورة جديدة',
-          href: '/admin/courses/create',
+          href: `/${Routes.ADMIN}/${Pages.CREATE_COURSES}`,
           icon: <Plus className="w-4 h-4" />,
         },
         {
           id: 'courses-status',
           title: 'حالة الدورات',
-          href: '/admin/courses/status',
+          href: `/${Routes.ADMIN}/${Pages.COURSES}/status`,
           icon: <PlayCircle className="w-4 h-4" />,
         },
       ],
@@ -115,13 +116,33 @@ function Sidebar({ isMobile = false, isOpen = true, onClose }: SidebarProps) {
         {
           id: 'all-paths',
           title: 'جميع المسارات التعليمية',
-          href: '/admin/paths',
+          href: `/${Routes.ADMIN}/${Routes.PATHS}`,
           icon: <FileText className="w-4 h-4" />,
         },
         {
           id: 'add-path',
           title: 'إضافة مسار جديد',
-          href: '/admin/paths/create', // <-- الصحيح
+          href: `/${Routes.ADMIN}/${Routes.PATHS}/create`,
+          icon: <Plus className="w-4 h-4" />,
+        },
+      ],
+    },
+    {
+      id: 'tracksManagement',
+      title: 'إدارة التراك ',
+      icon: <FileText className="w-5 h-5" />,
+      isExpandable: true,
+      subItems: [
+        {
+          id: 'all-tracks',
+          title: 'جميع التراك ',
+          href: `/${Routes.ADMIN}/${Routes.TRACKS}`,
+          icon: <FileText className="w-4 h-4" />,
+        },
+        {
+          id: 'add-track',
+          title: 'إضافة تراك جديد',
+          href: `/${Routes.ADMIN}/${Routes.CREATE_TRACKS}`,
           icon: <Plus className="w-4 h-4" />,
         },
       ],
@@ -135,13 +156,13 @@ function Sidebar({ isMobile = false, isOpen = true, onClose }: SidebarProps) {
         {
           id: 'video-management',
           title: 'إدارة الفيديوهات',
-          href: '/admin/content/videos',
+          href: `/${Routes.ADMIN}/${Pages.CONTENT}/${Pages.VIDEOS}`,
           icon: <FileVideo className="w-4 h-4" />,
         },
         {
           id: 'files-management',
           title: 'إدارة الملفات والمرفقات',
-          href: '/admin/content/files',
+          href: `/${Routes.ADMIN}/${Pages.CONTENT}/${Pages.FILES}`,
           icon: <FolderOpen className="w-4 h-4" />,
         },
       ],
@@ -155,25 +176,25 @@ function Sidebar({ isMobile = false, isOpen = true, onClose }: SidebarProps) {
         {
           id: 'general-stats',
           title: 'إحصائيات عامة',
-          href: '/admin/analytics/general',
+          href: `/${Routes.ADMIN}/${Pages.ANALYTICS}/${Pages.GENERAL}`,
           icon: <PieChart className="w-4 h-4" />,
         },
         {
           id: 'sales-reports',
           title: 'تقارير المبيعات',
-          href: '/admin/analytics/sales',
+          href: `/${Routes.ADMIN}/${Pages.ANALYTICS}/${Pages.SALES}`,
           icon: <TrendingUp className="w-4 h-4" />,
         },
         {
           id: 'orders-reports',
           title: 'تقارير الطلبات',
-          href: '/admin/analytics/orders',
+          href: `/${Routes.ADMIN}/${Pages.ANALYTICS}/${Pages.ORDERS}`,
           icon: <ShoppingCart className="w-4 h-4" />,
         },
         {
           id: 'users-reports',
           title: 'تقارير المستخدمين',
-          href: '/admin/analytics/users',
+          href: `/${Routes.ADMIN}/${Pages.ANALYTICS}/${Pages.USERS}`,
           icon: <Users className="w-4 h-4" />,
         },
       ],
@@ -187,13 +208,13 @@ function Sidebar({ isMobile = false, isOpen = true, onClose }: SidebarProps) {
         {
           id: 'all-users',
           title: 'جميع المستخدمين',
-          href: '/admin/users',
+          href: `/${Routes.ADMIN}/${Pages.USERS}`,
           icon: <Users className="w-4 h-4" />,
         },
         {
           id: 'admin-permissions',
           title: 'صلاحيات المشرفين',
-          href: '/admin/users/admins',
+          href: `/${Routes.ADMIN}/${Pages.USERS}/admins`,
           icon: <UserCheck className="w-4 h-4" />,
         },
       ],
@@ -207,19 +228,19 @@ function Sidebar({ isMobile = false, isOpen = true, onClose }: SidebarProps) {
         {
           id: 'all-orders',
           title: 'جميع الطلبات',
-          href: '/admin/orders',
+          href: `/${Routes.ADMIN}/${Pages.ORDERS}`,
           icon: <ShoppingCart className="w-4 h-4" />,
         },
         {
           id: 'payments',
           title: 'المدفوعات والمعاملات المالية',
-          href: '/admin/payments',
+          href: `/${Routes.ADMIN}/${Pages.PAYMENTS}`,
           icon: <CreditCard className="w-4 h-4" />,
         },
         {
           id: 'refunds',
           title: 'سجل المرتجعات',
-          href: '/admin/refunds',
+          href: `/${Routes.ADMIN}/${Pages.REFUNDS}`,
           icon: <RotateCcw className="w-4 h-4" />,
         },
       ],
@@ -233,13 +254,13 @@ function Sidebar({ isMobile = false, isOpen = true, onClose }: SidebarProps) {
         {
           id: 'all-coupons',
           title: 'جميع الكوبونات',
-          href: '/admin/coupons',
+          href: `/${Routes.ADMIN}/${Pages.COUPONS}`,
           icon: <Ticket className="w-4 h-4" />,
         },
         {
           id: 'add-coupon',
           title: 'إضافة كوبون جديد',
-          href: '/admin/coupons/create',
+          href: `/${Routes.ADMIN}/${Pages.COUPONS}/create`,
           icon: <Plus className="w-4 h-4" />,
         },
       ],
@@ -253,13 +274,13 @@ function Sidebar({ isMobile = false, isOpen = true, onClose }: SidebarProps) {
         {
           id: 'all-reviews',
           title: 'جميع المراجعات',
-          href: '/admin/reviews',
+          href: `/${Routes.ADMIN}/${Pages.REVIEWS}`,
           icon: <Star className="w-4 h-4" />,
         },
         {
           id: 'all-comments',
           title: 'جميع التعليقات',
-          href: '/admin/comments',
+          href: `/${Routes.ADMIN}/${Pages.COMMENTS}`,
           icon: <MessageSquare className="w-4 h-4" />,
         },
       ],
@@ -273,13 +294,13 @@ function Sidebar({ isMobile = false, isOpen = true, onClose }: SidebarProps) {
         {
           id: 'email-settings',
           title: 'إعداد رسائل البريد الإلكتروني',
-          href: '/admin/messages/email',
+          href: `/${Routes.ADMIN}/${Pages.MESSAGES}/${Pages.EMAIL}`,
           icon: <Mail className="w-4 h-4" />,
         },
         {
           id: 'notification-settings',
           title: 'إعداد الإشعارات داخل المنصة',
-          href: '/admin/messages/notifications',
+          href: `/${Routes.ADMIN}/${Pages.MESSAGES}/${Pages.NOTIFICATIONS}`,
           icon: <Bell className="w-4 h-4" />,
         },
       ],
@@ -293,25 +314,25 @@ function Sidebar({ isMobile = false, isOpen = true, onClose }: SidebarProps) {
         {
           id: 'platform-settings',
           title: 'إعدادات المنصة',
-          href: '/admin/settings/platform',
+          href: `/${Routes.ADMIN}/${Pages.SETTINGS}/${Routes.PLATFORM}`,
           icon: <Wrench className="w-4 h-4" />,
         },
         {
           id: 'payment-settings',
           title: 'إعدادات الدفع',
-          href: '/admin/settings/payment',
+          href: `/${Routes.ADMIN}/${Pages.SETTINGS}/${Routes.PAYMENT}`,
           icon: <DollarSign className="w-4 h-4" />,
         },
         {
           id: 'locale-settings',
           title: 'إعدادات اللغة والمنطقة الزمنية',
-          href: '/admin/settings/locale',
+          href: `/${Routes.ADMIN}/${Pages.SETTINGS}/${Routes.LOCALE}`,
           icon: <Globe className="w-4 h-4" />,
         },
         {
           id: 'security-settings',
           title: 'إعدادات الحماية',
-          href: '/admin/settings/security',
+          href: `/${Routes.ADMIN}/${Pages.SETTINGS}/${Routes.SECURITY}`,
           icon: <Shield className="w-4 h-4" />,
         },
       ],
@@ -325,13 +346,13 @@ function Sidebar({ isMobile = false, isOpen = true, onClose }: SidebarProps) {
         {
           id: 'team-members',
           title: 'إدارة الأعضاء والمشرفين',
-          href: '/admin/team/members',
+          href: `/${Routes.ADMIN}/${Pages.TEAM}/${Pages.MEMBERS}`,
           icon: <UserCog className="w-4 h-4" />,
         },
         {
           id: 'invite-member',
           title: 'دعوة عضو جديد',
-          href: '/admin/team/invite',
+          href: `/${Routes.ADMIN}/${Pages.TEAM}/${Pages.INVITE}`,
           icon: <UserPlus className="w-4 h-4" />,
         },
       ],
@@ -339,8 +360,8 @@ function Sidebar({ isMobile = false, isOpen = true, onClose }: SidebarProps) {
   ];
 
   const isActivePath = (href: string) => {
-    if (href === '/admin') {
-      return location.pathname === '/admin';
+    if (href === `/${Routes.ADMIN}`) {
+      return location.pathname === `/${Routes.ADMIN}`;
     }
     return location.pathname.startsWith(href);
   };

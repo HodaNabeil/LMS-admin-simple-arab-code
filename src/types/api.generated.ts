@@ -1,13 +1,13 @@
 /**
 * AUTO-GENERATED FILE - DO NOT EDIT MANUALLY
 * Generated from OpenAPI schema
-* Last updated: 2026-01-20T00:32:12.289Z
+* Last updated: 2026-01-20T03:33:20.358Z
 * Schema URL: https://simple-arab-code-backend-production.up.railway.app/api/docs-json
 */
- 
+
 /* eslint-disable */
 // @ts-nocheck
- 
+
 export type paths = {
     "/api/auth/forgot-password": {
         parameters: {
@@ -2568,6 +2568,7 @@ export type components = {
             token: string;
         };
         TrackResponseDto: {
+            message: string;
             /**
              * @description Track category
              * @example WEB

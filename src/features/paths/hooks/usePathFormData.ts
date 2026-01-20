@@ -35,7 +35,6 @@ export function usePathFormData({
                 metaTitle: pathData.metaTitle || "",
                 metaDescription: pathData.metaDescription || "",
                 category: (pathData.category as unknown as PathCategory) || PathCategoryEnum.WEB,
-                trackIds: (pathData as { tracks?: Array<{ id: string }> }).tracks?.map((t) => t.id) || [],
             };
         }
 
@@ -51,7 +50,6 @@ export function usePathFormData({
                 metaTitle: "",
                 metaDescription: "",
                 category: PathCategoryEnum.WEB,
-                trackIds: [],
             }
         );
     }, [isEditMode, pathData, getFromLocalStorage]);

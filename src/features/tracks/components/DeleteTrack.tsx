@@ -2,24 +2,18 @@ import { ConfirmDialog } from "@/components/shared/ConfirmDialog";
 import { Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useDeleteEntity } from "@/hooks/useDeleteEntity";
-import { useDeletePath } from "../hooks/usePathsMutations";
-import type { DeletePathResponse } from "@/types/path";
+import { useDeleteTrack } from "../hooks/useTracksMutations";
 
-export interface DeletePathProps {
-  pathSlug: string;
+export interface DeleteTrackProps {
+  trackSlug: string;
 }
 
-/**
- * Delete path component with confirmation dialog
- * 
- * Uses reusable ConfirmDialog and useDeleteEntity hook
- * for consistent behavior across the application
- */
-export default function DeletePath({ pathSlug }: DeletePathProps) {
-  const deletePathMutation = useDeletePath();
 
-  const { isOpen, setIsOpen, handleDelete, isPending } = useDeleteEntity<DeletePathResponse, string>({
-    mutation: deletePathMutation,
+export default function DeleteTrack({ trackSlug }: DeleteTrackProps) {
+  const deleteTrackMutation = useDeleteTrack();
+
+  const { isOpen, setIsOpen, handleDelete, isPending } = useDeleteEntity({
+    mutation: deleteTrackMutation,
     successMessage: "تم حذف المسار بنجاح",
   });
 
@@ -33,7 +27,7 @@ export default function DeletePath({ pathSlug }: DeletePathProps) {
       title="حذف المسار"
       description="هل أنت متأكد من حذف المسار؟"
       actionLabel="حذف المسار"
-      onConfirm={() => handleDelete(pathSlug)}
+      onConfirm={() => handleDelete(trackSlug)}
       isLoading={isPending}
       open={isOpen}
       onOpenChange={setIsOpen}
