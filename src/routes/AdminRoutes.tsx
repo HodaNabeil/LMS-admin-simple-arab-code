@@ -18,7 +18,7 @@ import Pricing from '@/pages/courses/[slug]/manage/pricing';
 import Statistics from '@/pages/analytics/statistics';
 import Tracks from '@/pages/tracks';
 import CreateNewTrack from '@/pages/tracks/create';
-import ManageTrack from '@/pages/tracks/[track]/manage';
+import ManageTrack from '@/pages/tracks/[trackSlug]/manage';
 
 export const adminRoutes = (
   <Route path="admin" element={<AdminLayout />}>

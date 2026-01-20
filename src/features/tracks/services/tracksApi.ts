@@ -9,6 +9,7 @@ import type {
   GetTracksResponse,
   GetTrackResponse,
   DeleteTrackResponse,
+  ApiResponse,
 } from "@/types/tracks";
 
 export const tracksApi = {
@@ -18,10 +19,10 @@ export const tracksApi = {
   },
 
   async getTrack(slug: string): Promise<GetTrackResponse> {
-    const response = await api.get<GetTrackResponse>(
+    const response = await api.get<ApiResponse<GetTrackResponse>>(
       TRACKS_ENDPOINTS.DETAIL.replace("{idOrSlug}", slug)
     );
-    return response.data;
+    return response.data.data;
   },
 
   async createTrack(data: CreateTrackRequest): Promise<CreateTrackResponse> {
@@ -49,7 +50,7 @@ export const tracksApi = {
     appendFormData(formData, {
       ...data,
     });
-    const response = await api.patch<UpdateTrackResponse>(
+    const response = await api.put<UpdateTrackResponse>(
       TRACKS_ENDPOINTS.UPDATE.replace("{idOrSlug}", slug),
       formData,
       {

@@ -43,13 +43,15 @@ function UserForm({
     const firstName = nameParts[0];
     const lastName = nameParts.slice(1).join(' ');
 
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { name, ...restData } = data;
     const mutationData = {
-      ...data,
+      ...restData,
       firstName,
       lastName,
       ...(user ? { id: user.id } : {}),
     };
-    delete (mutationData as any).name;
     try {
       const res = await mutation.mutateAsync(mutationData);
       toast.success(res.message);

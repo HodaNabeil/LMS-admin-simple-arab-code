@@ -28,7 +28,9 @@ export type GetTracksResponse = ApiResponse<{
     tracks: components['schemas']['TrackResponseDto'][];
 }>;
 
-export type GetTrackResponse = components['schemas']['TrackResponseDto'];
+export type GetTrackResponse = {
+    track: components['schemas']['TrackResponseDto'];
+};
 export type CreateTrackResponse = components['schemas']['TrackResponseDto'];
 export type UpdateTrackResponse = components['schemas']['TrackResponseDto'];
 export type DeleteTrackResponse = void;

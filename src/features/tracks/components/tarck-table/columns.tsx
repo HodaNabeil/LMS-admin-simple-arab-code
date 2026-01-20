@@ -83,13 +83,13 @@ export const columns: TrackColumnDef[] = [
     header: "الإجراءات",
     enableHiding: false,
     cell: ({ row }) => {
-      const path = row.original;
+      const track = row.original;
       return (
         <div className="flex gap-2 items-center">
-          <Link to={`/admin/paths/${path.slug}/manage`}>
+          <Link to={`/admin/tracks/${track.slug}/manage`}>
             <Edit className="h-4 w-4 text-blue-600 hover:text-blue-800" />
           </Link>
-          <DeleteTrack trackSlug={row.getValue("slug")} />
+          <DeleteTrack trackSlug={track.slug} />
         </div>
       );
     },

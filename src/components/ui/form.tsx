@@ -162,8 +162,8 @@ const FormMessage = React.forwardRef<
 })
 FormMessage.displayName = "FormMessage"
 
+// Export components
 export {
-    useFormField,
     Form,
     FormItem,
     FormLabel,
@@ -172,3 +172,7 @@ export {
     FormMessage,
     FormField,
 }
+
+// Export hook separately to satisfy fast refresh requirements
+// eslint-disable-next-line react-refresh/only-export-components
+export { useFormField }

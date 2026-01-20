@@ -8,10 +8,18 @@ import { Loader } from "@/components/shared/loader";
 import useFormFields from "@/hooks/useFormFields";
 import useFormValidations from "@/hooks/useFormValidations";
 import { createTrackSchema, type ITrackForm } from "@/validations/track";
-import { useCreateTrack } from "../hooks/useTracksMutations";
+import { useCreateTrack, useUpdateTrack } from "../../hooks/useTracksMutations";
 import { usePaths } from "@/features/paths/hooks/usePathsQueries";
+import type { GetTrackResponse, UpdateTrackRequest } from "@/types/tracks";
 
-export default function TrackForm() {
+interface TrackFormProps {
+    trackData?: GetTrackResponse;
+}
+
+export default function TrackForm({ trackData }: TrackFormProps) {
+    const isEditMode = !!trackData;
+    const track = trackData?.track;
+
     const { getFormFields } = useFormFields({ slug: Pages.CREATE_TRACKS });
     const { getValidationSchema } = useFormValidations({
         slug: Pages.CREATE_TRACKS,
@@ -27,7 +35,9 @@ export default function TrackForm() {
             label: path.title || path.slug,
         }));
     }, [pathsData]);
+
     const { mutateAsync: createTrack } = useCreateTrack();
+    const { mutateAsync: updateTrack } = useUpdateTrack();
 
     const {
         handleSubmit,
@@ -35,11 +45,12 @@ export default function TrackForm() {
         formState: { errors, isSubmitting },
     } = useForm<ITrackForm>({
         defaultValues: {
-            slug: '',
-            pathId: '',
-            title: '',
-            summary: '',
-            description: '',
+            slug: track?.slug || '',
+            pathId: track?.pathId || '',
+            title: track?.title || '',
+            summary: track?.summary || '',
+            description: track?.description || '',
+            category: track?.category as unknown as ITrackForm['category'], // API returns same category type
         },
         mode: 'onChange',
         resolver: zodResolver(getValidationSchema() as typeof createTrackSchema),
@@ -50,18 +61,35 @@ export default function TrackForm() {
     const handleFormSubmit = async (data: ITrackForm) => {
         try {
             setSubmitError(null);
-            await createTrack(data);
+
+            if (isEditMode && track) {
+                // Type-safe update data
+                await updateTrack({
+                    slug: track.slug,
+                    data: {
+                        slug: data.slug,
+                        pathId: data.pathId,
+                        title: data.title,
+                        summary: data.summary,
+                        description: data.description,
+                        category: data.category as unknown as UpdateTrackRequest['category'],
+                    }
+                });
+            } else {
+                await createTrack(data);
+            }
+
             navigate('/admin/tracks');
         } catch (error) {
-            console.error('Track creation error:', error);
+            console.error('Track submission error:', error);
             const errorMessage = error instanceof Error
                 ? error.message
-                : 'حدث خطأ أثناء إنشاء المسار. يرجى المحاولة مرة أخرى.';
+                : isEditMode
+                    ? 'حدث خطأ أثناء تحديث المسار. يرجى المحاولة مرة أخرى.'
+                    : 'حدث خطأ أثناء إنشاء المسار. يرجى المحاولة مرة أخرى.';
             setSubmitError(errorMessage);
         }
     };
-
-
 
     return (
         <div className="max-w-3xl mx-auto p-6 bg-card rounded-lg border shadow-sm my-6">
@@ -96,7 +124,7 @@ export default function TrackForm() {
                     disabled={isSubmitting || isLoadingPaths}
                     className="bg-primary text-white rounded px-4 py-2 text-sm hover:bg-primary/90 transition disabled:opacity-50 flex items-center justify-center gap-2"
                 >
-                    {isSubmitting ? <Loader /> : 'إضافة مسار'}
+                    {isSubmitting ? <Loader /> : isEditMode ? 'تحديث المسار' : 'إضافة مسار'}
                 </button>
             </form>
         </div>

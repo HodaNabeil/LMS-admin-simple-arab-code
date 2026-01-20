@@ -1,5 +1,5 @@
-import { TrackFormHeader } from "@/features/tracks/components/track-form/TrackFormHeader";
-import TrackForm from "@/features/tracks/components/TrackForm";
+import { TrackFormHeader } from "@/features/tracks/components/form/TrackFormHeader";
+import TrackForm from "@/features/tracks/components/form/TrackForm";
 
 export default function CreateNewTrack() {
   return (
