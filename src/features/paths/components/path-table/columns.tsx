@@ -1,21 +1,25 @@
 import { Badge } from "@/components/ui/badge";
 import type { ColumnDef } from "@tanstack/react-table";
 import DeletePath from "../DeletePath";
-import type { Path } from "@/types/path";
 import { Link } from "react-router-dom";
-import { buttonVariants } from "@/components/ui/button";
 import { Edit } from "lucide-react";
+import type { Path } from "@/types/path";
 
-export const columns: ColumnDef<Path>[] = [
+// Type-safe column definition that enforces accessorKey matches Path properties
+type PathColumnDef = ColumnDef<Path, unknown> & {
+  accessorKey?: keyof Path;
+};
+
+export const columns: PathColumnDef[] = [
   {
-    accessorKey: "image",
+    accessorKey: "thumbnailUrl",
     header: "الصورة",
     cell: ({ row }) => (
       <div>
         <img
-          src={row.getValue("image")}
+          src={row.getValue("thumbnailUrl") || "/placeholder-image.jpg"}
           alt={row.getValue("title")}
-          className="h-12 w-12 roundend-lg object-cover"
+          className="h-12 w-12 rounded-lg object-cover"
         />
       </div>
     ),
@@ -64,20 +68,6 @@ export const columns: ColumnDef<Path>[] = [
   },
 
   {
-    accessorKey: "roadmapUrl",
-    header: "رابط خارطة الطريق",
-    cell: ({ row }) => (
-      <Link
-        to="/"
-        target="_blank"
-        className={buttonVariants({ variant: "link" })}
-      >
-        {row.getValue("roadmapUrl")}
-      </Link>
-    ),
-  },
-
-  {
     id: "actions",
     header: "الإجراءات",
     enableHiding: false,
@@ -93,4 +83,4 @@ export const columns: ColumnDef<Path>[] = [
       );
     },
   },
-];
+] satisfies ColumnDef<Path>[];

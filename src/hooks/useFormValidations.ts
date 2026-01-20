@@ -4,7 +4,7 @@ import type { IFormFieldsVariables } from '@/types/app';
 import { Pages } from '@/constants/enums';
 import { loginSchema } from '@/validations/login';
 import { userSchema } from '@/validations/user';
-import { pathSchema } from '@/validations/path';
+import { createPathSchema } from '@/validations/path';
 import { createCourseSchema } from '@/validations/createcourse';
 import {
   basicsSchema,
@@ -19,7 +19,7 @@ type ValidationSchema =
   | typeof signupSchema
   | typeof loginSchema
   | typeof userSchema
-  | typeof pathSchema
+  | typeof createPathSchema
   | typeof createCourseSchema
   | typeof basicsSchema
   | typeof createSectionCourseSchema
@@ -46,7 +46,7 @@ const useFormValidations = (
         return loginSchema;
 
       case Pages.PATHS:
-        return pathSchema;
+        return createPathSchema;
       case Pages.CREATE_COURSES:
         return createCourseSchema;
       case Pages.GOALS:

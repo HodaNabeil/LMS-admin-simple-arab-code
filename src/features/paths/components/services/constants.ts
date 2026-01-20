@@ -27,25 +27,13 @@ export const step1Fields = [
         placeholder: "ادخل وصف المسار التعليمي",
     },
     {
-        name: "thumbnailUrl",
-        label: "رابط الصورة المصغرة",
-        type: "text" as const,
-        placeholder: "https://example.com/images/path-cover.jpg",
-    },
-    {
-        name: "parentId",
-        label: "معرف المسار الأب (اختياري)",
-        type: "text" as const,
-        placeholder: "123e4567-e89b-12d3-a456-426614174000",
-    },
-    {
         name: "icon",
         label: "أيقونة المسار",
         type: "text" as const,
         placeholder: "book-open",
     },
     {
-        name: "metatitle",
+        name: "metaTitle",
         label: "عنوان SEO",
         type: "text" as const,
         placeholder: "تعلم أساسيات اللغة العربية - مسار تعليمي شامل",
@@ -60,25 +48,22 @@ export const step1Fields = [
 
 export const step2Fields = [
     {
-        name: "image",
-        label: "اختار صورة المسار التعليمي",
-        type: "file" as const,
-        placeholder: "اختار صورة المسار التعليمي",
-        description: "يجب أن تكون الصورة JPEG أو PNG أو JPG أو WEBP",
-        fileType: "image" as const,
-        accept: "image/*",
-        maxSize: 5,
-        allowedTypes: ["image/jpeg", "image/png", "image/jpg", "image/webp"],
+        name: "category",
+        label: "تصنيف المسار",
+        type: "select" as const,
+        placeholder: "اختار تصنيف المسار",
+        options: [
+            { label: "WEB", value: "WEB" },
+            { label: "MOBILE", value: "MOBILE" },
+            { label: "OTHER", value: "OTHER" },
+        ],
     },
     {
-        name: "roadmap",
-        label: "خريطة المسار التعليمي (PDF فقط)",
-        type: "file" as const,
-        placeholder: "ارفع ملف PDF لخريطة المسار",
-        description: "يجب رفع ملف PDF فقط، وأقل من 5 ميجابايت",
-        fileType: "pdf" as const,
-        accept: "application/pdf",
-        maxSize: 5,
-        allowedTypes: ["application/pdf"],
+        name: "trackIds",
+        label: "معرفات المسارات (Track IDs)",
+        type: "text" as const,
+        placeholder: "ادخل معرفات المسارات",
+        description: "يمكن ادخال معرفات المسارات هنا"
     },
+
 ];

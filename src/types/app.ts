@@ -6,27 +6,28 @@ export interface IFormField {
   name: string;
   label?: string;
   type:
-    | "text"
-    | "email"
-    | "password"
-    | "number"
-    | "date"
-    | "time"
-    | "datetime-local"
-    | "checkbox"
-    | "radio"
-    | "select"
-    | "phone"
-    | "hidden"
-    | "textarea"
-    | "image"
-    | "file";
+  | "text"
+  | "email"
+  | "password"
+  | "number"
+  | "date"
+  | "time"
+  | "datetime-local"
+  | "checkbox"
+  | "radio"
+  | "select"
+  | "phone"
+  | "hidden"
+  | "textarea"
+  | "image"
+  | "file";
 
   placeholder?: string;
   disabled?: boolean;
   autoFocus?: boolean;
   options?: IOption[];
   id?: string;
+  description?: string;
 }
 export interface IFormFieldsVariables {
   slug: string;

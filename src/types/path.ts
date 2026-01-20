@@ -1,23 +1,34 @@
-export interface Path {
-  id: string;
-  title: string;
-  slug: string;
-  order: number;
-  createdAt: string; // ISO date string
-  updatedAt: string; // ISO date string
-  image: string | null;
-  summary: string;
-  roadmapUrl: string | null;
-  description: string;
-  thumbnailUrl?: string | null;
-  parentId?: string | null;
-  icon?: string | null;
-  metatitle?: string | null;
-  metaDescription?: string | null;
+import type { components } from './api.generated';
+
+// ============================================
+// Schema Types (DTOs)
+// ============================================
+
+export type Path = components['schemas']['PathDto'];
+export type CreatePathRequest = components['schemas']['CreatePathDto'];
+export type UpdatePathRequest = components['schemas']['UpdatePathDto'];
+export type DeletePathRequest = components['schemas']['DeletePathDto'];
+export interface GetPublicCoursesParams {
+    page?: number;
+    limit?: number;
+    search?: string;
+    level?: string;
+    status?: 'PUBLISHED';
+    visibility?: 'PUBLIC';
 }
 
-export interface PathResponse {
-  status: "success";
-  message: string;
-  data: Path;
-}
+// ============================================
+// Response Types
+// ============================================
+
+// Path CRUD responses
+export type GetPathsResponse =
+    components['schemas']['WrappedResponsePathListResponseDto'];
+export type GetPathResponse =
+    components['schemas']['WrappedResponsePathResponseDto'];
+export type CreatePathResponse =
+    components['schemas']['WrappedResponsePathResponseDto'];
+export type UpdatePathResponse =
+    components['schemas']['WrappedResponsePathResponseDto'];
+export type DeletePathResponse =
+    components['schemas']['WrappedResponseDeleteResponseDto'];

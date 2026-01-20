@@ -64,7 +64,10 @@ export const PathFormActions = ({
                 {currentStep < totalSteps ? (
                     <Button
                         type="button"
-                        onClick={onNextStep}
+                        onClick={(e) => {
+                            e.preventDefault();
+                            onNextStep();
+                        }}
                         disabled={formLoading}
                         className="flex items-center gap-2"
                     >

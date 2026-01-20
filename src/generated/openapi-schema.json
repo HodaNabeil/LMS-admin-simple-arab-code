@@ -822,7 +822,7 @@
     },
     "/api/courses": {
       "post": {
-        "description": "Create a new course. Requires COURSE_CREATE permission. The pathId is required to associate the course with a learning path.",
+        "description": "Create a new course. Requires COURSE_CREATE permission. The trackId is required to associate the course with a track.",
         "operationId": "CourseController_createCourse[1]",
         "parameters": [],
         "requestBody": {
@@ -899,7 +899,7 @@
             "required": false,
             "in": "query",
             "schema": {
-              "example": 20,
+              "example": 10,
               "type": "number"
             }
           },
@@ -984,10 +984,10 @@
             }
           },
           {
-            "name": "pathId",
+            "name": "trackId",
             "required": false,
             "in": "query",
-            "description": "Filter courses by learning path ID",
+            "description": "Filter courses by track ID",
             "schema": {}
           },
           {
@@ -1887,15 +1887,77 @@
     },
     "/api/paths": {
       "post": {
-        "description": "Creates a new learning path with the provided details. The slug must be unique and provided by the client. SortOrder is automatically incremented to ensure no duplicate values for paths with the same parentId. Requires PATH_CREATE permission.",
+        "description": "Creates a new learning path with the provided details. Upload thumbnail image as multipart/form-data. The slug must be unique and provided by the client. SortOrder is automatically incremented. Requires PATH_CREATE permission.",
         "operationId": "PathController_createPath[1]",
         "parameters": [],
         "requestBody": {
           "required": true,
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
-                "$ref": "#/components/schemas/CreatePathDto"
+                "type": "object",
+                "required": [
+                  "title",
+                  "summary",
+                  "description",
+                  "category"
+                ],
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "description": "Path title",
+                    "example": "Web Development Fundamentals"
+                  },
+                  "slug": {
+                    "type": "string",
+                    "description": "URL-friendly slug (auto-generated if not provided)",
+                    "example": "web-development-fundamentals"
+                  },
+                  "summary": {
+                    "type": "string",
+                    "description": "Short summary",
+                    "example": "Learn web development from scratch"
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "Detailed description",
+                    "example": "Complete guide to modern web development..."
+                  },
+                  "category": {
+                    "type": "string",
+                    "enum": [
+                      "WEB",
+                      "MOBILE",
+                      "OTHER"
+                    ],
+                    "description": "Path category"
+                  },
+                  "thumbnail": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "Thumbnail image (JPEG, PNG, JPG, WebP - max 5MB)"
+                  },
+                  "icon": {
+                    "type": "string",
+                    "description": "Icon identifier",
+                    "example": "code"
+                  },
+                  "trackIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "Track IDs to connect"
+                  },
+                  "metaTitle": {
+                    "type": "string",
+                    "description": "SEO meta title"
+                  },
+                  "metaDescription": {
+                    "type": "string",
+                    "description": "SEO meta description"
+                  }
+                }
               }
             }
           }
@@ -1912,7 +1974,7 @@
                       "default": true
                     },
                     "data": {
-                      "$ref": "#/components/schemas/PathResponseDto"
+                      "$ref": "#/components/schemas/WrappedResponsePathResponseDto"
                     },
                     "message": {
                       "type": "string"
@@ -1974,7 +2036,7 @@
                       "default": true
                     },
                     "data": {
-                      "$ref": "#/components/schemas/PathListResponseDto"
+                      "$ref": "#/components/schemas/WrappedResponsePathListResponseDto"
                     },
                     "message": {
                       "type": "string"
@@ -2034,7 +2096,7 @@
                       "default": true
                     },
                     "data": {
-                      "$ref": "#/components/schemas/PathResponseDto"
+                      "$ref": "#/components/schemas/WrappedResponsePathResponseDto"
                     },
                     "message": {
                       "type": "string"
@@ -2066,7 +2128,7 @@
         ]
       },
       "patch": {
-        "description": "Partially updates an existing learning path identified by either UUID or slug. All fields are optional - only provided fields will be updated. Examples: `PATCH /paths/550e8400-e29b-41d4-a716-446655440000` or `PATCH /paths/web-development`. Requires PATH_UPDATE permission.",
+        "description": "Partially updates an existing learning path identified by either UUID or slug. Upload thumbnail image as multipart/form-data. All fields are optional - only provided fields will be updated. Examples: `PATCH /paths/550e8400-e29b-41d4-a716-446655440000` or `PATCH /paths/web-development`. Requires PATH_UPDATE permission.",
         "operationId": "PathController_updatePath[1]",
         "parameters": [
           {
@@ -2083,9 +2145,68 @@
         "requestBody": {
           "required": true,
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
-                "$ref": "#/components/schemas/UpdatePathDto"
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "description": "Path title"
+                  },
+                  "slug": {
+                    "type": "string",
+                    "description": "URL-friendly slug"
+                  },
+                  "summary": {
+                    "type": "string",
+                    "description": "Short summary"
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "Detailed description"
+                  },
+                  "category": {
+                    "type": "string",
+                    "enum": [
+                      "WEB",
+                      "MOBILE",
+                      "OTHER"
+                    ],
+                    "description": "Path category"
+                  },
+                  "thumbnail": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "Thumbnail image (JPEG, PNG, JPG, WebP - max 5MB)"
+                  },
+                  "icon": {
+                    "type": "string",
+                    "description": "Icon identifier"
+                  },
+                  "trackIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "Track IDs to connect"
+                  },
+                  "isPublished": {
+                    "type": "boolean",
+                    "description": "Published status"
+                  },
+                  "sortOrder": {
+                    "type": "number",
+                    "description": "Sort order"
+                  },
+                  "metaTitle": {
+                    "type": "string",
+                    "description": "SEO meta title"
+                  },
+                  "metaDescription": {
+                    "type": "string",
+                    "description": "SEO meta description"
+                  }
+                }
               }
             }
           }
@@ -2102,7 +2223,7 @@
                       "default": true
                     },
                     "data": {
-                      "$ref": "#/components/schemas/PathResponseDto"
+                      "$ref": "#/components/schemas/WrappedResponsePathResponseDto"
                     },
                     "message": {
                       "type": "string"
@@ -2139,7 +2260,7 @@
         ]
       },
       "delete": {
-        "description": "Permanently deletes a learning path identified by either UUID or slug. This action cannot be undone. Cannot delete paths that have sub-paths. Examples: `DELETE /paths/550e8400-e29b-41d4-a716-446655440000` or `DELETE /paths/web-development`. Requires PATH_DELETE permission.",
+        "description": "Permanently deletes a learning path identified by either UUID or slug. This action cannot be undone. Cannot delete paths that have tracks. Examples: `DELETE /paths/550e8400-e29b-41d4-a716-446655440000` or `DELETE /paths/web-development`. Requires PATH_DELETE permission.",
         "operationId": "PathController_deletePath[1]",
         "parameters": [
           {
@@ -2199,6 +2320,354 @@
         "summary": "Delete a path by ID or slug",
         "tags": [
           "paths"
+        ]
+      }
+    },
+    "/api/tracks": {
+      "post": {
+        "description": "Create a new track within a path. Upload thumbnail image as multipart/form-data. Requires TRACK_CREATE permission (Admin only).",
+        "operationId": "TrackController_createTrack[1]",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "pathId",
+                  "title",
+                  "summary",
+                  "description",
+                  "category"
+                ],
+                "properties": {
+                  "pathId": {
+                    "type": "string",
+                    "description": "Path ID that this track belongs to",
+                    "example": "path123"
+                  },
+                  "title": {
+                    "type": "string",
+                    "description": "Track title",
+                    "example": "Frontend Development"
+                  },
+                  "slug": {
+                    "type": "string",
+                    "description": "URL-friendly slug (auto-generated if not provided)",
+                    "example": "frontend-development"
+                  },
+                  "summary": {
+                    "type": "string",
+                    "description": "Short summary",
+                    "example": "Learn modern frontend development"
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "Detailed description",
+                    "example": "Complete guide to frontend development..."
+                  },
+                  "category": {
+                    "type": "string",
+                    "enum": [
+                      "WEB",
+                      "MOBILE",
+                      "OTHER"
+                    ],
+                    "description": "Track category"
+                  },
+                  "thumbnail": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "Thumbnail image (JPEG, PNG, JPG, WebP - max 5MB)"
+                  },
+                  "icon": {
+                    "type": "string",
+                    "description": "Icon identifier",
+                    "example": "react"
+                  },
+                  "metaTitle": {
+                    "type": "string",
+                    "description": "SEO meta title"
+                  },
+                  "metaDescription": {
+                    "type": "string",
+                    "description": "SEO meta description"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Track created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TrackResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - validation failed"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden - insufficient permissions"
+          },
+          "404": {
+            "description": "Path not found"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Create a new track",
+        "tags": [
+          "Tracks"
+        ]
+      },
+      "get": {
+        "description": "Get a list of all tracks. Optionally filter by path ID or published status.",
+        "operationId": "TrackController_listTracks[1]",
+        "parameters": [
+          {
+            "name": "pathId",
+            "required": false,
+            "in": "query",
+            "description": "Filter tracks by path ID",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "publishedOnly",
+            "required": false,
+            "in": "query",
+            "description": "Show only published tracks",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of tracks",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TrackResponseDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "summary": "List all tracks",
+        "tags": [
+          "Tracks"
+        ]
+      }
+    },
+    "/api/tracks/{idOrSlug}": {
+      "get": {
+        "description": "Retrieve a single track by its ID or slug",
+        "operationId": "TrackController_getTrack[1]",
+        "parameters": [
+          {
+            "name": "idOrSlug",
+            "required": true,
+            "in": "path",
+            "description": "Track ID or slug",
+            "schema": {
+              "example": "frontend-development",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Track retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TrackResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Track not found"
+          }
+        },
+        "summary": "Get a track by ID or slug",
+        "tags": [
+          "Tracks"
+        ]
+      },
+      "put": {
+        "description": "Update an existing track. Upload thumbnail image as multipart/form-data. All fields are optional. Requires TRACK_UPDATE permission (Admin only).",
+        "operationId": "TrackController_updateTrack[1]",
+        "parameters": [
+          {
+            "name": "idOrSlug",
+            "required": true,
+            "in": "path",
+            "description": "Track ID or slug",
+            "schema": {
+              "example": "frontend-development",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "pathId": {
+                    "type": "string",
+                    "description": "Path ID that this track belongs to"
+                  },
+                  "title": {
+                    "type": "string",
+                    "description": "Track title"
+                  },
+                  "slug": {
+                    "type": "string",
+                    "description": "URL-friendly slug"
+                  },
+                  "summary": {
+                    "type": "string",
+                    "description": "Short summary"
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "Detailed description"
+                  },
+                  "category": {
+                    "type": "string",
+                    "enum": [
+                      "WEB",
+                      "MOBILE",
+                      "OTHER"
+                    ],
+                    "description": "Track category"
+                  },
+                  "thumbnail": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "Thumbnail image (JPEG, PNG, JPG, WebP - max 5MB)"
+                  },
+                  "icon": {
+                    "type": "string",
+                    "description": "Icon identifier"
+                  },
+                  "isPublished": {
+                    "type": "boolean",
+                    "description": "Published status"
+                  },
+                  "sortOrder": {
+                    "type": "number",
+                    "description": "Sort order"
+                  },
+                  "metaTitle": {
+                    "type": "string",
+                    "description": "SEO meta title"
+                  },
+                  "metaDescription": {
+                    "type": "string",
+                    "description": "SEO meta description"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Track updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TrackResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - validation failed"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden - insufficient permissions"
+          },
+          "404": {
+            "description": "Track not found"
+          },
+          "409": {
+            "description": "Slug already exists"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Update a track",
+        "tags": [
+          "Tracks"
+        ]
+      },
+      "delete": {
+        "description": "Delete an existing track. Requires TRACK_DELETE permission (Admin only).",
+        "operationId": "TrackController_deleteTrack[1]",
+        "parameters": [
+          {
+            "name": "idOrSlug",
+            "required": true,
+            "in": "path",
+            "description": "Track ID or slug",
+            "schema": {
+              "example": "frontend-development",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Track deleted successfully"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden - insufficient permissions"
+          },
+          "404": {
+            "description": "Track not found"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Delete a track",
+        "tags": [
+          "Tracks"
         ]
       }
     },
@@ -4197,9 +4666,9 @@
               "ALL_LEVELS"
             ]
           },
-          "pathId": {
+          "trackId": {
             "type": "string",
-            "description": "Learning Path ID - The course must be associated with a learning path",
+            "description": "Track ID - The course must be associated with a track",
             "example": "clx1234567890abcdefghij"
           },
           "requirements": {
@@ -4247,7 +4716,7 @@
           "thumbnailUrl",
           "price",
           "level",
-          "pathId"
+          "trackId"
         ]
       },
       "CourseDto": {
@@ -4384,6 +4853,21 @@
               "type": "string"
             }
           },
+          "rating": {
+            "type": "number",
+            "example": 4.5,
+            "description": "Average course rating"
+          },
+          "ratingCount": {
+            "type": "number",
+            "example": 150,
+            "description": "Number of ratings"
+          },
+          "lecturesCount": {
+            "type": "number",
+            "example": 45,
+            "description": "Total number of lectures in the course"
+          },
           "metaTitle": {
             "type": "string",
             "example": "Complete React.js Course",
@@ -4404,10 +4888,10 @@
             "example": 500,
             "description": "Maximum number of students allowed"
           },
-          "pathId": {
+          "trackId": {
             "type": "string",
             "example": "cmj4400kw0003r0lrdp1c2330",
-            "description": "Learning path ID this course belongs to"
+            "description": "Track ID this course belongs to"
           },
           "createdAt": {
             "type": "string",
@@ -4663,9 +5147,9 @@
               "ALL_LEVELS"
             ]
           },
-          "pathId": {
+          "trackId": {
             "type": "string",
-            "description": "Path ID"
+            "description": "Track ID"
           },
           "requirements": {
             "description": "Course requirements",
@@ -4762,55 +5246,6 @@
         "required": [
           "success",
           "data"
-        ]
-      },
-      "SectionPositionDto": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "description": "Section ID",
-            "example": "clx1234567890"
-          },
-          "position": {
-            "type": "number",
-            "description": "New position for the section (0-based index)",
-            "example": 0,
-            "minimum": 0
-          }
-        },
-        "required": [
-          "id",
-          "position"
-        ]
-      },
-      "ReorderSectionsDto": {
-        "type": "object",
-        "properties": {
-          "sections": {
-            "description": "Array of section IDs with their new positions. All sections in the course should be included for proper reordering.",
-            "example": [
-              {
-                "id": "clx1234567890",
-                "position": 0
-              },
-              {
-                "id": "clx0987654321",
-                "position": 1
-              },
-              {
-                "id": "clx1122334455",
-                "position": 2
-              }
-            ],
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/SectionPositionDto"
-            }
-          }
-        },
-        "required": [
-          "sections"
         ]
       },
       "CreateSectionDto": {
@@ -5367,6 +5802,55 @@
           }
         }
       },
+      "SectionPositionDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Section ID",
+            "example": "clx1234567890"
+          },
+          "position": {
+            "type": "number",
+            "description": "New position for the section (0-based index)",
+            "example": 0,
+            "minimum": 0
+          }
+        },
+        "required": [
+          "id",
+          "position"
+        ]
+      },
+      "ReorderSectionsDto": {
+        "type": "object",
+        "properties": {
+          "sections": {
+            "description": "Array of section IDs with their new positions. All sections in the course should be included for proper reordering.",
+            "example": [
+              {
+                "id": "clx1234567890",
+                "position": 0
+              },
+              {
+                "id": "clx0987654321",
+                "position": 1
+              },
+              {
+                "id": "clx1122334455",
+                "position": 2
+              }
+            ],
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SectionPositionDto"
+            }
+          }
+        },
+        "required": [
+          "sections"
+        ]
+      },
       "SectionDeleteResponseDto": {
         "type": "object",
         "properties": {
@@ -5525,6 +6009,105 @@
           "data"
         ]
       },
+      "TrackResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "track123",
+            "description": "Track ID"
+          },
+          "pathId": {
+            "type": "string",
+            "example": "path123",
+            "description": "Path ID this track belongs to"
+          },
+          "title": {
+            "type": "string",
+            "example": "Frontend Development",
+            "description": "Track title"
+          },
+          "slug": {
+            "type": "string",
+            "example": "frontend-development",
+            "description": "Track slug"
+          },
+          "summary": {
+            "type": "string",
+            "example": "Learn modern frontend development",
+            "description": "Short summary"
+          },
+          "description": {
+            "type": "string",
+            "example": "Complete guide to frontend development...",
+            "description": "Detailed description"
+          },
+          "thumbnailUrl": {
+            "type": "object",
+            "example": "https://example.com/images/track.jpg",
+            "description": "Thumbnail URL",
+            "nullable": true
+          },
+          "category": {
+            "type": "string",
+            "enum": [
+              "WEB",
+              "MOBILE",
+              "OTHER"
+            ],
+            "example": "WEB",
+            "description": "Track category"
+          },
+          "icon": {
+            "type": "string",
+            "example": "react",
+            "description": "Icon identifier"
+          },
+          "isPublished": {
+            "type": "boolean",
+            "example": true,
+            "description": "Is published"
+          },
+          "sortOrder": {
+            "type": "number",
+            "example": 0,
+            "description": "Sort order"
+          },
+          "metaTitle": {
+            "type": "string",
+            "example": "Frontend Development Track",
+            "description": "SEO meta title"
+          },
+          "metaDescription": {
+            "type": "string",
+            "example": "Learn frontend development",
+            "description": "SEO meta description"
+          },
+          "createdAt": {
+            "type": "string",
+            "example": "2024-01-01T00:00:00.000Z",
+            "description": "Creation timestamp"
+          },
+          "updatedAt": {
+            "type": "string",
+            "example": "2024-01-01T00:00:00.000Z",
+            "description": "Last update timestamp"
+          }
+        },
+        "required": [
+          "id",
+          "pathId",
+          "title",
+          "slug",
+          "summary",
+          "description",
+          "category",
+          "isPublished",
+          "sortOrder",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
       "PathDto": {
         "type": "object",
         "properties": {
@@ -5561,7 +6144,17 @@
           "parentId": {
             "type": "object",
             "example": null,
-            "description": "Parent path ID"
+            "description": "Parent path ID (for tracks)"
+          },
+          "category": {
+            "type": "string",
+            "example": "WEB",
+            "description": "Path category",
+            "enum": [
+              "WEB",
+              "MOBILE",
+              "OTHER"
+            ]
           },
           "icon": {
             "type": "string",
@@ -5597,6 +6190,13 @@
             "type": "string",
             "example": "2024-01-01T00:00:00.000Z",
             "description": "Updated at"
+          },
+          "tracks": {
+            "description": "Tracks associated with this path",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TrackResponseDto"
+            }
           }
         },
         "required": [
@@ -5604,6 +6204,7 @@
           "title",
           "slug",
           "summary",
+          "category",
           "isPublished",
           "sortOrder",
           "createdAt",
@@ -5626,69 +6227,22 @@
           "path"
         ]
       },
-      "CreatePathDto": {
+      "WrappedResponsePathResponseDto": {
         "type": "object",
         "properties": {
-          "title": {
-            "type": "string",
-            "description": "Path title",
-            "example": "Arabic Language Fundamentals",
-            "minLength": 1,
-            "maxLength": 255
+          "success": {
+            "type": "boolean"
           },
-          "slug": {
-            "type": "string",
-            "description": "URL-friendly slug for the path (unique identifier in URLs). If not provided, will be auto-generated from the title.",
-            "example": "arabic-language-fundamentals",
-            "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
-            "minLength": 1,
-            "maxLength": 255
+          "data": {
+            "$ref": "#/components/schemas/PathResponseDto"
           },
-          "summary": {
-            "type": "string",
-            "description": "Short summary for preview cards and listings",
-            "example": "Master the fundamentals of Arabic language",
-            "maxLength": 200
-          },
-          "description": {
-            "type": "string",
-            "description": "Detailed description with comprehensive information",
-            "example": "This comprehensive learning path covers all aspects of Arabic language fundamentals including grammar, vocabulary, pronunciation, and practical conversation skills. Perfect for beginners.",
-            "maxLength": 2000
-          },
-          "thumbnailUrl": {
-            "type": "string",
-            "description": "Path thumbnail image URL",
-            "example": "https://example.com/images/arabic-fundamentals-cover.jpg"
-          },
-          "parentId": {
-            "type": "string",
-            "description": "Parent path ID for nested paths",
-            "example": "123e4567-e89b-12d3-a456-426614174000"
-          },
-          "icon": {
-            "type": "string",
-            "description": "Path icon identifier",
-            "example": "book-open"
-          },
-          "metaTitle": {
-            "type": "string",
-            "description": "SEO meta title",
-            "example": "Learn Arabic Fundamentals - Complete Learning Path",
-            "maxLength": 255
-          },
-          "metaDescription": {
-            "type": "string",
-            "description": "SEO meta description",
-            "example": "Complete learning path for mastering Arabic language fundamentals with expert guidance",
-            "maxLength": 500
+          "message": {
+            "type": "string"
           }
         },
         "required": [
-          "title",
-          "summary",
-          "description",
-          "thumbnailUrl"
+          "success",
+          "data"
         ]
       },
       "PathListResponseDto": {
@@ -5712,77 +6266,23 @@
           "total"
         ]
       },
-      "UpdatePathDto": {
+      "WrappedResponsePathListResponseDto": {
         "type": "object",
         "properties": {
-          "title": {
-            "type": "string",
-            "description": "Path title",
-            "example": "Arabic Language Fundamentals",
-            "minLength": 1,
-            "maxLength": 255
+          "success": {
+            "type": "boolean"
           },
-          "slug": {
-            "type": "string",
-            "description": "URL-friendly slug for the path (unique identifier in URLs)",
-            "example": "arabic-language-fundamentals",
-            "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
-            "minLength": 1,
-            "maxLength": 255
+          "data": {
+            "$ref": "#/components/schemas/PathListResponseDto"
           },
-          "summary": {
-            "type": "string",
-            "description": "Short summary for preview cards and listings",
-            "example": "Master the fundamentals of Arabic language",
-            "maxLength": 200
-          },
-          "description": {
-            "type": "string",
-            "description": "Detailed description with comprehensive information",
-            "example": "This comprehensive learning path covers all aspects of Arabic language fundamentals including grammar, vocabulary, pronunciation, and practical conversation skills.",
-            "maxLength": 2000
-          },
-          "thumbnailUrl": {
-            "type": "string",
-            "description": "Path thumbnail image URL",
-            "example": "https://example.com/images/arabic-fundamentals-cover.jpg"
-          },
-          "parentId": {
-            "type": "string",
-            "description": "Parent path ID for nested paths",
-            "example": "123e4567-e89b-12d3-a456-426614174000"
-          },
-          "icon": {
-            "type": "string",
-            "description": "Path icon identifier",
-            "example": "book-open"
-          },
-          "isPublished": {
-            "type": "boolean",
-            "description": "Published status of the path",
-            "example": true,
-            "default": true
-          },
-          "sortOrder": {
-            "type": "number",
-            "description": "Sort order for displaying paths",
-            "example": 1,
-            "minimum": 0,
-            "default": 0
-          },
-          "metaTitle": {
-            "type": "string",
-            "description": "SEO meta title",
-            "example": "Learn Arabic Fundamentals - Complete Learning Path",
-            "maxLength": 255
-          },
-          "metaDescription": {
-            "type": "string",
-            "description": "SEO meta description",
-            "example": "Complete learning path for mastering Arabic language fundamentals with expert guidance",
-            "maxLength": 500
+          "message": {
+            "type": "string"
           }
-        }
+        },
+        "required": [
+          "success",
+          "data"
+        ]
       },
       "MyEnrollmentDto": {
         "type": "object",

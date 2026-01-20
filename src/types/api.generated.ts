@@ -1,7 +1,7 @@
 /**
 * AUTO-GENERATED FILE - DO NOT EDIT MANUALLY
 * Generated from OpenAPI schema
-* Last updated: 2026-01-17T19:58:40.379Z
+* Last updated: 2026-01-19T23:19:30.109Z
 * Schema URL: https://simple-arab-code-backend-production.up.railway.app/api/docs-json
 */
  
@@ -443,7 +443,7 @@ export type paths = {
         put?: never;
         /**
          * Create a new course
-         * @description Create a new course. Requires COURSE_CREATE permission. The pathId is required to associate the course with a learning path.
+         * @description Create a new course. Requires COURSE_CREATE permission. The trackId is required to associate the course with a track.
          */
         post: operations["CourseController_createCourse[1]"];
         delete?: never;
@@ -827,7 +827,7 @@ export type paths = {
         put?: never;
         /**
          * Create a new learning path
-         * @description Creates a new learning path with the provided details. The slug must be unique and provided by the client. SortOrder is automatically incremented to ensure no duplicate values for paths with the same parentId. Requires PATH_CREATE permission.
+         * @description Creates a new learning path with the provided details. Upload thumbnail image as multipart/form-data. The slug must be unique and provided by the client. SortOrder is automatically incremented. Requires PATH_CREATE permission.
          */
         post: operations["PathController_createPath[1]"];
         delete?: never;
@@ -852,14 +852,14 @@ export type paths = {
         post?: never;
         /**
          * Delete a path by ID or slug
-         * @description Permanently deletes a learning path identified by either UUID or slug. This action cannot be undone. Cannot delete paths that have sub-paths. Examples: `DELETE /paths/550e8400-e29b-41d4-a716-446655440000` or `DELETE /paths/web-development`. Requires PATH_DELETE permission.
+         * @description Permanently deletes a learning path identified by either UUID or slug. This action cannot be undone. Cannot delete paths that have tracks. Examples: `DELETE /paths/550e8400-e29b-41d4-a716-446655440000` or `DELETE /paths/web-development`. Requires PATH_DELETE permission.
          */
         delete: operations["PathController_deletePath[1]"];
         options?: never;
         head?: never;
         /**
          * Update a path by ID or slug
-         * @description Partially updates an existing learning path identified by either UUID or slug. All fields are optional - only provided fields will be updated. Examples: `PATCH /paths/550e8400-e29b-41d4-a716-446655440000` or `PATCH /paths/web-development`. Requires PATH_UPDATE permission.
+         * @description Partially updates an existing learning path identified by either UUID or slug. Upload thumbnail image as multipart/form-data. All fields are optional - only provided fields will be updated. Examples: `PATCH /paths/550e8400-e29b-41d4-a716-446655440000` or `PATCH /paths/web-development`. Requires PATH_UPDATE permission.
          */
         patch: operations["PathController_updatePath[1]"];
         trace?: never;
@@ -879,6 +879,58 @@ export type paths = {
          */
         post: operations["LectureController_createLecture[1]"];
         delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/tracks": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List all tracks
+         * @description Get a list of all tracks. Optionally filter by path ID or published status.
+         */
+        get: operations["TrackController_listTracks[1]"];
+        put?: never;
+        /**
+         * Create a new track
+         * @description Create a new track within a path. Upload thumbnail image as multipart/form-data. Requires TRACK_CREATE permission (Admin only).
+         */
+        post: operations["TrackController_createTrack[1]"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/tracks/{idOrSlug}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get a track by ID or slug
+         * @description Retrieve a single track by its ID or slug
+         */
+        get: operations["TrackController_getTrack[1]"];
+        /**
+         * Update a track
+         * @description Update an existing track. Upload thumbnail image as multipart/form-data. All fields are optional. Requires TRACK_UPDATE permission (Admin only).
+         */
+        put: operations["TrackController_updateTrack[1]"];
+        post?: never;
+        /**
+         * Delete a track
+         * @description Delete an existing track. Requires TRACK_DELETE permission (Admin only).
+         */
+        delete: operations["TrackController_deleteTrack[1]"];
         options?: never;
         head?: never;
         patch?: never;
@@ -1285,6 +1337,11 @@ export type components = {
              */
             isFeatured: boolean;
             /**
+             * @description Total number of lectures in the course
+             * @example 45
+             */
+            lecturesCount?: number;
+            /**
              * @description Course difficulty level
              * @example INTERMEDIATE
              * @enum {string}
@@ -1314,11 +1371,6 @@ export type components = {
              */
             objectives: string[];
             /**
-             * @description Learning path ID this course belongs to
-             * @example cmj4400kw0003r0lrdp1c2330
-             */
-            pathId?: string;
-            /**
              * @description Course preview video URL
              * @example https://example.com/videos/react-preview.mp4
              */
@@ -1333,6 +1385,16 @@ export type components = {
              * @example 2025-12-13T09:44:18.435Z
              */
             publishedAt?: string;
+            /**
+             * @description Average course rating
+             * @example 4.5
+             */
+            rating?: number;
+            /**
+             * @description Number of ratings
+             * @example 150
+             */
+            ratingCount?: number;
             /**
              * @description Course requirements
              * @example [
@@ -1376,6 +1438,11 @@ export type components = {
              * @example React.js - Complete Guide
              */
             title: string;
+            /**
+             * @description Track ID this course belongs to
+             * @example cmj4400kw0003r0lrdp1c2330
+             */
+            trackId?: string;
             /**
              * @description Course last update timestamp
              * @example 2025-12-13T09:44:18.436Z
@@ -1560,11 +1627,6 @@ export type components = {
             /** @description Course objectives */
             objectives?: string[];
             /**
-             * @description Learning Path ID - The course must be associated with a learning path
-             * @example clx1234567890abcdefghij
-             */
-            pathId: string;
-            /**
              * @description Course preview video URL
              * @example https://example.com/videos/course-preview.mp4
              */
@@ -1595,6 +1657,11 @@ export type components = {
              * @example Learn Arabic for Beginners
              */
             title: string;
+            /**
+             * @description Track ID - The course must be associated with a track
+             * @example clx1234567890abcdefghij
+             */
+            trackId: string;
             /**
              * @description Visibility
              * @enum {string}
@@ -1677,53 +1744,6 @@ export type components = {
              * @example https://example.com/videos/nestjs-intro.mp4
              */
             videoUrl?: string;
-        };
-        CreatePathDto: {
-            /**
-             * @description Detailed description with comprehensive information
-             * @example This comprehensive learning path covers all aspects of Arabic language fundamentals including grammar, vocabulary, pronunciation, and practical conversation skills. Perfect for beginners.
-             */
-            description: string;
-            /**
-             * @description Path icon identifier
-             * @example book-open
-             */
-            icon?: string;
-            /**
-             * @description SEO meta description
-             * @example Complete learning path for mastering Arabic language fundamentals with expert guidance
-             */
-            metaDescription?: string;
-            /**
-             * @description SEO meta title
-             * @example Learn Arabic Fundamentals - Complete Learning Path
-             */
-            metaTitle?: string;
-            /**
-             * @description Parent path ID for nested paths
-             * @example 123e4567-e89b-12d3-a456-426614174000
-             */
-            parentId?: string;
-            /**
-             * @description URL-friendly slug for the path (unique identifier in URLs). If not provided, will be auto-generated from the title.
-             * @example arabic-language-fundamentals
-             */
-            slug?: string;
-            /**
-             * @description Short summary for preview cards and listings
-             * @example Master the fundamentals of Arabic language
-             */
-            summary: string;
-            /**
-             * @description Path thumbnail image URL
-             * @example https://example.com/images/arabic-fundamentals-cover.jpg
-             */
-            thumbnailUrl: string;
-            /**
-             * @description Path title
-             * @example Arabic Language Fundamentals
-             */
-            title: string;
         };
         CreateSectionDto: {
             /**
@@ -2115,6 +2135,12 @@ export type components = {
         };
         PathDto: {
             /**
+             * @description Path category
+             * @example WEB
+             * @enum {string}
+             */
+            category: PathDtoCategory;
+            /**
              * @description Created at
              * @example 2024-01-01T00:00:00.000Z
              */
@@ -2150,7 +2176,7 @@ export type components = {
              */
             metaTitle?: string;
             /**
-             * @description Parent path ID
+             * @description Parent path ID (for tracks)
              * @example null
              */
             parentId?: Record<string, never>;
@@ -2179,6 +2205,8 @@ export type components = {
              * @example Arabic Language Path
              */
             title: string;
+            /** @description Tracks associated with this path */
+            tracks?: components["schemas"]["TrackResponseDto"][];
             /**
              * @description Updated at
              * @example 2024-01-01T00:00:00.000Z
@@ -2539,6 +2567,84 @@ export type components = {
             /** @example abc123token */
             token: string;
         };
+        TrackResponseDto: {
+            /**
+             * @description Track category
+             * @example WEB
+             * @enum {string}
+             */
+            category: TrackResponseDtoCategory;
+            /**
+             * @description Creation timestamp
+             * @example 2024-01-01T00:00:00.000Z
+             */
+            createdAt: string;
+            /**
+             * @description Detailed description
+             * @example Complete guide to frontend development...
+             */
+            description: string;
+            /**
+             * @description Icon identifier
+             * @example react
+             */
+            icon?: string;
+            /**
+             * @description Track ID
+             * @example track123
+             */
+            id: string;
+            /**
+             * @description Is published
+             * @example true
+             */
+            isPublished: boolean;
+            /**
+             * @description SEO meta description
+             * @example Learn frontend development
+             */
+            metaDescription?: string;
+            /**
+             * @description SEO meta title
+             * @example Frontend Development Track
+             */
+            metaTitle?: string;
+            /**
+             * @description Path ID this track belongs to
+             * @example path123
+             */
+            pathId: string;
+            /**
+             * @description Track slug
+             * @example frontend-development
+             */
+            slug: string;
+            /**
+             * @description Sort order
+             * @example 0
+             */
+            sortOrder: number;
+            /**
+             * @description Short summary
+             * @example Learn modern frontend development
+             */
+            summary: string;
+            /**
+             * @description Thumbnail URL
+             * @example https://example.com/images/track.jpg
+             */
+            thumbnailUrl?: Record<string, never> | null;
+            /**
+             * @description Track title
+             * @example Frontend Development
+             */
+            title: string;
+            /**
+             * @description Last update timestamp
+             * @example 2024-01-01T00:00:00.000Z
+             */
+            updatedAt: string;
+        };
         UpdateCourseDto: {
             /** @description Certificate enabled */
             certificateEnabled?: boolean;
@@ -2567,8 +2673,6 @@ export type components = {
             metaTitle?: string;
             /** @description Course objectives */
             objectives?: string[];
-            /** @description Path ID */
-            pathId?: string;
             /** @description Preview video URL */
             previewVideoUrl?: string;
             /** @description Course price */
@@ -2588,70 +2692,13 @@ export type components = {
             thumbnailUrl?: string;
             /** @description Course title */
             title?: string;
+            /** @description Track ID */
+            trackId?: string;
             /**
              * @description Visibility
              * @enum {string}
              */
             visibility?: UpdateCourseDtoVisibility;
-        };
-        UpdatePathDto: {
-            /**
-             * @description Detailed description with comprehensive information
-             * @example This comprehensive learning path covers all aspects of Arabic language fundamentals including grammar, vocabulary, pronunciation, and practical conversation skills.
-             */
-            description?: string;
-            /**
-             * @description Path icon identifier
-             * @example book-open
-             */
-            icon?: string;
-            /**
-             * @description Published status of the path
-             * @default true
-             * @example true
-             */
-            isPublished: boolean;
-            /**
-             * @description SEO meta description
-             * @example Complete learning path for mastering Arabic language fundamentals with expert guidance
-             */
-            metaDescription?: string;
-            /**
-             * @description SEO meta title
-             * @example Learn Arabic Fundamentals - Complete Learning Path
-             */
-            metaTitle?: string;
-            /**
-             * @description Parent path ID for nested paths
-             * @example 123e4567-e89b-12d3-a456-426614174000
-             */
-            parentId?: string;
-            /**
-             * @description URL-friendly slug for the path (unique identifier in URLs)
-             * @example arabic-language-fundamentals
-             */
-            slug?: string;
-            /**
-             * @description Sort order for displaying paths
-             * @default 0
-             * @example 1
-             */
-            sortOrder: number;
-            /**
-             * @description Short summary for preview cards and listings
-             * @example Master the fundamentals of Arabic language
-             */
-            summary?: string;
-            /**
-             * @description Path thumbnail image URL
-             * @example https://example.com/images/arabic-fundamentals-cover.jpg
-             */
-            thumbnailUrl?: string;
-            /**
-             * @description Path title
-             * @example Arabic Language Fundamentals
-             */
-            title?: string;
         };
         UpdateProfileResponseDto: {
             /** @example I am a passionate learner interested in technology. */
@@ -2858,6 +2905,16 @@ export type components = {
         };
         WrappedResponseLectureResponseDto: {
             data: components["schemas"]["LectureResponseDto"];
+            message?: string;
+            success: boolean;
+        };
+        WrappedResponsePathListResponseDto: {
+            data: components["schemas"]["PathListResponseDto"];
+            message?: string;
+            success: boolean;
+        };
+        WrappedResponsePathResponseDto: {
+            data: components["schemas"]["PathResponseDto"];
             message?: string;
             success: boolean;
         };
@@ -4187,12 +4244,12 @@ export interface operations {
                 maxPrice?: number;
                 minPrice?: number;
                 page?: number;
-                /** @description Filter courses by learning path ID */
-                pathId?: unknown;
                 search?: unknown;
                 sortBy?: unknown;
                 sortOrder?: PathsApiCoursesGetParametersQuerySortOrder;
                 status?: PathsApiCoursesGetParametersQueryStatus;
+                /** @description Filter courses by track ID */
+                trackId?: unknown;
                 visibility?: PathsApiCoursesGetParametersQueryVisibility;
             };
             header?: never;
@@ -5659,7 +5716,7 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        data?: components["schemas"]["PathListResponseDto"];
+                        data?: components["schemas"]["WrappedResponsePathListResponseDto"];
                         message?: string;
                         /** @default true */
                         success: boolean;
@@ -5712,7 +5769,49 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["CreatePathDto"];
+                "multipart/form-data": {
+                    /**
+                     * @description Path category
+                     * @enum {string}
+                     */
+                    category: PathsApiPathsPostRequestBodyMultipartFormDataCategory;
+                    /**
+                     * @description Detailed description
+                     * @example Complete guide to modern web development...
+                     */
+                    description: string;
+                    /**
+                     * @description Icon identifier
+                     * @example code
+                     */
+                    icon?: string;
+                    /** @description SEO meta description */
+                    metaDescription?: string;
+                    /** @description SEO meta title */
+                    metaTitle?: string;
+                    /**
+                     * @description URL-friendly slug (auto-generated if not provided)
+                     * @example web-development-fundamentals
+                     */
+                    slug?: string;
+                    /**
+                     * @description Short summary
+                     * @example Learn web development from scratch
+                     */
+                    summary: string;
+                    /**
+                     * Format: binary
+                     * @description Thumbnail image (JPEG, PNG, JPG, WebP - max 5MB)
+                     */
+                    thumbnail?: string;
+                    /**
+                     * @description Path title
+                     * @example Web Development Fundamentals
+                     */
+                    title: string;
+                    /** @description Track IDs to connect */
+                    trackIds?: string[];
+                };
             };
         };
         responses: {
@@ -5723,7 +5822,7 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        data?: components["schemas"]["PathResponseDto"];
+                        data?: components["schemas"]["WrappedResponsePathResponseDto"];
                         message?: string;
                         /** @default true */
                         success: boolean;
@@ -5786,7 +5885,7 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        data?: components["schemas"]["PathResponseDto"];
+                        data?: components["schemas"]["WrappedResponsePathResponseDto"];
                         message?: string;
                         /** @default true */
                         success: boolean;
@@ -5905,7 +6004,38 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["UpdatePathDto"];
+                "multipart/form-data": {
+                    /**
+                     * @description Path category
+                     * @enum {string}
+                     */
+                    category?: PathsApiPathsIdOrSlugPatchRequestBodyMultipartFormDataCategory;
+                    /** @description Detailed description */
+                    description?: string;
+                    /** @description Icon identifier */
+                    icon?: string;
+                    /** @description Published status */
+                    isPublished?: boolean;
+                    /** @description SEO meta description */
+                    metaDescription?: string;
+                    /** @description SEO meta title */
+                    metaTitle?: string;
+                    /** @description URL-friendly slug */
+                    slug?: string;
+                    /** @description Sort order */
+                    sortOrder?: number;
+                    /** @description Short summary */
+                    summary?: string;
+                    /**
+                     * Format: binary
+                     * @description Thumbnail image (JPEG, PNG, JPG, WebP - max 5MB)
+                     */
+                    thumbnail?: string;
+                    /** @description Path title */
+                    title?: string;
+                    /** @description Track IDs to connect */
+                    trackIds?: string[];
+                };
             };
         };
         responses: {
@@ -5916,7 +6046,7 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        data?: components["schemas"]["PathResponseDto"];
+                        data?: components["schemas"]["WrappedResponsePathResponseDto"];
                         message?: string;
                         /** @default true */
                         success: boolean;
@@ -6016,6 +6146,293 @@ export interface operations {
             };
             /** @description Internal server error */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    "TrackController_listTracks[1]": {
+        parameters: {
+            query?: {
+                /** @description Filter tracks by path ID */
+                pathId?: string;
+                /** @description Show only published tracks */
+                publishedOnly?: boolean;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description List of tracks */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TrackResponseDto"][];
+                };
+            };
+        };
+    };
+    "TrackController_createTrack[1]": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "multipart/form-data": {
+                    /**
+                     * @description Track category
+                     * @enum {string}
+                     */
+                    category: PathsApiTracksPostRequestBodyMultipartFormDataCategory;
+                    /**
+                     * @description Detailed description
+                     * @example Complete guide to frontend development...
+                     */
+                    description: string;
+                    /**
+                     * @description Icon identifier
+                     * @example react
+                     */
+                    icon?: string;
+                    /** @description SEO meta description */
+                    metaDescription?: string;
+                    /** @description SEO meta title */
+                    metaTitle?: string;
+                    /**
+                     * @description Path ID that this track belongs to
+                     * @example path123
+                     */
+                    pathId: string;
+                    /**
+                     * @description URL-friendly slug (auto-generated if not provided)
+                     * @example frontend-development
+                     */
+                    slug?: string;
+                    /**
+                     * @description Short summary
+                     * @example Learn modern frontend development
+                     */
+                    summary: string;
+                    /**
+                     * Format: binary
+                     * @description Thumbnail image (JPEG, PNG, JPG, WebP - max 5MB)
+                     */
+                    thumbnail?: string;
+                    /**
+                     * @description Track title
+                     * @example Frontend Development
+                     */
+                    title: string;
+                };
+            };
+        };
+        responses: {
+            /** @description Track created successfully */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TrackResponseDto"];
+                };
+            };
+            /** @description Bad request - validation failed */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Forbidden - insufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Path not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    "TrackController_getTrack[1]": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Track ID or slug */
+                idOrSlug: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Track retrieved successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TrackResponseDto"];
+                };
+            };
+            /** @description Track not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    "TrackController_updateTrack[1]": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Track ID or slug */
+                idOrSlug: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "multipart/form-data": {
+                    /**
+                     * @description Track category
+                     * @enum {string}
+                     */
+                    category?: PathsApiTracksIdOrSlugPutRequestBodyMultipartFormDataCategory;
+                    /** @description Detailed description */
+                    description?: string;
+                    /** @description Icon identifier */
+                    icon?: string;
+                    /** @description Published status */
+                    isPublished?: boolean;
+                    /** @description SEO meta description */
+                    metaDescription?: string;
+                    /** @description SEO meta title */
+                    metaTitle?: string;
+                    /** @description Path ID that this track belongs to */
+                    pathId?: string;
+                    /** @description URL-friendly slug */
+                    slug?: string;
+                    /** @description Sort order */
+                    sortOrder?: number;
+                    /** @description Short summary */
+                    summary?: string;
+                    /**
+                     * Format: binary
+                     * @description Thumbnail image (JPEG, PNG, JPG, WebP - max 5MB)
+                     */
+                    thumbnail?: string;
+                    /** @description Track title */
+                    title?: string;
+                };
+            };
+        };
+        responses: {
+            /** @description Track updated successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TrackResponseDto"];
+                };
+            };
+            /** @description Bad request - validation failed */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Forbidden - insufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Track not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Slug already exists */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    "TrackController_deleteTrack[1]": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Track ID or slug */
+                idOrSlug: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Track deleted successfully */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Forbidden - insufficient permissions */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Track not found */
+            404: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -6371,6 +6788,26 @@ export enum PathsApiOrdersGetParametersQueryStatus {
     PARTIALLY_REFUNDED = "PARTIALLY_REFUNDED",
     VOIDED = "VOIDED"
 }
+export enum PathsApiPathsPostRequestBodyMultipartFormDataCategory {
+    WEB = "WEB",
+    MOBILE = "MOBILE",
+    OTHER = "OTHER"
+}
+export enum PathsApiPathsIdOrSlugPatchRequestBodyMultipartFormDataCategory {
+    WEB = "WEB",
+    MOBILE = "MOBILE",
+    OTHER = "OTHER"
+}
+export enum PathsApiTracksPostRequestBodyMultipartFormDataCategory {
+    WEB = "WEB",
+    MOBILE = "MOBILE",
+    OTHER = "OTHER"
+}
+export enum PathsApiTracksIdOrSlugPutRequestBodyMultipartFormDataCategory {
+    WEB = "WEB",
+    MOBILE = "MOBILE",
+    OTHER = "OTHER"
+}
 export enum AttachmentType {
     PDF = "PDF",
     VIDEO = "VIDEO",
@@ -6446,6 +6883,16 @@ export enum LectureType {
     ASSIGNMENT = "ASSIGNMENT",
     LIVE_SESSION = "LIVE_SESSION",
     ATTACHMENT = "ATTACHMENT"
+}
+export enum PathDtoCategory {
+    WEB = "WEB",
+    MOBILE = "MOBILE",
+    OTHER = "OTHER"
+}
+export enum TrackResponseDtoCategory {
+    WEB = "WEB",
+    MOBILE = "MOBILE",
+    OTHER = "OTHER"
 }
 export enum UpdateCourseDtoCurrency {
     USD = "USD",

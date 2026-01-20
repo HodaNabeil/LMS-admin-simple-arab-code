@@ -1,5 +1,7 @@
 import { Card } from "@/components/ui/card";
-import { pathEditSchema, pathSchema, type IPathForm } from "@/validations/path";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { createPathSchema, editPathSchema, type CreatePathDto, type UpdatePathDto, PathCategory } from "@/validations/path";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -7,12 +9,12 @@ import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import { Pages, Routes } from "@/constants/enums";
 import { useCreatePath, useUpdatePath } from "../hooks/usePathsMutations";
-import type { Path } from "@/types/path";
 import { usePathStorage } from "./services/usePathStorage";
 import { FORM_DATA_KEY, FORM_STEP_KEY, step1Fields, step2Fields } from "./services/constants";
 import { PathFormSteps } from "./path-form/components/form/PathFormSteps";
 import { PathFormField } from "./path-form/components/form/PathFormField";
 import { PathFormActions } from "./path-form/components/form/PathFormActions";
+import type { Path } from "@/types/path";
 
 interface PathFormProps {
   pathData?: Path;
@@ -20,8 +22,7 @@ interface PathFormProps {
 
 const PathForm = ({ pathData }: PathFormProps) => {
   const isEditMode = Boolean(pathData);
-  const [isChangingImage, setIsChangingImage] = useState(false);
-  const [isChangingRoadmap, setIsChangingRoadmap] = useState(false);
+
   const createMutation = useCreatePath();
   const updateMutation = useUpdatePath({ slug: pathData?.slug || "" });
   const mutation = isEditMode ? updateMutation : createMutation;
@@ -37,6 +38,8 @@ const PathForm = ({ pathData }: PathFormProps) => {
     return savedStep || 1;
   });
 
+  const [openDraftDialog, setOpenDraftDialog] = useState(false);
+
   const totalSteps = isEditMode ? 1 : 2;
 
   const getSavedFormData = useCallback(() => {
@@ -46,13 +49,12 @@ const PathForm = ({ pathData }: PathFormProps) => {
         slug: pathData.slug || "",
         summary: pathData.summary || "",
         description: pathData.description || "",
-        thumbnailUrl: pathData.thumbnailUrl || "",
-        parentId: pathData.parentId || "",
         icon: pathData.icon || "",
-        metatitle: pathData.metatitle || "",
+        metaTitle: pathData.metaTitle || "",
         metaDescription: pathData.metaDescription || "",
-        image: pathData.image || null,
-        roadmap: pathData.roadmapUrl || null,
+        category: (pathData.category as unknown as PathCategory) || PathCategory.WEB,
+        trackIds: (pathData as any).tracks?.map((t: any) => t.id) || [],
+
       };
     }
 
@@ -63,13 +65,12 @@ const PathForm = ({ pathData }: PathFormProps) => {
         slug: "",
         summary: "",
         description: "",
-        thumbnailUrl: "",
-        parentId: "",
         icon: "",
-        metatitle: "",
+        metaTitle: "",
         metaDescription: "",
-        image: null,
-        roadmap: null,
+        category: PathCategory.WEB,
+        trackIds: [],
+
       }
     );
   }, [isEditMode, pathData, getFromLocalStorage]);
@@ -81,8 +82,9 @@ const PathForm = ({ pathData }: PathFormProps) => {
     trigger,
     watch,
     reset,
-  } = useForm({
-    resolver: zodResolver(isEditMode ? pathEditSchema : pathSchema),
+  } = useForm<CreatePathDto | UpdatePathDto>({
+    // @ts-expect-error - zodResolver has issues with conditional schema types
+    resolver: zodResolver(isEditMode ? editPathSchema : createPathSchema),
     mode: "onChange",
     defaultValues: getSavedFormData(),
   });
@@ -107,13 +109,21 @@ const PathForm = ({ pathData }: PathFormProps) => {
     }
   }, [currentStep, isEditMode, saveToLocalStorage]);
 
-  const handleFormSubmit = async (data: IPathForm) => {
+  const handleFormSubmit = async (data: CreatePathDto | UpdatePathDto) => {
     try {
       await mutation.mutateAsync(data);
       clearDraftData();
+      toast.success(
+        isEditMode ? "تم تحديث المسار بنجاح" : "تم إنشاء المسار بنجاح"
+      );
       navigate(`/${Routes.ADMIN}/${Pages.PATHS}`);
     } catch (error) {
-      console.log(error || "Error submitting form");
+      console.error("❌ Form submission error:", error);
+      console.error("Error details:", {
+        error,
+        isEditMode,
+        data
+      });
     }
   };
 
@@ -129,37 +139,39 @@ const PathForm = ({ pathData }: PathFormProps) => {
   };
 
   const handleClearDraft = () => {
-    if (confirm("هل تريد حذف المسودة المحفوظة وبدء من جديد؟")) {
-      clearDraftData();
-      reset(getSavedFormData());
-      setCurrentStep(1);
-      toast.success("تم حذف المسودة بنجاح");
-    }
+    setOpenDraftDialog(true);
   };
 
-  const getFieldsForStep = (step: number): (keyof IPathForm)[] => {
+  const confirmClearDraft = () => {
+    clearDraftData();
+    reset(getSavedFormData());
+    setCurrentStep(1);
+    setOpenDraftDialog(false);
+    toast.success("تم حذف المسودة بنجاح");
+  };
+
+  const getFieldsForStep = (step: number): (keyof UpdatePathDto)[] => {
     if (isEditMode) {
-      const fields: (keyof IPathForm)[] = [
+      const fields: (keyof UpdatePathDto)[] = [
         "title",
         "slug",
         "summary",
         "description",
-        "thumbnailUrl",
-        "parentId",
         "icon",
-        "metatitle",
+        "metaTitle",
         "metaDescription",
+        "category",
+        "trackIds",
       ];
-      if (isChangingImage) fields.push("image");
-      if (isChangingRoadmap) fields.push("roadmap");
+
       return fields;
     }
 
     switch (step) {
       case 1:
-        return ["title", "slug", "summary", "description", "thumbnailUrl", "parentId", "icon", "metatitle", "metaDescription"];
+        return ["title", "slug", "summary", "description", "icon", "metaTitle", "metaDescription"];
       case 2:
-        return ["image", "roadmap"];
+        return ["category", "trackIds"];
       default:
         return [];
     }
@@ -209,6 +221,13 @@ const PathForm = ({ pathData }: PathFormProps) => {
     }
   };
 
+  const onInvalid = (errors: any) => {
+    console.error("Validation Errors:", errors);
+
+    const missingFields = Object.keys(errors).join(", ");
+    toast.error(`يرجى التحقق من الحقول المطلوبة: ${missingFields}`);
+  };
+
   return (
     <div className="max-w-4xl mx-auto p-6 space-y-8">
       <PathFormSteps currentStep={currentStep} totalSteps={totalSteps} />
@@ -226,21 +245,14 @@ const PathForm = ({ pathData }: PathFormProps) => {
       </div>
 
       <Card className="p-8">
-        <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-6">
+        <form onSubmit={handleSubmit(handleFormSubmit, onInvalid)} className="space-y-6">
           {getCurrentFields().map((field) => (
             <div key={field.name} className="mb-6">
               <PathFormField
                 field={field}
                 control={control}
                 errors={errors}
-                isEditMode={isEditMode}
-                pathData={pathData}
-                formLoading={formLoading}
-                isChangingImage={isChangingImage}
-                setIsChangingImage={setIsChangingImage}
-                isChangingRoadmap={isChangingRoadmap}
-                setIsChangingRoadmap={setIsChangingRoadmap}
-                currentStep={currentStep}
+
               />
             </div>
           ))}
@@ -257,7 +269,26 @@ const PathForm = ({ pathData }: PathFormProps) => {
           />
         </form>
       </Card>
-    </div>
+
+      <Dialog open={openDraftDialog} onOpenChange={setOpenDraftDialog}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>حذف المسودة؟</DialogTitle>
+            <DialogDescription>
+              هل أنت متأكد من أنك تريد حذف المسودة المحفوظة؟ سيتم فقد جميع التغييرات التي قمت بها.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setOpenDraftDialog(false)}>
+              إلغاء
+            </Button>
+            <Button variant="destructive" onClick={confirmClearDraft}>
+              نعم، احذف
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </div >
   );
 };
 
