@@ -15,7 +15,6 @@ import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { columns } from "./columns";
 import { Loader } from "@/components/shared/loader";
-import { PathTableMobile } from "./PathTableMobile";
 import { PathTableDesktop } from "./PathTableDesktop";
 import { usePaths } from "../../hooks/usePathsQueries";
 

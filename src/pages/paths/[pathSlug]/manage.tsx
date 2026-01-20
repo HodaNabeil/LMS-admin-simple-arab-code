@@ -32,7 +32,7 @@ function ManagePath() {
     !isPending &&
     path && (
       <div style={{ paddingTop: "5rem" }}>
-        <PathForm pathData={path.data} />
+        <PathForm pathData={path.data.path} />
       </div>
     )
   );

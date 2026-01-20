@@ -1,7 +1,7 @@
 /**
 * AUTO-GENERATED FILE - DO NOT EDIT MANUALLY
 * Generated from OpenAPI schema
-* Last updated: 2026-01-19T23:19:30.109Z
+* Last updated: 2026-01-20T00:32:12.289Z
 * Schema URL: https://simple-arab-code-backend-production.up.railway.app/api/docs-json
 */
  
