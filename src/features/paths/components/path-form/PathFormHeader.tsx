@@ -4,9 +4,7 @@ interface PathFormHeaderProps {
     showAutoSave?: boolean;
 }
 
-/**
- * Displays the form header with title, description, and optional auto-save indicator
- */
+
 export function PathFormHeader({ title, description, showAutoSave = false }: PathFormHeaderProps) {
     return (
         <div className="text-center space-y-2">

@@ -5,11 +5,11 @@ import { Card } from "@/components/ui/card";
 import type { Path } from "@/types/path";
 import { Pages, Routes } from "@/constants/enums";
 import { usePathForm } from "../../hooks/usePathForm";
-import { PathFormSteps } from "./PathFormSteps";
 import { PathFormHeader } from "./PathFormHeader";
 import { PathFormBody } from "./PathFormBody";
-import { PathFormActions } from "./PathFormActions";
 import { ClearDraftDialog } from "./ClearDraftDialog/ClearDraftDialog";
+import { PathFormSteps } from "./components/form/PathFormSteps";
+import { PathFormActions } from "./components/form/PathFormActions";
 
 interface PathFormContainerProps {
     pathData?: Path;

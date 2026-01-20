@@ -1,7 +1,7 @@
 import type { Control, FieldErrors } from "react-hook-form";
 import type { CreatePathDto, UpdatePathDto } from "@/validations/path";
 import type { IFormField } from "@/types/app";
-import { PathFormField } from "./PathFormField";
+import { PathFormField } from "./components/form/PathFormField";
 
 interface PathFormBodyProps {
     fields: IFormField[];
