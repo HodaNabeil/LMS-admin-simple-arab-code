@@ -6,23 +6,22 @@ import type {
   CreateTrackResponse,
   UpdateTrackRequest,
   UpdateTrackResponse,
-  GetTracksResponse,
+  ListTracksResponse,
   GetTrackResponse,
   DeleteTrackResponse,
-  ApiResponse,
 } from "@/types/tracks";
 
 export const tracksApi = {
-  async getAllTracks(): Promise<GetTracksResponse['data']['tracks']> {
-    const response = await api.get<GetTracksResponse>(TRACKS_ENDPOINTS.LIST);
-    return response.data.data.tracks;
+  async getAllTracks(): Promise<ListTracksResponse> {
+    const response = await api.get<ListTracksResponse>(TRACKS_ENDPOINTS.LIST);
+    return response.data;
   },
 
   async getTrack(slug: string): Promise<GetTrackResponse> {
-    const response = await api.get<ApiResponse<GetTrackResponse>>(
+    const response = await api.get<GetTrackResponse>(
       TRACKS_ENDPOINTS.DETAIL.replace("{idOrSlug}", slug)
     );
-    return response.data.data;
+    return response.data;
   },
 
   async createTrack(data: CreateTrackRequest): Promise<CreateTrackResponse> {

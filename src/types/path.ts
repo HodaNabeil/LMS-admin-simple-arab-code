@@ -9,12 +9,12 @@ export type CreatePathRequest = components['schemas']['CreatePathDto'];
 export type UpdatePathRequest = components['schemas']['UpdatePathDto'];
 export type DeletePathRequest = components['schemas']['DeletePathDto'];
 export interface GetPublicCoursesParams {
-    page?: number;
-    limit?: number;
-    search?: string;
-    level?: string;
-    status?: 'PUBLISHED';
-    visibility?: 'PUBLIC';
+  page?: number;
+  limit?: number;
+  search?: string;
+  level?: string;
+  status?: 'PUBLISHED';
+  visibility?: 'PUBLIC';
 }
 
 // ============================================
@@ -23,12 +23,12 @@ export interface GetPublicCoursesParams {
 
 // Path CRUD responses
 export type GetPathsResponse =
-    components['schemas']['WrappedResponsePathListResponseDto'];
+  components['schemas']['WrappedResponsePathListResponseDto'];
 export type GetPathResponse =
-    components['schemas']['WrappedResponsePathResponseDto'];
+  components['schemas']['WrappedResponsePathResponseDto'];
 export type CreatePathResponse =
-    components['schemas']['WrappedResponsePathResponseDto'];
+  components['schemas']['WrappedResponsePathResponseDto'];
 export type UpdatePathResponse =
-    components['schemas']['WrappedResponsePathResponseDto'];
+  components['schemas']['WrappedResponsePathResponseDto'];
 export type DeletePathResponse =
-    components['schemas']['WrappedResponseDeleteResponseDto'];
+  components['schemas']['WrappedResponseDeleteResponseDto'];

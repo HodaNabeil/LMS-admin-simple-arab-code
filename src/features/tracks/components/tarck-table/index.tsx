@@ -21,8 +21,9 @@ import { useAllTracks } from "../../hooks/useTracksQueries";
 
 
 export default function TrackTable() {
-  const { data: tracks, isPending } = useAllTracks();
+  const { data, isPending } = useAllTracks();
 
+  const tracks = data?.data.tracks || [];
 
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);

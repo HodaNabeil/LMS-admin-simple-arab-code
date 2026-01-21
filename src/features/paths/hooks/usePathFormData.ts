@@ -1,6 +1,6 @@
 import { useCallback } from "react";
-import type { CreatePathDto, UpdatePathDto, PathCategory } from "@/validations/path";
-import { PathCategory as PathCategoryEnum } from "@/validations/path";
+import type { CreatePathDto, UpdatePathDto } from "@/validations/path";
+import { CreatePathDtoCategory, UpdatePathDtoCategory } from "@/types/api.generated";
 import type { Path } from "@/types/path";
 import { usePathStorage } from "../components/services/usePathStorage";
 import { FORM_DATA_KEY } from "../components/services/constants";
@@ -34,8 +34,8 @@ export function usePathFormData({
                 icon: pathData.icon || "",
                 metaTitle: pathData.metaTitle || "",
                 metaDescription: pathData.metaDescription || "",
-                category: (pathData.category as unknown as PathCategory) || PathCategoryEnum.WEB,
-            };
+                category: (pathData.category as unknown as UpdatePathDtoCategory) || UpdatePathDtoCategory.WEB,
+            } as UpdatePathDto;
         }
 
         // Create mode: try to load from localStorage or use defaults
@@ -49,9 +49,9 @@ export function usePathFormData({
                 icon: "",
                 metaTitle: "",
                 metaDescription: "",
-                category: PathCategoryEnum.WEB,
+                category: CreatePathDtoCategory.WEB,
             }
-        );
+        ) as CreatePathDto;
     }, [isEditMode, pathData, getFromLocalStorage]);
 
     const saveFormData = useCallback(

@@ -1,12 +1,12 @@
 import { tracksApi } from "../services/tracksApi";
 import { tracksKeys } from "@/lib/query-keys";
-import type { GetTrackResponse, GetTracksResponse } from "@/types/tracks";
+import type { GetTrackResponse, ListTracksResponse } from "@/types/tracks";
 import { useQuery } from "@tanstack/react-query";
 
 export function useAllTracks() {
-  return useQuery<GetTracksResponse['data']['tracks']>({
+  return useQuery<ListTracksResponse>({
     queryKey: tracksKeys.all,
-    queryFn: async (): Promise<GetTracksResponse['data']['tracks']> => {
+    queryFn: async (): Promise<ListTracksResponse> => {
       return tracksApi.getAllTracks();
     },
   });

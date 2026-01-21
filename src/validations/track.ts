@@ -1,7 +1,7 @@
 import * as z from 'zod';
 import {
-    PathsApiTracksPostRequestBodyMultipartFormDataCategory,
-    PathsApiTracksIdOrSlugPutRequestBodyMultipartFormDataCategory
+    CreateTrackDtoCategory,
+    UpdateTrackDtoCategory
 } from '@/types/api.generated';
 
 // Schema for creating new tracks
@@ -40,7 +40,7 @@ export const createTrackSchema = z.object({
         .min(1, { message: 'Description is required' })
         .max(2000, { message: 'Description must be less than 2000 characters' }),
 
-    category: z.nativeEnum(PathsApiTracksPostRequestBodyMultipartFormDataCategory, {
+    category: z.nativeEnum(CreateTrackDtoCategory, {
         errorMap: () => ({ message: 'Category must be one of: WEB, MOBILE, OTHER' }),
     }),
 
@@ -113,7 +113,7 @@ export const editTrackSchema = z.object({
         .optional(),
 
     category: z
-        .nativeEnum(PathsApiTracksIdOrSlugPutRequestBodyMultipartFormDataCategory, {
+        .nativeEnum(UpdateTrackDtoCategory, {
             errorMap: () => ({ message: 'Category must be one of: WEB, MOBILE, OTHER' }),
         })
         .optional(),
