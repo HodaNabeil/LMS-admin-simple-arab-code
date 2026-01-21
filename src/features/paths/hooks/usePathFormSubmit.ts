@@ -3,6 +3,7 @@ import type { FieldErrors } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import type { CreatePathDto, UpdatePathDto } from "@/validations/path";
+import type { UpdatePathRequest } from "@/types/path";
 import { Pages, Routes } from "@/constants/enums";
 import { useCreatePath, useUpdatePath } from "./usePathsMutations";
 
@@ -32,7 +33,17 @@ export function usePathFormSubmit({
     const onSubmit = useCallback(
         async (data: CreatePathDto | UpdatePathDto) => {
             try {
-                await mutation.mutateAsync(data);
+                if (isEditMode) {
+                    // UpdatePathDto requires isPublished and sortOrder
+                    const updateData: UpdatePathRequest = {
+                        ...data,
+                        isPublished: (data as UpdatePathDto).isPublished ?? true,
+                        sortOrder: (data as UpdatePathDto).sortOrder ?? 0,
+                    } as UpdatePathRequest;
+                    await updateMutation.mutateAsync(updateData);
+                } else {
+                    await createMutation.mutateAsync(data as CreatePathDto);
+                }
                 clearFormData();
                 toast.success(
                     isEditMode ? "تم تحديث المسار بنجاح" : "تم إنشاء المسار بنجاح"
@@ -46,7 +57,7 @@ export function usePathFormSubmit({
                 });
             }
         },
-        [mutation, clearFormData, isEditMode, navigate]
+        [updateMutation, createMutation, clearFormData, isEditMode, navigate]
     );
 
     const onInvalid = useCallback((errors: FieldErrors) => {

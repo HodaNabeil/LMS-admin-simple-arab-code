@@ -153,7 +153,7 @@ const useFormFields = ({ slug }: IFormFieldsVariables) => {
   const pathFields = (): IFormField[] => [
     {
       name: 'name',
-      label: 'اسم المسار التعليمي',
+      label: 'اسم التراك التعليمي',
       type: 'text',
       placeholder: 'ادخل اسم المسار التعليمي',
     },
@@ -312,6 +312,76 @@ const useFormFields = ({ slug }: IFormFieldsVariables) => {
     },
   ];
 
+  const createTrackFields = (): IFormField[] => [
+    {
+      name: "pathId",
+      label: "التراك الأساسي",
+      type: "select" as const,
+      placeholder: "اختر التراك الأساسي",
+      options: [],
+    },
+    {
+      name: "title",
+      label: "عنوان التراك الفرعي",
+      type: "text" as const,
+      placeholder: "ادخل عنوان التراك الفرعي",
+    },
+    {
+      name: "slug",
+      label: "المُعرّف (Slug)",
+      type: "text" as const,
+      placeholder: "أدخل مُعرّف التراك (يجب أن يكون فريدًا)",
+    },
+    {
+      name: "summary",
+      label: "ملخص التراك",
+      type: "textarea" as const,
+      placeholder: "ادخل ملخص التراك الفرعي",
+    },
+    {
+      name: "description",
+      label: "وصف التراك الفرعي (بالتفاصيل)",
+      type: "textarea" as const,
+      placeholder: "ادخل وصف التراك الفرعي",
+    },
+    {
+      name: "category",
+      label: "تصنيف التراك",
+      type: "select" as const,
+      placeholder: "اختار تصنيف التراك",
+      options: [
+        { label: "WEB", value: "WEB" },
+        { label: "MOBILE", value: "MOBILE" },
+        { label: "OTHER", value: "OTHER" },
+      ],
+    },
+    {
+      name: "icon",
+      label: "أيقونة التراك",
+      type: "text" as const,
+      placeholder: "react",
+    },
+    {
+      name: "thumbnail",
+      label: "صورة التراك",
+      type: "file" as const,
+      placeholder: "اختر صورة للمسار",
+      description: "يمكن رفع صورة بحجم أقصى 5 ميجابايت (JPEG, PNG, JPG, WebP)"
+    },
+    {
+      name: "metaTitle",
+      label: "عنوان SEO",
+      type: "text" as const,
+      placeholder: "تعلم تطوير الواجهات الأمامية - مسار شامل",
+    },
+    {
+      name: "metaDescription",
+      label: "وصف SEO",
+      type: "textarea" as const,
+      placeholder: "مسار شامل لتعلم تطوير الواجهات الأمامية الحديثة",
+    },
+  ];
+
   const getFormFields = (): IFormField[] => {
     switch (slug) {
       case Pages.SIGNIN:
@@ -328,6 +398,8 @@ const useFormFields = ({ slug }: IFormFieldsVariables) => {
         return loginFields();
       case Pages.PATHS:
         return pathFields();
+      case Pages.CREATE_TRACKS:
+        return createTrackFields();
 
       case Pages.CREATE_COURSES:
         return createCourseFields();

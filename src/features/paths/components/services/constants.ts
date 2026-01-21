@@ -17,7 +17,7 @@ export const step1Fields = [
     {
         name: "summary",
         label: "ملخص المسار",
-        type: "text" as const,
+        type: "textarea" as const,
         placeholder: "ادخل ملخص المسار",
     },
     {
@@ -57,13 +57,7 @@ export const step2Fields = [
             { label: "MOBILE", value: "MOBILE" },
             { label: "OTHER", value: "OTHER" },
         ],
-    },
-    {
-        name: "trackIds",
-        label: "معرفات المسارات (Track IDs)",
-        type: "text" as const,
-        placeholder: "ادخل معرفات المسارات",
-        description: "يمكن ادخال معرفات المسارات هنا"
-    },
+    }
+
 
 ];

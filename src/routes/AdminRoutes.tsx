@@ -16,6 +16,9 @@ import CreateCourse from '@/pages/courses/create';
 import ManageLayout from '@/features/courses/manage/components/ManageLayout';
 import Pricing from '@/pages/courses/[slug]/manage/pricing';
 import Statistics from '@/pages/analytics/statistics';
+import Tracks from '@/pages/tracks';
+import CreateNewTrack from '@/pages/tracks/create';
+import ManageTrack from '@/pages/tracks/[trackSlug]/manage';
 
 export const adminRoutes = (
   <Route path="admin" element={<AdminLayout />}>
@@ -41,6 +44,11 @@ export const adminRoutes = (
         <Route path="promotions" element={<Promotions />} />
         <Route path="curriculum" element={<Curriculum />} />
       </Route>
+    </Route>
+    <Route path="tracks">
+      <Route index element={<Tracks />} />
+      <Route path="create" element={<CreateNewTrack />} />
+      <Route path=":trackSlug/manage" element={<ManageTrack />} />
     </Route>
     <Route path="analytics">
       <Route index element={<Statistics />} />

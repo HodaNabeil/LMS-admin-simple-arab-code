@@ -49,7 +49,6 @@ export function usePathFormSteps({
                     "metaTitle",
                     "metaDescription",
                     "category",
-                    "trackIds",
                 ];
             }
 
@@ -57,7 +56,7 @@ export function usePathFormSteps({
                 case 1:
                     return ["title", "slug", "summary", "description", "icon", "metaTitle", "metaDescription"];
                 case 2:
-                    return ["category", "trackIds"];
+                    return ["category"];
                 default:
                     return [];
             }

@@ -6,6 +6,7 @@ import { loginSchema } from '@/validations/login';
 import { userSchema } from '@/validations/user';
 import { createPathSchema } from '@/validations/path';
 import { createCourseSchema } from '@/validations/createcourse';
+import { createTrackSchema } from '@/validations/track';
 import {
   basicsSchema,
   createLessonCourseSchema,
@@ -21,6 +22,7 @@ type ValidationSchema =
   | typeof userSchema
   | typeof createPathSchema
   | typeof createCourseSchema
+  | typeof createTrackSchema
   | typeof basicsSchema
   | typeof createSectionCourseSchema
   | typeof goalsSchema
@@ -47,6 +49,8 @@ const useFormValidations = (
 
       case Pages.PATHS:
         return createPathSchema;
+      case Pages.CREATE_TRACKS:
+        return createTrackSchema;
       case Pages.CREATE_COURSES:
         return createCourseSchema;
       case Pages.GOALS:

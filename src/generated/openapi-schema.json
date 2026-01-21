@@ -1895,69 +1895,7 @@
           "content": {
             "multipart/form-data": {
               "schema": {
-                "type": "object",
-                "required": [
-                  "title",
-                  "summary",
-                  "description",
-                  "category"
-                ],
-                "properties": {
-                  "title": {
-                    "type": "string",
-                    "description": "Path title",
-                    "example": "Web Development Fundamentals"
-                  },
-                  "slug": {
-                    "type": "string",
-                    "description": "URL-friendly slug (auto-generated if not provided)",
-                    "example": "web-development-fundamentals"
-                  },
-                  "summary": {
-                    "type": "string",
-                    "description": "Short summary",
-                    "example": "Learn web development from scratch"
-                  },
-                  "description": {
-                    "type": "string",
-                    "description": "Detailed description",
-                    "example": "Complete guide to modern web development..."
-                  },
-                  "category": {
-                    "type": "string",
-                    "enum": [
-                      "WEB",
-                      "MOBILE",
-                      "OTHER"
-                    ],
-                    "description": "Path category"
-                  },
-                  "thumbnail": {
-                    "type": "string",
-                    "format": "binary",
-                    "description": "Thumbnail image (JPEG, PNG, JPG, WebP - max 5MB)"
-                  },
-                  "icon": {
-                    "type": "string",
-                    "description": "Icon identifier",
-                    "example": "code"
-                  },
-                  "trackIds": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    },
-                    "description": "Track IDs to connect"
-                  },
-                  "metaTitle": {
-                    "type": "string",
-                    "description": "SEO meta title"
-                  },
-                  "metaDescription": {
-                    "type": "string",
-                    "description": "SEO meta description"
-                  }
-                }
+                "$ref": "#/components/schemas/CreatePathDto"
               }
             }
           }
@@ -2147,66 +2085,7 @@
           "content": {
             "multipart/form-data": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "title": {
-                    "type": "string",
-                    "description": "Path title"
-                  },
-                  "slug": {
-                    "type": "string",
-                    "description": "URL-friendly slug"
-                  },
-                  "summary": {
-                    "type": "string",
-                    "description": "Short summary"
-                  },
-                  "description": {
-                    "type": "string",
-                    "description": "Detailed description"
-                  },
-                  "category": {
-                    "type": "string",
-                    "enum": [
-                      "WEB",
-                      "MOBILE",
-                      "OTHER"
-                    ],
-                    "description": "Path category"
-                  },
-                  "thumbnail": {
-                    "type": "string",
-                    "format": "binary",
-                    "description": "Thumbnail image (JPEG, PNG, JPG, WebP - max 5MB)"
-                  },
-                  "icon": {
-                    "type": "string",
-                    "description": "Icon identifier"
-                  },
-                  "trackIds": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    },
-                    "description": "Track IDs to connect"
-                  },
-                  "isPublished": {
-                    "type": "boolean",
-                    "description": "Published status"
-                  },
-                  "sortOrder": {
-                    "type": "number",
-                    "description": "Sort order"
-                  },
-                  "metaTitle": {
-                    "type": "string",
-                    "description": "SEO meta title"
-                  },
-                  "metaDescription": {
-                    "type": "string",
-                    "description": "SEO meta description"
-                  }
-                }
+                "$ref": "#/components/schemas/UpdatePathDto"
               }
             }
           }
@@ -2333,68 +2212,7 @@
           "content": {
             "multipart/form-data": {
               "schema": {
-                "type": "object",
-                "required": [
-                  "pathId",
-                  "title",
-                  "summary",
-                  "description",
-                  "category"
-                ],
-                "properties": {
-                  "pathId": {
-                    "type": "string",
-                    "description": "Path ID that this track belongs to",
-                    "example": "path123"
-                  },
-                  "title": {
-                    "type": "string",
-                    "description": "Track title",
-                    "example": "Frontend Development"
-                  },
-                  "slug": {
-                    "type": "string",
-                    "description": "URL-friendly slug (auto-generated if not provided)",
-                    "example": "frontend-development"
-                  },
-                  "summary": {
-                    "type": "string",
-                    "description": "Short summary",
-                    "example": "Learn modern frontend development"
-                  },
-                  "description": {
-                    "type": "string",
-                    "description": "Detailed description",
-                    "example": "Complete guide to frontend development..."
-                  },
-                  "category": {
-                    "type": "string",
-                    "enum": [
-                      "WEB",
-                      "MOBILE",
-                      "OTHER"
-                    ],
-                    "description": "Track category"
-                  },
-                  "thumbnail": {
-                    "type": "string",
-                    "format": "binary",
-                    "description": "Thumbnail image (JPEG, PNG, JPG, WebP - max 5MB)"
-                  },
-                  "icon": {
-                    "type": "string",
-                    "description": "Icon identifier",
-                    "example": "react"
-                  },
-                  "metaTitle": {
-                    "type": "string",
-                    "description": "SEO meta title"
-                  },
-                  "metaDescription": {
-                    "type": "string",
-                    "description": "SEO meta description"
-                  }
-                }
+                "$ref": "#/components/schemas/CreateTrackDto"
               }
             }
           }
@@ -2533,63 +2351,7 @@
           "content": {
             "multipart/form-data": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "pathId": {
-                    "type": "string",
-                    "description": "Path ID that this track belongs to"
-                  },
-                  "title": {
-                    "type": "string",
-                    "description": "Track title"
-                  },
-                  "slug": {
-                    "type": "string",
-                    "description": "URL-friendly slug"
-                  },
-                  "summary": {
-                    "type": "string",
-                    "description": "Short summary"
-                  },
-                  "description": {
-                    "type": "string",
-                    "description": "Detailed description"
-                  },
-                  "category": {
-                    "type": "string",
-                    "enum": [
-                      "WEB",
-                      "MOBILE",
-                      "OTHER"
-                    ],
-                    "description": "Track category"
-                  },
-                  "thumbnail": {
-                    "type": "string",
-                    "format": "binary",
-                    "description": "Thumbnail image (JPEG, PNG, JPG, WebP - max 5MB)"
-                  },
-                  "icon": {
-                    "type": "string",
-                    "description": "Icon identifier"
-                  },
-                  "isPublished": {
-                    "type": "boolean",
-                    "description": "Published status"
-                  },
-                  "sortOrder": {
-                    "type": "number",
-                    "description": "Sort order"
-                  },
-                  "metaTitle": {
-                    "type": "string",
-                    "description": "SEO meta title"
-                  },
-                  "metaDescription": {
-                    "type": "string",
-                    "description": "SEO meta description"
-                  }
-                }
+                "$ref": "#/components/schemas/UpdateTrackDto"
               }
             }
           }
@@ -6009,6 +5771,281 @@
           "data"
         ]
       },
+      "CreatePathDto": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Path title",
+            "example": "Arabic Language Fundamentals",
+            "minLength": 1,
+            "maxLength": 255
+          },
+          "slug": {
+            "type": "string",
+            "description": "URL-friendly slug for the path (unique identifier in URLs). If not provided, will be auto-generated from the title.",
+            "example": "arabic-language-fundamentals",
+            "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+            "minLength": 1,
+            "maxLength": 255
+          },
+          "summary": {
+            "type": "string",
+            "description": "Short summary for preview cards and listings",
+            "example": "Master the fundamentals of Arabic language",
+            "maxLength": 200
+          },
+          "description": {
+            "type": "string",
+            "description": "Detailed description with comprehensive information",
+            "example": "This comprehensive learning path covers all aspects of Arabic language fundamentals including grammar, vocabulary, pronunciation, and practical conversation skills. Perfect for beginners.",
+            "maxLength": 2000
+          },
+          "thumbnail": {
+            "type": "string",
+            "format": "binary",
+            "description": "Path thumbnail image file (JPEG, PNG, JPG, WebP - max 5MB)"
+          },
+          "category": {
+            "type": "string",
+            "description": "Path category",
+            "example": "WEB",
+            "enum": [
+              "WEB",
+              "MOBILE",
+              "OTHER"
+            ]
+          },
+          "trackIds": {
+            "description": "Array of track IDs to connect to this path",
+            "example": [
+              "track123",
+              "track456"
+            ],
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "icon": {
+            "type": "string",
+            "description": "Path icon identifier",
+            "example": "book-open"
+          },
+          "metaTitle": {
+            "type": "string",
+            "description": "SEO meta title",
+            "example": "Learn Arabic Fundamentals - Complete Learning Path",
+            "maxLength": 255
+          },
+          "metaDescription": {
+            "type": "string",
+            "description": "SEO meta description",
+            "example": "Complete learning path for mastering Arabic language fundamentals with expert guidance",
+            "maxLength": 500
+          }
+        },
+        "required": [
+          "title",
+          "summary",
+          "description",
+          "category"
+        ]
+      },
+      "UpdatePathDto": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Path title",
+            "example": "Arabic Language Fundamentals",
+            "minLength": 1,
+            "maxLength": 255
+          },
+          "slug": {
+            "type": "string",
+            "description": "URL-friendly slug for the path (unique identifier in URLs)",
+            "example": "arabic-language-fundamentals",
+            "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+            "minLength": 1,
+            "maxLength": 255
+          },
+          "summary": {
+            "type": "string",
+            "description": "Short summary for preview cards and listings",
+            "example": "Master the fundamentals of Arabic language",
+            "maxLength": 200
+          },
+          "description": {
+            "type": "string",
+            "description": "Detailed description with comprehensive information",
+            "example": "This comprehensive learning path covers all aspects of Arabic language fundamentals including grammar, vocabulary, pronunciation, and practical conversation skills.",
+            "maxLength": 2000
+          },
+          "thumbnail": {
+            "type": "string",
+            "format": "binary",
+            "description": "Path thumbnail image file (JPEG, PNG, JPG, WebP - max 5MB)"
+          },
+          "category": {
+            "type": "string",
+            "description": "Path category",
+            "example": "WEB",
+            "enum": [
+              "WEB",
+              "MOBILE",
+              "OTHER"
+            ]
+          },
+          "trackIds": {
+            "description": "Array of track IDs to connect to this path",
+            "example": [
+              "track123",
+              "track456"
+            ],
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "icon": {
+            "type": "string",
+            "description": "Path icon identifier",
+            "example": "book-open"
+          },
+          "isPublished": {
+            "type": "boolean",
+            "description": "Published status of the path",
+            "example": true,
+            "default": true
+          },
+          "sortOrder": {
+            "type": "number",
+            "description": "Sort order for displaying paths",
+            "example": 1,
+            "minimum": 0,
+            "default": 0
+          },
+          "metaTitle": {
+            "type": "string",
+            "description": "SEO meta title",
+            "example": "Learn Arabic Fundamentals - Complete Learning Path",
+            "maxLength": 255
+          },
+          "metaDescription": {
+            "type": "string",
+            "description": "SEO meta description",
+            "example": "Complete learning path for mastering Arabic language fundamentals with expert guidance",
+            "maxLength": 500
+          }
+        }
+      },
+      "DeletePathDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The unique identifier of the path to delete",
+            "example": "clxxxxxxxxxxxxxx"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "PathInfoDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "path123",
+            "description": "Path ID"
+          },
+          "title": {
+            "type": "string",
+            "example": "Web Development",
+            "description": "Path title"
+          },
+          "slug": {
+            "type": "string",
+            "example": "web-development",
+            "description": "Path slug"
+          },
+          "summary": {
+            "type": "string",
+            "example": "Learn web development",
+            "description": "Short summary"
+          },
+          "description": {
+            "type": "string",
+            "example": "Complete guide to web development...",
+            "description": "Detailed description"
+          },
+          "thumbnailUrl": {
+            "type": "object",
+            "example": "https://example.com/images/path.jpg",
+            "description": "Thumbnail URL",
+            "nullable": true
+          },
+          "category": {
+            "type": "string",
+            "enum": [
+              "WEB",
+              "MOBILE",
+              "OTHER"
+            ],
+            "example": "WEB",
+            "description": "Path category"
+          },
+          "icon": {
+            "type": "string",
+            "example": "code",
+            "description": "Icon identifier"
+          },
+          "isPublished": {
+            "type": "boolean",
+            "example": true,
+            "description": "Is published"
+          },
+          "sortOrder": {
+            "type": "number",
+            "example": 0,
+            "description": "Sort order"
+          },
+          "metaTitle": {
+            "type": "string",
+            "example": "Web Development Path",
+            "description": "SEO meta title"
+          },
+          "metaDescription": {
+            "type": "string",
+            "example": "Learn web development",
+            "description": "SEO meta description"
+          },
+          "createdAt": {
+            "type": "string",
+            "example": "2024-01-01T00:00:00.000Z",
+            "description": "Creation timestamp"
+          },
+          "updatedAt": {
+            "type": "string",
+            "example": "2024-01-01T00:00:00.000Z",
+            "description": "Last update timestamp"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "slug",
+          "summary",
+          "description",
+          "category",
+          "isPublished",
+          "sortOrder",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
       "TrackResponseDto": {
         "type": "object",
         "properties": {
@@ -6092,6 +6129,14 @@
             "type": "string",
             "example": "2024-01-01T00:00:00.000Z",
             "description": "Last update timestamp"
+          },
+          "path": {
+            "description": "Path information",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PathInfoDto"
+              }
+            ]
           }
         },
         "required": [
@@ -6274,6 +6319,221 @@
           },
           "data": {
             "$ref": "#/components/schemas/PathListResponseDto"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "success",
+          "data"
+        ]
+      },
+      "CreateTrackDto": {
+        "type": "object",
+        "properties": {
+          "pathId": {
+            "type": "string",
+            "description": "Path ID that this track belongs to",
+            "example": "path123"
+          },
+          "title": {
+            "type": "string",
+            "description": "Track title",
+            "example": "Frontend Development",
+            "minLength": 1,
+            "maxLength": 255
+          },
+          "slug": {
+            "type": "string",
+            "description": "URL-friendly slug for the track (unique identifier in URLs). If not provided, will be auto-generated from the title.",
+            "example": "frontend-development",
+            "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+            "minLength": 1,
+            "maxLength": 255
+          },
+          "summary": {
+            "type": "string",
+            "description": "Short summary for preview cards and listings",
+            "example": "Learn modern frontend development with React and TypeScript",
+            "maxLength": 200
+          },
+          "description": {
+            "type": "string",
+            "description": "Detailed description with comprehensive information",
+            "example": "This comprehensive track covers frontend development from basics to advanced topics including HTML, CSS, JavaScript, React, and TypeScript.",
+            "maxLength": 2000
+          },
+          "thumbnail": {
+            "type": "string",
+            "format": "binary",
+            "description": "Thumbnail image file (JPEG, PNG, JPG, WebP - max 5MB)"
+          },
+          "category": {
+            "type": "string",
+            "description": "Track category",
+            "example": "WEB",
+            "enum": [
+              "WEB",
+              "MOBILE",
+              "OTHER"
+            ]
+          },
+          "icon": {
+            "type": "string",
+            "description": "Track icon identifier",
+            "example": "react"
+          },
+          "metaTitle": {
+            "type": "string",
+            "description": "SEO meta title",
+            "example": "Frontend Development Track - Complete Guide",
+            "maxLength": 255
+          },
+          "metaDescription": {
+            "type": "string",
+            "description": "SEO meta description",
+            "example": "Complete frontend development track with expert guidance on React, TypeScript, and modern web technologies",
+            "maxLength": 500
+          }
+        },
+        "required": [
+          "pathId",
+          "title",
+          "summary",
+          "description",
+          "category"
+        ]
+      },
+      "UpdateTrackDto": {
+        "type": "object",
+        "properties": {
+          "pathId": {
+            "type": "string",
+            "description": "Path ID that this track belongs to",
+            "example": "path123"
+          },
+          "title": {
+            "type": "string",
+            "description": "Track title",
+            "example": "Frontend Development",
+            "minLength": 1,
+            "maxLength": 255
+          },
+          "slug": {
+            "type": "string",
+            "description": "URL-friendly slug for the track (unique identifier in URLs)",
+            "example": "frontend-development",
+            "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+            "minLength": 1,
+            "maxLength": 255
+          },
+          "summary": {
+            "type": "string",
+            "description": "Short summary for preview cards and listings",
+            "example": "Learn modern frontend development",
+            "maxLength": 200
+          },
+          "description": {
+            "type": "string",
+            "description": "Detailed description with comprehensive information",
+            "example": "This comprehensive track covers frontend development from basics to advanced topics.",
+            "maxLength": 2000
+          },
+          "thumbnail": {
+            "type": "string",
+            "format": "binary",
+            "description": "Thumbnail image file (JPEG, PNG, JPG, WebP - max 5MB)"
+          },
+          "category": {
+            "type": "string",
+            "description": "Track category",
+            "example": "WEB",
+            "enum": [
+              "WEB",
+              "MOBILE",
+              "OTHER"
+            ]
+          },
+          "icon": {
+            "type": "string",
+            "description": "Track icon identifier",
+            "example": "react"
+          },
+          "isPublished": {
+            "type": "boolean",
+            "description": "Published status of the track",
+            "example": true,
+            "default": true
+          },
+          "sortOrder": {
+            "type": "number",
+            "description": "Sort order for displaying tracks",
+            "example": 1,
+            "minimum": 0,
+            "default": 0
+          },
+          "metaTitle": {
+            "type": "string",
+            "description": "SEO meta title",
+            "example": "Frontend Development Track - Complete Guide",
+            "maxLength": 255
+          },
+          "metaDescription": {
+            "type": "string",
+            "description": "SEO meta description",
+            "example": "Complete frontend development track with expert guidance",
+            "maxLength": 500
+          }
+        }
+      },
+      "TrackListResponseDto": {
+        "type": "object",
+        "properties": {
+          "tracks": {
+            "description": "List of tracks",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TrackResponseDto"
+            }
+          },
+          "total": {
+            "type": "number",
+            "example": 10,
+            "description": "Total count"
+          }
+        },
+        "required": [
+          "tracks",
+          "total"
+        ]
+      },
+      "WrappedResponseTrackResponseDto": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "data": {
+            "$ref": "#/components/schemas/TrackResponseDto"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "success",
+          "data"
+        ]
+      },
+      "WrappedResponseTrackListResponseDto": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "data": {
+            "$ref": "#/components/schemas/TrackListResponseDto"
           },
           "message": {
             "type": "string"

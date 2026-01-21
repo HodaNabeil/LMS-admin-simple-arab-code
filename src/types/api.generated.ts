@@ -1,8 +1,8 @@
 /**
 * AUTO-GENERATED FILE - DO NOT EDIT MANUALLY
 * Generated from OpenAPI schema
-* Last updated: 2026-01-20T00:32:12.289Z
-* Schema URL: https://simple-arab-code-backend-production.up.railway.app/api/docs-json
+* Last updated: 2026-01-21T02:24:07.755Z
+* Schema URL: http://localhost:4000/api/docs-json
 */
  
 /* eslint-disable */
@@ -1745,6 +1745,62 @@ export type components = {
              */
             videoUrl?: string;
         };
+        CreatePathDto: {
+            /**
+             * @description Path category
+             * @example WEB
+             * @enum {string}
+             */
+            category: CreatePathDtoCategory;
+            /**
+             * @description Detailed description with comprehensive information
+             * @example This comprehensive learning path covers all aspects of Arabic language fundamentals including grammar, vocabulary, pronunciation, and practical conversation skills. Perfect for beginners.
+             */
+            description: string;
+            /**
+             * @description Path icon identifier
+             * @example book-open
+             */
+            icon?: string;
+            /**
+             * @description SEO meta description
+             * @example Complete learning path for mastering Arabic language fundamentals with expert guidance
+             */
+            metaDescription?: string;
+            /**
+             * @description SEO meta title
+             * @example Learn Arabic Fundamentals - Complete Learning Path
+             */
+            metaTitle?: string;
+            /**
+             * @description URL-friendly slug for the path (unique identifier in URLs). If not provided, will be auto-generated from the title.
+             * @example arabic-language-fundamentals
+             */
+            slug?: string;
+            /**
+             * @description Short summary for preview cards and listings
+             * @example Master the fundamentals of Arabic language
+             */
+            summary: string;
+            /**
+             * Format: binary
+             * @description Path thumbnail image file (JPEG, PNG, JPG, WebP - max 5MB)
+             */
+            thumbnail?: string;
+            /**
+             * @description Path title
+             * @example Arabic Language Fundamentals
+             */
+            title: string;
+            /**
+             * @description Array of track IDs to connect to this path
+             * @example [
+             *       "track123",
+             *       "track456"
+             *     ]
+             */
+            trackIds?: string[];
+        };
         CreateSectionDto: {
             /**
              * @description Section description
@@ -1761,6 +1817,66 @@ export type components = {
              * @example Introduction to Node.js
              */
             title: string;
+        };
+        CreateTrackDto: {
+            /**
+             * @description Track category
+             * @example WEB
+             * @enum {string}
+             */
+            category: CreateTrackDtoCategory;
+            /**
+             * @description Detailed description with comprehensive information
+             * @example This comprehensive track covers frontend development from basics to advanced topics including HTML, CSS, JavaScript, React, and TypeScript.
+             */
+            description: string;
+            /**
+             * @description Track icon identifier
+             * @example react
+             */
+            icon?: string;
+            /**
+             * @description SEO meta description
+             * @example Complete frontend development track with expert guidance on React, TypeScript, and modern web technologies
+             */
+            metaDescription?: string;
+            /**
+             * @description SEO meta title
+             * @example Frontend Development Track - Complete Guide
+             */
+            metaTitle?: string;
+            /**
+             * @description Path ID that this track belongs to
+             * @example path123
+             */
+            pathId: string;
+            /**
+             * @description URL-friendly slug for the track (unique identifier in URLs). If not provided, will be auto-generated from the title.
+             * @example frontend-development
+             */
+            slug?: string;
+            /**
+             * @description Short summary for preview cards and listings
+             * @example Learn modern frontend development with React and TypeScript
+             */
+            summary: string;
+            /**
+             * Format: binary
+             * @description Thumbnail image file (JPEG, PNG, JPG, WebP - max 5MB)
+             */
+            thumbnail?: string;
+            /**
+             * @description Track title
+             * @example Frontend Development
+             */
+            title: string;
+        };
+        DeletePathDto: {
+            /**
+             * @description The unique identifier of the path to delete
+             * @example clxxxxxxxxxxxxxx
+             */
+            id: string;
         };
         DeleteResponseDto: {
             /** @default Resource deleted successfully */
@@ -2213,6 +2329,79 @@ export type components = {
              */
             updatedAt: string;
         };
+        PathInfoDto: {
+            /**
+             * @description Path category
+             * @example WEB
+             * @enum {string}
+             */
+            category: PathInfoDtoCategory;
+            /**
+             * @description Creation timestamp
+             * @example 2024-01-01T00:00:00.000Z
+             */
+            createdAt: string;
+            /**
+             * @description Detailed description
+             * @example Complete guide to web development...
+             */
+            description: string;
+            /**
+             * @description Icon identifier
+             * @example code
+             */
+            icon?: string;
+            /**
+             * @description Path ID
+             * @example path123
+             */
+            id: string;
+            /**
+             * @description Is published
+             * @example true
+             */
+            isPublished: boolean;
+            /**
+             * @description SEO meta description
+             * @example Learn web development
+             */
+            metaDescription?: string;
+            /**
+             * @description SEO meta title
+             * @example Web Development Path
+             */
+            metaTitle?: string;
+            /**
+             * @description Path slug
+             * @example web-development
+             */
+            slug: string;
+            /**
+             * @description Sort order
+             * @example 0
+             */
+            sortOrder: number;
+            /**
+             * @description Short summary
+             * @example Learn web development
+             */
+            summary: string;
+            /**
+             * @description Thumbnail URL
+             * @example https://example.com/images/path.jpg
+             */
+            thumbnailUrl?: Record<string, never> | null;
+            /**
+             * @description Path title
+             * @example Web Development
+             */
+            title: string;
+            /**
+             * @description Last update timestamp
+             * @example 2024-01-01T00:00:00.000Z
+             */
+            updatedAt: string;
+        };
         PathListResponseDto: {
             /** @description List of paths */
             paths: components["schemas"]["PathDto"][];
@@ -2567,6 +2756,15 @@ export type components = {
             /** @example abc123token */
             token: string;
         };
+        TrackListResponseDto: {
+            /**
+             * @description Total count
+             * @example 10
+             */
+            total: number;
+            /** @description List of tracks */
+            tracks: components["schemas"]["TrackResponseDto"][];
+        };
         TrackResponseDto: {
             /**
              * @description Track category
@@ -2609,6 +2807,8 @@ export type components = {
              * @example Frontend Development Track
              */
             metaTitle?: string;
+            /** @description Path information */
+            path?: components["schemas"]["PathInfoDto"];
             /**
              * @description Path ID this track belongs to
              * @example path123
@@ -2700,6 +2900,74 @@ export type components = {
              */
             visibility?: UpdateCourseDtoVisibility;
         };
+        UpdatePathDto: {
+            /**
+             * @description Path category
+             * @example WEB
+             * @enum {string}
+             */
+            category?: UpdatePathDtoCategory;
+            /**
+             * @description Detailed description with comprehensive information
+             * @example This comprehensive learning path covers all aspects of Arabic language fundamentals including grammar, vocabulary, pronunciation, and practical conversation skills.
+             */
+            description?: string;
+            /**
+             * @description Path icon identifier
+             * @example book-open
+             */
+            icon?: string;
+            /**
+             * @description Published status of the path
+             * @default true
+             * @example true
+             */
+            isPublished: boolean;
+            /**
+             * @description SEO meta description
+             * @example Complete learning path for mastering Arabic language fundamentals with expert guidance
+             */
+            metaDescription?: string;
+            /**
+             * @description SEO meta title
+             * @example Learn Arabic Fundamentals - Complete Learning Path
+             */
+            metaTitle?: string;
+            /**
+             * @description URL-friendly slug for the path (unique identifier in URLs)
+             * @example arabic-language-fundamentals
+             */
+            slug?: string;
+            /**
+             * @description Sort order for displaying paths
+             * @default 0
+             * @example 1
+             */
+            sortOrder: number;
+            /**
+             * @description Short summary for preview cards and listings
+             * @example Master the fundamentals of Arabic language
+             */
+            summary?: string;
+            /**
+             * Format: binary
+             * @description Path thumbnail image file (JPEG, PNG, JPG, WebP - max 5MB)
+             */
+            thumbnail?: string;
+            /**
+             * @description Path title
+             * @example Arabic Language Fundamentals
+             */
+            title?: string;
+            /**
+             * @description Array of track IDs to connect to this path
+             * @example [
+             *       "track123",
+             *       "track456"
+             *     ]
+             */
+            trackIds?: string[];
+        };
         UpdateProfileResponseDto: {
             /** @example I am a passionate learner interested in technology. */
             bio?: string;
@@ -2767,6 +3035,71 @@ export type components = {
             /** @description Published status */
             isPublished?: boolean;
             /** @description Section title */
+            title?: string;
+        };
+        UpdateTrackDto: {
+            /**
+             * @description Track category
+             * @example WEB
+             * @enum {string}
+             */
+            category?: UpdateTrackDtoCategory;
+            /**
+             * @description Detailed description with comprehensive information
+             * @example This comprehensive track covers frontend development from basics to advanced topics.
+             */
+            description?: string;
+            /**
+             * @description Track icon identifier
+             * @example react
+             */
+            icon?: string;
+            /**
+             * @description Published status of the track
+             * @default true
+             * @example true
+             */
+            isPublished: boolean;
+            /**
+             * @description SEO meta description
+             * @example Complete frontend development track with expert guidance
+             */
+            metaDescription?: string;
+            /**
+             * @description SEO meta title
+             * @example Frontend Development Track - Complete Guide
+             */
+            metaTitle?: string;
+            /**
+             * @description Path ID that this track belongs to
+             * @example path123
+             */
+            pathId?: string;
+            /**
+             * @description URL-friendly slug for the track (unique identifier in URLs)
+             * @example frontend-development
+             */
+            slug?: string;
+            /**
+             * @description Sort order for displaying tracks
+             * @default 0
+             * @example 1
+             */
+            sortOrder: number;
+            /**
+             * @description Short summary for preview cards and listings
+             * @example Learn modern frontend development
+             */
+            summary?: string;
+            /**
+             * Format: binary
+             * @description Thumbnail image file (JPEG, PNG, JPG, WebP - max 5MB)
+             */
+            thumbnail?: string;
+            /**
+             * @description Track title
+             * @example Frontend Development
+             */
             title?: string;
         };
         UserProfileResponseDto: {
@@ -2935,6 +3268,16 @@ export type components = {
         };
         WrappedResponseSectionResponseDto: {
             data: components["schemas"]["SectionResponseDto"];
+            message?: string;
+            success: boolean;
+        };
+        WrappedResponseTrackListResponseDto: {
+            data: components["schemas"]["TrackListResponseDto"];
+            message?: string;
+            success: boolean;
+        };
+        WrappedResponseTrackResponseDto: {
+            data: components["schemas"]["TrackResponseDto"];
             message?: string;
             success: boolean;
         };
@@ -5769,49 +6112,7 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "multipart/form-data": {
-                    /**
-                     * @description Path category
-                     * @enum {string}
-                     */
-                    category: PathsApiPathsPostRequestBodyMultipartFormDataCategory;
-                    /**
-                     * @description Detailed description
-                     * @example Complete guide to modern web development...
-                     */
-                    description: string;
-                    /**
-                     * @description Icon identifier
-                     * @example code
-                     */
-                    icon?: string;
-                    /** @description SEO meta description */
-                    metaDescription?: string;
-                    /** @description SEO meta title */
-                    metaTitle?: string;
-                    /**
-                     * @description URL-friendly slug (auto-generated if not provided)
-                     * @example web-development-fundamentals
-                     */
-                    slug?: string;
-                    /**
-                     * @description Short summary
-                     * @example Learn web development from scratch
-                     */
-                    summary: string;
-                    /**
-                     * Format: binary
-                     * @description Thumbnail image (JPEG, PNG, JPG, WebP - max 5MB)
-                     */
-                    thumbnail?: string;
-                    /**
-                     * @description Path title
-                     * @example Web Development Fundamentals
-                     */
-                    title: string;
-                    /** @description Track IDs to connect */
-                    trackIds?: string[];
-                };
+                "multipart/form-data": components["schemas"]["CreatePathDto"];
             };
         };
         responses: {
@@ -6004,38 +6305,7 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "multipart/form-data": {
-                    /**
-                     * @description Path category
-                     * @enum {string}
-                     */
-                    category?: PathsApiPathsIdOrSlugPatchRequestBodyMultipartFormDataCategory;
-                    /** @description Detailed description */
-                    description?: string;
-                    /** @description Icon identifier */
-                    icon?: string;
-                    /** @description Published status */
-                    isPublished?: boolean;
-                    /** @description SEO meta description */
-                    metaDescription?: string;
-                    /** @description SEO meta title */
-                    metaTitle?: string;
-                    /** @description URL-friendly slug */
-                    slug?: string;
-                    /** @description Sort order */
-                    sortOrder?: number;
-                    /** @description Short summary */
-                    summary?: string;
-                    /**
-                     * Format: binary
-                     * @description Thumbnail image (JPEG, PNG, JPG, WebP - max 5MB)
-                     */
-                    thumbnail?: string;
-                    /** @description Path title */
-                    title?: string;
-                    /** @description Track IDs to connect */
-                    trackIds?: string[];
-                };
+                "multipart/form-data": components["schemas"]["UpdatePathDto"];
             };
         };
         responses: {
@@ -6187,52 +6457,7 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "multipart/form-data": {
-                    /**
-                     * @description Track category
-                     * @enum {string}
-                     */
-                    category: PathsApiTracksPostRequestBodyMultipartFormDataCategory;
-                    /**
-                     * @description Detailed description
-                     * @example Complete guide to frontend development...
-                     */
-                    description: string;
-                    /**
-                     * @description Icon identifier
-                     * @example react
-                     */
-                    icon?: string;
-                    /** @description SEO meta description */
-                    metaDescription?: string;
-                    /** @description SEO meta title */
-                    metaTitle?: string;
-                    /**
-                     * @description Path ID that this track belongs to
-                     * @example path123
-                     */
-                    pathId: string;
-                    /**
-                     * @description URL-friendly slug (auto-generated if not provided)
-                     * @example frontend-development
-                     */
-                    slug?: string;
-                    /**
-                     * @description Short summary
-                     * @example Learn modern frontend development
-                     */
-                    summary: string;
-                    /**
-                     * Format: binary
-                     * @description Thumbnail image (JPEG, PNG, JPG, WebP - max 5MB)
-                     */
-                    thumbnail?: string;
-                    /**
-                     * @description Track title
-                     * @example Frontend Development
-                     */
-                    title: string;
-                };
+                "multipart/form-data": components["schemas"]["CreateTrackDto"];
             };
         };
         responses: {
@@ -6317,38 +6542,7 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "multipart/form-data": {
-                    /**
-                     * @description Track category
-                     * @enum {string}
-                     */
-                    category?: PathsApiTracksIdOrSlugPutRequestBodyMultipartFormDataCategory;
-                    /** @description Detailed description */
-                    description?: string;
-                    /** @description Icon identifier */
-                    icon?: string;
-                    /** @description Published status */
-                    isPublished?: boolean;
-                    /** @description SEO meta description */
-                    metaDescription?: string;
-                    /** @description SEO meta title */
-                    metaTitle?: string;
-                    /** @description Path ID that this track belongs to */
-                    pathId?: string;
-                    /** @description URL-friendly slug */
-                    slug?: string;
-                    /** @description Sort order */
-                    sortOrder?: number;
-                    /** @description Short summary */
-                    summary?: string;
-                    /**
-                     * Format: binary
-                     * @description Thumbnail image (JPEG, PNG, JPG, WebP - max 5MB)
-                     */
-                    thumbnail?: string;
-                    /** @description Track title */
-                    title?: string;
-                };
+                "multipart/form-data": components["schemas"]["UpdateTrackDto"];
             };
         };
         responses: {
@@ -6788,26 +6982,6 @@ export enum PathsApiOrdersGetParametersQueryStatus {
     PARTIALLY_REFUNDED = "PARTIALLY_REFUNDED",
     VOIDED = "VOIDED"
 }
-export enum PathsApiPathsPostRequestBodyMultipartFormDataCategory {
-    WEB = "WEB",
-    MOBILE = "MOBILE",
-    OTHER = "OTHER"
-}
-export enum PathsApiPathsIdOrSlugPatchRequestBodyMultipartFormDataCategory {
-    WEB = "WEB",
-    MOBILE = "MOBILE",
-    OTHER = "OTHER"
-}
-export enum PathsApiTracksPostRequestBodyMultipartFormDataCategory {
-    WEB = "WEB",
-    MOBILE = "MOBILE",
-    OTHER = "OTHER"
-}
-export enum PathsApiTracksIdOrSlugPutRequestBodyMultipartFormDataCategory {
-    WEB = "WEB",
-    MOBILE = "MOBILE",
-    OTHER = "OTHER"
-}
 export enum AttachmentType {
     PDF = "PDF",
     VIDEO = "VIDEO",
@@ -6870,6 +7044,16 @@ export enum CreateCourseDtoVisibility {
     PRIVATE = "PRIVATE",
     UNLISTED = "UNLISTED"
 }
+export enum CreatePathDtoCategory {
+    WEB = "WEB",
+    MOBILE = "MOBILE",
+    OTHER = "OTHER"
+}
+export enum CreateTrackDtoCategory {
+    WEB = "WEB",
+    MOBILE = "MOBILE",
+    OTHER = "OTHER"
+}
 export enum EnrollmentDtoStatus {
     ACTIVE = "ACTIVE",
     COMPLETED = "COMPLETED",
@@ -6885,6 +7069,11 @@ export enum LectureType {
     ATTACHMENT = "ATTACHMENT"
 }
 export enum PathDtoCategory {
+    WEB = "WEB",
+    MOBILE = "MOBILE",
+    OTHER = "OTHER"
+}
+export enum PathInfoDtoCategory {
     WEB = "WEB",
     MOBILE = "MOBILE",
     OTHER = "OTHER"
@@ -6915,10 +7104,20 @@ export enum UpdateCourseDtoVisibility {
     PRIVATE = "PRIVATE",
     UNLISTED = "UNLISTED"
 }
+export enum UpdatePathDtoCategory {
+    WEB = "WEB",
+    MOBILE = "MOBILE",
+    OTHER = "OTHER"
+}
 export enum UpdateProfileResponseDtoRole {
     STUDENT = "STUDENT",
     INSTRUCTOR = "INSTRUCTOR",
     ADMIN = "ADMIN"
+}
+export enum UpdateTrackDtoCategory {
+    WEB = "WEB",
+    MOBILE = "MOBILE",
+    OTHER = "OTHER"
 }
 export enum UserProfileResponseDtoRole {
     STUDENT = "STUDENT",

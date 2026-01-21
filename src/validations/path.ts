@@ -1,11 +1,11 @@
 import * as z from 'zod';
+import {
+  CreatePathDtoCategory,
+  UpdatePathDtoCategory,
+} from '@/types/api.generated';
 
-// Path category enum to match backend
-export enum PathCategory {
-  WEB = 'WEB',
-  MOBILE = 'MOBILE',
-  OTHER = 'OTHER',
-}
+// Path category enum to match backend (re-export for convenience)
+export { CreatePathDtoCategory as PathCategory };
 
 // Schema for creating new paths
 export const createPathSchema = z.object({
@@ -41,7 +41,7 @@ export const createPathSchema = z.object({
 
 
 
-  category: z.nativeEnum(PathCategory, {
+  category: z.nativeEnum(CreatePathDtoCategory, {
     errorMap: () => ({ message: 'Category must be one of: WEB, MOBILE, OTHER' }),
   }),
 
@@ -99,7 +99,7 @@ export const editPathSchema = z.object({
 
 
   category: z
-    .nativeEnum(PathCategory, {
+    .nativeEnum(UpdatePathDtoCategory, {
       errorMap: () => ({ message: 'Category must be one of: WEB, MOBILE, OTHER' }),
     })
     .optional(),

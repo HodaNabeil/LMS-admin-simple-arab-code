@@ -14,6 +14,14 @@ export enum Routes {
   PROFILE = "profile",
   ADMIN = "admin",
   PATHS = "paths",
+  TRACKS = "tracks",
+  CREATE_TRACKS = "tracks/create",
+  EDIT_TRACKS = "tracks/edit",
+  SETTINGS = "settings",
+  PLATFORM = "platform",
+  PAYMENT = "payment",
+  LOCALE = "locale",
+  SECURITY = "security",
 }
 
 export enum Pages {
@@ -36,6 +44,28 @@ export enum Pages {
   CURRICULUM = "curriculum",
   LESSONS = "lessons",
   EDIT_COURSE = "courses/edit",
+  SETTINGS = "settings",
+  CONTENT = "content",
+  VIDEOS = "videos",
+  FILES = "files",
+  ANALYTICS = "analytics",
+  GENERAL = "general",
+  SALES = "sales",
+  ORDERS = "orders",
+  PAYMENTS = "payments",
+  REFUNDS = "refunds",
+  COUPONS = "coupons",
+  REVIEWS = "reviews",
+  COMMENTS = "comments",
+  MESSAGES = "messages",
+  EMAIL = "email",
+  NOTIFICATIONS = "notifications",
+  TEAM = "team",
+  MEMBERS = "members",
+  INVITE = "invite",
+  ADMINS = "admins",
+  TRACKS = "tracks",
+  CREATE_TRACKS = "tracks/create",
 }
 
 export enum InputTypes {
@@ -122,3 +152,4 @@ export enum StatusLesson {
   UNLOCKED = "unlocked",
   PREVIEW = "preview",
 }
+

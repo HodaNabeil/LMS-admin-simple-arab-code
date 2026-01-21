@@ -1,9 +1,9 @@
 import { useCallback } from "react";
-import { type IPathForm } from "@/validations/path";
+import { type CreatePathDto, type UpdatePathDto } from "@/validations/path";
 import { FORM_DATA_KEY, FORM_STEP_KEY } from "../services/constants";
 
 export const usePathStorage = () => {
-    const saveToLocalStorage = useCallback((key: string, data: Partial<IPathForm> | number) => {
+    const saveToLocalStorage = useCallback((key: string, data: Partial<CreatePathDto | UpdatePathDto> | number) => {
         try {
             if (key === FORM_DATA_KEY && typeof data === "object") {
                 const dataToSave = { ...data };

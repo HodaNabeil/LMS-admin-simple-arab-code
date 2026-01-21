@@ -21,6 +21,23 @@ export const PATH_ENDPOINTS = {
     DELETE: '/api/paths/{idOrSlug}',
 } as const satisfies Record<string, PathEndpointPath>;
 
+
+// Extract track endpoint paths from OpenAPI schema
+export type TrackEndpointPath = Extract<
+    keyof paths,
+    '/api/tracks' | '/api/tracks/{idOrSlug}'
+>;
+
+// API endpoints (from OpenAPI schema)
+export const TRACKS_ENDPOINTS = {
+    // tracks endpoints
+    LIST: '/api/tracks',
+    DETAIL: '/api/tracks/{idOrSlug}',
+    CREATE: '/api/tracks',
+    UPDATE: '/api/tracks/{idOrSlug}',
+    DELETE: '/api/tracks/{idOrSlug}',
+} as const satisfies Record<string, TrackEndpointPath>;
+
 // Path routes
 export const PATH_ROUTES = {
     LIST: '/learning-paths',
