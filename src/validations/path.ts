@@ -1,150 +1,137 @@
-import * as z from "zod";
+import * as z from 'zod';
 
-// Base fields that are required in both create and edit schemas
-const basePathFields = {
+// Path category enum to match backend
+export enum PathCategory {
+  WEB = 'WEB',
+  MOBILE = 'MOBILE',
+  OTHER = 'OTHER',
+}
+
+// Schema for creating new paths
+export const createPathSchema = z.object({
   title: z
     .string()
     .trim()
-    .min(1, { message: "العنوان مطلوب" })
-    .max(255, { message: "العنوان يجب أن يكون أقل من 255 حرف" }),
+    .min(1, { message: 'Path title is required' })
+    .max(255, { message: 'Path title must be less than 255 characters' }),
+
   slug: z
     .string()
     .trim()
-    .min(1, { message: "المُعرّف (slug) يجب أن يكون على الأقل حرف واحد" })
-    .max(100, { message: "المُعرّف يجب أن يكون أقل من 100 حرف" })
+    .min(1, { message: 'Slug must be at least 1 character' })
+    .max(255, { message: 'Slug must be less than 255 characters' })
     .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, {
       message:
-        "المُعرّف يجب أن يحتوي فقط على حروف إنجليزية صغيرة، أرقام، وشرطات (-)",
-    }),
+        'Slug must be lowercase alphanumeric with hyphens only (e.g., "arabic-language-fundamentals")',
+    })
+    .optional(),
+
   summary: z
     .string()
     .trim()
-    .min(1, { message: "الملخص مطلوب" })
-    .max(200, { message: "الملخص يجب أن يكون أقل من 200 حرف" }),
+    .min(1, { message: 'Summary is required' })
+    .max(200, { message: 'Summary must be less than 200 characters' }),
+
   description: z
     .string()
-    .min(1, { message: "الوصف التفصيلي مطلوب" })
-    .min(20, { message: "الوصف التفصيلي يجب أن يكون 20 حرف على الأقل" }),
-  thumbnailUrl: z
-    .string()
-    .url({ message: "رابط الصورة المصغرة يجب أن يكون رابط صحيح" })
-    .optional(),
-  parentId: z
-    .string()
-    .uuid({ message: "معرف المسار الأب يجب أن يكون UUID صحيح" })
-    .optional(),
-  icon: z
+    .trim()
+    .min(1, { message: 'Description is required' })
+    .max(2000, { message: 'Description must be less than 2000 characters' }),
+
+
+
+
+  category: z.nativeEnum(PathCategory, {
+    errorMap: () => ({ message: 'Category must be one of: WEB, MOBILE, OTHER' }),
+  }),
+
+  trackIds: z.array(z.string()).optional(),
+
+  icon: z.string().trim().optional(),
+
+  metaTitle: z
     .string()
     .trim()
+    .max(255, { message: 'Meta title must be less than 255 characters' })
     .optional(),
-  metatitle: z
-    .string()
-    .trim()
-    .max(255, { message: "عنوان SEO يجب أن يكون أقل من 255 حرف" })
-    .optional(),
+
   metaDescription: z
     .string()
     .trim()
-    .max(500, { message: "وصف SEO يجب أن يكون أقل من 500 حرف" })
+    .max(500, { message: 'Meta description must be less than 500 characters' })
     .optional(),
-};
+});
 
-export const pathSchema = z.object({
-  ...basePathFields,
-  image: z
-    .any()
-    .refine(
-      (file) => {
-        if (!file) return false;
-        return file instanceof File;
-      },
-      { message: "صورة المسار مطلوبة" }
-    )
-    .refine(
-      (file) => {
-        if (!file) return true;
-        return file.size <= 5 * 1024 * 1024; // 5MB max
-      },
-      { message: "حجم الصورة يجب أن يكون أقل من 5 ميجابايت" }
-    )
-    .refine(
-      (file) => {
-        if (!file) return true;
-        const allowedTypes = [
-          "image/jpeg",
-          "image/png",
-          "image/jpg",
-          "image/webp",
-        ];
-        return allowedTypes.includes(file.type);
-      },
-      { message: "نوع الصورة يجب أن يكون JPEG أو PNG أو JPG أو WEBP" }
-    ),
-  roadmap: z
-    .any()
-    .refine((file) => file instanceof File && file.type === "application/pdf", {
-      message: "يجب رفع ملف PDF فقط",
+// Schema for editing/updating paths
+export const editPathSchema = z.object({
+  title: z
+    .string()
+    .trim()
+    .min(1, { message: 'Path title is required' })
+    .max(255, { message: 'Path title must be less than 255 characters' })
+    .optional(),
+
+  slug: z
+    .string()
+    .trim()
+    .min(1, { message: 'Slug must be at least 1 character' })
+    .max(255, { message: 'Slug must be less than 255 characters' })
+    .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, {
+      message:
+        'Slug must be lowercase alphanumeric with hyphens only (e.g., "arabic-language-fundamentals")',
     })
-    .refine((file) => file instanceof File && file.size <= 5 * 1024 * 1024, {
-      message: "حجم الملف يجب أن يكون أقل من 5 ميجابايت",
-    }),
-});
-
-// Schema for editing paths - base fields are required, files are optional
-export const pathEditSchema = z.object({
-  ...basePathFields,
-
-  image: z
-    .any()
-    .refine(
-      (file) => {
-        // If no file provided, that's okay for edit
-        if (!file || file === undefined || file === null) return true;
-        return file instanceof File;
-      },
-      { message: "يجب أن تكون الصورة ملف صالح" }
-    )
-    .refine(
-      (file) => {
-        if (!file || file === undefined || file === null) return true;
-        return file.size <= 5 * 1024 * 1024; // 5MB max
-      },
-      { message: "حجم الصورة يجب أن يكون أقل من 5 ميجابايت" }
-    )
-    .refine(
-      (file) => {
-        if (!file || file === undefined || file === null) return true;
-        const allowedTypes = [
-          "image/jpeg",
-          "image/png",
-          "image/jpg",
-          "image/webp",
-        ];
-        return allowedTypes.includes(file.type);
-      },
-      { message: "نوع الصورة يجب أن يكون JPEG أو PNG أو JPG أو WEBP" }
-    )
     .optional(),
 
-  roadmap: z
-    .any()
-    .refine(
-      (file) => {
-        // If no file provided, that's okay for edit
-        if (!file || file === undefined || file === null) return true;
-        return file instanceof File && file.type === "application/pdf";
-      },
-      { message: "يجب رفع ملف PDF فقط" }
-    )
-    .refine(
-      (file) => {
-        if (!file || file === undefined || file === null) return true;
-        return file instanceof File && file.size <= 5 * 1024 * 1024;
-      },
-      { message: "حجم الملف يجب أن يكون أقل من 5 ميجابايت" }
-    )
+  summary: z
+    .string()
+    .trim()
+    .min(1, { message: 'Summary is required' })
+    .max(200, { message: 'Summary must be less than 200 characters' })
+    .optional(),
+
+  description: z
+    .string()
+    .trim()
+    .min(1, { message: 'Description is required' })
+    .max(2000, { message: 'Description must be less than 2000 characters' })
+    .optional(),
+
+
+
+  category: z
+    .nativeEnum(PathCategory, {
+      errorMap: () => ({ message: 'Category must be one of: WEB, MOBILE, OTHER' }),
+    })
+    .optional(),
+
+  trackIds: z.array(z.string()).optional(),
+
+  icon: z.string().trim().optional(),
+
+  isPublished: z.boolean().optional(),
+
+  sortOrder: z
+    .number()
+    .min(0, { message: 'Sort order must be 0 or greater' })
+    .optional(),
+
+  metaTitle: z
+    .string()
+    .trim()
+    .max(255, { message: 'Meta title must be less than 255 characters' })
+    .optional(),
+
+  metaDescription: z
+    .string()
+    .trim()
+    .max(500, { message: 'Meta description must be less than 500 characters' })
     .optional(),
 });
 
-export type IPathForm = z.infer<typeof pathSchema>;
-export type PathEdit = z.infer<typeof pathEditSchema>;
+// Type exports
+export type CreatePathDto = z.infer<typeof createPathSchema>;
+export type UpdatePathDto = z.infer<typeof editPathSchema>;
+
+// Legacy type exports for backward compatibility
+export type IPathForm = CreatePathDto;
+export type PathEdit = UpdatePathDto;

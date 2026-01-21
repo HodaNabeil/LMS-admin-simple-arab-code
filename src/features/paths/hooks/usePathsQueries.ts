@@ -1,28 +1,26 @@
 import { pathApi } from "../services/pathApi";
 import { pathsKeys } from "@/lib/query-keys";
-import type { Path, PathResponse } from "@/types/path";
+import type { GetPathsResponse, GetPathResponse } from "@/types/path";
 import { useQuery } from "@tanstack/react-query";
 
 export function usePaths() {
-  return useQuery<{ paths: Path[] }>({
+  return useQuery<GetPathsResponse>({
     queryKey: pathsKeys.all,
-    queryFn: async (): Promise<{ paths: Path[] }> => {
+    queryFn: async (): Promise<GetPathsResponse> => {
       return await pathApi.getAllPaths();
     },
-    staleTime: 5 * 60 * 1000, // 5 minutes
-    gcTime: 10 * 60 * 1000, // 10 minutes
+
   });
 }
 
 export function usePath(slug: string | undefined) {
-  return useQuery<PathResponse>({
+  return useQuery<GetPathResponse>({
     queryKey: pathsKeys.detail(slug || ""),
-    queryFn: async (): Promise<PathResponse> => {
+    queryFn: async (): Promise<GetPathResponse> => {
       if (!slug) throw new Error("Slug is required");
       return await pathApi.getPath(slug);
     },
     enabled: !!slug,
-    staleTime: 5 * 60 * 1000, // 5 minutes
-    gcTime: 10 * 60 * 1000, // 10 minutes
+
   });
 }

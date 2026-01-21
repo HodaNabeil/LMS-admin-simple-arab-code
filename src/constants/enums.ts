@@ -112,8 +112,9 @@ export enum Environments {
   DEV = "development",
 }
 export enum UserType {
-  USER = "user",
-  ADMIN = "admin",
+  USER = "STUDENT",
+  ADMIN = "ADMIN",
+  INSTRUCTOR = "INSTRUCTOR",
 }
 
 export enum StatusLesson {

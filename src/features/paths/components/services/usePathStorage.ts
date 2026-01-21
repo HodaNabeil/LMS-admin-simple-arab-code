@@ -7,8 +7,7 @@ export const usePathStorage = () => {
         try {
             if (key === FORM_DATA_KEY && typeof data === "object") {
                 const dataToSave = { ...data };
-                delete dataToSave.image;
-                delete dataToSave.roadmap;
+
 
                 localStorage.setItem(key, JSON.stringify(dataToSave));
             } else {

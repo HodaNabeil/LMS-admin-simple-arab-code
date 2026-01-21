@@ -15,17 +15,16 @@ import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { columns } from "./columns";
 import { Loader } from "@/components/shared/loader";
-import { PathTableMobile } from "./PathTableMobile";
 import { PathTableDesktop } from "./PathTableDesktop";
-import type { Path } from "@/types/path";
+import { usePaths } from "../../hooks/usePathsQueries";
 
-interface PathTableProps {
-  paths: Path[];
-  isLoading: boolean;
-}
 
-function PathTable({ paths, isLoading }: PathTableProps) {
-  // const { data: paths, isPending } = usePaths(); // Removed hook usage
+
+function PathTable() {
+  const { data, isPending } = usePaths();
+
+  const paths = data?.data.paths || [];
+
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
@@ -50,7 +49,7 @@ function PathTable({ paths, isLoading }: PathTableProps) {
     },
   });
 
-  if (isLoading) {
+  if (isPending) {
     return (
       <div className="flex items-center justify-center h-full">
         <Loader />
@@ -63,15 +62,14 @@ function PathTable({ paths, isLoading }: PathTableProps) {
       <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 py-4">
         <Input
           placeholder="البحث في المسارات..."
-          value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
+          value={(table.getColumn("title")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
-            table.getColumn("name")?.setFilterValue(event.target.value)
+            table.getColumn("title")?.setFilterValue(event.target.value)
           }
           className="w-full sm:max-w-sm"
         />
       </div>
 
-      <PathTableMobile table={table} />
       <PathTableDesktop table={table} />
 
       <div className="flex flex-col sm:flex-row items-center justify-between gap-4 py-4">

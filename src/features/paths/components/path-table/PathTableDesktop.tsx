@@ -6,8 +6,8 @@ import {
     TableHeader,
     TableRow,
 } from '@/components/ui/table';
+import type { Path } from '@/types/path';
 import { flexRender, type Table as TableType } from '@tanstack/react-table';
-import type { Path } from "@/types/path";
 
 interface PathTableDesktopProps {
     table: TableType<Path>;
