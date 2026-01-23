@@ -1242,6 +1242,60 @@
         ]
       }
     },
+    "/api/courses/{idOrSlug}/media": {
+      "patch": {
+        "description": "Upload thumbnail image (required) and optionally a preview video for a course. Accepts FormData with required \"thumbnail\" field and optional \"previewVideo\" field. If media already exists, it will be deleted from cloud storage before uploading new media. Requires COURSE_UPDATE permission. Instructors can only upload media for their own courses.",
+        "operationId": "CourseController_uploadCourseMedia[1]",
+        "parameters": [
+          {
+            "name": "idOrSlug",
+            "required": true,
+            "in": "path",
+            "description": "Course ID (UUID format) or slug (e.g., \"nodejs-complete-guide\")",
+            "schema": {
+              "example": "nodejs-complete-guide",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Course media uploaded successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WrappedResponseCourseResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Upload course media (thumbnail required, preview video optional)",
+        "tags": [
+          "courses"
+        ]
+      }
+    },
     "/api/courses/{idOrSlug}/publish": {
       "post": {
         "description": "Publish a course to make it available to students, identified by either UUID or slug. Examples: `POST /courses/550e8400-e29b-41d4-a716-446655440000/publish` or `POST /courses/nodejs-complete-guide/publish`. Requires COURSE_PUBLISH permission. Instructors can only publish their own courses.",
@@ -4356,128 +4410,20 @@
       "CreateCourseDto": {
         "type": "object",
         "properties": {
-          "title": {
-            "type": "string",
-            "description": "Course title",
-            "example": "Learn Arabic for Beginners"
-          },
           "slug": {
             "type": "string",
-            "description": "URL-friendly slug for the course. If not provided, will be auto-generated from the title.",
+            "description": "URL-friendly slug for the course",
             "example": "learn-arabic-for-beginners",
             "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
-          },
-          "description": {
-            "type": "string",
-            "description": "Course description",
-            "example": "Complete Arabic course for beginners"
-          },
-          "shortDescription": {
-            "type": "string",
-            "description": "Short description"
-          },
-          "thumbnailUrl": {
-            "type": "string",
-            "description": "Course thumbnail image URL",
-            "example": "https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=800"
-          },
-          "previewVideo": {
-            "type": "string",
-            "description": "Course preview video URL",
-            "example": "https://example.com/videos/course-preview.mp4"
-          },
-          "duration": {
-            "type": "number",
-            "description": "Total course duration in minutes",
-            "example": 1200
-          },
-          "metaTitle": {
-            "type": "string",
-            "description": "SEO meta title"
-          },
-          "metaDescription": {
-            "type": "string",
-            "description": "SEO meta description"
-          },
-          "price": {
-            "type": "number",
-            "description": "Course price",
-            "example": 99.99
-          },
-          "compareAtPrice": {
-            "type": "number",
-            "description": "Compare at price"
-          },
-          "currency": {
-            "type": "string",
-            "description": "Currency code",
-            "enum": [
-              "USD",
-              "EGP"
-            ],
-            "example": "USD",
-            "default": "USD"
-          },
-          "level": {
-            "type": "string",
-            "description": "Course level",
-            "enum": [
-              "BEGINNER",
-              "INTERMEDIATE",
-              "ADVANCED",
-              "ALL_LEVELS"
-            ]
           },
           "trackId": {
             "type": "string",
             "description": "Track ID - The course must be associated with a track",
             "example": "clx1234567890abcdefghij"
-          },
-          "requirements": {
-            "description": "Course requirements",
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "objectives": {
-            "description": "Course objectives",
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "tags": {
-            "description": "Course tags",
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "visibility": {
-            "type": "string",
-            "description": "Visibility",
-            "enum": [
-              "PUBLIC",
-              "PRIVATE",
-              "UNLISTED"
-            ]
-          },
-          "certificateEnabled": {
-            "type": "boolean",
-            "description": "Certificate enabled"
-          },
-          "maxStudents": {
-            "type": "number",
-            "description": "Maximum students (0 for unlimited)"
           }
         },
         "required": [
-          "title",
-          "description",
-          "thumbnailUrl",
-          "price",
-          "level",
+          "slug",
           "trackId"
         ]
       },
@@ -4873,14 +4819,6 @@
           "shortDescription": {
             "type": "string",
             "description": "Short description"
-          },
-          "thumbnailUrl": {
-            "type": "string",
-            "description": "Thumbnail URL"
-          },
-          "previewVideoUrl": {
-            "type": "string",
-            "description": "Preview video URL"
           },
           "price": {
             "type": "number",

@@ -1,4 +1,4 @@
-import { Pages, StatusLesson, UserType } from '@/constants/enums';
+import { Level, Pages, StatusLesson, UserType } from '@/constants/enums';
 import type { IFormField, IFormFieldsVariables } from '@/types/app';
 
 const useFormFields = ({ slug }: IFormFieldsVariables) => {
@@ -192,15 +192,11 @@ const useFormFields = ({ slug }: IFormFieldsVariables) => {
 
   const createCourseFields = (): IFormField[] => [
     {
-      name: 'selectedPath', // تصحيح اسم الحقل
-      label: 'اختار المسار التعليمي',
+      name: 'selectedTrack',
+      label: 'اختار التراك',
       type: 'select',
-      placeholder: 'اختر المسار التعليمي',
-      options: [
-        { value: '1', label: 'المسار التعليمي 1' },
-        { value: '2', label: 'المسار التعليمي 2' },
-        { value: '3', label: 'المسار التعليمي 3' },
-      ],
+      placeholder: 'اختر التراك',
+      options: [],
     },
     {
       name: 'slug',
@@ -244,10 +240,10 @@ const useFormFields = ({ slug }: IFormFieldsVariables) => {
       type: 'select',
       placeholder: 'اختر مستوى الدورة',
       options: [
-        { value: 'all', label: 'جميع المستويات' },
-        { value: 'beginner', label: 'مبتدئ' },
-        { value: 'intermediate', label: 'متوسط' },
-        { value: 'advanced', label: 'متقدم' },
+        { value: Level.ALL_LEVELS, label: 'جميع المستويات' },
+        { value: Level.BEGINNER, label: 'مبتدئ' },
+        { value: Level.INTERMEDIATE, label: 'متوسط' },
+        { value: Level.ADVANCED, label: 'متقدم' },
       ],
     },
     {
@@ -257,13 +253,13 @@ const useFormFields = ({ slug }: IFormFieldsVariables) => {
       placeholder: 'ادخل مدة الدورة (بالساعات)',
     },
     {
-      name: 'image',
+      name: 'thumbnail',
       label: 'صورة الدورة',
       type: 'image',
       placeholder: 'اختار صورة الدورة',
     },
     {
-      name: 'video',
+      name: 'previewVideo',
       label: 'فيديو الدورة',
       type: 'file',
       placeholder: 'اختر فيديو الدورة',
@@ -315,9 +311,9 @@ const useFormFields = ({ slug }: IFormFieldsVariables) => {
   const createTrackFields = (): IFormField[] => [
     {
       name: "pathId",
-      label: "التراك الأساسي",
+      label: "المسار التعليمي ",
       type: "select" as const,
-      placeholder: "اختر التراك الأساسي",
+      placeholder: "اختر المسار التعليمي",
       options: [],
     },
     {

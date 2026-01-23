@@ -9,11 +9,11 @@ import { DialogTitle } from "@radix-ui/react-dialog";
 import { Edit } from "lucide-react";
 import type { Course } from "@/types/course";
 import { useState } from "react";
-import { useUpdateCourse } from "../hooks/useCourseMutations";
+import { useUpdateCourse } from "../hooks/useCoursesMutations";
 
 export function EditCourse({ course }: { course: Course }) {
     const [courseMenu, setCourseMenu] = useState(false);
-    const mutation = useUpdateCourse();
+    const mutation = useUpdateCourse({ slug: course.slug });
 
     return (
         <Dialog open={courseMenu} onOpenChange={(open) => setCourseMenu(open)}>

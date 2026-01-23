@@ -5,75 +5,31 @@ import CourseTable from '@/features/courses/components/table/CourseTable';
 import { Plus, Users } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
-import type { Course } from '@/types/course';
+import { useCourses } from '@/features/courses/hooks/useCoursesQueries';
 
-const courses: Course[] = [
-  {
-    id: 1,
-    name:
-      'دورة تطوير تطبيقات باستخدام Flutter - بناء واجهات احترافية لأنظمة iOS و Android',
-    slug: 'flutter-development',
-    category: 'تطوير التطبيقات',
-    type: 'تفاعلية',
-    level: 'متوسط',
-    instructor: 'أحمد محمد',
-    price: 299,
-    image: 'https://i.ibb.co/Zzr165m4/Chat-GPT-Image-8-2025-04-06-00.png',
-    students: 145,
-    rating: 4.8,
-    hours: 20
-  },
-  {
-    id: 2,
-    name:
-      'دورة تطوير مواقع الويب باستخدام React و Next.js - من المبتدئ إلى المحترف',
-    slug: 'react-nextjs-development',
-    category: 'تطوير الويب',
-    type: 'تقنية',
-    level: 'متقدم',
-    instructor: 'سارة أحمد',
-    price: 450,
-    image: 'https://i.ibb.co/Zzr165m4/Chat-GPT-Image-8-2025-04-06-00.png',
-    students: 298,
-    rating: 4.9,
-    hours: 35
-  },
-  {
-    id: 3,
-    name: 'دورة تصميم واجهات المستخدم UX/UI - إنشاء تجارب مستخدم مميزة',
-    slug: 'ui-ux-design',
-    category: 'تصميم',
-    type: 'إبداعية',
-    level: 'مبتدئ',
-    instructor: 'محمد علي',
-    price: 199,
-    image: 'https://i.ibb.co/Zzr165m4/Chat-GPT-Image-8-2025-04-06-00.png',
-    students: 89,
-    rating: 4.7,
-    hours: 15
-  },
-];
+const LEVEL_MAP: Record<string, string> = {
+  BEGINNER: 'مبتدئ',
+  INTERMEDIATE: 'متوسط',
+  ADVANCED: 'متقدم',
+};
+
+
 export default function Courses() {
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('الكل');
   const [selectedLevel, setSelectedLevel] = useState('الكل');
-  const [selectedType, setSelectedType] = useState('الكل');
   const [minPrice, setMinPrice] = useState(0);
+
+  const { data: coursesResponse, isLoading, error } = useCourses();
+  const courses = coursesResponse?.data?.courses || [];
 
   const filteredCourses = useMemo(() => {
     return courses.filter((course) => {
       const matchesSearch =
-        course.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        course.instructor.toLowerCase().includes(searchTerm.toLowerCase());
-
-      const matchesCategory =
-        selectedCategory === 'الكل' || course.category === selectedCategory;
+        course.title.toLowerCase().includes(searchTerm.toLowerCase());
+      // || course.instructor.toLowerCase().includes(searchTerm.toLowerCase()); // Instructor name not available yet
 
       const matchesLevel =
-        selectedLevel === 'الكل' || course.level === selectedLevel;
-
-      const matchesType =
-        selectedType === 'الكل' || course.type === selectedType;
+        selectedLevel === 'الكل' || LEVEL_MAP[course.level as string] === selectedLevel;
 
       const matchesPrice =
         minPrice === 0 ||
@@ -82,21 +38,20 @@ export default function Courses() {
 
       return (
         matchesSearch &&
-        matchesCategory &&
         matchesLevel &&
-        matchesType &&
         matchesPrice
       );
     });
-  }, [searchTerm, selectedCategory, selectedLevel, selectedType, minPrice]);
+  }, [courses, searchTerm, selectedLevel, minPrice]);
 
   const handleClearFilters = () => {
     setSearchTerm('');
-    setSelectedCategory('الكل');
     setSelectedLevel('الكل');
-    setSelectedType('الكل');
     setMinPrice(0);
   };
+
+  if (isLoading) return <div>جاري التحميل...</div>;
+  if (error) return <div>حدث خطأ أثناء تحميل الدورات</div>;
 
   return (
     <div className="space-y-6  p-3">
@@ -105,12 +60,8 @@ export default function Courses() {
       <CourseFilters
         searchTerm={searchTerm}
         onSearchChange={setSearchTerm}
-        selectedCategory={selectedCategory}
-        onCategoryChange={setSelectedCategory}
         selectedLevel={selectedLevel}
         onLevelChange={setSelectedLevel}
-        selectedType={selectedType}
-        onTypeChange={setSelectedType}
         minPrice={minPrice}
         onMinPriceChange={setMinPrice}
         onClearFilters={handleClearFilters}

@@ -40,6 +40,7 @@ export enum Pages {
   BASICS = "manage/basics",
   PRICING = "manage/pricing",
   MANAGE = "manage",
+  MEDIA = "manage/media",
   COURSES = "courses",
   CURRICULUM = "curriculum",
   LESSONS = "lessons",
@@ -152,4 +153,12 @@ export enum StatusLesson {
   UNLOCKED = "unlocked",
   PREVIEW = "preview",
 }
+
+export enum Level {
+  BEGINNER = "BEGINNER",
+  INTERMEDIATE = "INTERMEDIATE",
+  ADVANCED = "ADVANCED",
+  ALL_LEVELS = "ALL_LEVELS",
+}
+
 

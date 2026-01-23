@@ -67,11 +67,11 @@ export type GoalsSchema = z.infer<typeof goalsSchema>;
 export const basicsSchema = z.object({
   name: course.name,
   slug: course.slug,
-  image: course.image,
   hours: course.hours,
-  video: z.custom<File>().optional(),
   description: z.string().optional(),
   level: z.string().optional(),
+  thumbnail: course.image,
+  previewVideo: z.custom<File>().optional(),
 });
 
 export const createLessonCourseSchema = z.object({
@@ -88,3 +88,10 @@ export const pricingSchema = z.object({
 });
 
 export type PricingSchema = z.infer<typeof pricingSchema>;
+
+export const mediaSchema = z.object({
+  thumbnail: course.image,
+  previewVideo: z.custom<File>().optional(),
+});
+
+export type MediaSchema = z.infer<typeof mediaSchema>;

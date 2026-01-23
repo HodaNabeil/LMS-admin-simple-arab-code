@@ -1,8 +1,8 @@
 /**
 * AUTO-GENERATED FILE - DO NOT EDIT MANUALLY
 * Generated from OpenAPI schema
-* Last updated: 2026-01-21T02:24:07.755Z
-* Schema URL: http://localhost:4000/api/docs-json
+* Last updated: 2026-01-22T20:24:55.905Z
+* Schema URL: https://simple-arab-code-backend-production.up.railway.app/api/docs-json
 */
  
 /* eslint-disable */
@@ -650,6 +650,26 @@ export type paths = {
          * @description Update an existing course identified by either UUID or slug. Examples: `PATCH /courses/550e8400-e29b-41d4-a716-446655440000` or `PATCH /courses/nodejs-complete-guide`. Requires COURSE_UPDATE permission. Instructors can only update their own courses.
          */
         patch: operations["CourseController_updateCourse[1]"];
+        trace?: never;
+    };
+    "/api/courses/{idOrSlug}/media": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Upload course media (thumbnail required, preview video optional)
+         * @description Upload thumbnail image (required) and optionally a preview video for a course. Accepts FormData with required "thumbnail" field and optional "previewVideo" field. If media already exists, it will be deleted from cloud storage before uploading new media. Requires COURSE_UPDATE permission. Instructors can only upload media for their own courses.
+         */
+        patch: operations["CourseController_uploadCourseMedia[1]"];
         trace?: never;
     };
     "/api/courses/{idOrSlug}/publish": {
@@ -1592,81 +1612,16 @@ export type components = {
             value: number;
         };
         CreateCourseDto: {
-            /** @description Certificate enabled */
-            certificateEnabled?: boolean;
-            /** @description Compare at price */
-            compareAtPrice?: number;
             /**
-             * @description Currency code
-             * @default USD
-             * @example USD
-             * @enum {string}
-             */
-            currency: CreateCourseDtoCurrency;
-            /**
-             * @description Course description
-             * @example Complete Arabic course for beginners
-             */
-            description: string;
-            /**
-             * @description Total course duration in minutes
-             * @example 1200
-             */
-            duration?: number;
-            /**
-             * @description Course level
-             * @enum {string}
-             */
-            level: CreateCourseDtoLevel;
-            /** @description Maximum students (0 for unlimited) */
-            maxStudents?: number;
-            /** @description SEO meta description */
-            metaDescription?: string;
-            /** @description SEO meta title */
-            metaTitle?: string;
-            /** @description Course objectives */
-            objectives?: string[];
-            /**
-             * @description Course preview video URL
-             * @example https://example.com/videos/course-preview.mp4
-             */
-            previewVideo?: string;
-            /**
-             * @description Course price
-             * @example 99.99
-             */
-            price: number;
-            /** @description Course requirements */
-            requirements?: string[];
-            /** @description Short description */
-            shortDescription?: string;
-            /**
-             * @description URL-friendly slug for the course. If not provided, will be auto-generated from the title.
+             * @description URL-friendly slug for the course
              * @example learn-arabic-for-beginners
              */
-            slug?: string;
-            /** @description Course tags */
-            tags?: string[];
-            /**
-             * @description Course thumbnail image URL
-             * @example https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=800
-             */
-            thumbnailUrl: string;
-            /**
-             * @description Course title
-             * @example Learn Arabic for Beginners
-             */
-            title: string;
+            slug: string;
             /**
              * @description Track ID - The course must be associated with a track
              * @example clx1234567890abcdefghij
              */
             trackId: string;
-            /**
-             * @description Visibility
-             * @enum {string}
-             */
-            visibility?: CreateCourseDtoVisibility;
         };
         CreateLectureDto: {
             /**
@@ -2873,8 +2828,6 @@ export type components = {
             metaTitle?: string;
             /** @description Course objectives */
             objectives?: string[];
-            /** @description Preview video URL */
-            previewVideoUrl?: string;
             /** @description Course price */
             price?: number;
             /** @description Course requirements */
@@ -2888,8 +2841,6 @@ export type components = {
             status?: UpdateCourseDtoStatus;
             /** @description Course tags */
             tags?: string[];
-            /** @description Thumbnail URL */
-            thumbnailUrl?: string;
             /** @description Course title */
             title?: string;
             /** @description Track ID */
@@ -5572,6 +5523,64 @@ export interface operations {
             };
         };
     };
+    "CourseController_uploadCourseMedia[1]": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Course ID (UUID format) or slug (e.g., "nodejs-complete-guide") */
+                idOrSlug: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Course media uploaded successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["WrappedResponseCourseResponseDto"];
+                };
+            };
+            /** @description Bad request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Internal server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
     "CourseController_publishCourse[1]": {
         parameters: {
             query?: never;
@@ -7028,21 +7037,6 @@ export enum CourseDtoVisibility {
 export enum CreateCouponDtoType {
     PERCENTAGE = "PERCENTAGE",
     FIXED = "FIXED"
-}
-export enum CreateCourseDtoCurrency {
-    USD = "USD",
-    EGP = "EGP"
-}
-export enum CreateCourseDtoLevel {
-    BEGINNER = "BEGINNER",
-    INTERMEDIATE = "INTERMEDIATE",
-    ADVANCED = "ADVANCED",
-    ALL_LEVELS = "ALL_LEVELS"
-}
-export enum CreateCourseDtoVisibility {
-    PUBLIC = "PUBLIC",
-    PRIVATE = "PRIVATE",
-    UNLISTED = "UNLISTED"
 }
 export enum CreatePathDtoCategory {
     WEB = "WEB",

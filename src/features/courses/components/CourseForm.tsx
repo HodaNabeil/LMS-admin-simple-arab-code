@@ -6,21 +6,19 @@ import { Pages } from '@/constants/enums';
 import FormFields from '@/components/shared/form-fields/form-fields';
 import { Button } from '@/components/ui/button';
 import type { Course } from '@/types/course';
-import useFormValidations from '@/hooks/useFormValidations';
 import type { UseMutationResult } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import type { AxiosError } from 'axios';
-import { courseSchema } from '@/validations/course';
+import { basicsSchema } from '@/validations/course';
 
 interface CourseFormProps {
     course?: Course;
     setCourseMenu: React.Dispatch<React.SetStateAction<boolean>>;
-    mutation: UseMutationResult<{ message: string }, Error, object, unknown>;
+    mutation: UseMutationResult<any, Error, any, unknown>;
 }
 
 function CourseForm({ course, setCourseMenu, mutation }: CourseFormProps) {
-    const { getFormFields } = useFormFields({ slug: Pages.COURSES });
-    const { getValidationSchema } = useFormValidations({ slug: Pages.COURSES });
+    const { getFormFields } = useFormFields({ slug: Pages.BASICS });
 
     const {
         handleSubmit,
@@ -28,24 +26,43 @@ function CourseForm({ course, setCourseMenu, mutation }: CourseFormProps) {
         formState: { errors, isSubmitting },
     } = useForm({
         defaultValues: {
-            name: course?.name || '',
+            name: course?.title || '',
             slug: course?.slug || '',
-            type: course?.type || '',
-            level: course?.level || '',
-            instructor: course?.instructor || '',
-            price: course?.price || 0,
-            image: course?.image || '',
-            hours: course?.hours || 0,
+            level: course?.level?.toLowerCase() || 'all',
+            image: course?.thumbnailUrl || '',
+            hours: course?.duration ? course.duration / 60 : 0,
+            description: course?.description || '',
         },
         mode: 'onChange',
 
-        resolver: zodResolver(getValidationSchema() as typeof courseSchema),
+        resolver: zodResolver(basicsSchema),
     });
 
     const onSubmit = async (data: Record<string, unknown>) => {
-        const mutationData = course ? { ...data, id: course.id } : data;
+        // Transform form data to API DTO
+        const mutationData: any = {
+            ...data,
+            title: data.name,
+            thumbnailUrl: data.image,
+            level: (data.level as string).toUpperCase(),
+            duration: Number(data.hours) * 60, // Convert hours to minutes
+        };
+
+        // Remove mapped fields if not needed or to avoid confusion, but spreading data implies we might send extra fields which Axios might ignore or strict DTO might reject if we typed it strictly.
+        // For pureness, we should construct the object.
+        const cleanData = {
+            title: mutationData.title,
+            slug: mutationData.slug,
+            level: mutationData.level,
+            price: Number(mutationData.price),
+            thumbnailUrl: mutationData.thumbnailUrl,
+            description: mutationData.description,
+            duration: mutationData.duration,
+            // Add other fields from UpdateCourseDto as needed
+        };
+
         try {
-            const res = await mutation.mutateAsync(mutationData);
+            const res = await mutation.mutateAsync(cleanData);
             toast.success(res.message);
             setCourseMenu(false);
         } catch (error) {

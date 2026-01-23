@@ -1,6 +1,15 @@
+import { useEffect } from "react";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
-import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { useUpdateCourse } from "@/features/courses/hooks/useCoursesMutations";
+import type {
+  Course,
+  CourseStatus as CourseStatusType,
+  CourseVisibility,
+  UpdateCourseStatus,
+  UpdateCourseVisibility,
+} from "@/types/course";
 import ReactSelect, {
   components,
   type SingleValue,
@@ -8,7 +17,10 @@ import ReactSelect, {
   type OptionProps,
 } from "react-select";
 import { Check } from "lucide-react";
-import { Button } from "@/components/ui/button";
+
+import { useCourseManageStore } from '../../store';
+import { COURSE_VISIBILITY } from "@/constants/course";
+
 type OptionType = { value: string; label: string };
 
 const selectOptions: OptionType[] = [
@@ -56,6 +68,7 @@ const customStyles: StylesConfig<OptionType, false> = {
     gap: 8,
     position: "relative",
     cursor: "pointer",
+    transition: "all 0.2s ease-in-out",
   }),
   singleValue: (base) => ({
     ...base,
@@ -66,6 +79,7 @@ const customStyles: StylesConfig<OptionType, false> = {
   dropdownIndicator: (base) => ({
     ...base,
     color: "#2563eb",
+    padding: 8,
   }),
   indicatorSeparator: () => ({
     display: "none",
@@ -81,31 +95,59 @@ const Option = (props: OptionProps<OptionType, false>) => (
   </components.Option>
 );
 
-export default function AvailabilityForm() {
-  const [formData, setFormData] = useState<{
-    status: OptionType;
-    isVisible: boolean;
-  }>({
-    status: selectOptions[0],
-    isVisible: false,
-  });
+interface AvailabilityFormProps {
+  course?: Course;
+}
+
+export default function AvailabilityForm({ course }: AvailabilityFormProps) {
+  const {
+    courseStatus,
+    isAvailableForPurchase,
+    setCourseStatus,
+    setIsAvailableForPurchase
+  } = useCourseManageStore();
+
+  const { mutate: updateCourse, isPending } = useUpdateCourse({ slug: course?.slug || "" });
+
+  useEffect(() => {
+    if (course) {
+      if (course.status) {
+        const statusLower = course.status.toLowerCase();
+        const foundOption = selectOptions.find((opt) => opt.value === statusLower);
+        if (foundOption) {
+          setCourseStatus(foundOption);
+        }
+      }
+      if (course.visibility) {
+        setIsAvailableForPurchase(course.visibility === 'PUBLIC');
+      }
+    }
+  }, [course, setCourseStatus, setIsAvailableForPurchase]);
 
   const handleStatusChange = (option: SingleValue<OptionType>) => {
     if (option) {
-      setFormData((prev) => ({ ...prev, status: option }));
+      setCourseStatus(option);
     }
   };
 
   const handleVisibilityChange = (checked: boolean | "indeterminate") => {
-    setFormData((prev) => ({ ...prev, isVisible: checked === true }));
+    setIsAvailableForPurchase(checked === true);
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    console.log(formData);
+  const handleSave = () => {
+    if (!courseStatus) return;
+
+    // Only update status and visibility - availability form doesn't manage course level
+    updateCourse({
+      status: courseStatus.value.toUpperCase() as UpdateCourseStatus,
+      visibility: isAvailableForPurchase
+        ? (COURSE_VISIBILITY.PUBLIC as UpdateCourseVisibility)
+        : (COURSE_VISIBILITY.PRIVATE as UpdateCourseVisibility),
+    });
   };
+
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-6 " dir="rtl">
+    <div className="flex flex-col gap-6 " dir="rtl">
       <div>
         <Label
           htmlFor="status-select"
@@ -117,7 +159,7 @@ export default function AvailabilityForm() {
           inputId="status-select"
           classNamePrefix="react-select"
           options={selectOptions}
-          value={formData.status}
+          value={courseStatus}
           onChange={handleStatusChange}
           placeholder="اختر الحالة"
           styles={customStyles}
@@ -141,7 +183,7 @@ export default function AvailabilityForm() {
       <div className="flex items-center gap-3 mt-2">
         <Checkbox
           id="visible-checkbox"
-          checked={formData.isVisible}
+          checked={isAvailableForPurchase}
           onCheckedChange={handleVisibilityChange}
           className="!border-[#297bff]  !rounded-[4px]"
         />
@@ -149,16 +191,12 @@ export default function AvailabilityForm() {
           htmlFor="visible-checkbox"
           className="text-base font-bold !text-[#297bff] cursor-pointer"
         >
-          إظهار للطلاب
+          متوفر للشراء
         </Label>
       </div>
 
-      <Button
-        type="submit"
-        className="w-full text-base font-bold py-2 !bg-[#297bff] hover:!bg-[#297bff]/80"
-      >
-        حفظ
-      </Button>
-    </form>
+
+
+    </div>
   );
 }

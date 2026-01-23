@@ -39,17 +39,11 @@ function StatCard({ title, value, icon, change, changeType }: StatCardProps) {
 
 function CourseStats({ courses }: CourseStatsProps) {
   const totalCourses = courses.length;
-  const totalStudents = courses.reduce(
-    (sum, course) => sum + (course.students || 0),
-    0
-  );
+  const totalStudents = 0; // CourseDto currently doesn't provide student count
   const averageRating =
     courses.reduce((sum, course) => sum + (course.rating || 0), 0) /
-    courses.length;
-  const totalRevenue = courses.reduce(
-    (sum, course) => sum + course.price * (course.students || 0),
-    0
-  );
+    (courses.length || 1);
+  const totalRevenue = 0; // Revenue calculation requires student count
 
   const stats = [
     {

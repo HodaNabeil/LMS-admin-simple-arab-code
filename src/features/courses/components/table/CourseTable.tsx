@@ -29,13 +29,13 @@ interface CourseTableProps {
 
 const columns: ColumnDef<Course>[] = [
   {
-    accessorKey: 'image',
+    accessorKey: 'thumbnailUrl',
     header: 'الصورة',
     cell: ({ row }) => (
       <div className="flex items-center justify-center">
         <img
-          src={row.getValue('image')}
-          alt={row.getValue('name')}
+          src={row.getValue('thumbnailUrl')}
+          alt={row.getValue('title')}
           className="h-12 w-12 rounded-lg object-cover"
         />
       </div>
@@ -43,64 +43,54 @@ const columns: ColumnDef<Course>[] = [
     enableSorting: false,
   },
   {
-    accessorKey: 'name',
+    accessorKey: 'slug',
     header: 'اسم المادة',
     cell: ({ row }) => (
       <div className="max-w-[300px]">
         <div className="font-medium text-right truncate">
-          {row.getValue('name')}
+          {row.getValue('slug')}
         </div>
       </div>
     ),
     enableSorting: true,
   },
-  {
-    accessorKey: 'category',
-    header: 'الفئة',
-    cell: ({ row }) => (
-      <Badge variant="outline" className="border-blue-200 text-blue-800">
-        {row.getValue('category')}
-      </Badge>
-    ),
-  },
-  {
-    accessorKey: 'type',
-    header: 'النوع',
-    cell: ({ row }) => (
-      <Badge
-        variant="secondary"
-        className="bg-purple-100 text-purple-800 border-purple-200"
-      >
-        {row.getValue('type')}
-      </Badge>
-    ),
-  },
+
   {
     accessorKey: 'level',
     header: 'المستوى',
     cell: ({ row }) => {
       const level = row.getValue('level') as string;
-      const levelColors = {
-        مبتدئ: 'bg-green-100 text-green-800 border-green-200',
-        متوسط: 'bg-yellow-100 text-yellow-800 border-yellow-200',
-        متقدم: 'bg-red-100 text-red-800 border-red-200',
+      const levelLabels: Record<string, string> = {
+        BEGINNER: 'مبتدئ',
+        INTERMEDIATE: 'متوسط',
+        ADVANCED: 'متقدم',
+        ALL_LEVELS: 'جميع المستويات',
       };
+
+      const levelColors: Record<string, string> = {
+        BEGINNER: 'bg-green-100 text-green-800 border-green-200',
+        INTERMEDIATE: 'bg-yellow-100 text-yellow-800 border-yellow-200',
+        ADVANCED: 'bg-red-100 text-red-800 border-red-200',
+      };
+
       return (
         <Badge
-          className={`${levelColors[level as keyof typeof levelColors] ||
+          className={`${levelColors[level] ||
             'bg-gray-100 text-gray-800 border-gray-200'
             }`}
         >
-          {level}
+          {levelLabels[level] || level}
         </Badge>
       );
     },
   },
   {
-    accessorKey: 'instructor',
-    header: 'اسم المدرب',
+    accessorKey: 'instructorId',
+    header: 'معرف المدرب',
     cell: ({ row }) => (
-      <div className="font-medium text-right">{row.getValue('instructor')}</div>
+      <div className="font-medium text-right truncate max-w-[150px]" title={row.getValue('instructorId')}>
+        {row.getValue('instructorId')}
+      </div>
     ),
   },
   {
@@ -171,9 +161,9 @@ function CourseTable({ courses }: CourseTableProps) {
       <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 py-4">
         <Input
           placeholder="البحث في الدورات..."
-          value={(table.getColumn('name')?.getFilterValue() as string) ?? ''}
+          value={(table.getColumn('title')?.getFilterValue() as string) ?? ''}
           onChange={(event) =>
-            table.getColumn('name')?.setFilterValue(event.target.value)
+            table.getColumn('title')?.setFilterValue(event.target.value)
           }
           className="w-full sm:max-w-sm"
         />

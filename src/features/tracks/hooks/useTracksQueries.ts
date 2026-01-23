@@ -3,13 +3,17 @@ import { tracksKeys } from "@/lib/query-keys";
 import type { GetTrackResponse, ListTracksResponse } from "@/types/tracks";
 import { useQuery } from "@tanstack/react-query";
 
-export function useAllTracks() {
+export function useTracks() {
   return useQuery<ListTracksResponse>({
     queryKey: tracksKeys.all,
     queryFn: async (): Promise<ListTracksResponse> => {
       return tracksApi.getAllTracks();
     },
   });
+}
+
+export function useAllTracks() {
+  return useTracks();
 }
 
 export function useTrack(slug: string | undefined) {

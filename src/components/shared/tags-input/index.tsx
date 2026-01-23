@@ -9,7 +9,7 @@ const TagsInput = ({
   setTags,
 }: {
   tags: string[];
-  setTags: React.Dispatch<React.SetStateAction<string[]>>;
+  setTags: (tags: string[]) => void;
 }) => {
   const [tag, setTag] = useState<string>("");
   const tagInputRef = useRef<ReactTagsInput>(null);
@@ -32,7 +32,7 @@ const TagsInput = ({
         onChange={onChange}
         value={value}
         {...other}
-        className="form-field  bg-[#1e293b]"
+        className="form-field  bg-white"
       />
     );
   };

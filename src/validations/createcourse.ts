@@ -9,11 +9,10 @@ export const createCourseSchema = z.object({
       message:
         "المُعرّف يجب أن يحتوي فقط على حروف إنجليزية صغيرة، أرقام، وشرطات (-)",
     }),
-  selectedPath: z
+  selectedTrack: z
     .string()
     .trim()
-    .min(1, { message: "يجب اختيار قيمة" })
-    .max(50, { message: "القيمة المختارة طويلة جدًا" }),
+    .min(1, { message: "يجب اختيار مسار" }),
 });
 
 export type ICreateCourseForm = z.infer<typeof createCourseSchema>;

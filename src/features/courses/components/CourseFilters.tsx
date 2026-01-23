@@ -13,12 +13,8 @@ import { Search, Filter, X } from "lucide-react";
 interface CourseFiltersProps {
   searchTerm: string;
   onSearchChange: (term: string) => void;
-  selectedCategory: string;
-  onCategoryChange: (category: string) => void;
   selectedLevel: string;
   onLevelChange: (level: string) => void;
-  selectedType: string;
-  onTypeChange: (type: string) => void;
   minPrice: number;
   onMinPriceChange: (price: number) => void;
   onClearFilters: () => void;
@@ -27,29 +23,13 @@ interface CourseFiltersProps {
 function CourseFilters({
   searchTerm,
   onSearchChange,
-  selectedCategory,
-  onCategoryChange,
   selectedLevel,
   onLevelChange,
-  selectedType,
-  onTypeChange,
   minPrice,
   onMinPriceChange,
   onClearFilters,
 }: CourseFiltersProps) {
-  const categories = [
-    "الكل",
-    "تطوير التطبيقات",
-    "تطوير الويب",
-    "تصميم",
-    "برمجة",
-    "تسويق",
-    "أعمال",
-  ];
-
   const levels = ["الكل", "مبتدئ", "متوسط", "متقدم"];
-
-  const types = ["الكل", "تفاعلية", "تقنية", "إبداعية"];
 
   const priceRanges = [
     { label: "جميع الأسعار", value: 0 },
@@ -62,9 +42,7 @@ function CourseFilters({
 
   const hasActiveFilters =
     searchTerm ||
-    selectedCategory !== "الكل" ||
     selectedLevel !== "الكل" ||
-    selectedType !== "الكل" ||
     minPrice !== 0;
 
   return (
@@ -99,19 +77,7 @@ function CourseFilters({
           />
         </div>
 
-        {/* Category Filter */}
-        <Select value={selectedCategory} onValueChange={onCategoryChange}>
-          <SelectTrigger>
-            <SelectValue placeholder="التصنيف" />
-          </SelectTrigger>
-          <SelectContent>
-            {categories.map((category) => (
-              <SelectItem key={category} value={category}>
-                {category}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+
 
         {/* Level Filter */}
         <Select value={selectedLevel} onValueChange={onLevelChange}>
@@ -122,20 +88,6 @@ function CourseFilters({
             {levels.map((level) => (
               <SelectItem key={level} value={level}>
                 {level}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-
-        {/* Type Filter */}
-        <Select value={selectedType} onValueChange={onTypeChange}>
-          <SelectTrigger>
-            <SelectValue placeholder="النوع" />
-          </SelectTrigger>
-          <SelectContent>
-            {types.map((type) => (
-              <SelectItem key={type} value={type}>
-                {type}
               </SelectItem>
             ))}
           </SelectContent>
@@ -174,30 +126,12 @@ function CourseFilters({
               />
             </Badge>
           )}
-          {selectedCategory !== "الكل" && (
-            <Badge variant="secondary" className="gap-1">
-              التصنيف: {selectedCategory}
-              <X
-                className="w-3 h-3 cursor-pointer"
-                onClick={() => onCategoryChange("الكل")}
-              />
-            </Badge>
-          )}
           {selectedLevel !== "الكل" && (
             <Badge variant="secondary" className="gap-1">
               المستوى: {selectedLevel}
               <X
                 className="w-3 h-3 cursor-pointer"
                 onClick={() => onLevelChange("الكل")}
-              />
-            </Badge>
-          )}
-          {selectedType !== "الكل" && (
-            <Badge variant="secondary" className="gap-1">
-              النوع: {selectedType}
-              <X
-                className="w-3 h-3 cursor-pointer"
-                onClick={() => onTypeChange("الكل")}
               />
             </Badge>
           )}

@@ -10,7 +10,10 @@ import {
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm, type Control } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
+import { useTracks } from '@/features/tracks/hooks/useTracksQueries';
+
+import { useCreateCourse } from '../../hooks/useCoursesMutations';
 
 export default function CreateCourseForm() {
   const { getFormFields } = useFormFields({ slug: Pages.CREATE_COURSES });
@@ -18,6 +21,9 @@ export default function CreateCourseForm() {
     slug: Pages.CREATE_COURSES,
   });
   const navigate = useNavigate();
+  const { data: tracksData, isLoading: isLoadingTracks } = useTracks();
+
+  const { mutateAsync: createCourse } = useCreateCourse();
 
   const {
     handleSubmit,
@@ -26,17 +32,35 @@ export default function CreateCourseForm() {
   } = useForm<ICreateCourseForm>({
     defaultValues: {
       slug: '',
-      selectedPath: '',
+      selectedTrack: '',
     },
     mode: 'onChange',
     resolver: zodResolver(getValidationSchema() as typeof createCourseSchema),
   });
 
+
+
+  const trackOptions = useMemo(() => {
+    if (!tracksData?.data?.tracks) return [];
+
+    return tracksData.data.tracks
+      .map((track) => ({
+        value: track.id.toString(),
+        label: track.title || track.slug,
+      }));
+  }, [tracksData]);
+
   const [submitError, setSubmitError] = useState<string | null>(null);
+
+
 
   const handleFormSubmit = async (data: ICreateCourseForm) => {
     try {
       setSubmitError(null);
+      await createCourse({
+        slug: data.slug,
+        trackId: data.selectedTrack,
+      });
       navigate(`/admin/${Pages.COURSES}/${data.slug}/${Pages.GOALS}`);
     } catch (error) {
       console.error('Course creation error:', error);
@@ -59,27 +83,43 @@ export default function CreateCourseForm() {
           <span className="block sm:inline">{submitError}</span>
         </div>
       )}
-      <form
-        onSubmit={handleSubmit(handleFormSubmit)}
-        className="flex flex-col gap-4"
-      >
-        {getFormFields().map((field) => (
-          <FormFields
-            key={field.name}
-            {...field}
-            control={control as unknown as Control<Record<string, unknown>>}
-            errors={errors}
-          />
-        ))}
 
-        <button
-          type="submit"
-          disabled={isSubmitting}
-          className="bg-primary text-white rounded px-4 py-2 text-sm hover:bg-primary/90 transition disabled:opacity-50 flex items-center justify-center gap-2"
+      {isLoadingTracks ? (
+        <div className="flex items-center justify-center py-8">
+          <Loader />
+          <span className="mr-2">جاري تحميل... التراك</span>
+        </div>
+      ) : (
+        <form
+          onSubmit={handleSubmit(handleFormSubmit)}
+          className="flex flex-col gap-4"
         >
-          {isSubmitting ? <Loader /> : 'إضافة دورة'}
-        </button>
-      </form>
+          {getFormFields().map((field) => {
+            let fieldWithOptions = field;
+
+            if (field.name === 'selectedTrack') {
+              fieldWithOptions = { ...field, options: trackOptions };
+            }
+
+            return (
+              <FormFields
+                key={field.name}
+                {...fieldWithOptions}
+                control={control as unknown as Control<Record<string, unknown>>}
+                errors={errors}
+              />
+            );
+          })}
+
+          <button
+            type="submit"
+            disabled={isSubmitting}
+            className="bg-primary text-white rounded px-4 py-2 text-sm hover:bg-primary/90 transition disabled:opacity-50 flex items-center justify-center gap-2"
+          >
+            {isSubmitting ? <Loader /> : 'إضافة دورة'}
+          </button>
+        </form>
+      )}
     </div>
   );
 }

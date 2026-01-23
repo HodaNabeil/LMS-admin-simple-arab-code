@@ -1,14 +1,14 @@
 import { Label } from '@/components/ui/label';
 import Select from 'react-select';
-import { useState } from 'react';
+import { useEffect } from 'react';
 import FormFields from '@/components/shared/form-fields/form-fields';
 import useFormFields from '@/hooks/useFormFields';
 import { Pages } from '@/constants/enums';
+import { useCourseManageStore, type OptionType } from '@/features/courses/manage/store';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { goalsSchema, type GoalsSchema } from '@/validations/course';
-
-type OptionType = { value: string; label: string };
+import TagsInput from '@/components/shared/tags-input';
 
 const courseOptions: OptionType[] = [
   { value: 'react', label: 'Mastering ReactJS: Build Dynamic Web Apps' },
@@ -17,50 +17,56 @@ const courseOptions: OptionType[] = [
   { value: 'hoda', label: 'Hoda Course' },
 ];
 
-type FormDataType = {
-  whatYouWillLearn: string[];
-  whoIsThisFor: string[];
-  prerequisites: string[];
-  selectedCourses: OptionType[];
-  audienceTags: string[];
-};
-
 export default function GoalsForm() {
   const { getFormFields } = useFormFields({ slug: Pages.GOALS });
-  const [formData] = useState<FormDataType>({
-    whatYouWillLearn: [],
-    whoIsThisFor: [],
-    prerequisites: [],
-    selectedCourses: [],
-    audienceTags: [],
-  });
+
+  const {
+    whatYouWillLearn,
+    selectedCourses,
+    audienceTags,
+    knowledgeNeeded,
+    setWhatYouWillLearn,
+    setSelectedCourses,
+    setAudienceTags,
+    setKnowledgeNeeded
+  } = useCourseManageStore();
+
+  console.log(selectedCourses)
 
   const {
     handleSubmit,
     control,
+    watch,
     formState: { errors },
   } = useForm<GoalsSchema>({
     resolver: zodResolver(goalsSchema),
     defaultValues: {
-      knowledgeNeeded: '',
+      knowledgeNeeded: knowledgeNeeded || '',
     },
     mode: 'onChange',
   });
   const onSubmit = (data: GoalsSchema) => {
     console.log('Form submitted with data:', data);
   };
+
+  const knowledgeNeededValue = watch('knowledgeNeeded');
+
+  useEffect(() => {
+    console.log('knowledgeNeededValue type:', typeof knowledgeNeededValue);
+    console.log('knowledgeNeededValue value:', knowledgeNeededValue);
+    setKnowledgeNeeded(knowledgeNeededValue || '');
+  }, [knowledgeNeededValue, setKnowledgeNeeded]);
+
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-1">
       <div className="mb-6">
         <Label className="text-sm font-medium text-card-foreground mb-2 block">
           ما ستتعلمه
         </Label>
-        {/* <TagsInput
-          tags={formData.whatYouWillLearn}
-          setTags={(tags) =>
-            setFormData({ ...formData, whatYouWillLearn: tags })
-          }
-        /> */}
+        <TagsInput
+          tags={whatYouWillLearn}
+          setTags={setWhatYouWillLearn}
+        />
       </div>
 
       {getFormFields().map((field) => (
@@ -73,13 +79,23 @@ export default function GoalsForm() {
         <Label className="text-sm font-medium text-card-foreground mb-2 block">
           اختر دورة يجب تعلمها أولًا
         </Label>
+
         <Select
           options={courseOptions}
           isMulti
-          value={formData.selectedCourses}
-          // onChange={(option) =>
-          //   handleChange('selectedCourses', option as OptionType[])
-          // }
+          value={selectedCourses}
+          onChange={(newValue, actionMeta) => {
+            let updatedOptions = newValue as OptionType[];
+            if (actionMeta.action === 'select-option' && actionMeta.option) {
+              const newOption = actionMeta.option as OptionType;
+              updatedOptions = [
+                newOption,
+                ...updatedOptions.filter((o) => o.value !== newOption.value),
+              ];
+            }
+            setSelectedCourses(updatedOptions);
+          }}
+
           className="react-select-container"
           classNamePrefix="react-select"
           placeholder="اختر..."
@@ -89,10 +105,10 @@ export default function GoalsForm() {
         <Label className="text-sm font-medium text-card-foreground mb-2 block">
           لمن هذه الدورة
         </Label>
-        {/* <TagsInput
-          tags={formData.audienceTags}
-          setTags={(tags) => handleChange('audienceTags', tags as string[])}
-        /> */}
+        <TagsInput
+          tags={audienceTags}
+          setTags={setAudienceTags}
+        />
       </div>
     </form>
   );

@@ -1,9 +1,10 @@
 import { Button } from "@/components/ui/button";
+import ButtonSave from "./button-save";
 
 function Actions() {
   return (
     <div className="flex items-center gap-2">
-      <Button type="button">حفظ</Button>
+      <ButtonSave />
       <Button type="button" variant="destructive">
         حذف
       </Button>
