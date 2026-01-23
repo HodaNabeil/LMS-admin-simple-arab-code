@@ -1,8 +1,8 @@
 /**
 * AUTO-GENERATED FILE - DO NOT EDIT MANUALLY
 * Generated from OpenAPI schema
-* Last updated: 2026-01-22T20:24:55.905Z
-* Schema URL: https://simple-arab-code-backend-production.up.railway.app/api/docs-json
+* Last updated: 2026-01-23T03:42:14.080Z
+* Schema URL: http://localhost:4000/api/docs-json
 */
  
 /* eslint-disable */
@@ -686,6 +686,26 @@ export type paths = {
          * @description Publish a course to make it available to students, identified by either UUID or slug. Examples: `POST /courses/550e8400-e29b-41d4-a716-446655440000/publish` or `POST /courses/nodejs-complete-guide/publish`. Requires COURSE_PUBLISH permission. Instructors can only publish their own courses.
          */
         post: operations["CourseController_publishCourse[1]"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/courses/by-path": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get courses by path ID
+         * @description Retrieve all published courses for a specific path. This endpoint is useful for selecting prerequisite courses within the same path. You can optionally exclude a specific course (e.g., to prevent self-referencing prerequisites). This is a public endpoint and does not require authentication.
+         */
+        get: operations["CourseController_getCoursesByPath[1]"];
+        put?: never;
+        post?: never;
         delete?: never;
         options?: never;
         head?: never;
@@ -1391,6 +1411,19 @@ export type components = {
              */
             objectives: string[];
             /**
+             * @description Path ID this course belongs to
+             * @example cmj4400kw0002r0lrdp1c2229
+             */
+            pathId: string;
+            /**
+             * @description Prerequisite course IDs
+             * @example [
+             *       "cmj4400lg0008r0lrwb02nx0l",
+             *       "cmk1234lg0009r0lrwb02nx0m"
+             *     ]
+             */
+            prerequisiteIds: string[];
+            /**
              * @description Course preview video URL
              * @example https://example.com/videos/react-preview.mp4
              */
@@ -1448,6 +1481,14 @@ export type components = {
              *     ]
              */
             tags: string[];
+            /**
+             * @description Target audience for this course
+             * @example [
+             *       "Beginners in web development",
+             *       "Developers wanting to learn React"
+             *     ]
+             */
+            targetAudience: string[];
             /**
              * @description Course thumbnail image URL
              * @example https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=800
@@ -1613,15 +1654,20 @@ export type components = {
         };
         CreateCourseDto: {
             /**
+             * @description Path ID - The course must be associated with a path
+             * @example clx1234567890abcdefghij
+             */
+            pathId: string;
+            /**
              * @description URL-friendly slug for the course
              * @example learn-arabic-for-beginners
              */
             slug: string;
             /**
-             * @description Track ID - The course must be associated with a track
+             * @description Track ID - Optional track within the path
              * @example clx1234567890abcdefghij
              */
-            trackId: string;
+            trackId?: string;
         };
         CreateLectureDto: {
             /**
@@ -2828,6 +2874,16 @@ export type components = {
             metaTitle?: string;
             /** @description Course objectives */
             objectives?: string[];
+            /** @description Path ID */
+            pathId?: string;
+            /**
+             * @description Prerequisite course IDs that must be completed before this course
+             * @example [
+             *       "clx1234567890",
+             *       "clx0987654321"
+             *     ]
+             */
+            prerequisiteIds?: string[];
             /** @description Course price */
             price?: number;
             /** @description Course requirements */
@@ -2841,6 +2897,8 @@ export type components = {
             status?: UpdateCourseDtoStatus;
             /** @description Course tags */
             tags?: string[];
+            /** @description Target audience for this course */
+            targetAudience?: string[];
             /** @description Course title */
             title?: string;
             /** @description Track ID */
@@ -4538,6 +4596,8 @@ export interface operations {
                 maxPrice?: number;
                 minPrice?: number;
                 page?: number;
+                /** @description Filter courses by path ID */
+                pathId?: unknown;
                 search?: unknown;
                 sortBy?: unknown;
                 sortOrder?: PathsApiCoursesGetParametersQuerySortOrder;
@@ -5600,6 +5660,66 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["WrappedResponseCourseResponseDto"];
+                };
+            };
+            /** @description Bad request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Internal server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    "CourseController_getCoursesByPath[1]": {
+        parameters: {
+            query: {
+                /** @description Course ID to exclude from results (useful when selecting prerequisites for a specific course) */
+                excludeCourseId?: string;
+                /** @description Path ID to filter courses */
+                pathId: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Courses list for the specified path */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["WrappedResponseCourseListResponseDto"];
                 };
             };
             /** @description Bad request */

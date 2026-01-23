@@ -1,19 +1,20 @@
-import FormFields from '@/components/shared/form-fields/form-fields';
-import { Loader } from '@/components/shared/loader';
-import { Pages } from '@/constants/enums';
-import useFormFields from '@/hooks/useFormFields';
-import useFormValidations from '@/hooks/useFormValidations';
+import FormFields from "@/components/shared/form-fields/form-fields";
+import { Loader } from "@/components/shared/loader";
+import { Pages } from "@/constants/enums";
+import useFormFields from "@/hooks/useFormFields";
+import useFormValidations from "@/hooks/useFormValidations";
 import {
   createCourseSchema,
   type ICreateCourseForm,
-} from '@/validations/createcourse';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm, type Control } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
-import { useState, useMemo } from 'react';
-import { useTracks } from '@/features/tracks/hooks/useTracksQueries';
+} from "@/validations/createcourse";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm, type Control } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
+import { useState, useMemo } from "react";
+import { useTracks } from "@/features/tracks/hooks/useTracksQueries";
 
-import { useCreateCourse } from '../../hooks/useCoursesMutations';
+import { useCreateCourse } from "../../hooks/useCoursesMutations";
+import { usePaths } from "@/features/paths/hooks/usePathsQueries";
 
 export default function CreateCourseForm() {
   const { getFormFields } = useFormFields({ slug: Pages.CREATE_COURSES });
@@ -22,7 +23,7 @@ export default function CreateCourseForm() {
   });
   const navigate = useNavigate();
   const { data: tracksData, isLoading: isLoadingTracks } = useTracks();
-
+  const { data: pathsData, isLoading: isLoadingPaths } = usePaths();
   const { mutateAsync: createCourse } = useCreateCourse();
 
   const {
@@ -31,46 +32,54 @@ export default function CreateCourseForm() {
     formState: { errors, isSubmitting },
   } = useForm<ICreateCourseForm>({
     defaultValues: {
-      slug: '',
-      selectedTrack: '',
+      slug: "",
+      trackId: "",
+      pathId: "",
     },
-    mode: 'onChange',
+    mode: "onChange",
     resolver: zodResolver(getValidationSchema() as typeof createCourseSchema),
   });
-
-
 
   const trackOptions = useMemo(() => {
     if (!tracksData?.data?.tracks) return [];
 
-    return tracksData.data.tracks
-      .map((track) => ({
-        value: track.id.toString(),
-        label: track.title || track.slug,
-      }));
+    return tracksData.data.tracks.map((track) => ({
+      value: track.id.toString(),
+      label: track.title || track.slug,
+    }));
   }, [tracksData]);
 
+  const pathOptions = useMemo(() => {
+    if (!pathsData?.data?.paths) return [];
+
+    return pathsData.data.paths.map((path) => ({
+      value: path.id.toString(),
+      label: path.title || path.slug,
+    }));
+  }, [pathsData]);
+
   const [submitError, setSubmitError] = useState<string | null>(null);
-
-
 
   const handleFormSubmit = async (data: ICreateCourseForm) => {
     try {
       setSubmitError(null);
       await createCourse({
         slug: data.slug,
-        trackId: data.selectedTrack,
+        trackId: data.trackId,
+        pathId: data.pathId,
       });
       navigate(`/admin/${Pages.COURSES}/${data.slug}/${Pages.GOALS}`);
     } catch (error) {
-      console.error('Course creation error:', error);
-      const errorMessage = error instanceof Error
-        ? error.message
-        : 'حدث خطأ أثناء إنشاء الدورة. يرجى المحاولة مرة أخرى.';
+      console.error("Course creation error:", error);
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : "حدث خطأ أثناء إنشاء الدورة. يرجى المحاولة مرة أخرى.";
       setSubmitError(errorMessage);
     }
   };
 
+  const isLoading = isLoadingTracks || isLoadingPaths;
 
   return (
     <div className="flex flex-col gap-4 w-full max-w-2xl  p-6 bg-white rounded-lg shadow-md border border-gray-200">
@@ -79,15 +88,18 @@ export default function CreateCourseForm() {
       </h1>
 
       {submitError && (
-        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded relative" role="alert">
+        <div
+          className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded relative"
+          role="alert"
+        >
           <span className="block sm:inline">{submitError}</span>
         </div>
       )}
 
-      {isLoadingTracks ? (
+      {isLoading ? (
         <div className="flex items-center justify-center py-8">
           <Loader />
-          <span className="mr-2">جاري تحميل... التراك</span>
+          <span className="mr-2">جاري تحميل البيانات...</span>
         </div>
       ) : (
         <form
@@ -97,8 +109,12 @@ export default function CreateCourseForm() {
           {getFormFields().map((field) => {
             let fieldWithOptions = field;
 
-            if (field.name === 'selectedTrack') {
+            if (field.name === "trackId") {
               fieldWithOptions = { ...field, options: trackOptions };
+            }
+
+            if (field.name === "pathId") {
+              fieldWithOptions = { ...field, options: pathOptions };
             }
 
             return (
@@ -116,7 +132,7 @@ export default function CreateCourseForm() {
             disabled={isSubmitting}
             className="bg-primary text-white rounded px-4 py-2 text-sm hover:bg-primary/90 transition disabled:opacity-50 flex items-center justify-center gap-2"
           >
-            {isSubmitting ? <Loader /> : 'إضافة دورة'}
+            {isSubmitting ? <Loader /> : "إضافة دورة"}
           </button>
         </form>
       )}

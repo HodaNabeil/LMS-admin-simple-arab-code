@@ -1,36 +1,39 @@
-import type { components } from './api.generated';
+import type { components, operations } from "./api.generated";
 
 // ============================================
 // Schema Types (DTOs)
 // ============================================
 
-export type Course = components['schemas']['CourseDto'];
-export type CreateCourseRequest = components['schemas']['CreateCourseDto'];
-export type UpdateCourseRequest = components['schemas']['UpdateCourseDto'];
+export type Course = components["schemas"]["CourseDto"];
+export type CreateCourseRequest = components["schemas"]["CreateCourseDto"];
+export type UpdateCourseRequest = components["schemas"]["UpdateCourseDto"];
 export type DeleteCourseRequest = void; // No body for delete usually
 
 // Use Enums from api.generated directly if needed, or re-export them
-export type CourseLevel = components['schemas']['CourseDto']['level'];
-export type CourseStatus = components['schemas']['CourseDto']['status'];
-export type UpdateCourseStatus = components['schemas']['UpdateCourseDto']['status'];
-export type CourseVisibility = components['schemas']['CourseDto']['visibility'];
-export type UpdateCourseVisibility = components['schemas']['UpdateCourseDto']['visibility'];
-export type UpdateCourseLevel = components['schemas']['UpdateCourseDto']['level'];
+export type CourseLevel = components["schemas"]["CourseDto"]["level"];
+export type CourseStatus = components["schemas"]["CourseDto"]["status"];
+export type UpdateCourseStatus =
+  components["schemas"]["UpdateCourseDto"]["status"];
+export type CourseVisibility = components["schemas"]["CourseDto"]["visibility"];
+export type UpdateCourseVisibility =
+  components["schemas"]["UpdateCourseDto"]["visibility"];
+export type UpdateCourseLevel =
+  components["schemas"]["UpdateCourseDto"]["level"];
 
 // ============================================
 // Response Types
 // ============================================
 
 export type GetCoursesResponse =
-  components['schemas']['WrappedResponseCourseListResponseDto'];
+  components["schemas"]["WrappedResponseCourseListResponseDto"];
 export type GetCourseResponse =
-  components['schemas']['WrappedResponseCourseResponseDto'];
+  components["schemas"]["WrappedResponseCourseResponseDto"];
 export type CreateCourseResponse =
-  components['schemas']['WrappedResponseCourseResponseDto'];
+  components["schemas"]["WrappedResponseCourseResponseDto"];
 export type UpdateCourseResponse =
-  components['schemas']['WrappedResponseCourseResponseDto'];
+  components["schemas"]["WrappedResponseCourseResponseDto"];
 export type DeleteCourseResponse =
-  components['schemas']['WrappedResponseDeleteResponseDto'];
+  components["schemas"]["WrappedResponseDeleteResponseDto"];
 
 // Re-export specific enums if needed by UI components
 export enum CourseType {
@@ -43,7 +46,7 @@ export interface Coupon {
   id: string;
   code: string;
   discount: number;
-  type: 'FIXED' | 'PERCENTAGE';
+  type: "FIXED" | "PERCENTAGE";
   createdAt: string;
   expiresAt: string;
   uses: number;
@@ -57,10 +60,8 @@ export interface CouponsResponse {
   expiredCoupons: Coupon[];
 }
 
-export interface CourseFilters {
-  searchTerm: string;
-  selectedCategory: string;
-  selectedLevel: string;
-  selectedType: string;
-  minPrice: number;
-}
+export type CourseFilters =
+  operations["CourseController_listCourses[1]"]["parameters"]["query"];
+
+export type GetCoursesByPathParams =
+  operations["CourseController_getCoursesByPath[1]"]["parameters"]["query"];

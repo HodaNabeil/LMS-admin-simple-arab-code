@@ -37,6 +37,8 @@ export const coursesKeys = {
     [...coursesKeys.lists(), filters] as const,
   details: () => [...coursesKeys.all, "detail"] as const,
   detail: (id: string) => [...coursesKeys.details(), id] as const,
+  byPath: (params: Record<string, unknown>) =>
+    [...coursesKeys.all, "by-path", params] as const,
   stats: () => [...coursesKeys.all, "stats"] as const,
 };
 

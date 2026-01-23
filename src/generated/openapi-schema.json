@@ -991,6 +991,13 @@
             "schema": {}
           },
           {
+            "name": "pathId",
+            "required": false,
+            "in": "query",
+            "description": "Filter courses by path ID",
+            "schema": {}
+          },
+          {
             "name": "instructorId",
             "required": false,
             "in": "query",
@@ -1025,6 +1032,65 @@
           }
         },
         "summary": "List courses with filters",
+        "tags": [
+          "courses"
+        ]
+      }
+    },
+    "/api/courses/by-path": {
+      "get": {
+        "description": "Retrieve all published courses for a specific path. This endpoint is useful for selecting prerequisite courses within the same path. You can optionally exclude a specific course (e.g., to prevent self-referencing prerequisites). This is a public endpoint and does not require authentication.",
+        "operationId": "CourseController_getCoursesByPath[1]",
+        "parameters": [
+          {
+            "name": "pathId",
+            "required": true,
+            "in": "query",
+            "description": "Path ID to filter courses",
+            "schema": {
+              "example": "clx1234567890abcdefghij",
+              "type": "string"
+            }
+          },
+          {
+            "name": "excludeCourseId",
+            "required": false,
+            "in": "query",
+            "description": "Course ID to exclude from results (useful when selecting prerequisites for a specific course)",
+            "schema": {
+              "example": "clx0987654321abcdefghij",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Courses list for the specified path",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WrappedResponseCourseListResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "summary": "Get courses by path ID",
         "tags": [
           "courses"
         ]
@@ -4416,15 +4482,20 @@
             "example": "learn-arabic-for-beginners",
             "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
           },
+          "pathId": {
+            "type": "string",
+            "description": "Path ID - The course must be associated with a path",
+            "example": "clx1234567890abcdefghij"
+          },
           "trackId": {
             "type": "string",
-            "description": "Track ID - The course must be associated with a track",
+            "description": "Track ID - Optional track within the path",
             "example": "clx1234567890abcdefghij"
           }
         },
         "required": [
           "slug",
-          "trackId"
+          "pathId"
         ]
       },
       "CourseDto": {
@@ -4549,6 +4620,17 @@
               "type": "string"
             }
           },
+          "targetAudience": {
+            "example": [
+              "Beginners in web development",
+              "Developers wanting to learn React"
+            ],
+            "description": "Target audience for this course",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
           "tags": {
             "example": [
               "react",
@@ -4556,6 +4638,17 @@
               "frontend"
             ],
             "description": "Course tags",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "prerequisiteIds": {
+            "example": [
+              "cmj4400lg0008r0lrwb02nx0l",
+              "cmk1234lg0009r0lrwb02nx0m"
+            ],
+            "description": "Prerequisite course IDs",
             "type": "array",
             "items": {
               "type": "string"
@@ -4596,6 +4689,11 @@
             "example": 500,
             "description": "Maximum number of students allowed"
           },
+          "pathId": {
+            "type": "string",
+            "example": "cmj4400kw0002r0lrdp1c2229",
+            "description": "Path ID this course belongs to"
+          },
           "trackId": {
             "type": "string",
             "example": "cmj4400kw0003r0lrdp1c2330",
@@ -4632,8 +4730,11 @@
           "isFeatured",
           "requirements",
           "objectives",
+          "targetAudience",
           "tags",
+          "prerequisiteIds",
           "certificateEnabled",
+          "pathId",
           "createdAt",
           "updatedAt"
         ]
@@ -4662,6 +4763,50 @@
           },
           "data": {
             "$ref": "#/components/schemas/CourseResponseDto"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "success",
+          "data"
+        ]
+      },
+      "CourseListResponseDto": {
+        "type": "object",
+        "properties": {
+          "courses": {
+            "description": "List of courses",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CourseDto"
+            }
+          },
+          "pagination": {
+            "type": "object",
+            "example": {
+              "currentPage": 1,
+              "totalPages": 5,
+              "totalItems": 100,
+              "itemsPerPage": 20
+            },
+            "description": "Pagination info"
+          }
+        },
+        "required": [
+          "courses",
+          "pagination"
+        ]
+      },
+      "WrappedResponseCourseListResponseDto": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "data": {
+            "$ref": "#/components/schemas/CourseListResponseDto"
           },
           "message": {
             "type": "string"
@@ -4761,50 +4906,6 @@
           "data"
         ]
       },
-      "CourseListResponseDto": {
-        "type": "object",
-        "properties": {
-          "courses": {
-            "description": "List of courses",
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/CourseDto"
-            }
-          },
-          "pagination": {
-            "type": "object",
-            "example": {
-              "currentPage": 1,
-              "totalPages": 5,
-              "totalItems": 100,
-              "itemsPerPage": 20
-            },
-            "description": "Pagination info"
-          }
-        },
-        "required": [
-          "courses",
-          "pagination"
-        ]
-      },
-      "WrappedResponseCourseListResponseDto": {
-        "type": "object",
-        "properties": {
-          "success": {
-            "type": "boolean"
-          },
-          "data": {
-            "$ref": "#/components/schemas/CourseListResponseDto"
-          },
-          "message": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "success",
-          "data"
-        ]
-      },
       "UpdateCourseDto": {
         "type": "object",
         "properties": {
@@ -4847,6 +4948,10 @@
               "ALL_LEVELS"
             ]
           },
+          "pathId": {
+            "type": "string",
+            "description": "Path ID"
+          },
           "trackId": {
             "type": "string",
             "description": "Track ID"
@@ -4865,8 +4970,26 @@
               "type": "string"
             }
           },
+          "targetAudience": {
+            "description": "Target audience for this course",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
           "tags": {
             "description": "Course tags",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "prerequisiteIds": {
+            "description": "Prerequisite course IDs that must be completed before this course",
+            "example": [
+              "clx1234567890",
+              "clx0987654321"
+            ],
             "type": "array",
             "items": {
               "type": "string"
