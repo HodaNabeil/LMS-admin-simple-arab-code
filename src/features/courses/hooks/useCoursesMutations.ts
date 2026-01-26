@@ -28,8 +28,9 @@ export function useUpdateCourse({ slug }: { slug: string }) {
             return await coursesApi.updateCourse(slug, data);
         },
         onSuccess: (res) => {
-            queryClient.invalidateQueries({ queryKey: queryKeys.courses.all });
-            queryClient.invalidateQueries({ queryKey: queryKeys.courses.detail(slug) });
+            queryClient.invalidateQueries({
+                queryKey: queryKeys.courses.detail(slug),
+            });
             toast.success(res.message || "تم تحديث الدورة بنجاح");
         },
         onError: (error) => {

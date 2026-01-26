@@ -16,12 +16,13 @@ export function useCourseManageSave(section: string | null) {
     const store = useCourseManageStore();
     const { slug } = useParams<{ slug: string }>();
 
-    // Ensure slug is a string to satisfy hook requirements, though it might be undefined initially
     const courseSlug = slug as string;
 
     const { mutateAsync: updateCourse, isPending: isUpdating } = useUpdateCourse({
         slug: courseSlug,
     });
+
+
     const { mutateAsync: uploadMedia, isPending: isUploading } = useUploadCourseMedia({
         slug: courseSlug,
     });
@@ -47,14 +48,12 @@ export function useCourseManageSave(section: string | null) {
                     await handleAvailabilitySave(store, updateCourse);
                     break;
                 default:
-                    // Optional: handle default or do nothing
                     break;
             }
 
             toast.success("تم حفظ التغييرات بنجاح");
         } catch (error) {
             console.error(error);
-            // Error handling is handled by the mutation hook normally
         }
     };
 

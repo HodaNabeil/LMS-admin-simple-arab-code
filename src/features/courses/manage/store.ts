@@ -12,16 +12,16 @@ export type CourseGoalsState = {
   prerequisiteCourseIds: string[];
 
   // Availability
-  courseStatus: OptionType | null; // حالة الدورة
-  isAvailableForPurchase: boolean; // متاحة للشراء
+  courseStatus: OptionType | null;
+  isAvailableForPurchase: boolean;
   // Basics
-  title: string; // العنوان
-  description: string; // الوصف
-  slug: string; // الرابط
-  level: CourseLevel; // المستوى
-  hours: number; // ساعات الدورة
+  title: string;
+  description: string;
+  slug: string;
+  level: CourseLevel;
+  hours: number;
   // Media
-  thumbnailUrl: File | null; // الصورة
+  thumbnailUrl: File | null;
   previewVideo: File | null;
   // Pricing
   price: number;
