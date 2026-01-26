@@ -3,11 +3,12 @@ import { cn } from "@/lib/utils";
 import type { ReactNode } from "react";
 
 interface PageHeaderProps {
-    title: string;
+    title: ReactNode;
     icon?: LucideIcon;
-    description?: string;
+    description?: ReactNode;
     children?: ReactNode;
     className?: string;
+    badge?: ReactNode;
 }
 
 export function PageHeader({
@@ -16,6 +17,7 @@ export function PageHeader({
     description,
     children,
     className,
+    badge,
 }: PageHeaderProps) {
     return (
         <header
@@ -30,10 +32,11 @@ export function PageHeader({
                     <div className="flex flex-col">
                         <h1 className="font-medium text-sm lg:text-base">{title}</h1>
                         {description && (
-                            <p className="text-sm text-gray-500">{description}</p>
+                            <div className="text-sm text-gray-500">{description}</div>
                         )}
                     </div>
                 </div>
+                {badge}
             </div>
             {children && <div className="flex items-center gap-4">{children}</div>}
         </header>

@@ -1,38 +1,86 @@
+import { buttonVariants } from '@/components/ui/button';
+import CourseFilters from '@/features/courses/components/CourseFilters';
+import CourseTable from '@/features/courses/components/table/CourseTable';
+import { Plus, Users } from 'lucide-react';
+import { useMemo, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { useCourses } from '@/features/courses/hooks/useCoursesQueries';
+import { PageHeader } from '@/components/shared/PageHeader';
 
-import CourseFilters from "@/features/courses/components/CourseFilters";
-import CourseStats from "@/features/courses/components/CourseStats";
-import CourseTable from "@/features/courses/components/table/CourseTable";
-import Header from "../../features/courses/components/Header";
-import { useCourseFilters } from "@/features/courses/hooks/useCourseFilters";
-import { MOCK_COURSES } from "@/features/courses/components/courses";
-
-const Courses = () => {
-  const { filters, filteredCourses, updateFilter, clearFilters } =
-    useCourseFilters(MOCK_COURSES);
-
-  const courseFiltersProps = {
-    searchTerm: filters?.searchTerm,
-    onSearchChange: (value: string) => updateFilter("searchTerm", value),
-    selectedCategory: filters?.selectedCategory,
-    onCategoryChange: (value: string) =>
-      updateFilter("selectedCategory", value),
-    selectedLevel: filters?.selectedLevel,
-    onLevelChange: (value: string) => updateFilter("selectedLevel", value),
-    selectedType: filters?.selectedType,
-    onTypeChange: (value: string) => updateFilter("selectedType", value),
-    minPrice: filters?.minPrice,
-    onMinPriceChange: (value: number) => updateFilter("minPrice", value),
-    onClearFilters: clearFilters,
-  };
-
-  return (
-    <main className="space-y-6 p-3">
-      <Header coursesCount={filteredCourses.length} />
-      <CourseStats courses={filteredCourses} />
-      <CourseFilters {...courseFiltersProps} />
-      <CourseTable courses={filteredCourses} />
-    </main>
-  );
+const LEVEL_MAP: Record<string, string> = {
+  BEGINNER: 'مبتدئ',
+  INTERMEDIATE: 'متوسط',
+  ADVANCED: 'متقدم',
 };
 
-export default Courses;
+
+export default function Courses() {
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedLevel, setSelectedLevel] = useState('الكل');
+  const [minPrice, setMinPrice] = useState(0);
+
+  const { data: coursesResponse, isLoading, error } = useCourses();
+  const courses = coursesResponse?.data?.courses || [];
+
+
+  const filteredCourses = useMemo(() => {
+    return courses.filter((course) => {
+      const matchesSearch =
+        course.slug.toLowerCase().includes(searchTerm.toLowerCase());
+      // || course.instructor.toLowerCase().includes(searchTerm.toLowerCase()); // Instructor name not available yet
+
+      const matchesLevel =
+        selectedLevel === 'الكل' || LEVEL_MAP[course.level as string] === selectedLevel;
+
+      const matchesPrice =
+        minPrice === 0 ||
+        (minPrice === -1 && course.price === 0) ||
+        (minPrice > 0 && course.price >= minPrice);
+
+      return (
+        matchesSearch &&
+        matchesLevel &&
+        matchesPrice
+      );
+    });
+  }, [courses, searchTerm, selectedLevel, minPrice]);
+
+  const handleClearFilters = () => {
+    setSearchTerm('');
+    setSelectedLevel('الكل');
+    setMinPrice(0);
+  };
+
+  if (isLoading) return <div>جاري التحميل...</div>;
+  if (error) return <div>حدث خطأ أثناء تحميل الدورات</div>;
+
+  return (
+    <div className="space-y-6  p-3">
+      <PageHeader
+        title="الدورات التدريبية"
+        icon={Users}
+        badge={
+          <div className="bg-gradient-to-r from-blue-100 to-blue-200 text-blue-700 px-3 lg:px-4 py-1.5 lg:py-2 rounded-full text-sm font-medium border border-blue-300 shadow-sm">
+            الدورات ({courses.length})
+          </div>
+        }
+      >
+        <Link to="/admin/courses/create" className={buttonVariants()}>
+          <Plus className="w-4 h-4 mr-2" />
+          إضافة دورة جديدة
+        </Link>
+      </PageHeader>
+      {/* <CourseStats courses={filteredCourses} /> */}
+      <CourseFilters
+        searchTerm={searchTerm}
+        onSearchChange={setSearchTerm}
+        selectedLevel={selectedLevel}
+        onLevelChange={setSelectedLevel}
+        minPrice={minPrice}
+        onMinPriceChange={setMinPrice}
+        onClearFilters={handleClearFilters}
+      />
+      <CourseTable courses={filteredCourses} />
+    </div>
+  );
+}

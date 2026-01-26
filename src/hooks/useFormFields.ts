@@ -223,7 +223,7 @@ const useFormFields = ({ slug }: IFormFieldsVariables) => {
 
   const basicsFields = (): IFormField[] => [
     {
-      name: "name",
+      name: "title",
       label: "اسم الدورة",
       type: "text",
       placeholder: "ادخل اسم الدورة",
@@ -259,7 +259,7 @@ const useFormFields = ({ slug }: IFormFieldsVariables) => {
       placeholder: "ادخل مدة الدورة (بالساعات)",
     },
     {
-      name: "thumbnail",
+      name: "thumbnailUrl",
       label: "صورة الدورة",
       type: "image",
       placeholder: "اختار صورة الدورة",

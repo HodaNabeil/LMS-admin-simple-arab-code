@@ -31,7 +31,7 @@ export const adminRoutes = (
       <Route path="create" element={<CreateNewPath />} />
       <Route path=":pathSlug/manage" element={<ManagePath />} />
     </Route>
-    <Route path="courses" element={<Courses />} />
+    {/* <Route path="courses" element={<Courses />} /> */}
     <Route path="orders" element={<Orders />} />
     <Route path="courses">
       <Route index element={<Courses />} />

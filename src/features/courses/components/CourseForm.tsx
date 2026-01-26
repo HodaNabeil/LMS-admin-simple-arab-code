@@ -9,7 +9,9 @@ import type { Course } from '@/types/course';
 import type { UseMutationResult } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import type { AxiosError } from 'axios';
+import { CourseDtoLevel } from '@/types/api.generated';
 import { basicsSchema } from '@/validations/course';
+
 
 interface CourseFormProps {
     course?: Course;
@@ -26,10 +28,10 @@ function CourseForm({ course, setCourseMenu, mutation }: CourseFormProps) {
         formState: { errors, isSubmitting },
     } = useForm({
         defaultValues: {
-            name: course?.title || '',
+            title: course?.title || '',
             slug: course?.slug || '',
-            level: course?.level?.toLowerCase() || 'all',
-            image: course?.thumbnailUrl || '',
+            level: course?.level || CourseDtoLevel.ALL_LEVELS,
+            thumbnailUrl: course?.thumbnailUrl || '',
             hours: course?.duration ? course.duration / 60 : 0,
             description: course?.description || '',
         },
@@ -39,26 +41,21 @@ function CourseForm({ course, setCourseMenu, mutation }: CourseFormProps) {
     });
 
     const onSubmit = async (data: Record<string, unknown>) => {
-        // Transform form data to API DTO
         const mutationData: any = {
             ...data,
-            title: data.name,
-            thumbnailUrl: data.image,
+            title: data.title,
+            thumbnailUrl: data.thumbnailUrl,
             level: (data.level as string).toUpperCase(),
-            duration: Number(data.hours) * 60, // Convert hours to minutes
+            duration: Number(data.hours) * 60,
         };
 
-        // Remove mapped fields if not needed or to avoid confusion, but spreading data implies we might send extra fields which Axios might ignore or strict DTO might reject if we typed it strictly.
-        // For pureness, we should construct the object.
         const cleanData = {
             title: mutationData.title,
             slug: mutationData.slug,
             level: mutationData.level,
-            price: Number(mutationData.price),
             thumbnailUrl: mutationData.thumbnailUrl,
             description: mutationData.description,
             duration: mutationData.duration,
-            // Add other fields from UpdateCourseDto as needed
         };
 
         try {

@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Edit, Trash2 } from 'lucide-react';
+import { Edit, Trash2, Image as ImageIcon } from 'lucide-react';
 import type { Table as TableType } from '@tanstack/react-table';
 import type { Course } from '@/types/course';
 
@@ -18,11 +18,17 @@ export function CourseTableMobile({ table }: CourseTableMobileProps) {
                         className="bg-white rounded-lg border border-gray-200 p-4 space-y-3"
                     >
                         <div className="flex items-start gap-3">
-                            <img
-                                src={row.getValue('thumbnailUrl')}
-                                alt={row.getValue('title')}
-                                className="h-16 w-16 rounded-lg object-cover flex-shrink-0"
-                            />
+                            {row.getValue('thumbnailUrl') ? (
+                                <img
+                                    src={row.getValue('thumbnailUrl')}
+                                    alt={row.getValue('title')}
+                                    className="h-16 w-16 rounded-lg object-cover flex-shrink-0"
+                                />
+                            ) : (
+                                <div className="h-16 w-16 rounded-lg bg-gray-100 flex items-center justify-center flex-shrink-0">
+                                    <ImageIcon className="h-8 w-8 text-gray-400" />
+                                </div>
+                            )}
                             <div className="flex-1 min-w-0">
                                 <h3 className="font-medium text-sm leading-5 line-clamp-2 text-right">
                                     {row.getValue('title')}

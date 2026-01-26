@@ -12,7 +12,7 @@ import type {
   SortingState,
   VisibilityState,
 } from '@tanstack/react-table';
-import { Trash2 } from 'lucide-react';
+import { Trash2, Image as ImageIcon } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -31,24 +31,33 @@ const columns: ColumnDef<Course>[] = [
   {
     accessorKey: 'thumbnailUrl',
     header: 'الصورة',
-    cell: ({ row }) => (
-      <div className="flex items-center justify-center">
-        <img
-          src={row.getValue('thumbnailUrl')}
-          alt={row.getValue('title')}
-          className="h-12 w-12 rounded-lg object-cover"
-        />
-      </div>
-    ),
+    cell: ({ row }) => {
+      const thumbnailUrl = row.getValue('thumbnailUrl') as string;
+      return (
+        <div className="flex items-center justify-center">
+          {thumbnailUrl ? (
+            <img
+              src={thumbnailUrl}
+              alt={row.getValue('title')}
+              className="h-12 w-12 rounded-lg object-cover"
+            />
+          ) : (
+            <div className="h-12 w-12 rounded-lg bg-gray-100 flex items-center justify-center">
+              <ImageIcon className="h-6 w-6 text-gray-400" />
+            </div>
+          )}
+        </div>
+      );
+    },
     enableSorting: false,
   },
   {
-    accessorKey: 'slug',
-    header: 'اسم المادة',
+    accessorKey: 'title',
+    header: 'اسم الدورة',
     cell: ({ row }) => (
       <div className="max-w-[300px]">
         <div className="font-medium text-right truncate">
-          {row.getValue('slug')}
+          {row.getValue('title')}
         </div>
       </div>
     ),
@@ -85,11 +94,20 @@ const columns: ColumnDef<Course>[] = [
     },
   },
   {
-    accessorKey: 'instructorId',
-    header: 'معرف المدرب',
+    accessorKey: 'slug',
+    header: 'معرف الدورة',
     cell: ({ row }) => (
-      <div className="font-medium text-right truncate max-w-[150px]" title={row.getValue('instructorId')}>
-        {row.getValue('instructorId')}
+      <div className="font-medium text-right truncate max-w-[150px]" title={row.getValue('slug')}>
+        {row.getValue('slug')}
+      </div>
+    ),
+  },
+  {
+    accessorKey: 'pathId',
+    header: '(pathId) معرف المسار',
+    cell: ({ row }) => (
+      <div className="font-medium text-right truncate max-w-[150px]" title={row.getValue('pathId')}>
+        {row.getValue('pathId')}
       </div>
     ),
   },
@@ -126,6 +144,11 @@ const columns: ColumnDef<Course>[] = [
       );
     },
   },
+  {
+    accessorKey: 'instructorId',
+    header: 'Instructor',
+    enableHiding: true,
+  },
 ];
 
 function CourseTable({ courses }: CourseTableProps) {
@@ -134,7 +157,9 @@ function CourseTable({ courses }: CourseTableProps) {
     []
   );
   const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({});
+    React.useState<VisibilityState>({
+      instructorId: false,
+    });
   const [rowSelection, setRowSelection] = React.useState({});
 
   const table = useReactTable({
@@ -160,10 +185,10 @@ function CourseTable({ courses }: CourseTableProps) {
     <div className="w-full">
       <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 py-4">
         <Input
-          placeholder="البحث في الدورات..."
-          value={(table.getColumn('title')?.getFilterValue() as string) ?? ''}
+          placeholder="البحث في الدورات slug"
+          value={(table.getColumn('slug')?.getFilterValue() as string) ?? ''}
           onChange={(event) =>
-            table.getColumn('title')?.setFilterValue(event.target.value)
+            table.getColumn('slug')?.setFilterValue(event.target.value)
           }
           className="w-full sm:max-w-sm"
         />

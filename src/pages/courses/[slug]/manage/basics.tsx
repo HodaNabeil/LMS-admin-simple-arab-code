@@ -13,13 +13,13 @@ export default function Basics() {
   return !isPending && courseResponse ? (
     <main>
       <BasicsForm
-        name={courseResponse?.data.course.title}
+        title={courseResponse?.data.course.title}
         slug={courseResponse?.data.course.slug}
         hours={courseResponse?.data.course.duration ?? 0}
         description={courseResponse?.data.course.description}
         level={courseResponse?.data.course.level}
-        thumbnailUrl={courseResponse?.data.course.thumbnailUrl || null || undefined}
-        previewVideo={courseResponse?.data.course.previewVideo || null || undefined}
+        thumbnailUrl={courseResponse?.data.course.thumbnailUrl ?? null}
+        previewVideo={courseResponse?.data.course.previewVideo ?? null}
       />
     </main>
   ) : null;

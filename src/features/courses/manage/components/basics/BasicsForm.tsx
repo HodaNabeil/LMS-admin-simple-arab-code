@@ -19,8 +19,10 @@ interface BasicsFormProps {
   hours?: number;
   description?: string;
   level?: CourseDtoLevel;
-  thumbnailUrl?: File | null;
-  previewVideo?: File | null;
+  thumbnailUrl?: File | string | null;
+  previewVideo?: File | string | null;
+
+
 }
 
 export default function BasicsForm({
@@ -51,8 +53,17 @@ export default function BasicsForm({
       hours,
       description,
       level,
-      thumbnailUrl: thumbnailUrl || undefined,
-      previewVideo: previewVideo || undefined,
+      thumbnailUrl: thumbnailUrl instanceof File ? thumbnailUrl : undefined,
+      previewVideo: previewVideo instanceof File ? previewVideo : undefined
+
+
+
+
+
+
+
+
+
     },
     mode: "onChange",
     resolver: zodResolver(getValidationSchema() as typeof basicsSchema),
@@ -106,7 +117,7 @@ export default function BasicsForm({
         description,
         level,
         thumbnailUrl: thumbnailUrl || undefined,
-        previewVideo: previewVideo || undefined,
+        previewVideo: previewVideo instanceof File ? previewVideo : undefined,
       });
     }
   }, [

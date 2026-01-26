@@ -22,14 +22,14 @@ export default function MediaForm() {
         watch,
     } = useForm<MediaSchema>({
         defaultValues: {
-            thumbnail: undefined,
+            thumbnailUrl: undefined,
             previewVideo: undefined,
         },
         mode: "onChange",
         resolver: zodResolver(getValidationSchema() as typeof mediaSchema),
     });
 
-    const thumbnail = watch("thumbnail");
+    const thumbnail = watch("thumbnailUrl");
     const previewVideo = watch("previewVideo");
 
     useEffect(() => {
