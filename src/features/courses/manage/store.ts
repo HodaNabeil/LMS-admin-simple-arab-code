@@ -5,23 +5,23 @@ import { create } from "zustand";
 export type OptionType = { value: string; label: string };
 
 export type CourseGoalsState = {
-  whatYouWillLearn: string[];
-  whoIsThisFor: string[];
-  prerequisites: string[];
-  selectedCourses: OptionType[];
-  audienceTags: string[];
+  // Goals
+  learningObjectives: string[];
   requirements: string[];
-  knowledgeNeeded: string;
-  courseStatus: OptionType | null;
-  isAvailableForPurchase: boolean;
+  targetAudience: string[];
+  prerequisiteCourseIds: string[];
+
+  // Availability
+  courseStatus: OptionType | null; // حالة الدورة
+  isAvailableForPurchase: boolean; // متاحة للشراء
   // Basics
-  title: string;
-  description: string;
-  slug: string;
-  level: CourseLevel;
-  duration: number;
+  title: string; // العنوان
+  description: string; // الوصف
+  slug: string; // الرابط
+  level: CourseLevel; // المستوى
+  hours: number; // ساعات الدورة
   // Media
-  thumbnailUrl: File | null;
+  thumbnailUrl: File | null; // الصورة
   previewVideo: File | null;
   // Pricing
   price: number;
@@ -30,13 +30,11 @@ export type CourseGoalsState = {
 
 interface CourseManageStore extends CourseGoalsState {
   // Actions
-  setWhatYouWillLearn: (items: string[]) => void;
-  setWhoIsThisFor: (items: string[]) => void;
-  setPrerequisites: (items: string[]) => void;
-  setSelectedCourses: (courses: OptionType[]) => void;
-  setAudienceTags: (tags: string[]) => void;
-  setRequirements: (text: string[]) => void;
-  setKnowledgeNeeded: (text: string) => void;
+  setLearningObjectives: (items: string[]) => void;
+  setRequirements: (items: string[]) => void;
+  setTargetAudience: (items: string[]) => void;
+  setPrerequisiteCourseIds: (courses: string[]) => void;
+
   setCourseStatus: (status: OptionType | null) => void;
   setIsAvailableForPurchase: (isAvailable: boolean) => void;
   // Basics Actions
@@ -44,7 +42,7 @@ interface CourseManageStore extends CourseGoalsState {
   setDescription: (description: string) => void;
   setSlug: (slug: string) => void;
   setLevel: (level: CourseLevel) => void;
-  setDuration: (duration: number) => void;
+  setHours: (hours: number) => void;
   // Media Actions
   setThumbnail: (file: File | null) => void;
   setPreviewVideo: (file: File | null) => void;
@@ -58,22 +56,25 @@ interface CourseManageStore extends CourseGoalsState {
 }
 
 const initialState: CourseGoalsState = {
-  whatYouWillLearn: [],
-  whoIsThisFor: [],
-  prerequisites: [],
-  selectedCourses: [],
-  audienceTags: [],
+  // Goals
+  learningObjectives: [],
   requirements: [],
-  knowledgeNeeded: "",
+  targetAudience: [],
+  prerequisiteCourseIds: [],
+
+  // Availability
   courseStatus: { value: "draft", label: "مسودة" },
   isAvailableForPurchase: false,
+  // Basics
   title: "",
   description: "",
   slug: "",
   level: CourseDtoLevel.ALL_LEVELS,
-  duration: 0,
+  hours: 0,
+  // Media
   thumbnailUrl: null,
   previewVideo: null,
+  // Pricing
   price: 0,
   compareAtPrice: undefined,
 };
@@ -81,13 +82,11 @@ const initialState: CourseGoalsState = {
 export const useCourseManageStore = create<CourseManageStore>((set) => ({
   ...initialState,
 
-  setWhatYouWillLearn: (whatYouWillLearn) => set({ whatYouWillLearn }),
-  setWhoIsThisFor: (whoIsThisFor) => set({ whoIsThisFor }),
-  setPrerequisites: (prerequisites) => set({ prerequisites }),
-  setSelectedCourses: (selectedCourses) => set({ selectedCourses }),
-  setAudienceTags: (audienceTags) => set({ audienceTags }),
+  setLearningObjectives: (learningObjectives) => set({ learningObjectives }),
   setRequirements: (requirements) => set({ requirements }),
-  setKnowledgeNeeded: (knowledgeNeeded) => set({ knowledgeNeeded }),
+  setTargetAudience: (targetAudience) => set({ targetAudience }),
+  setPrerequisiteCourseIds: (prerequisiteCourseIds) => set({ prerequisiteCourseIds }),
+
   setCourseStatus: (courseStatus) => set({ courseStatus }),
   setIsAvailableForPurchase: (isAvailableForPurchase) =>
     set({ isAvailableForPurchase }),
@@ -95,7 +94,7 @@ export const useCourseManageStore = create<CourseManageStore>((set) => ({
   setDescription: (description) => set({ description }),
   setSlug: (slug) => set({ slug }),
   setLevel: (level) => set({ level }),
-  setDuration: (duration) => set({ duration }),
+  setHours: (hours) => set({ hours }),
   setThumbnail: (thumbnailUrl) => set({ thumbnailUrl }),
   setPreviewVideo: (previewVideo) => set({ previewVideo }),
   setPrice: (price) => set({ price }),

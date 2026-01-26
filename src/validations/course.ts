@@ -2,7 +2,7 @@ import { CourseDtoLevel } from "@/types/api.generated";
 import { z } from "zod";
 
 const course = {
-  name: z.string().min(1, { message: "Course name is required." }),
+  title: z.string().min(1, { message: "Course name is required." }),
   slug: z.string().min(1, { message: "Slug is required." }),
   image: z.custom(
     (val) => {
@@ -66,7 +66,7 @@ export const goalsSchema = z.object({
 
 export type GoalsSchema = z.infer<typeof goalsSchema>;
 export const basicsSchema = z.object({
-  name: course.name,
+  title: course.title,
   slug: course.slug,
   hours: course.hours,
   description: z.string().optional(),
@@ -76,7 +76,7 @@ export const basicsSchema = z.object({
 });
 
 export const createLessonCourseSchema = z.object({
-  name: course.name,
+  title: course.title,
   description: z.string().optional(),
   select: z.string().optional(),
 });
@@ -84,6 +84,7 @@ export const createLessonCourseSchema = z.object({
 export type BasicsSchema = z.infer<typeof basicsSchema>;
 
 export const pricingSchema = z.object({
+  priceInCents: z.number().min(0, { message: "Price in cents is required." }),
   price: z.number().min(0, { message: "Price in dollars is required." }),
   compareAtPrice: z.number().min(0).optional(),
 });

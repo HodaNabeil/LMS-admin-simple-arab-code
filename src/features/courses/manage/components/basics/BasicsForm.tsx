@@ -14,7 +14,7 @@ import { useCourseManageStore } from "../../store";
 import { CourseDtoLevel } from "@/types/api.generated";
 
 interface BasicsFormProps {
-  name?: string;
+  title?: string;
   slug?: string;
   hours?: number;
   description?: string;
@@ -24,7 +24,7 @@ interface BasicsFormProps {
 }
 
 export default function BasicsForm({
-  name,
+  title,
   slug,
   hours,
   description,
@@ -46,7 +46,7 @@ export default function BasicsForm({
     reset,
   } = useForm<BasicsSchema>({
     defaultValues: {
-      name,
+      title,
       slug,
       hours,
       description,
@@ -64,14 +64,14 @@ export default function BasicsForm({
     setDescription,
     setSlug,
     setLevel,
-    setDuration,
+    setHours,
     setThumbnail,
     setPreviewVideo,
   } = useCourseManageStore();
 
 
   const watchedFields = watch([
-    "name",
+    "title",
     "slug",
     "hours",
     "description",
@@ -81,7 +81,7 @@ export default function BasicsForm({
   ]);
 
   const [
-    watchedName,
+    watchedTitle,
     watchedSlug,
     watchedHours,
     watchedDescription,
@@ -93,14 +93,14 @@ export default function BasicsForm({
 
   useEffect(() => {
     if (
-      name !== undefined &&
+      title !== undefined &&
       slug !== undefined &&
       hours !== undefined &&
       description !== undefined &&
       level !== undefined
     ) {
       reset({
-        name,
+        title,
         slug,
         hours,
         description,
@@ -123,11 +123,11 @@ export default function BasicsForm({
 
   useEffect(() => {
     const timeout = setTimeout(() => {
-      setTitle(watchedName || "");
+      setTitle(watchedTitle || "");
       setDescription(watchedDescription || "");
       setSlug(watchedSlug || "");
       setLevel(watchedLevel || CourseDtoLevel.BEGINNER);
-      setDuration(watchedHours || 0);
+      setHours(watchedHours || 0);
 
       if (watchedThumbnail instanceof File) {
         setThumbnail(watchedThumbnail);
@@ -144,7 +144,7 @@ export default function BasicsForm({
 
     return () => clearTimeout(timeout);
   }, [
-    watchedName,
+    watchedTitle,
     watchedSlug,
     watchedHours,
     watchedDescription,
@@ -155,7 +155,7 @@ export default function BasicsForm({
     setDescription,
     setSlug,
     setLevel,
-    setDuration,
+    setHours,
     setThumbnail,
     setPreviewVideo,
   ]);

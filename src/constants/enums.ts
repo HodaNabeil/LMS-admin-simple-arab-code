@@ -39,6 +39,7 @@ export enum Pages {
   GOALS = "manage/goals",
   BASICS = "manage/basics",
   PRICING = "manage/pricing",
+  AVAILABILITY = "manage/availability",
   MANAGE = "manage",
   MEDIA = "manage/media",
   COURSES = "courses",
