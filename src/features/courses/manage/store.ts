@@ -23,6 +23,9 @@ export type CourseGoalsState = {
   // Media
   thumbnailUrl: File | null;
   previewVideo: File | null;
+  // Pricing
+  price: number;
+  compareAtPrice?: number;
 };
 
 interface CourseManageStore extends CourseGoalsState {
@@ -45,6 +48,9 @@ interface CourseManageStore extends CourseGoalsState {
   // Media Actions
   setThumbnail: (file: File | null) => void;
   setPreviewVideo: (file: File | null) => void;
+  // Pricing Actions
+  setPrice: (price: number) => void;
+  setCompareAtPrice: (compareAtPrice?: number) => void;
 
   // Generic update if preferred
   updateGoalsState: (updates: Partial<CourseGoalsState>) => void;
@@ -68,6 +74,8 @@ const initialState: CourseGoalsState = {
   duration: 0,
   thumbnailUrl: null,
   previewVideo: null,
+  price: 0,
+  compareAtPrice: undefined,
 };
 
 export const useCourseManageStore = create<CourseManageStore>((set) => ({
@@ -90,6 +98,8 @@ export const useCourseManageStore = create<CourseManageStore>((set) => ({
   setDuration: (duration) => set({ duration }),
   setThumbnail: (thumbnailUrl) => set({ thumbnailUrl }),
   setPreviewVideo: (previewVideo) => set({ previewVideo }),
+  setPrice: (price) => set({ price }),
+  setCompareAtPrice: (compareAtPrice) => set({ compareAtPrice }),
 
   updateGoalsState: (updates) => set((state) => ({ ...state, ...updates })),
   reset: () => set(initialState),

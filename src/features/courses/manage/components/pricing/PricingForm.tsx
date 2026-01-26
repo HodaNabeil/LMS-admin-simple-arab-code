@@ -1,47 +1,78 @@
+import { useEffect } from "react";
+import { useForm, type Control } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+
 import FormFields from "@/components/shared/form-fields/form-fields";
-import { Button } from "@/components/ui/button";
 import { Pages } from "@/constants/enums";
+
 import useFormFields from "@/hooks/useFormFields";
 import useFormValidations from "@/hooks/useFormValidations";
-import { pricingSchema, type PricingSchema } from "@/validations/course";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm, type Control } from "react-hook-form";
 
-export default function PricingForm() {
+import type { pricingSchema, PricingSchema } from "@/validations/course";
+
+import { useCourseManageStore } from "../../store";
+
+interface PricingFormProps {
+  price?: number;
+  compareAtPrice?: number;
+}
+
+export default function PricingForm({
+  price,
+  compareAtPrice,
+}: PricingFormProps) {
   const { getFormFields } = useFormFields({ slug: Pages.PRICING });
   const { getValidationSchema } = useFormValidations({ slug: Pages.PRICING });
 
   const {
-    handleSubmit,
     control,
     formState: { errors },
+    watch,
+    reset,
   } = useForm<PricingSchema>({
-    resolver: zodResolver(getValidationSchema() as unknown as typeof pricingSchema),
     defaultValues: {
-      priceInCents: 0,
-      price: 0,
+      price,
+      compareAtPrice,
     },
+    mode: "onChange",
+    resolver: zodResolver(getValidationSchema() as typeof pricingSchema),
   });
-  const onSubmit = (data: PricingSchema) => {
-    console.log(data);
-  };
+
+  const { setPrice, setCompareAtPrice } = useCourseManageStore();
+
+  const watchedFields = watch(["price", "compareAtPrice"]);
+
+  const [watchedPrice, watchedCompareAtPrice] = watchedFields;
+
+  useEffect(() => {
+    if (price !== undefined) {
+      reset({
+        price,
+        compareAtPrice,
+      });
+    }
+  }, [price, compareAtPrice, reset]);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setPrice(watchedPrice || 0);
+      setCompareAtPrice(watchedCompareAtPrice);
+    }, 300);
+
+    return () => clearTimeout(timeout);
+  }, [watchedPrice, watchedCompareAtPrice, setPrice, setCompareAtPrice]);
+
   return (
     <div className="flex flex-col gap-6">
-      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
-        {getFormFields().map((field, index) => (
-          <div key={index} className="mb-4">
-            <FormFields
-              {...field}
-              control={control as unknown as Control<Record<string, unknown>>}
-              errors={errors}
-            />
-          </div>
-        ))}
-        <Button type="submit" className="mt-4">
-          حفظ
-        </Button>
-      </form>
+      {getFormFields().map((field, index) => (
+        <div key={index} className="mb-4">
+          <FormFields
+            {...field}
+            control={control as Control<PricingSchema>}
+            errors={errors}
+          />
+        </div>
+      ))}
     </div>
   );
 }
-

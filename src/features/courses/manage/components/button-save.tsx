@@ -25,6 +25,8 @@ export default function ButtonSave() {
         level,
         thumbnailUrl,
         previewVideo,
+        price,
+        compareAtPrice,
     } = useCourseManageStore();
 
     const isPending = isUpdating || isUploading;
@@ -51,6 +53,8 @@ export default function ButtonSave() {
                 visibility: isAvailableForPurchase
                     ? UpdateCourseDtoVisibility.PUBLIC
                     : UpdateCourseDtoVisibility.PRIVATE,
+                price,
+                compareAtPrice,
             });
 
             if (thumbnailUrl instanceof File) {
