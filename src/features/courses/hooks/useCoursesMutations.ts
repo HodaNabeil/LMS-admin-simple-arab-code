@@ -56,9 +56,9 @@ export function useDeleteCourse() {
 
 export function useUploadCourseMedia({ slug }: { slug: string }) {
     const queryClient = useQueryClient();
-    return useMutation<any, Error, { thumbnail: File; previewVideo?: File }>({
-        mutationFn: async ({ thumbnail, previewVideo }) => {
-            return await coursesApi.uploadCourseMedia(slug, thumbnail, previewVideo);
+    return useMutation<any, Error, { thumbnailUrl: File; previewVideo?: File }>({
+        mutationFn: async ({ thumbnailUrl, previewVideo }) => {
+            return await coursesApi.uploadCourseMedia(slug, thumbnailUrl, previewVideo);
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: queryKeys.courses.detail(slug) });

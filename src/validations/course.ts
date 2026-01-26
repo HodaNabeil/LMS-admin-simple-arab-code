@@ -1,3 +1,4 @@
+import { CourseDtoLevel } from "@/types/api.generated";
 import { z } from "zod";
 
 const course = {
@@ -16,7 +17,7 @@ const course = {
     }
   ),
   hours: z.number().min(1, { message: "Hours is required." }),
-  level: z.string().min(1, { message: "Level is required." }),
+  level: z.nativeEnum(CourseDtoLevel, { errorMap: () => ({ message: "Level is required" }) }),
   type: z.string().min(1, { message: "Type is required." }),
   isAvailableForPurchase: z.boolean().default(true),
   priceInCents: z.number().min(0, { message: "Price is required." }),
@@ -69,8 +70,8 @@ export const basicsSchema = z.object({
   slug: course.slug,
   hours: course.hours,
   description: z.string().optional(),
-  level: z.string().optional(),
-  thumbnail: course.image,
+  level: course.level,
+  thumbnailUrl: course.image,
   previewVideo: z.custom<File>().optional(),
 });
 
@@ -90,7 +91,7 @@ export const pricingSchema = z.object({
 export type PricingSchema = z.infer<typeof pricingSchema>;
 
 export const mediaSchema = z.object({
-  thumbnail: course.image,
+  thumbnailUrl: course.image,
   previewVideo: z.custom<File>().optional(),
 });
 

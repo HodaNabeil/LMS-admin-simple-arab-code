@@ -23,7 +23,7 @@ export default function ButtonSave() {
         title,
         description,
         level,
-        thumbnail,
+        thumbnailUrl,
         previewVideo,
     } = useCourseManageStore();
 
@@ -40,7 +40,7 @@ export default function ButtonSave() {
             await updateCourse({
                 title,
                 description,
-                level: (level === 'all' ? 'ALL_LEVELS' : level?.toUpperCase()) as UpdateCourseDtoLevel,
+                level: level as unknown as UpdateCourseDtoLevel,
                 objectives: whatYouWillLearn,
                 tags: audienceTags,
                 requirements: [
@@ -53,8 +53,8 @@ export default function ButtonSave() {
                     : UpdateCourseDtoVisibility.PRIVATE,
             });
 
-            if (thumbnail instanceof File) {
-                await uploadMedia({ thumbnail, previewVideo: previewVideo instanceof File ? previewVideo : undefined });
+            if (thumbnailUrl instanceof File) {
+                await uploadMedia({ thumbnailUrl, previewVideo: previewVideo instanceof File ? previewVideo : undefined });
             }
         } catch (error) {
             console.error(error);

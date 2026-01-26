@@ -1,7 +1,7 @@
 /**
 * AUTO-GENERATED FILE - DO NOT EDIT MANUALLY
 * Generated from OpenAPI schema
-* Last updated: 2026-01-23T03:42:14.080Z
+* Last updated: 2026-01-25T20:56:22.230Z
 * Schema URL: http://localhost:4000/api/docs-json
 */
  

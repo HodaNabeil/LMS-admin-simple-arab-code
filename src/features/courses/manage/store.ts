@@ -11,6 +11,7 @@ export type CourseGoalsState = {
   selectedCourses: OptionType[];
   audienceTags: string[];
   requirements: string[];
+  knowledgeNeeded: string;
   courseStatus: OptionType | null;
   isAvailableForPurchase: boolean;
   // Basics
@@ -20,7 +21,7 @@ export type CourseGoalsState = {
   level: CourseLevel;
   duration: number;
   // Media
-  thumbnail: File | null;
+  thumbnailUrl: File | null;
   previewVideo: File | null;
 };
 
@@ -32,6 +33,7 @@ interface CourseManageStore extends CourseGoalsState {
   setSelectedCourses: (courses: OptionType[]) => void;
   setAudienceTags: (tags: string[]) => void;
   setRequirements: (text: string[]) => void;
+  setKnowledgeNeeded: (text: string) => void;
   setCourseStatus: (status: OptionType | null) => void;
   setIsAvailableForPurchase: (isAvailable: boolean) => void;
   // Basics Actions
@@ -56,6 +58,7 @@ const initialState: CourseGoalsState = {
   selectedCourses: [],
   audienceTags: [],
   requirements: [],
+  knowledgeNeeded: "",
   courseStatus: { value: "draft", label: "مسودة" },
   isAvailableForPurchase: false,
   title: "",
@@ -63,7 +66,7 @@ const initialState: CourseGoalsState = {
   slug: "",
   level: CourseDtoLevel.ALL_LEVELS,
   duration: 0,
-  thumbnail: null,
+  thumbnailUrl: null,
   previewVideo: null,
 };
 
@@ -76,6 +79,7 @@ export const useCourseManageStore = create<CourseManageStore>((set) => ({
   setSelectedCourses: (selectedCourses) => set({ selectedCourses }),
   setAudienceTags: (audienceTags) => set({ audienceTags }),
   setRequirements: (requirements) => set({ requirements }),
+  setKnowledgeNeeded: (knowledgeNeeded) => set({ knowledgeNeeded }),
   setCourseStatus: (courseStatus) => set({ courseStatus }),
   setIsAvailableForPurchase: (isAvailableForPurchase) =>
     set({ isAvailableForPurchase }),
@@ -84,7 +88,7 @@ export const useCourseManageStore = create<CourseManageStore>((set) => ({
   setSlug: (slug) => set({ slug }),
   setLevel: (level) => set({ level }),
   setDuration: (duration) => set({ duration }),
-  setThumbnail: (thumbnail) => set({ thumbnail }),
+  setThumbnail: (thumbnailUrl) => set({ thumbnailUrl }),
   setPreviewVideo: (previewVideo) => set({ previewVideo }),
 
   updateGoalsState: (updates) => set((state) => ({ ...state, ...updates })),

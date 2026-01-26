@@ -48,7 +48,6 @@ export default function GoalsForm({
     setWhatYouWillLearn,
     setWhoIsThisFor,
   ]);
-  console.log("courses", courses?.data.courses);
 
   return (
     <div className="flex flex-col gap-1">

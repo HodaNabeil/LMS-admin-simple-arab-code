@@ -11,16 +11,16 @@ const Courses = () => {
     useCourseFilters(MOCK_COURSES);
 
   const courseFiltersProps = {
-    searchTerm: filters.searchTerm,
+    searchTerm: filters?.searchTerm,
     onSearchChange: (value: string) => updateFilter("searchTerm", value),
-    selectedCategory: filters.selectedCategory,
+    selectedCategory: filters?.selectedCategory,
     onCategoryChange: (value: string) =>
       updateFilter("selectedCategory", value),
-    selectedLevel: filters.selectedLevel,
+    selectedLevel: filters?.selectedLevel,
     onLevelChange: (value: string) => updateFilter("selectedLevel", value),
-    selectedType: filters.selectedType,
+    selectedType: filters?.selectedType,
     onTypeChange: (value: string) => updateFilter("selectedType", value),
-    minPrice: filters.minPrice,
+    minPrice: filters?.minPrice,
     onMinPriceChange: (value: number) => updateFilter("minPrice", value),
     onClearFilters: clearFilters,
   };

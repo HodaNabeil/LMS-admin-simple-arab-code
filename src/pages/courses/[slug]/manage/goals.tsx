@@ -5,7 +5,7 @@ import { useParams } from "react-router-dom";
 
 export default function Goals() {
   const { slug } = useParams<{ slug: string }>();
-  const { data: course, isPending, error, isError } = useCourse(slug);
+  const { data: DataCourse, isPending, error, isError } = useCourse(slug);
 
   if (isPending) {
     return (
@@ -17,17 +17,18 @@ export default function Goals() {
   if (isError && error) {
     return <div>{error.message}</div>;
   }
+  console.log(DataCourse, "DataCourse");
   return (
     !isPending &&
-    course && (
+    DataCourse && (
       <main>
         <h4 className="text-2xl font-extrabold text-blue-800 mb-8">الأهداف</h4>
         <GoalsForm
-          objectives={course.data.course.objectives}
-          courseRequirements={course.data.course.requirements}
-          targetAudience={course.data.course.targetAudience}
-          pathId={course.data.course.pathId}
-          courseId={course.data.course.id}
+          objectives={DataCourse.data.course.objectives}
+          courseRequirements={DataCourse.data.course.requirements}
+          targetAudience={DataCourse.data.course.targetAudience}
+          pathId={DataCourse.data.course.pathId}
+          courseId={DataCourse.data.course.id}
         />
       </main>
     )
