@@ -131,7 +131,7 @@ export default function BasicsForm({
       });
     }
   }, [
-    name,
+    title,
     slug,
     hours,
     description,
