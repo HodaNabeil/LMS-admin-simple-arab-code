@@ -3,10 +3,12 @@ import {
   createBrowserRouter,
   createRoutesFromElements,
 } from 'react-router-dom';
-import NotFound from '@/pages/not-found';
 import { adminRoutes } from './AdminRoutes';
-import Login from '@/pages/auth/login';
 import { PublicRoute } from '@/components/shared/guard-route';
+import { lazyLoad } from './lazyLoadHelper';
+
+const Login = lazyLoad(() => import('@/pages/auth/login'));
+const NotFound = lazyLoad(() => import('@/pages/not-found'));
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -16,13 +18,13 @@ export const router = createBrowserRouter(
           index
           element={
             <PublicRoute>
-              <Login />
+              {Login}
             </PublicRoute>
           }
         />
         {adminRoutes}
       </Route>
-      <Route path="*" element={<NotFound />} />
+      <Route path="*" element={NotFound} />
     </>
   )
 );
