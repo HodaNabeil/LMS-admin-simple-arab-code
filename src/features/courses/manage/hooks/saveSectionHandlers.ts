@@ -23,23 +23,107 @@ export async function handleGoalsSave(
 export async function handleBasicsSave(
     store: CourseGoalsState,
     updateCourse: UpdateCourseFn,
-    uploadMedia: UploadMediaFn
+    uploadMedia: UploadMediaFn,
+    originalData?: {
+        title?: string;
+        description?: string;
+        level?: UpdateCourseDtoLevel;
+        slug?: string;
+        hours?: number;
+        shortDescription?: string;
+    }
 ) {
-    await updateCourse({
-        title: store.title,
-        description: store.description,
-        level: store.level as unknown as UpdateCourseDtoLevel,
-        // @ts-ignore - Slug may not be in generated DTO but is accepted by API
-        slug: store.slug,
-        hours: store.hours,
-        shortDescription: store.shortDescription,
-    });
+    const promises: Promise<any>[] = [];
 
-    if (store.thumbnailUrl instanceof File) {
-        await uploadMedia({
-            thumbnailUrl: store.thumbnailUrl,
-            previewVideo: store.previewVideo instanceof File ? store.previewVideo : undefined,
+    // Helper to normalize empty values (treats null, undefined, and "" as equal)
+    const normalize = (value: any) => value || "";
+
+    // Check if we have media to upload
+    const thumbnailUrl = store.thumbnailUrl instanceof File;
+    const previewVideo = store.previewVideo instanceof File;
+    const hasMedia = thumbnailUrl || previewVideo;
+
+    // Check if regular data has changed (with normalization for optional fields)
+    const hasDataChanged = !originalData || (
+        normalize(store.title) !== normalize(originalData.title) ||
+        normalize(store.description) !== normalize(originalData.description) ||
+        (store.level as unknown as UpdateCourseDtoLevel) !== originalData.level ||
+        normalize(store.slug) !== normalize(originalData.slug) ||
+        store.hours !== originalData.hours ||
+        normalize(store.shortDescription) !== normalize(originalData.shortDescription)
+    );
+
+    // Development logging with details
+    if (process.env.NODE_ENV === 'development') {
+        console.log('🔄 Starting parallel save operation...');
+        console.log('📊 Has original data:', !!originalData);
+
+
+
+        console.log('📊 Data changed:', hasDataChanged);
+        console.log('🖼️ Has media:', hasMedia);
+
+        if (hasDataChanged) {
+            console.log('📝 Sending regular data update');
+        }
+        if (hasMedia) {
+            console.log('🖼️ Sending media files:', {
+                thumbnail: thumbnailUrl,
+                video: previewVideo
+            });
+        }
+    }
+
+    // Early return if nothing to save
+    if (!hasDataChanged && !hasMedia) {
+        if (process.env.NODE_ENV === 'development') {
+            console.log('ℹ️ No changes to save - skipping all requests');
+        }
+        return;
+    }
+
+    // Only send regular data if something has changed
+    if (hasDataChanged) {
+        const regularDataPromise = updateCourse({
+            title: store.title,
+            description: store.description,
+            level: store.level as unknown as UpdateCourseDtoLevel,
+            // @ts-ignore - Slug may not be in generated DTO but is accepted by API
+            slug: store.slug,
+            hours: store.hours,
+            shortDescription: store.shortDescription,
+        }).then((res) => {
+            if (process.env.NODE_ENV === 'development') {
+                console.log('✅ Regular data update completed');
+            }
+            return res;
         });
+        promises.push(regularDataPromise);
+    } else if (process.env.NODE_ENV === 'development') {
+        console.log('⏭️ Skipping regular data update - no changes detected');
+    }
+
+    if (hasMedia) {
+        // Send media data in parallel
+        const mediaPromise = uploadMedia({
+            thumbnailUrl: thumbnailUrl ? (store.thumbnailUrl as File) : undefined as any,
+            previewVideo: previewVideo ? (store.previewVideo as File) : undefined,
+        }).then((res) => {
+            if (process.env.NODE_ENV === 'development') {
+                console.log('✅ Media upload completed');
+            }
+            return res;
+        });
+        promises.push(mediaPromise);
+    }
+
+    // Execute both requests in parallel (if there are any)
+    if (promises.length > 0) {
+        await Promise.all(promises);
+
+        if (process.env.NODE_ENV === 'development') {
+            console.log('🎉 All operations completed successfully');
+        }
     }
 }
 

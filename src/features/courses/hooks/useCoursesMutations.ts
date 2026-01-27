@@ -121,7 +121,7 @@ export function useUploadCourseMedia({ slug }: { slug: string }) {
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: queryKeys.courses.detail(slug) });
-            // toast.success("تم رفع الوسائط بنجاح"); // Optional, handled by main flow
+            toast.success("تم رفع الوسائط بنجاح");
         },
         onError: (error) => {
             handleApiError(error, "فشل رفع الوسائط");
