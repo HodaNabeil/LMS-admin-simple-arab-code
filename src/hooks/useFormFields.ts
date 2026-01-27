@@ -1,5 +1,5 @@
-import { Level, Pages, StatusLesson, UserType } from "@/constants/enums";
-import type { IFormField, IFormFieldsVariables } from "@/types/app";
+import { CreateCouponDtoType, Level, Pages, StatusLesson, UserType } from "@/constants/enums";
+import type { IFormField, IFormFieldsVariables, IOption } from "@/types/app";
 
 const useFormFields = ({ slug }: IFormFieldsVariables) => {
   const signinFields = (): IFormField[] => [
@@ -390,40 +390,99 @@ const useFormFields = ({ slug }: IFormFieldsVariables) => {
     },
   ];
 
-  const getFormFields = (): IFormField[] => {
-    switch (slug) {
-      case Pages.SIGNIN:
-        return signinFields();
-      case Pages.SIGNUP:
-        return signupFields();
-      case Pages.FORGOT_PASSWORD:
-        return forgotFields();
-      case Pages.RESET_PASSWORD:
-        return resetFields();
-      case Pages.USERS:
-        return userFields();
-      case Pages.LOGIN:
-        return loginFields();
-      case Pages.PATHS:
-        return pathFields();
-      case Pages.CREATE_TRACKS:
-        return createTrackFields();
+  const couponFields = (): IFormField[] => [
+    {
+      name: "code",
+      label: "كود الكوبون",
+      type: "text",
+      placeholder: "مثال: SUMMER2024",
+      autoFocus: true,
+    },
+    {
+      name: "value",
+      label: "قيمة التخفيض",
+      type: "number",
+      placeholder: "100",
+    },
+    {
+      name: "type",
+      label: "نوع التخفيض",
+      type: "select",
+      options: [
+        { value: CreateCouponDtoType.FIXED, label: "مبلغ ثابت" },
+        { value: CreateCouponDtoType.PERCENTAGE, label: "نسبة مئوية" },
+      ],
+    },
+    {
+      name: "expiresAt",
+      label: "تاريخ انتهاء الصلاحية",
+      type: "date",
+    },
+    {
+      name: "maxUses",
+      label: "الحد الأقصى للاستخدام",
+      type: "number",
+      placeholder: "100",
+    },
+    {
+      name: "isActive",
+      label: "تفعيل الكوبون",
+      type: "checkbox",
+    },
+    {
+      name: "courseIds",
+      label: "اختر الدورات",
+      type: "multi select",
+      placeholder: "اختر الدورات التي ينطبق عليها الكوبون",
+    },
+  ];
 
-      case Pages.CREATE_COURSES:
-        return createCourseFields();
-      case Pages.GOALS:
-        return goalsFields();
-      case Pages.BASICS:
-        return basicsFields();
-      case Pages.PRICING:
-        return pricingFields();
-      case Pages.CURRICULUM:
-        return CreateSectionFormFields();
-      case Pages.LESSONS:
-        return lessonFields();
-      default:
-        return [];
+  const getFormFields = (dynamicOptions?: Record<string, IOption[]>): IFormField[] => {
+    const fields = (() => {
+      switch (slug) {
+        case Pages.SIGNIN:
+          return signinFields();
+        case Pages.SIGNUP:
+          return signupFields();
+        case Pages.FORGOT_PASSWORD:
+          return forgotFields();
+        case Pages.RESET_PASSWORD:
+          return resetFields();
+        case Pages.USERS:
+          return userFields();
+        case Pages.LOGIN:
+          return loginFields();
+        case Pages.PATHS:
+          return pathFields();
+        case Pages.CREATE_TRACKS:
+          return createTrackFields();
+        case Pages.CREATE_COURSES:
+          return createCourseFields();
+        case Pages.GOALS:
+          return goalsFields();
+        case Pages.BASICS:
+          return basicsFields();
+        case Pages.PRICING:
+          return pricingFields();
+        case Pages.CURRICULUM:
+          return CreateSectionFormFields();
+        case Pages.LESSONS:
+          return lessonFields();
+        case Pages.COUPONS:
+          return couponFields();
+        default:
+          return [];
+      }
+    })();
+
+    if (dynamicOptions) {
+      return fields.map(field => ({
+        ...field,
+        options: dynamicOptions[field.name] || field.options
+      }));
     }
+
+    return fields;
   };
 
   return {

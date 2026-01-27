@@ -11,6 +11,10 @@ import type {
   DeleteCourseResponse,
   CourseFilters,
   GetCoursesByPathParams,
+  CouponsResponse,
+  CreateCouponRequest,
+  UpdateCouponRequest,
+  Coupon,
 } from "@/types/course";
 
 export const coursesApi = {
@@ -98,4 +102,28 @@ export const coursesApi = {
     );
     return response.data;
   },
+
+  // ============================================
+  // Coupon Methods
+  // ============================================
+
+  async getAllCoupons(): Promise<CouponsResponse> {
+    const response = await api.get("/api/coupons");
+    return response.data;
+  },
+
+  async createCoupon(data: CreateCouponRequest): Promise<Coupon> {
+    const response = await api.post("/api/coupons/create", data);
+    return response.data;
+  },
+
+  async updateCoupon(id: string, data: UpdateCouponRequest): Promise<Coupon> {
+    const response = await api.patch(`/api/coupons/${id}`, data);
+    return response.data;
+  },
+
+  async deleteCoupon(id: string): Promise<void> {
+    await api.delete(`/api/coupons/${id}`);
+  },
+
 };

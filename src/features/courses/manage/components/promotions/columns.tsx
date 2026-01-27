@@ -15,8 +15,8 @@ const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString("ar-EG");
 };
 
-const formatDiscount = (discount: number, type: "FIXED" | "PERCENTAGE") => {
-    return type === "FIXED" ? `${discount} ج.م` : `${discount}%`;
+const formatDiscount = (value: number, type: string) => {
+    return type === "FIXED" ? `${value} ج.م` : `${value}%`;
 };
 
 export const getColumns = ({
@@ -31,9 +31,9 @@ export const getColumns = ({
             ),
         },
         {
-            accessorKey: "discount",
+            accessorKey: "value",
             header: "التخفيض",
-            cell: ({ row }) => formatDiscount(row.original.discount, row.original.type),
+            cell: ({ row }) => formatDiscount(row.original.value, row.original.type),
         },
         {
             accessorKey: "type",
@@ -61,28 +61,23 @@ export const getColumns = ({
             cell: ({ row }) => formatDate(row.getValue("expiresAt")),
         },
         {
-            accessorKey: "uses",
-            header: "الاستخدامات",
-        },
-        {
-            accessorKey: "limit",
-            header: "الحد الأقصى",
-        },
-        {
             accessorKey: "allCourses",
             header: "جميع الدورات",
-            cell: ({ row }) => (
-                <Badge
-                    variant={row.original.allCourses ? "default" : "outline"}
-                    className={
-                        row.original.allCourses
-                            ? "bg-blue-600 text-white"
-                            : "border border-gray-400 text-gray-700"
-                    }
-                >
-                    {row.original.allCourses ? "نعم" : "لا"}
-                </Badge>
-            ),
+            cell: ({ row }) => {
+                const isAllCourses = (row.original.courseIds?.length || 0) === 0;
+                return (
+                    <Badge
+                        variant={isAllCourses ? "default" : "outline"}
+                        className={
+                            isAllCourses
+                                ? "bg-blue-600 text-white"
+                                : "border border-gray-400 text-gray-700"
+                        }
+                    >
+                        {isAllCourses ? "نعم" : "لا"}
+                    </Badge>
+                );
+            },
         },
         {
             accessorKey: "isActive",

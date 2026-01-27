@@ -16,6 +16,7 @@ export interface IFormField {
   | "checkbox"
   | "radio"
   | "select"
+  | "multi select"
   | "phone"
   | "hidden"
   | "textarea"

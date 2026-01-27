@@ -9,6 +9,7 @@ import ImageField from './image-field';
 import FileUploadField from './file-upload-field';
 import TextField from './text-field';
 import TextareaField from './textarea-field';
+import MultiSelectField from './multi-select-field';
 
 interface Props extends IFormField {
   errors: FieldErrors;
@@ -45,6 +46,10 @@ const FormFields = (props: Props) => {
 
     if (type === InputTypes.TEXTAREA) {
       return <TextareaField {...props} />;
+    }
+
+    if (type === InputTypes.MULTI_SELECT) {
+      return <MultiSelectField {...props} />;
     }
 
     if (type === 'file') {

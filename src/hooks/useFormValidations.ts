@@ -14,6 +14,7 @@ import {
   goalsSchema,
   pricingSchema,
 } from '@/validations/course';
+import { couponSchema } from '@/validations/coupon';
 
 type ValidationSchema =
   | typeof signinSchema
@@ -27,6 +28,7 @@ type ValidationSchema =
   | typeof createSectionCourseSchema
   | typeof goalsSchema
   | typeof pricingSchema
+  | typeof couponSchema
   | z.ZodObject<Record<string, never>>;
 
 const useFormValidations = (
@@ -64,6 +66,8 @@ const useFormValidations = (
 
       case Pages.LESSONS:
         return createLessonCourseSchema;
+      case Pages.COUPONS:
+        return couponSchema;
       default:
         return z.object({});
     }

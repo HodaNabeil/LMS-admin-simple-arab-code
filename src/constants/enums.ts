@@ -162,4 +162,7 @@ export enum Level {
   ALL_LEVELS = "ALL_LEVELS",
 }
 
-
+export enum CreateCouponDtoType {
+  PERCENTAGE = "PERCENTAGE",
+  FIXED = "FIXED"
+}

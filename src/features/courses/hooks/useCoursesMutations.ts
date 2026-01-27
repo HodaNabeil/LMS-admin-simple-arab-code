@@ -1,9 +1,67 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { queryKeys } from "@/lib/query-keys";
+import { queryKeys, couponsKeys } from "@/lib/query-keys";
 import { coursesApi } from "../services/coursesApi";
 import { toast } from "sonner";
 import { handleApiError } from "@/lib/error-handler";
-import type { CreateCourseRequest, CreateCourseResponse, DeleteCourseResponse, UpdateCourseRequest, UpdateCourseResponse } from "@/types/course";
+import type {
+    CreateCourseRequest,
+    CreateCourseResponse,
+    DeleteCourseResponse,
+    UpdateCourseRequest,
+    UpdateCourseResponse,
+    CreateCouponRequest,
+    UpdateCouponRequest,
+    Coupon
+} from "@/types/course";
+
+export function useCreateCoupon() {
+    const queryClient = useQueryClient();
+    return useMutation<Coupon, Error, CreateCouponRequest>({
+        mutationFn: async (data: CreateCouponRequest): Promise<Coupon> => {
+            return await coursesApi.createCoupon(data);
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: couponsKeys.all });
+            toast.success("تم إنشاء الكوبون بنجاح");
+        },
+        onError: (error) => {
+            handleApiError(error, "فشل إنشاء الكوبون");
+        },
+    });
+}
+
+export function useUpdateCoupon() {
+    const queryClient = useQueryClient();
+    return useMutation<Coupon, Error, { id: string; data: UpdateCouponRequest }>({
+        mutationFn: async ({ id, data }): Promise<Coupon> => {
+            return await coursesApi.updateCoupon(id, data);
+        },
+        onSuccess: (_, { id }) => {
+            queryClient.invalidateQueries({ queryKey: couponsKeys.all });
+            queryClient.invalidateQueries({ queryKey: couponsKeys.detail(id) });
+            toast.success("تم تحديث الكوبون بنجاح");
+        },
+        onError: (error) => {
+            handleApiError(error, "فشل تحديث الكوبون");
+        },
+    });
+}
+
+export function useDeleteCouponMutation() { // Renamed to avoid confusion with useDeleteCourse if needed, but useDeleteCoupon is better
+    const queryClient = useQueryClient();
+    return useMutation<void, Error, string>({
+        mutationFn: async (id: string): Promise<void> => {
+            return await coursesApi.deleteCoupon(id);
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: couponsKeys.all });
+            toast.success("تم حذف الكوبون بنجاح");
+        },
+        onError: (error) => {
+            handleApiError(error, "فشل حذف الكوبون");
+        },
+    });
+}
 
 export function useCreateCourse() {
     const queryClient = useQueryClient();
@@ -70,3 +128,5 @@ export function useUploadCourseMedia({ slug }: { slug: string }) {
         },
     });
 }
+
+
