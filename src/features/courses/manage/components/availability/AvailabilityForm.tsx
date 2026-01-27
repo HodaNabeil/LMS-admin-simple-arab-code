@@ -1,6 +1,5 @@
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { Label } from "@/components/ui/label";
-import { Checkbox } from "@/components/ui/checkbox";
 import type {
   CourseStatus as CourseStatusType,
   CourseVisibility,
@@ -14,7 +13,7 @@ import ReactSelect, {
 import { Check } from "lucide-react";
 
 import { useCourseManageStore } from '../../store';
-import { COURSE_VISIBILITY } from "@/constants/course";
+import { COURSE_VISIBILITY, COURSE_VISIBILITY_OPTIONS } from "@/constants/course";
 
 type OptionType = { value: string; label: string };
 
@@ -50,14 +49,23 @@ export default function AvailabilityForm({ status, visibility }: AvailabilityFor
     }
   }, [status, visibility, setCourseStatus, setIsAvailableForPurchase]);
 
+  const selectedVisibility = useMemo(() => {
+    const targetValue = isAvailableForPurchase
+      ? COURSE_VISIBILITY.PUBLIC
+      : COURSE_VISIBILITY.PRIVATE;
+    return COURSE_VISIBILITY_OPTIONS.find(opt => opt.value === targetValue) || COURSE_VISIBILITY_OPTIONS[0];
+  }, [isAvailableForPurchase]);
+
   const handleStatusChange = (option: SingleValue<OptionType>) => {
     if (option) {
       setCourseStatus(option);
     }
   };
 
-  const handleVisibilityChange = (checked: boolean) => {
-    setIsAvailableForPurchase(checked === true);
+  const handleVisibilityChange = (option: SingleValue<OptionType>) => {
+    if (option) {
+      setIsAvailableForPurchase(option.value === COURSE_VISIBILITY.PUBLIC);
+    }
   };
 
   return (
@@ -92,21 +100,40 @@ export default function AvailabilityForm({ status, visibility }: AvailabilityFor
             },
           })}
         />
+
+
       </div>
 
-      <div className="flex items-center gap-3 mt-2">
-        <Checkbox
-          id="visible-checkbox"
-          checked={isAvailableForPurchase}
-          onCheckedChange={handleVisibilityChange}
-          className="!border-[#297bff]  !rounded-[4px]"
-        />
+      <div>
         <Label
-          htmlFor="visible-checkbox"
-          className="text-base font-bold !text-[#297bff] cursor-pointer"
+          htmlFor="visibility-select"
+          className="block mb-2 text-base font-bold !text-[#297bff]"
         >
-          متوفر للشراء
+          إتاحة الدورة
         </Label>
+        <ReactSelect
+          inputId="visibility-select"
+          classNamePrefix="react-select"
+          options={COURSE_VISIBILITY_OPTIONS}
+          value={selectedVisibility}
+          onChange={handleVisibilityChange}
+          placeholder="اختر الإتاحة"
+          styles={customStyles}
+          components={{ Option }}
+          theme={(theme) => ({
+            ...theme,
+            borderRadius: 8,
+            colors: {
+              ...theme.colors,
+              primary: "#72a4f5",
+              primary25: "#72a4f5",
+              neutral0: "#72a4f5",
+              neutral80: "#407ef7",
+              neutral20: "#2563eb",
+              neutral30: "#72a4f5",
+            },
+          })}
+        />
       </div>
 
 

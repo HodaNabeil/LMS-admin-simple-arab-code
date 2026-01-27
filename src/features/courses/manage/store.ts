@@ -20,6 +20,8 @@ export type CourseGoalsState = {
   slug: string;
   level: CourseLevel;
   hours: number;
+  shortDescription: string;
+
   // Media
   thumbnailUrl: File | null;
   previewVideo: File | null;
@@ -43,6 +45,7 @@ interface CourseManageStore extends CourseGoalsState {
   setSlug: (slug: string) => void;
   setLevel: (level: CourseLevel) => void;
   setHours: (hours: number) => void;
+  setShortDescription: (shortDescription: string) => void;
   // Media Actions
   setThumbnail: (file: File | null) => void;
   setPreviewVideo: (file: File | null) => void;
@@ -71,6 +74,7 @@ const initialState: CourseGoalsState = {
   slug: "",
   level: CourseDtoLevel.ALL_LEVELS,
   hours: 0,
+  shortDescription: "",
   // Media
   thumbnailUrl: null,
   previewVideo: null,
@@ -95,6 +99,7 @@ export const useCourseManageStore = create<CourseManageStore>((set) => ({
   setSlug: (slug) => set({ slug }),
   setLevel: (level) => set({ level }),
   setHours: (hours) => set({ hours }),
+  setShortDescription: (shortDescription) => set({ shortDescription }),
   setThumbnail: (thumbnailUrl) => set({ thumbnailUrl }),
   setPreviewVideo: (previewVideo) => set({ previewVideo }),
   setPrice: (price) => set({ price }),

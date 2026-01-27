@@ -20,6 +20,7 @@ export default function Basics() {
         level={courseResponse?.data.course.level}
         thumbnailUrl={courseResponse?.data.course.thumbnailUrl ?? null}
         previewVideo={courseResponse?.data.course.previewVideo ?? null}
+        shortDescription={courseResponse?.data.course.shortDescription}
       />
     </main>
   ) : null;

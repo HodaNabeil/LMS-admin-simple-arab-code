@@ -70,6 +70,7 @@ export const basicsSchema = z.object({
   slug: course.slug,
   hours: course.hours,
   description: z.string().optional(),
+  shortDescription: z.string().optional(),
   level: course.level,
   thumbnailUrl: course.image,
   previewVideo: z.custom<File>().optional(),
@@ -79,6 +80,7 @@ export const createLessonCourseSchema = z.object({
   title: course.title,
   description: z.string().optional(),
   select: z.string().optional(),
+  shortDescription: z.string().optional(),
 });
 
 export type BasicsSchema = z.infer<typeof basicsSchema>;

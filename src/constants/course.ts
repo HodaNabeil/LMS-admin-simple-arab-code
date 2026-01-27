@@ -43,6 +43,13 @@ export const COURSE_VISIBILITY = {
     UNLISTED: 'UNLISTED',
 } as const;
 
+export const COURSE_VISIBILITY_OPTIONS = [
+    { value: COURSE_VISIBILITY.PUBLIC, label: 'عام' },        // متاح للجميع
+    { value: COURSE_VISIBILITY.PRIVATE, label: 'خاص' },       // غير متاح إلا للمالك
+    { value: COURSE_VISIBILITY.UNLISTED, label: 'غير مدرج' }, // لا يظهر في البحث أو القائمة
+] as const;
+
+
 export const COURSE_LEVEL = {
     BEGINNER: 'BEGINNER',
     INTERMEDIATE: 'INTERMEDIATE',

@@ -31,8 +31,8 @@ export async function handleBasicsSave(
         level: store.level as unknown as UpdateCourseDtoLevel,
         // @ts-ignore - Slug may not be in generated DTO but is accepted by API
         slug: store.slug,
-        // @ts-ignore - Duration may not be in generated DTO but is accepted by API  
         hours: store.hours,
+        shortDescription: store.shortDescription,
     });
 
     if (store.thumbnailUrl instanceof File) {

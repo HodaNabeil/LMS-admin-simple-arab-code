@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm, type Control } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -21,7 +21,7 @@ interface BasicsFormProps {
   level?: CourseDtoLevel;
   thumbnailUrl?: File | string | null;
   previewVideo?: File | string | null;
-
+  shortDescription?: string;
 
 }
 
@@ -33,7 +33,11 @@ export default function BasicsForm({
   level,
   thumbnailUrl,
   previewVideo,
+  shortDescription,
 }: BasicsFormProps) {
+  // State to track if user wants to replace existing media
+  const [isReplacingThumbnail, setIsReplacingThumbnail] = useState(false);
+  const [isReplacingVideo, setIsReplacingVideo] = useState(false);
 
 
   const { getFormFields } = useFormFields({ slug: Pages.BASICS });
@@ -54,7 +58,9 @@ export default function BasicsForm({
       description,
       level,
       thumbnailUrl: thumbnailUrl instanceof File ? thumbnailUrl : undefined,
-      previewVideo: previewVideo instanceof File ? previewVideo : undefined
+      previewVideo: previewVideo instanceof File ? previewVideo : undefined,
+      shortDescription,
+
 
 
 
@@ -78,6 +84,7 @@ export default function BasicsForm({
     setHours,
     setThumbnail,
     setPreviewVideo,
+    setShortDescription,
   } = useCourseManageStore();
 
 
@@ -89,6 +96,7 @@ export default function BasicsForm({
     "level",
     "thumbnailUrl",
     "previewVideo",
+    "shortDescription",
   ]);
 
   const [
@@ -99,6 +107,7 @@ export default function BasicsForm({
     watchedLevel,
     watchedThumbnail,
     watchedPreview,
+    watchedShortDescription,
   ] = watchedFields;
 
 
@@ -118,6 +127,7 @@ export default function BasicsForm({
         level,
         thumbnailUrl: thumbnailUrl || undefined,
         previewVideo: previewVideo instanceof File ? previewVideo : undefined,
+        shortDescription,
       });
     }
   }, [
@@ -128,6 +138,7 @@ export default function BasicsForm({
     level,
     thumbnailUrl,
     previewVideo,
+    shortDescription,
     reset,
   ]);
 
@@ -139,6 +150,7 @@ export default function BasicsForm({
       setSlug(watchedSlug || "");
       setLevel(watchedLevel || CourseDtoLevel.BEGINNER);
       setHours(watchedHours || 0);
+      setShortDescription(watchedShortDescription || "");
 
       if (watchedThumbnail instanceof File) {
         setThumbnail(watchedThumbnail);
@@ -175,15 +187,127 @@ export default function BasicsForm({
 
   return (
     <div className="flex flex-col gap-6">
-      {getFormFields().map((field, index) => (
-        <div key={index} className="mb-4">
-          <FormFields
-            {...field}
-            control={control as Control<BasicsSchema>}
-            errors={errors}
-          />
-        </div>
-      ))}
+      {/* Render all form fields with custom handling for media fields */}
+      {getFormFields().map((field, index) => {
+        // Handle thumbnail display and replacement
+        if (field.name === "thumbnailUrl") {
+          const hasExistingThumbnail = thumbnailUrl && typeof thumbnailUrl === "string";
+
+          // If there's an existing thumbnail and not in replacement mode
+          if (hasExistingThumbnail && !isReplacingThumbnail) {
+            return (
+              <div key={index} className="mb-4">
+                <label className="block text-sm font-medium mb-2">
+                  {field.label}
+                </label>
+                <div className="border rounded-lg p-4 bg-gray-50">
+                  <img
+                    src={thumbnailUrl}
+                    alt="Course Thumbnail"
+                    className="max-w-full h-auto max-h-64 rounded-lg object-cover mb-3"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setIsReplacingThumbnail(true)}
+                    className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                  >
+                    استبدال الصورة
+                  </button>
+                </div>
+              </div>
+            );
+          }
+
+          // If in replacement mode or no existing thumbnail, show upload field
+          if (!hasExistingThumbnail || isReplacingThumbnail) {
+            return (
+              <div key={index} className="mb-4">
+                <FormFields
+                  {...field}
+                  control={control as Control<BasicsSchema>}
+                  errors={errors}
+                />
+                {/* Show cancel button only if replacing existing image */}
+                {hasExistingThumbnail && isReplacingThumbnail && (
+                  <button
+                    type="button"
+                    onClick={() => setIsReplacingThumbnail(false)}
+                    className="mt-2 px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors"
+                  >
+                    إلغاء
+                  </button>
+                )}
+              </div>
+            );
+          }
+        }
+
+        // Handle preview video display and replacement
+        if (field.name === "previewVideo") {
+          const hasExistingVideo = previewVideo && typeof previewVideo === "string";
+
+          // If there's an existing video and not in replacement mode
+          if (hasExistingVideo && !isReplacingVideo) {
+            return (
+              <div key={index} className="mb-4">
+                <label className="block text-sm font-medium mb-2">
+                  {field.label}
+                </label>
+                <div className="border rounded-lg p-4 bg-gray-50">
+                  <video
+                    src={previewVideo}
+                    controls
+                    className="max-w-full h-auto max-h-96 rounded-lg mb-3"
+                  >
+                    متصفحك لا يدعم تشغيل الفيديو
+                  </video>
+                  <button
+                    type="button"
+                    onClick={() => setIsReplacingVideo(true)}
+                    className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                  >
+                    استبدال الفيديو
+                  </button>
+                </div>
+              </div>
+            );
+          }
+
+          // If in replacement mode or no existing video, show upload field
+          if (!hasExistingVideo || isReplacingVideo) {
+            return (
+              <div key={index} className="mb-4">
+                <FormFields
+                  {...field}
+                  control={control as Control<BasicsSchema>}
+                  errors={errors}
+                />
+                {/* Show cancel button only if replacing existing video */}
+                {hasExistingVideo && isReplacingVideo && (
+                  <button
+                    type="button"
+                    onClick={() => setIsReplacingVideo(false)}
+                    className="mt-2 px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors"
+                  >
+                    إلغاء
+                  </button>
+                )}
+              </div>
+            );
+          }
+        }
+
+        // Render all other fields normally
+        return (
+          <div key={index} className="mb-4">
+            <FormFields
+              {...field}
+              control={control as Control<BasicsSchema>}
+              errors={errors}
+            />
+          </div>
+        );
+      })}
     </div>
   );
 }

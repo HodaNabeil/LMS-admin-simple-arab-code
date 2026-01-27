@@ -235,6 +235,12 @@ const useFormFields = ({ slug }: IFormFieldsVariables) => {
       placeholder: "ادخل وصف الدورة",
     },
     {
+      name: "shortDescription",
+      label: "وصف قصير",
+      type: "textarea",
+      placeholder: "ادخل وصف قصير",
+    },
+    {
       name: "slug",
       label: "اسم الدورة (Slug)",
       type: "text",
