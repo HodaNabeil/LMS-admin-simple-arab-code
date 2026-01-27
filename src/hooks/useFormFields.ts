@@ -281,15 +281,15 @@ const useFormFields = ({ slug }: IFormFieldsVariables) => {
   const pricingFields = (): IFormField[] => [
     {
       name: "compareAtPrice",
-      label: "السعر السابق",
+      label: "سعر العرض بالسينت",
       type: "number",
-      placeholder: "ادخل السعر السابق",
+      placeholder: "ادخل سعر العرض بالسينت",
     },
     {
       name: "price",
-      label: "السعر",
+      label: "السعر الاساسي بالسينت",
       type: "number",
-      placeholder: "ادخل السعر",
+      placeholder: "ادخل سعر الدورة بالسينت",
     },
   ];
 

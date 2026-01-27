@@ -13,9 +13,7 @@ function Pricing() {
   if (isError && error) return <div>{error.message}</div>;
   return !isPending && courseResponse ? (
     <main>
-      <h2 className="md:text-xl      lg:text-2xl   font-bold text-primary ">
-        اضافة السعر
-      </h2>
+
       <PricingForm
         price={courseResponse?.data.course.price}
         compareAtPrice={courseResponse?.data.course.compareAtPrice}

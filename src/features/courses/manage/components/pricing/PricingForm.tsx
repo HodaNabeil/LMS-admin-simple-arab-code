@@ -55,8 +55,8 @@ export default function PricingForm({
 
   useEffect(() => {
     const timeout = setTimeout(() => {
-      setPrice(watchedPrice || 0);
-      setCompareAtPrice(watchedCompareAtPrice);
+      setPrice(Number(watchedPrice));
+      setCompareAtPrice(Number(watchedCompareAtPrice));
     }, 300);
 
     return () => clearTimeout(timeout);

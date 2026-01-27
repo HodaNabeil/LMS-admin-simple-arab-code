@@ -48,8 +48,8 @@ export async function handlePricingSave(
     updateCourse: UpdateCourseFn
 ) {
     await updateCourse({
-        price: store.price,
-        compareAtPrice: store.compareAtPrice,
+        price: Number(store.price),
+        compareAtPrice: Number(store.compareAtPrice),
     });
 }
 
