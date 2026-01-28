@@ -30,7 +30,7 @@ export default function Promotions() {
   };
 
   const handleEditCoupon = async (coupon: Coupon) => {
-    const { id, ...data } = coupon;
+    const { id, usedCount, createdAt, updatedAt, ...data } = coupon as any;
     await updateCouponMutation.mutateAsync({ id, data: data as any });
   };
 

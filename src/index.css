@@ -100,9 +100,11 @@
     @apply font-normal;
     font-family: "Noto Kufi Arabic", sans-serif;
   }
+
   .section-gap {
     @apply py-10;
   }
+
   .padding-card-statistics {
     @apply py-[50px] px-[15px];
   }
@@ -123,7 +125,21 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@layer utilities {
+  .custom-scrollbar {
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
+  }
+
+  .custom-scrollbar::-webkit-scrollbar {
+    display: none;
   }
 }

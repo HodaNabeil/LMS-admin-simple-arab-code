@@ -6,11 +6,10 @@ import { Pages } from '@/constants/enums';
 import FormFields from '@/components/shared/form-fields/form-fields';
 import { Button } from '@/components/ui/button';
 import useFormValidations from '@/hooks/useFormValidations';
-import { toast } from 'sonner';
-import { AxiosError } from 'axios';
 import type { couponSchema } from '@/validations/coupon';
 import type { Coupon } from '@/types/course';
 import { CreateCouponDtoType } from '@/constants/enums';
+import { handleApiError } from '@/lib/error-handler';
 
 interface CouponFormProps {
     initialData?: Coupon | null;
@@ -54,18 +53,15 @@ function CouponForm({
     const handleFormSubmit = async (data: any) => {
         try {
             await onSubmit(data);
-        } catch (error) {
-
-
-            if (error instanceof AxiosError) {
-                const axiosError = error as AxiosError<{ message: string }>;
-                if (axiosError.response?.data?.message) {
-                    toast.error(axiosError.response.data.message);
-                } else {
-                    toast.error('حدث خطأ أثناء حفظ الكوبون');
-                }
+        } catch (error: any) {
+            const message = error?.response?.data?.message;
+            if (message && (
+                (typeof message === 'string' && (message.includes('usedCount') || message.includes('createdAt') || message.includes('updatedAt'))) ||
+                (Array.isArray(message) && message.some((m: string) => m.includes('usedCount') || m.includes('createdAt') || m.includes('updatedAt')))
+            )) {
+                handleApiError(error, 'غير مصرح بالتعديل');
             } else {
-                toast.error('حدث خطأ غير متوقع');
+                handleApiError(error);
             }
         }
     };

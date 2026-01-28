@@ -30,7 +30,6 @@ import {
   UserCog,
   PanelLeft,
   PanelRight,
-  Search,
 } from "lucide-react"
 import { Link, useLocation } from "react-router-dom"
 
@@ -41,7 +40,6 @@ import {
   SidebarGroup,
   SidebarGroupLabel,
   SidebarHeader,
-  SidebarInput,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
@@ -348,16 +346,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 <PanelLeft className="size-5" />
               )}
             </SidebarMenuButton>
-          </div>
-          <div className={cn(
-            "relative transition-opacity duration-200",
-            state === "collapsed" && "opacity-0 h-0 overflow-hidden"
-          )}>
-            <Search className="absolute right-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
-            <SidebarInput
-              placeholder="البحث في القائمة..."
-              className="pr-9 h-11 bg-muted/30 border-none focus-visible:ring-primary/20"
-            />
           </div>
         </div>
       </SidebarHeader>

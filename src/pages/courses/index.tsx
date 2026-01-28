@@ -6,6 +6,7 @@ import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useCourses } from '@/features/courses/hooks/useCoursesQueries';
 import { PageHeader } from '@/components/shared/PageHeader';
+import { Loader } from '@/components/shared/loader';
 
 const LEVEL_MAP: Record<string, string> = {
   BEGINNER: 'مبتدئ',
@@ -51,7 +52,11 @@ export default function Courses() {
     setMinPrice(0);
   };
 
-  if (isLoading) return <div>جاري التحميل...</div>;
+  if (isLoading) return <div>
+
+    <Loader />
+
+  </div>;
   if (error) return <div>حدث خطأ أثناء تحميل الدورات</div>;
 
   return (
