@@ -1,4 +1,4 @@
-import { useOutletContext } from 'react-router-dom';
+import { useSidebar } from '@/components/ui/sidebar';
 import { useAdminStats } from '@/hooks/useAdminStats';
 import { Loader } from '@/components/shared/loader';
 import StatsSummary from '@/features/stats/components/StatsSummary';
@@ -9,9 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Menu } from 'lucide-react';
 
 export default function Admin() {
-  const { setIsMobileSidebarOpen } = useOutletContext<{
-    setIsMobileSidebarOpen: (open: boolean) => void;
-  }>();
+  const { setOpenMobile } = useSidebar();
 
   const { data, isLoading, error, isError } = useAdminStats();
 
@@ -39,7 +37,7 @@ export default function Admin() {
           variant="ghost"
           size="sm"
           className="lg:hidden flex justify-end"
-          onClick={() => setIsMobileSidebarOpen(true)}
+          onClick={() => setOpenMobile(true)}
         >
           <Menu className="w-5 h-5" />
         </Button>
