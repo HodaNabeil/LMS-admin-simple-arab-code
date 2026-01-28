@@ -10,7 +10,7 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, type Control } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { useState, useMemo } from "react";
+import { useMemo } from "react";
 import { useTracks } from "@/features/tracks/hooks/useTracksQueries";
 
 import { useCreateCourse } from "../../hooks/useCoursesMutations";
@@ -58,11 +58,9 @@ export default function CreateCourseForm() {
     }));
   }, [pathsData]);
 
-  const [submitError, setSubmitError] = useState<string | null>(null);
 
   const handleFormSubmit = async (data: ICreateCourseForm) => {
     try {
-      setSubmitError(null);
       await createCourse({
         slug: data.slug,
         trackId: data.trackId,
@@ -71,11 +69,6 @@ export default function CreateCourseForm() {
       navigate(`/admin/${Pages.COURSES}/${data.slug}/${Pages.GOALS}`);
     } catch (error) {
       console.error("Course creation error:", error);
-      const errorMessage =
-        error instanceof Error
-          ? error.message
-          : "حدث خطأ أثناء إنشاء الدورة. يرجى المحاولة مرة أخرى.";
-      setSubmitError(errorMessage);
     }
   };
 
@@ -87,14 +80,7 @@ export default function CreateCourseForm() {
         إضافة دورة جديدة
       </h1>
 
-      {submitError && (
-        <div
-          className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded relative"
-          role="alert"
-        >
-          <span className="block sm:inline">{submitError}</span>
-        </div>
-      )}
+
 
       {isLoading ? (
         <div className="flex items-center justify-center py-8">

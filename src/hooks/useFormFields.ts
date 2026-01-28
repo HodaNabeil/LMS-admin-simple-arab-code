@@ -414,26 +414,43 @@ const useFormFields = ({ slug }: IFormFieldsVariables) => {
       ],
     },
     {
+      name: "description",
+      label: "الوصف",
+      type: "textarea",
+      placeholder: "وصف اختياري للكوبون",
+    },
+    {
+      name: "startsAt",
+      label: "تاريخ البدء",
+      type: "date",
+    },
+    {
       name: "expiresAt",
       label: "تاريخ انتهاء الصلاحية",
       type: "date",
     },
     {
       name: "maxUses",
-      label: "الحد الأقصى للاستخدام",
+      label: "الحد الأقصى للاستخدام (كلي)",
       type: "number",
       placeholder: "100",
+    },
+    {
+      name: "maxUsesPerUser",
+      label: "الحد الأقصى لكل مستخدم",
+      type: "number",
+      placeholder: "1",
+    },
+    {
+      name: "minOrderAmount",
+      label: "أقل قيمة للطلب",
+      type: "number",
+      placeholder: "0",
     },
     {
       name: "isActive",
       label: "تفعيل الكوبون",
       type: "checkbox",
-    },
-    {
-      name: "courseIds",
-      label: "اختر الدورات",
-      type: "multi select",
-      placeholder: "اختر الدورات التي ينطبق عليها الكوبون",
     },
   ];
 

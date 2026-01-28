@@ -7,6 +7,7 @@ interface CouponsTableProps {
   onDelete: (id: string) => void;
   onEdit: (coupon: Coupon) => void;
   isLoading?: boolean;
+  courseId: string;
 }
 
 export default function CouponsTable({
@@ -14,11 +15,13 @@ export default function CouponsTable({
   onDelete,
   onEdit,
   isLoading = false,
+  courseId,
 }: CouponsTableProps) {
 
   const columns = getColumns({
     onEdit,
     onDelete,
+    courseId,
   });
 
   if (isLoading) {

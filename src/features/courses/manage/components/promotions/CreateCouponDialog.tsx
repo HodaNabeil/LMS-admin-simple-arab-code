@@ -4,6 +4,7 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogDescription,
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -15,10 +16,11 @@ interface CouponFormDialogProps {
   onSubmit: (couponData: Omit<Coupon, 'id' | 'createdAt' | 'uses'>) => void;
   isLoading?: boolean;
   initialData?: Coupon | null;
+  courseId: string;
   children?: React.ReactNode;
 }
 
-export default function CouponFormDialog({ onSubmit, isLoading = false, initialData, children }: CouponFormDialogProps) {
+export default function CouponFormDialog({ onSubmit, isLoading = false, initialData, courseId, children }: CouponFormDialogProps) {
   const [open, setOpen] = useState(false);
 
   const handleFormSubmit = async (data: any) => {
@@ -26,11 +28,14 @@ export default function CouponFormDialog({ onSubmit, isLoading = false, initialD
       code: data.code,
       value: Number(data.value),
       type: data.type,
+      description: data.description,
+      startsAt: data.startsAt ? new Date(data.startsAt).toISOString() : undefined,
       expiresAt: data.expiresAt ? new Date(data.expiresAt).toISOString() : undefined,
       maxUses: data.maxUses ? Number(data.maxUses) : undefined,
-      courseIds: data.courseIds || [],
+      maxUsesPerUser: data.maxUsesPerUser ? Number(data.maxUsesPerUser) : 1,
+      minOrderAmount: data.minOrderAmount ? Number(data.minOrderAmount) : undefined,
+      courseIds: [courseId],
       isActive: data.isActive,
-      maxUsesPerUser: 1,
     };
 
     await onSubmit(couponData);
@@ -55,9 +60,9 @@ export default function CouponFormDialog({ onSubmit, isLoading = false, initialD
               <HashIcon className="w-6 h-6" />
               {isEditMode ? "تعديل الكوبون" : "إنشاء كوبون جديد"}
             </DialogTitle>
-            <p className="text-blue-100 mt-2">
+            <DialogDescription className="text-blue-100 mt-2">
               {isEditMode ? "قم بتعديل بيانات الكوبون" : "أضف كوبون خصم جديد لجذب المزيد من الطلاب"}
-            </p>
+            </DialogDescription>
           </DialogHeader>
         </div>
 

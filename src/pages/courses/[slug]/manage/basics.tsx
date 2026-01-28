@@ -15,10 +15,10 @@ export default function Basics() {
       <BasicsForm
         title={courseResponse?.data.course.title}
         slug={courseResponse?.data.course.slug}
-        hours={courseResponse?.data.course.duration ?? 0}
+        hours={courseResponse?.data.course.hours ?? 0}
         description={courseResponse?.data.course.description}
         level={courseResponse?.data.course.level}
-        thumbnailUrl={courseResponse?.data.course.thumbnailUrl ?? null}
+        thumbnail={courseResponse?.data.course.thumbnailUrl ?? null}
         previewVideo={courseResponse?.data.course.previewVideo ?? null}
         shortDescription={courseResponse?.data.course.shortDescription}
       />

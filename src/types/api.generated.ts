@@ -1,7 +1,7 @@
 /**
 * AUTO-GENERATED FILE - DO NOT EDIT MANUALLY
 * Generated from OpenAPI schema
-* Last updated: 2026-01-27T23:38:53.251Z
+* Last updated: 2026-01-28T03:41:27.381Z
 * Schema URL: https://simple-arab-code-backend-production.up.railway.app/api/docs-json
 */
  
@@ -348,6 +348,54 @@ export type paths = {
         patch?: never;
         trace?: never;
     };
+    "/api/coupons": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get all coupons
+         * @description Retrieve a list of all discount coupons.
+         */
+        get: operations["CouponsController_listCoupons[1]"];
+        put?: never;
+        /**
+         * Create a new coupon
+         * @description Create a new discount coupon. This coupon must be applied to specific courses. ADMIN can create coupons for any courses. INSTRUCTOR can only create coupons for their own courses.
+         */
+        post: operations["CouponsController_createCoupon[1]"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/coupons/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /**
+         * Delete a coupon
+         * @description Delete an existing discount coupon. ADMIN can delete any coupon. INSTRUCTOR can only delete coupons for their own courses.
+         */
+        delete: operations["CouponsController_deleteCoupon[1]"];
+        options?: never;
+        head?: never;
+        /**
+         * Update a coupon
+         * @description Update an existing discount coupon. ADMIN can update any coupon. INSTRUCTOR can only update coupons for their own courses.
+         */
+        patch: operations["CouponsController_updateCoupon[1]"];
+        trace?: never;
+    };
     "/api/coupons/apply": {
         parameters: {
             query?: never;
@@ -362,26 +410,6 @@ export type paths = {
          * @description Apply a discount coupon code to the authenticated user's shopping cart. The coupon must be valid and applicable to the cart items.
          */
         post: operations["CouponsController_applyCoupon[1]"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/coupons/create": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Create a new coupon
-         * @description Create a new discount coupon. This coupon must be applied to specific courses. ADMIN can create coupons for any courses. INSTRUCTOR can only create coupons for their own courses.
-         */
-        post: operations["CouponsController_createCoupon[1]"];
         delete?: never;
         options?: never;
         head?: never;
@@ -1357,10 +1385,10 @@ export type components = {
              */
             description: string;
             /**
-             * @description Total course duration in minutes
-             * @example 2400
+             * @description Total course duration in hours
+             * @example 40
              */
-            duration?: number;
+            hours?: number;
             /**
              * @description Course ID
              * @example cmj4400lg0008r0lrwb02nx0l
@@ -1427,7 +1455,7 @@ export type components = {
              * @description Course preview video URL
              * @example https://example.com/videos/react-preview.mp4
              */
-            previewVideo?: string;
+            previewVideo?: Record<string, never> | null;
             /**
              * @description Course price
              * @example 599
@@ -1460,7 +1488,7 @@ export type components = {
              * @description Short course description
              * @example Build professional user interfaces with React.js
              */
-            shortDescription?: string;
+            shortDescription?: Record<string, never> | null;
             /**
              * @description Course slug
              * @example react-complete-course
@@ -2846,6 +2874,67 @@ export type components = {
              */
             updatedAt: string;
         };
+        UpdateCouponDto: {
+            /**
+             * @description Unique coupon code (uppercase recommended)
+             * @example SAVE20
+             */
+            code?: string;
+            /**
+             * @description List of course IDs this coupon applies to
+             * @example [
+             *       "course123",
+             *       "course456"
+             *     ]
+             */
+            courseIds?: string[];
+            /**
+             * @description Description of the coupon
+             * @example 20% off on all courses
+             */
+            description?: string;
+            /**
+             * @description Date when the coupon expires (ISO 8601 format)
+             * @example 2026-12-31T23:59:59Z
+             */
+            expiresAt?: string;
+            /**
+             * @description Whether the coupon is active
+             * @example true
+             */
+            isActive?: boolean;
+            /**
+             * @description Maximum number of times this coupon can be used (total)
+             * @example 100
+             */
+            maxUses?: number;
+            /**
+             * @description Maximum number of times a user can use this coupon
+             * @example 1
+             */
+            maxUsesPerUser?: number;
+            /**
+             * @description Minimum order amount required to use this coupon
+             * @example 50
+             */
+            minOrderAmount?: number;
+            /**
+             * @description Date when the coupon becomes active (ISO 8601 format)
+             * @example 2026-01-01T00:00:00Z
+             */
+            startsAt?: string;
+            /**
+             * @description Type of discount
+             * @example PERCENTAGE
+             * @enum {string}
+             */
+            type?: UpdateCouponDtoType;
+            /**
+             * @description Discount value (percentage: 0-100, fixed: amount in currency)
+             * @example 20
+             */
+            value?: number;
+        };
         UpdateCourseDto: {
             /** @description Certificate enabled */
             certificateEnabled?: boolean;
@@ -2890,6 +2979,11 @@ export type components = {
             requirements?: string[];
             /** @description Short description */
             shortDescription?: string;
+            /**
+             * @description URL-friendly slug for the course
+             * @example learn-arabic-for-beginners
+             */
+            slug?: string;
             /**
              * @description Course status
              * @enum {string}
@@ -4334,33 +4428,15 @@ export interface operations {
             };
         };
     };
-    "CouponsController_applyCoupon[1]": {
+    "CouponsController_listCoupons[1]": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["ApplyCouponDto"];
-            };
-        };
+        requestBody?: never;
         responses: {
-            /** @description Coupon applied successfully */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        data?: components["schemas"]["CartResponseDto"];
-                        message?: string;
-                        /** @default true */
-                        success: boolean;
-                    };
-                };
-            };
             /** @description Bad request */
             400: {
                 headers: {
@@ -4419,6 +4495,186 @@ export interface operations {
                 content: {
                     "application/json": {
                         data?: components["schemas"]["CouponResponseDto"];
+                        message?: string;
+                        /** @default true */
+                        success: boolean;
+                    };
+                };
+            };
+            /** @description Bad request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Internal server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    "CouponsController_deleteCoupon[1]": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Coupon ID */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Bad request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Internal server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    "CouponsController_updateCoupon[1]": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Coupon ID */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UpdateCouponDto"];
+            };
+        };
+        responses: {
+            /** @description Coupon updated successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["CouponResponseDto"];
+                        message?: string;
+                        /** @default true */
+                        success: boolean;
+                    };
+                };
+            };
+            /** @description Bad request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Internal server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    "CouponsController_applyCoupon[1]": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ApplyCouponDto"];
+            };
+        };
+        responses: {
+            /** @description Coupon applied successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["CartResponseDto"];
                         message?: string;
                         /** @default true */
                         success: boolean;
@@ -7196,6 +7452,10 @@ export enum TrackResponseDtoCategory {
     WEB = "WEB",
     MOBILE = "MOBILE",
     OTHER = "OTHER"
+}
+export enum UpdateCouponDtoType {
+    PERCENTAGE = "PERCENTAGE",
+    FIXED = "FIXED"
 }
 export enum UpdateCourseDtoCurrency {
     USD = "USD",

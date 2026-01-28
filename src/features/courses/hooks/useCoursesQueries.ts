@@ -8,12 +8,13 @@ import type {
   GetCoursesByPathParams,
   CouponsResponse,
 } from "@/types/course";
+import { couponApi } from "../services/cuponApi";
 
 export function useCoupons() {
   return useQuery<CouponsResponse>({
     queryKey: couponsKeys.lists(),
     queryFn: async (): Promise<CouponsResponse> => {
-      return await coursesApi.getAllCoupons();
+      return await couponApi.getAllCoupons();
     },
   });
 }

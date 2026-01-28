@@ -9,6 +9,7 @@ import CouponFormDialog from "./CreateCouponDialog";
 interface GetColumnsProps {
     onEdit: (coupon: Coupon) => void;
     onDelete: (id: string) => void;
+    courseId: string;
 }
 
 const formatDate = (dateString: string) => {
@@ -22,28 +23,41 @@ const formatDiscount = (value: number, type: string) => {
 export const getColumns = ({
     onEdit,
     onDelete,
+    courseId,
 }: GetColumnsProps): ColumnDef<Coupon>[] => [
+        {
+            accessorKey: "id",
+            header: "ID",
+            cell: ({ row }) => (
+                <span className="text-xs text-muted-foreground font-mono">{row.getValue("id")}</span>
+            ),
+        },
         {
             accessorKey: "code",
             header: "الكود",
             cell: ({ row }) => (
-                <span className="font-mono font-medium">{row.getValue("code")}</span>
+                <span className="font-bold text-blue-700 font-mono">{row.getValue("code")}</span>
             ),
         },
         {
             accessorKey: "value",
             header: "التخفيض",
-            cell: ({ row }) => formatDiscount(row.original.value, row.original.type),
+            cell: ({ row }) => (
+                <div className="font-semibold">
+                    {formatDiscount(row.original.value, row.original.type)}
+                </div>
+            ),
         },
         {
             accessorKey: "type",
             header: "النوع",
             cell: ({ row }) => (
                 <Badge
+                    variant="secondary"
                     className={
                         row.original.type === "FIXED"
-                            ? "bg-blue-600 text-white"
-                            : "bg-gray-200 text-blue-700"
+                            ? "bg-blue-50 text-blue-700 border-blue-100"
+                            : "bg-purple-50 text-purple-700 border-purple-100"
                     }
                 >
                     {row.original.type === "FIXED" ? "مبلغ ثابت" : "نسبة مئوية"}
@@ -51,33 +65,59 @@ export const getColumns = ({
             ),
         },
         {
-            accessorKey: "createdAt",
-            header: "تاريخ الإنشاء",
-            cell: ({ row }) => formatDate(row.getValue("createdAt")),
+            accessorKey: "description",
+            header: "الوصف",
+            cell: ({ row }) => (
+                <span className="text-sm truncate max-w-[150px] inline-block" title={row.getValue("description")}>
+                    {row.getValue("description") || "---"}
+                </span>
+            ),
+        },
+        {
+            accessorKey: "maxUses",
+            header: "أقصى استخدام",
+            cell: ({ row }) => (
+                <div className="text-center font-medium">
+                    {row.getValue("maxUses") || "∞"}
+                </div>
+            ),
+        },
+        {
+            accessorKey: "usedCount",
+            header: "المستخدم",
+            cell: ({ row }) => (
+                <div className="text-center">
+                    <span className="text-green-600 font-bold">{row.getValue("usedCount") || 0}</span>
+                </div>
+            ),
+        },
+        {
+            accessorKey: "maxUsesPerUser",
+            header: "لكل مستخدم",
+            cell: ({ row }) => (
+                <div className="text-center">
+                    {row.getValue("maxUsesPerUser") || 1}
+                </div>
+            ),
+        },
+        {
+            accessorKey: "minOrderAmount",
+            header: "أقل طلب",
+            cell: ({ row }) => (
+                <div className="text-right">
+                    {row.getValue("minOrderAmount") ? `${row.getValue("minOrderAmount")} ج.م` : "بدون حد"}
+                </div>
+            ),
+        },
+        {
+            accessorKey: "startsAt",
+            header: "تاريخ البدء",
+            cell: ({ row }) => row.getValue("startsAt") ? formatDate(row.getValue("startsAt")) : "فوري",
         },
         {
             accessorKey: "expiresAt",
             header: "تاريخ الانتهاء",
-            cell: ({ row }) => formatDate(row.getValue("expiresAt")),
-        },
-        {
-            accessorKey: "allCourses",
-            header: "جميع الدورات",
-            cell: ({ row }) => {
-                const isAllCourses = (row.original.courseIds?.length || 0) === 0;
-                return (
-                    <Badge
-                        variant={isAllCourses ? "default" : "outline"}
-                        className={
-                            isAllCourses
-                                ? "bg-blue-600 text-white"
-                                : "border border-gray-400 text-gray-700"
-                        }
-                    >
-                        {isAllCourses ? "نعم" : "لا"}
-                    </Badge>
-                );
-            },
+            cell: ({ row }) => row.getValue("expiresAt") ? formatDate(row.getValue("expiresAt")) : "دائم",
         },
         {
             accessorKey: "isActive",
@@ -94,6 +134,24 @@ export const getColumns = ({
             ),
         },
         {
+            accessorKey: "createdAt",
+            header: "تاريخ الإنشاء",
+            cell: ({ row }) => (
+                <div className="text-xs text-muted-foreground whitespace-nowrap">
+                    {formatDate(row.getValue("createdAt"))}
+                </div>
+            ),
+        },
+        {
+            accessorKey: "updatedAt",
+            header: "آخر تحديث",
+            cell: ({ row }) => (
+                <div className="text-xs text-muted-foreground whitespace-nowrap">
+                    {formatDate(row.getValue("updatedAt"))}
+                </div>
+            ),
+        },
+        {
             id: "actions",
             header: "الإجراءات",
             cell: ({ row }) => (
@@ -101,11 +159,12 @@ export const getColumns = ({
                     <CouponFormDialog
                         initialData={row.original}
                         onSubmit={(data) => onEdit({ ...row.original, ...data })}
+                        courseId={courseId}
                     >
                         <Button
                             variant="outline"
                             size="icon"
-                            className="rounded-full border-gray-400 hover:bg-gray-100"
+                            className="h-8 w-8 rounded-full border-gray-200 hover:bg-gray-100"
                             title="تعديل"
                         >
                             <Edit className="h-4 w-4 text-slate-800" />

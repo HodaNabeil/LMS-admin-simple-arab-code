@@ -32,8 +32,8 @@ function CourseForm({ course, setCourseMenu, mutation }: CourseFormProps) {
             title: course?.title || '',
             slug: course?.slug || '',
             level: course?.level || CourseDtoLevel.ALL_LEVELS,
-            thumbnailUrl: course?.thumbnailUrl || '',
-            hours: course?.duration ? course.duration / 60 : 0,
+            thumbnail: course?.thumbnailUrl || '',
+            hours: course?.hours || 0,
             description: course?.description || '',
         },
         mode: 'onChange',
@@ -46,9 +46,8 @@ function CourseForm({ course, setCourseMenu, mutation }: CourseFormProps) {
             title: data.title,
             slug: data.slug,
             level: (data.level as string).toUpperCase() as UpdateCourseRequest['level'],
-            thumbnailUrl: '', // Should be handled by media upload separately or correctly typed
             description: data.description || '',
-            duration: Number(data.hours) * 60,
+            shortDescription: data.shortDescription || '',
         };
 
         try {

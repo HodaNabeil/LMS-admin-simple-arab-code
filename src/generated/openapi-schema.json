@@ -3236,6 +3236,101 @@
         ]
       }
     },
+    "/api/coupons": {
+      "get": {
+        "description": "Retrieve a list of all discount coupons.",
+        "operationId": "CouponsController_listCoupons[1]",
+        "parameters": [],
+        "responses": {
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Get all coupons",
+        "tags": [
+          "Coupons"
+        ]
+      },
+      "post": {
+        "description": "Create a new discount coupon. This coupon must be applied to specific courses. ADMIN can create coupons for any courses. INSTRUCTOR can only create coupons for their own courses.",
+        "operationId": "CouponsController_createCoupon[1]",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateCouponDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Coupon created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "default": true
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/CouponResponseDto"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Create a new coupon",
+        "tags": [
+          "Coupons"
+        ]
+      }
+    },
     "/api/coupons/validate": {
       "post": {
         "description": "Validate a coupon code to check if it is valid and can be applied. Returns coupon details if valid.",
@@ -3418,24 +3513,34 @@
         ]
       }
     },
-    "/api/coupons/create": {
-      "post": {
-        "description": "Create a new discount coupon. This coupon must be applied to specific courses. ADMIN can create coupons for any courses. INSTRUCTOR can only create coupons for their own courses.",
-        "operationId": "CouponsController_createCoupon[1]",
-        "parameters": [],
+    "/api/coupons/{id}": {
+      "patch": {
+        "description": "Update an existing discount coupon. ADMIN can update any coupon. INSTRUCTOR can only update coupons for their own courses.",
+        "operationId": "CouponsController_updateCoupon[1]",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "Coupon ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateCouponDto"
+                "$ref": "#/components/schemas/UpdateCouponDto"
               }
             }
           }
         },
         "responses": {
-          "201": {
-            "description": "Coupon created successfully",
+          "200": {
+            "description": "Coupon updated successfully",
             "content": {
               "application/json": {
                 "schema": {
@@ -3476,7 +3581,48 @@
             "bearer": []
           }
         ],
-        "summary": "Create a new coupon",
+        "summary": "Update a coupon",
+        "tags": [
+          "Coupons"
+        ]
+      },
+      "delete": {
+        "description": "Delete an existing discount coupon. ADMIN can delete any coupon. INSTRUCTOR can only delete coupons for their own courses.",
+        "operationId": "CouponsController_deleteCoupon[1]",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "Coupon ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Delete a coupon",
         "tags": [
           "Coupons"
         ]
@@ -4517,9 +4663,10 @@
             "description": "Full course description"
           },
           "shortDescription": {
-            "type": "string",
+            "type": "object",
             "example": "Build professional user interfaces with React.js",
-            "description": "Short course description"
+            "description": "Short course description",
+            "nullable": true
           },
           "slug": {
             "type": "string",
@@ -4532,9 +4679,10 @@
             "description": "Course thumbnail image URL"
           },
           "previewVideo": {
-            "type": "string",
+            "type": "object",
             "example": "https://example.com/videos/react-preview.mp4",
-            "description": "Course preview video URL"
+            "description": "Course preview video URL",
+            "nullable": true
           },
           "instructorId": {
             "type": "string",
@@ -4593,10 +4741,10 @@
             "example": true,
             "description": "Is featured course"
           },
-          "duration": {
+          "hours": {
             "type": "number",
-            "example": 2400,
-            "description": "Total course duration in minutes"
+            "example": 40,
+            "description": "Total course duration in hours"
           },
           "requirements": {
             "example": [
@@ -4920,6 +5068,12 @@
           "shortDescription": {
             "type": "string",
             "description": "Short description"
+          },
+          "slug": {
+            "type": "string",
+            "description": "URL-friendly slug for the course",
+            "example": "learn-arabic-for-beginners",
+            "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
           },
           "price": {
             "type": "number",
@@ -7162,58 +7316,6 @@
           "courseIds"
         ]
       },
-      "CouponValidationResponseDto": {
-        "type": "object",
-        "properties": {
-          "valid": {
-            "type": "boolean",
-            "description": "Whether the coupon is valid"
-          },
-          "coupon": {
-            "description": "Coupon details",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/CouponResponseDto"
-              }
-            ]
-          },
-          "message": {
-            "type": "string",
-            "description": "Validation message"
-          }
-        },
-        "required": [
-          "valid",
-          "coupon",
-          "message"
-        ]
-      },
-      "ValidateCouponDto": {
-        "type": "object",
-        "properties": {
-          "code": {
-            "type": "string",
-            "description": "Coupon code to validate",
-            "example": "SAVE20"
-          }
-        },
-        "required": [
-          "code"
-        ]
-      },
-      "ApplyCouponDto": {
-        "type": "object",
-        "properties": {
-          "code": {
-            "type": "string",
-            "description": "Coupon code to apply",
-            "example": "SAVE20"
-          }
-        },
-        "required": [
-          "code"
-        ]
-      },
       "CreateCouponDto": {
         "type": "object",
         "properties": {
@@ -7298,6 +7400,135 @@
           "value",
           "courseIds"
         ]
+      },
+      "CouponValidationResponseDto": {
+        "type": "object",
+        "properties": {
+          "valid": {
+            "type": "boolean",
+            "description": "Whether the coupon is valid"
+          },
+          "coupon": {
+            "description": "Coupon details",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CouponResponseDto"
+              }
+            ]
+          },
+          "message": {
+            "type": "string",
+            "description": "Validation message"
+          }
+        },
+        "required": [
+          "valid",
+          "coupon",
+          "message"
+        ]
+      },
+      "ValidateCouponDto": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "Coupon code to validate",
+            "example": "SAVE20"
+          }
+        },
+        "required": [
+          "code"
+        ]
+      },
+      "ApplyCouponDto": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "Coupon code to apply",
+            "example": "SAVE20"
+          }
+        },
+        "required": [
+          "code"
+        ]
+      },
+      "UpdateCouponDto": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "Unique coupon code (uppercase recommended)",
+            "example": "SAVE20",
+            "minLength": 3,
+            "maxLength": 50
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of the coupon",
+            "example": "20% off on all courses"
+          },
+          "type": {
+            "type": "string",
+            "description": "Type of discount",
+            "enum": [
+              "PERCENTAGE",
+              "FIXED"
+            ],
+            "example": "PERCENTAGE"
+          },
+          "value": {
+            "type": "number",
+            "description": "Discount value (percentage: 0-100, fixed: amount in currency)",
+            "example": 20,
+            "minimum": 0,
+            "maximum": 100
+          },
+          "maxUses": {
+            "type": "number",
+            "description": "Maximum number of times this coupon can be used (total)",
+            "example": 100,
+            "minimum": 1
+          },
+          "maxUsesPerUser": {
+            "type": "number",
+            "description": "Maximum number of times a user can use this coupon",
+            "example": 1,
+            "minimum": 1
+          },
+          "minOrderAmount": {
+            "type": "number",
+            "description": "Minimum order amount required to use this coupon",
+            "example": 50,
+            "minimum": 0
+          },
+          "startsAt": {
+            "type": "string",
+            "description": "Date when the coupon becomes active (ISO 8601 format)",
+            "example": "2026-01-01T00:00:00Z"
+          },
+          "expiresAt": {
+            "type": "string",
+            "description": "Date when the coupon expires (ISO 8601 format)",
+            "example": "2026-12-31T23:59:59Z"
+          },
+          "isActive": {
+            "type": "boolean",
+            "description": "Whether the coupon is active",
+            "example": true
+          },
+          "courseIds": {
+            "description": "List of course IDs this coupon applies to",
+            "example": [
+              "course123",
+              "course456"
+            ],
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
       },
       "CheckoutResponseDto": {
         "type": "object",

@@ -7,11 +7,10 @@ import FormFields from '@/components/shared/form-fields/form-fields';
 import { Button } from '@/components/ui/button';
 import useFormValidations from '@/hooks/useFormValidations';
 import { toast } from 'sonner';
-import type { AxiosError } from 'axios';
+import { AxiosError } from 'axios';
 import type { couponSchema } from '@/validations/coupon';
 import type { Coupon } from '@/types/course';
 import { CreateCouponDtoType } from '@/constants/enums';
-import { useCourses } from '@/features/courses/hooks/useCoursesQueries';
 
 interface CouponFormProps {
     initialData?: Coupon | null;
@@ -26,19 +25,10 @@ function CouponForm({
     onCancel,
     isLoading = false,
 }: CouponFormProps) {
-    const { data: coursesData, isLoading: coursesLoading } = useCourses();
-
-    const courseOptions = (coursesData as any)?.data?.courses?.map((course: any) => ({
-        value: course.id,
-        label: course.title
-    })) || [];
-
     const { getFormFields } = useFormFields({ slug: Pages.COUPONS });
     const { getValidationSchema } = useFormValidations({ slug: Pages.COUPONS });
 
-    const formFields = getFormFields({
-        courseIds: courseOptions
-    });
+    const formFields = getFormFields();
 
     const {
         handleSubmit,
@@ -47,11 +37,14 @@ function CouponForm({
     } = useForm({
         defaultValues: {
             code: initialData?.code || '',
-            value: initialData?.value || 0,
-            type: (initialData?.type as unknown as CreateCouponDtoType) || CreateCouponDtoType.FIXED,
-            expiresAt: initialData?.expiresAt ? initialData.expiresAt.split('T')[0] : '',
+            value: (initialData?.value || '') as any,
+            type: (initialData?.type as unknown as CreateCouponDtoType) || undefined,
+            description: initialData?.description || '',
+            startsAt: (initialData?.startsAt as string)?.split('T')[0] || '',
+            expiresAt: (initialData?.expiresAt as string)?.split('T')[0] || '',
             maxUses: (initialData as any)?.maxUses || '',
-            courseIds: initialData?.courseIds || [],
+            maxUsesPerUser: (initialData as any)?.maxUsesPerUser || 1,
+            minOrderAmount: (initialData as any)?.minOrderAmount || '',
             isActive: initialData?.isActive ?? true,
         },
         mode: 'onChange',
@@ -62,7 +55,9 @@ function CouponForm({
         try {
             await onSubmit(data);
         } catch (error) {
-            if (error instanceof Error) {
+
+
+            if (error instanceof AxiosError) {
                 const axiosError = error as AxiosError<{ message: string }>;
                 if (axiosError.response?.data?.message) {
                     toast.error(axiosError.response.data.message);
@@ -79,8 +74,8 @@ function CouponForm({
 
     return (
         <form onSubmit={handleSubmit(handleFormSubmit)} className="p-6 space-y-6 overflow-y-auto h-[500px]">
-            {(formLoading || coursesLoading) && <div className="flex justify-center py-4"><Loader /></div>}
-            {!(formLoading || coursesLoading) && formFields.map((field, index) => (
+            {formLoading && <div className="flex justify-center py-4"><Loader /></div>}
+            {!formLoading && formFields.map((field, index) => (
                 <div key={index}>
                     <FormFields {...field} control={control} errors={errors} />
                 </div>

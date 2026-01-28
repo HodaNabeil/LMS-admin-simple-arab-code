@@ -3,6 +3,7 @@ import {
     DialogContent,
     DialogHeader,
     DialogTitle,
+    DialogDescription,
     DialogTrigger,
 } from '@/components/ui/dialog';
 import { Trash2 } from 'lucide-react';
@@ -48,10 +49,10 @@ export default function DeleteCoupon({ couponId, onDelete }: DeleteCouponProps) 
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader className="!text-right">
                     <DialogTitle>جذف الكوبون</DialogTitle>
+                    <DialogDescription className="text-right">
+                        هل أنت متأكد من أنك تريد حذف هذا الكوبون؟
+                    </DialogDescription>
                 </DialogHeader>
-                <div className="text-right">
-                    هل أنت متأكد من أنك تريد حذف هذا الكوبون؟
-                </div>
                 <div className="flex gap-2 justify-end mt-4">
                     <Button variant="outline" onClick={() => setOpen(false)}>
                         إلغاء

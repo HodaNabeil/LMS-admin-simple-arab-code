@@ -13,19 +13,20 @@ import type {
     UpdateCouponRequest,
     Coupon
 } from "@/types/course";
+import { couponApi } from "../services/cuponApi";
 
 export function useCreateCoupon() {
     const queryClient = useQueryClient();
     return useMutation<Coupon, Error, CreateCouponRequest>({
         mutationFn: async (data: CreateCouponRequest): Promise<Coupon> => {
-            return await coursesApi.createCoupon(data);
+            return await couponApi.createCoupon(data);
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: couponsKeys.all });
             toast.success("تم إنشاء الكوبون بنجاح");
         },
         onError: (error) => {
-            handleApiError(error, "فشل إنشاء الكوبون");
+            handleApiError(error);
         },
     });
 }
@@ -34,7 +35,7 @@ export function useUpdateCoupon() {
     const queryClient = useQueryClient();
     return useMutation<Coupon, Error, { id: string; data: UpdateCouponRequest }>({
         mutationFn: async ({ id, data }): Promise<Coupon> => {
-            return await coursesApi.updateCoupon(id, data);
+            return await couponApi.updateCoupon(id, data);
         },
         onSuccess: (_, { id }) => {
             queryClient.invalidateQueries({ queryKey: couponsKeys.all });
@@ -42,23 +43,23 @@ export function useUpdateCoupon() {
             toast.success("تم تحديث الكوبون بنجاح");
         },
         onError: (error) => {
-            handleApiError(error, "فشل تحديث الكوبون");
+            handleApiError(error);
         },
     });
 }
 
-export function useDeleteCouponMutation() { // Renamed to avoid confusion with useDeleteCourse if needed, but useDeleteCoupon is better
+export function useDeleteCouponMutation() {
     const queryClient = useQueryClient();
     return useMutation<void, Error, string>({
         mutationFn: async (id: string): Promise<void> => {
-            return await coursesApi.deleteCoupon(id);
+            return await couponApi.deleteCoupon(id);
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: couponsKeys.all });
             toast.success("تم حذف الكوبون بنجاح");
         },
         onError: (error) => {
-            handleApiError(error, "فشل حذف الكوبون");
+            handleApiError(error);
         },
     });
 }
@@ -71,10 +72,10 @@ export function useCreateCourse() {
         },
         onSuccess: (res) => {
             queryClient.invalidateQueries({ queryKey: queryKeys.courses.all });
-            toast.success(res.message || "تم إنشاء الدورة بنجاح");
+            toast.success(res.message || " إنشاء الدورة بنجاح");
         },
         onError: (error) => {
-            handleApiError(error, "فشل إنشاء الدورة");
+            handleApiError(error);
         },
     });
 }
@@ -92,7 +93,7 @@ export function useUpdateCourse({ slug }: { slug: string }) {
             toast.success(res.message || "تم تحديث الدورة بنجاح");
         },
         onError: (error) => {
-            handleApiError(error, "فشل تحديث الدورة");
+            handleApiError(error);
         },
     });
 }
@@ -108,7 +109,7 @@ export function useDeleteCourse() {
             toast.success(res.message || "تم حذف الدورة بنجاح");
         },
         onError: (error) => {
-            handleApiError(error, "فشل حذف الدورة");
+            handleApiError(error);
         },
     });
 }
@@ -124,7 +125,7 @@ export function useUploadCourseMedia({ slug }: { slug: string }) {
             toast.success("تم رفع الوسائط بنجاح");
         },
         onError: (error) => {
-            handleApiError(error, "فشل رفع الوسائط");
+            handleApiError(error);
         },
     });
 }

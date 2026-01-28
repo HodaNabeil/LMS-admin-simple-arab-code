@@ -35,7 +35,6 @@ export default function BasicsForm({
   previewVideo,
   shortDescription,
 }: BasicsFormProps) {
-  // State to track if user wants to replace existing media
   const [isReplacingThumbnail, setIsReplacingThumbnail] = useState(false);
   const [isReplacingVideo, setIsReplacingVideo] = useState(false);
 

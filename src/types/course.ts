@@ -47,8 +47,11 @@ export type CreateCouponRequest = components["schemas"]["CreateCouponDto"];
 export type UpdateCouponRequest = Partial<CreateCouponRequest>;
 
 export interface CouponsResponse {
-  activeCoupons: Coupon[];
-  expiredCoupons: Coupon[];
+  success: boolean;
+  message: string;
+  data: Coupon[];
+  _apiVersion?: string;
+  _supportStatus?: string;
 }
 
 export type CourseFilters =
