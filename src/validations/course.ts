@@ -4,18 +4,10 @@ import { z } from "zod";
 const course = {
   title: z.string().min(1, { message: "Course name is required." }),
   slug: z.string().min(1, { message: "Slug is required." }),
-  image: z.custom(
-    (val) => {
-      if (val instanceof File) {
-        return true;
-      } else {
-        return false;
-      }
-    },
-    {
-      message: "Invalid file. Please upload a valid image file.",
-    }
-  ),
+  thumbnail: z.union([
+    z.string().url(),
+    z.custom<File>(),
+  ]),
   hours: z.number().min(1, { message: "Hours is required." }),
   level: z.nativeEnum(CourseDtoLevel, { errorMap: () => ({ message: "Level is required" }) }),
   type: z.string().min(1, { message: "Type is required." }),
@@ -35,6 +27,7 @@ const course = {
   prerequisites: z.array(z.string()).optional(),
   instructor: z.string().optional(),
   price: z.number().min(0, { message: "Price is required." }),
+  previewVideo: z.custom<File>().optional(),
 };
 export const courseSchema = z.object(course);
 
@@ -72,7 +65,7 @@ export const basicsSchema = z.object({
   description: z.string().optional(),
   shortDescription: z.string().optional(),
   level: course.level,
-  thumbnailUrl: course.image,
+  thumbnail: course.thumbnail,
   previewVideo: z.custom<File>().optional(),
 });
 
@@ -91,10 +84,3 @@ export const pricingSchema = z.object({
 });
 
 export type PricingSchema = z.infer<typeof pricingSchema>;
-
-export const mediaSchema = z.object({
-  thumbnailUrl: course.image,
-  previewVideo: z.custom<File>().optional(),
-});
-
-export type MediaSchema = z.infer<typeof mediaSchema>;

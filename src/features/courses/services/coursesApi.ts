@@ -68,20 +68,20 @@ export const coursesApi = {
   // Upload course media
   async uploadCourseMedia(
     slug: string,
-    thumbnailUrl: File,
+    thumbnail: File,
     previewVideo?: File,
   ): Promise<{
-    thumbnailUrl: File;
+    thumbnail: File;
     previewVideo?: File;
   }> {
     const formData = new FormData();
-    formData.append("thumbnailUrl", thumbnailUrl);
+    formData.append("thumbnail", thumbnail);
     if (previewVideo) {
       formData.append("previewVideo", previewVideo);
     }
 
     const response = await api.patch<{
-      thumbnailUrl: File;
+      thumbnail: File;
       previewVideo?: File;
     }>(
       COURSE_ENDPOINTS.MEDIA.replace("{idOrSlug}", slug),

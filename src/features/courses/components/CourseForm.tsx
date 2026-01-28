@@ -10,13 +10,14 @@ import type { UseMutationResult } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import type { AxiosError } from 'axios';
 import { CourseDtoLevel } from '@/types/api.generated';
-import { basicsSchema } from '@/validations/course';
+import { basicsSchema, type BasicsSchema } from '@/validations/course';
+import type { UpdateCourseRequest, UpdateCourseResponse } from '@/types/course';
 
 
 interface CourseFormProps {
     course?: Course;
     setCourseMenu: React.Dispatch<React.SetStateAction<boolean>>;
-    mutation: UseMutationResult<any, Error, any, unknown>;
+    mutation: UseMutationResult<UpdateCourseResponse, Error, UpdateCourseRequest, unknown>;
 }
 
 function CourseForm({ course, setCourseMenu, mutation }: CourseFormProps) {
@@ -40,22 +41,14 @@ function CourseForm({ course, setCourseMenu, mutation }: CourseFormProps) {
         resolver: zodResolver(basicsSchema),
     });
 
-    const onSubmit = async (data: Record<string, unknown>) => {
-        const mutationData: any = {
-            ...data,
+    const onSubmit = async (data: BasicsSchema) => {
+        const cleanData: UpdateCourseRequest = {
             title: data.title,
-            thumbnailUrl: data.thumbnailUrl,
-            level: (data.level as string).toUpperCase(),
+            slug: data.slug,
+            level: (data.level as string).toUpperCase() as UpdateCourseRequest['level'],
+            thumbnailUrl: '', // Should be handled by media upload separately or correctly typed
+            description: data.description || '',
             duration: Number(data.hours) * 60,
-        };
-
-        const cleanData = {
-            title: mutationData.title,
-            slug: mutationData.slug,
-            level: mutationData.level,
-            thumbnailUrl: mutationData.thumbnailUrl,
-            description: mutationData.description,
-            duration: mutationData.duration,
         };
 
         try {

@@ -265,7 +265,7 @@ const useFormFields = ({ slug }: IFormFieldsVariables) => {
       placeholder: "ادخل مدة الدورة (بالساعات)",
     },
     {
-      name: "thumbnailUrl",
+      name: "thumbnail",
       label: "صورة الدورة",
       type: "image",
       placeholder: "اختار صورة الدورة",

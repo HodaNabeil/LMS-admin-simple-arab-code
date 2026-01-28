@@ -54,7 +54,7 @@ export function useCourseManageSave(section: string | null, originalData?: Origi
                     const normalize = (value: any) => value || "";
 
                     // handleBasicsSave returns early if no changes, so we need to check
-                    const hasMedia = store.thumbnailUrl instanceof File || store.previewVideo instanceof File;
+                    const hasMedia = store.thumbnail instanceof File || store.previewVideo instanceof File;
                     const hasDataChanged = !originalData || (
                         normalize(store.title) !== normalize(originalData.title) ||
                         normalize(store.description) !== normalize(originalData.description) ||
@@ -95,8 +95,8 @@ export function useCourseManageSave(section: string | null, originalData?: Origi
 
 
     const hasMedia = () => {
-        const { thumbnailUrl, previewVideo } = store;
-        return thumbnailUrl instanceof File || previewVideo instanceof File;
+        const { thumbnail, previewVideo } = store;
+        return thumbnail instanceof File || previewVideo instanceof File;
     };
 
 
@@ -121,12 +121,12 @@ export function useCourseManageSave(section: string | null, originalData?: Origi
             });
             promises.push(regularDataPromise);
 
-            const hasThumbnail = store.thumbnailUrl instanceof File;
+            const hasThumbnail = store.thumbnail instanceof File;
             const hasVideo = store.previewVideo instanceof File;
 
             if (hasThumbnail || hasVideo) {
                 const mediaPromise = uploadMedia({
-                    thumbnailUrl: hasThumbnail ? (store.thumbnailUrl as File) : undefined as any,
+                    thumbnail: hasThumbnail ? (store.thumbnail as File) : undefined as any,
                     previewVideo: hasVideo ? (store.previewVideo as File) : undefined,
                 }).then((res) => {
                     options?.onMediaUploadSuccess?.();

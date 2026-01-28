@@ -23,7 +23,7 @@ export type CourseGoalsState = {
   shortDescription: string;
 
   // Media
-  thumbnailUrl: File | null;
+  thumbnail: File | null;
   previewVideo: File | null;
   // Pricing
   price: number;
@@ -76,7 +76,7 @@ const initialState: CourseGoalsState = {
   hours: 0,
   shortDescription: "",
   // Media
-  thumbnailUrl: null,
+  thumbnail: null,
   previewVideo: null,
   // Pricing
   price: 0,
@@ -100,7 +100,7 @@ export const useCourseManageStore = create<CourseManageStore>((set) => ({
   setLevel: (level) => set({ level }),
   setHours: (hours) => set({ hours }),
   setShortDescription: (shortDescription) => set({ shortDescription }),
-  setThumbnail: (thumbnailUrl) => set({ thumbnailUrl }),
+  setThumbnail: (thumbnail) => set({ thumbnail }),
   setPreviewVideo: (previewVideo) => set({ previewVideo }),
   setPrice: (price) => set({ price }),
   setCompareAtPrice: (compareAtPrice) => set({ compareAtPrice }),

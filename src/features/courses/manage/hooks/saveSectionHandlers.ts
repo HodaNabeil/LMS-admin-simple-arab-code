@@ -6,7 +6,7 @@ import { type CourseGoalsState } from "../store";
 
 // Helper types
 type UpdateCourseFn = (data: UpdateCourseRequest) => Promise<any>;
-type UploadMediaFn = (data: { thumbnailUrl: File; previewVideo?: File | undefined }) => Promise<any>;
+type UploadMediaFn = (data: { thumbnail: File; previewVideo?: File | undefined }) => Promise<any>;
 
 export async function handleGoalsSave(
     store: CourseGoalsState,
@@ -39,9 +39,9 @@ export async function handleBasicsSave(
     const normalize = (value: any) => value || "";
 
     // Check if we have media to upload
-    const thumbnailUrl = store.thumbnailUrl instanceof File;
+    const thumbnail = store.thumbnail instanceof File;
     const previewVideo = store.previewVideo instanceof File;
-    const hasMedia = thumbnailUrl || previewVideo;
+    const hasMedia = thumbnail || previewVideo;
 
     // Check if regular data has changed (with normalization for optional fields)
     const hasDataChanged = !originalData || (
@@ -68,7 +68,7 @@ export async function handleBasicsSave(
         }
         if (hasMedia) {
             console.log('🖼️ Sending media files:', {
-                thumbnail: thumbnailUrl,
+                thumbnail,
                 video: previewVideo
             });
         }
@@ -106,7 +106,7 @@ export async function handleBasicsSave(
     if (hasMedia) {
         // Send media data in parallel
         const mediaPromise = uploadMedia({
-            thumbnailUrl: thumbnailUrl ? (store.thumbnailUrl as File) : undefined as any,
+            thumbnail: thumbnail ? (store.thumbnail as File) : undefined as any,
             previewVideo: previewVideo ? (store.previewVideo as File) : undefined,
         }).then((res) => {
             if (process.env.NODE_ENV === 'development') {

@@ -19,7 +19,7 @@ interface BasicsFormProps {
   hours?: number;
   description?: string;
   level?: CourseDtoLevel;
-  thumbnailUrl?: File | string | null;
+  thumbnail?: File | string | null;
   previewVideo?: File | string | null;
   shortDescription?: string;
 
@@ -31,7 +31,7 @@ export default function BasicsForm({
   hours,
   description,
   level,
-  thumbnailUrl,
+  thumbnail,
   previewVideo,
   shortDescription,
 }: BasicsFormProps) {
@@ -57,7 +57,7 @@ export default function BasicsForm({
       hours,
       description,
       level,
-      thumbnailUrl: thumbnailUrl instanceof File ? thumbnailUrl : undefined,
+      thumbnail: thumbnail || undefined,
       previewVideo: previewVideo instanceof File ? previewVideo : undefined,
       shortDescription,
 
@@ -94,7 +94,7 @@ export default function BasicsForm({
     "hours",
     "description",
     "level",
-    "thumbnailUrl",
+    "thumbnail",
     "previewVideo",
     "shortDescription",
   ]);
@@ -125,7 +125,7 @@ export default function BasicsForm({
         hours,
         description,
         level,
-        thumbnailUrl: thumbnailUrl || undefined,
+        thumbnail: thumbnail || undefined,
         previewVideo: previewVideo instanceof File ? previewVideo : undefined,
         shortDescription,
       });
@@ -136,7 +136,7 @@ export default function BasicsForm({
     hours,
     description,
     level,
-    thumbnailUrl,
+    thumbnail,
     previewVideo,
     shortDescription,
     reset,
@@ -190,8 +190,8 @@ export default function BasicsForm({
       {/* Render all form fields with custom handling for media fields */}
       {getFormFields().map((field, index) => {
         // Handle thumbnail display and replacement
-        if (field.name === "thumbnailUrl") {
-          const hasExistingThumbnail = thumbnailUrl && typeof thumbnailUrl === "string";
+        if (field.name === "thumbnail") {
+          const hasExistingThumbnail = thumbnail && typeof thumbnail === "string";
 
           // If there's an existing thumbnail and not in replacement mode
           if (hasExistingThumbnail && !isReplacingThumbnail) {
@@ -202,7 +202,7 @@ export default function BasicsForm({
                 </label>
                 <div className="border rounded-lg p-4 bg-gray-50">
                   <img
-                    src={thumbnailUrl}
+                    src={thumbnail}
                     alt="Course Thumbnail"
                     className="max-w-full h-auto max-h-64 rounded-lg object-cover mb-3"
                   />
