@@ -44,7 +44,8 @@ export enum CourseType {
 // Keep existing non-DTO types if they are still relevant or used elsewhere
 export type Coupon = components["schemas"]["CouponResponseDto"];
 export type CreateCouponRequest = components["schemas"]["CreateCouponDto"];
-export type UpdateCouponRequest = Partial<CreateCouponRequest>;
+export type UpdateCouponRequest = { id: string } & Partial<Omit<CreateCouponRequest, "id">>;
+
 
 export interface CouponsResponse {
   success: boolean;

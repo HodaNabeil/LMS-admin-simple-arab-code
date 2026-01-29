@@ -873,7 +873,7 @@
         ]
       },
       "get": {
-        "description": "List all courses with optional filters. This is a public endpoint and does not require authentication. Returns published and public courses by default. You can filter by various criteria such as instructor, path, level, and more.",
+        "description": "List all courses with optional filters. This is a public endpoint and does not require authentication. Returns published and public courses by default. You can filter by various criteria such as instructor, path, level, and more. Archived courses are only visible to admins and instructors.",
         "operationId": "CourseController_listCourses[1]",
         "parameters": [
           {
@@ -1147,7 +1147,7 @@
     },
     "/api/courses/{idOrSlug}": {
       "get": {
-        "description": "Retrieve a course by its unique identifier (UUID) or slug. The system automatically detects whether you provided an ID or slug. Examples: `/courses/550e8400-e29b-41d4-a716-446655440000` or `/courses/nodejs-complete-guide`. This is a public endpoint and does not require authentication.",
+        "description": "Retrieve a course by its unique identifier (UUID) or slug. The system automatically detects whether you provided an ID or slug. Examples: `/courses/550e8400-e29b-41d4-a716-446655440000` or `/courses/nodejs-complete-guide`. This is a public endpoint and does not require authentication. Archived courses are only visible to admins and instructors.",
         "operationId": "CourseController_getCourse[1]",
         "parameters": [
           {
@@ -3331,6 +3331,183 @@
         ]
       }
     },
+    "/api/coupons/{id}": {
+      "get": {
+        "description": "Retrieve detailed information about a specific coupon.",
+        "operationId": "CouponsController_getCoupon[1]",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "Coupon ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Coupon retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "default": true
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/CouponResponseDto"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Get a single coupon by ID",
+        "tags": [
+          "Coupons"
+        ]
+      },
+      "patch": {
+        "description": "Update an existing discount coupon. ADMIN can update any coupon. INSTRUCTOR can only update coupons for their own courses.",
+        "operationId": "CouponsController_updateCoupon[1]",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "Coupon ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateCouponDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Coupon updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "default": true
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/CouponResponseDto"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Update a coupon",
+        "tags": [
+          "Coupons"
+        ]
+      },
+      "delete": {
+        "description": "Delete an existing discount coupon. ADMIN can delete any coupon. INSTRUCTOR can only delete coupons for their own courses.",
+        "operationId": "CouponsController_deleteCoupon[1]",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "Coupon ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Delete a coupon",
+        "tags": [
+          "Coupons"
+        ]
+      }
+    },
     "/api/coupons/validate": {
       "post": {
         "description": "Validate a coupon code to check if it is valid and can be applied. Returns coupon details if valid.",
@@ -3508,121 +3685,6 @@
           }
         ],
         "summary": "Remove coupon from cart",
-        "tags": [
-          "Coupons"
-        ]
-      }
-    },
-    "/api/coupons/{id}": {
-      "patch": {
-        "description": "Update an existing discount coupon. ADMIN can update any coupon. INSTRUCTOR can only update coupons for their own courses.",
-        "operationId": "CouponsController_updateCoupon[1]",
-        "parameters": [
-          {
-            "name": "id",
-            "required": true,
-            "in": "path",
-            "description": "Coupon ID",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateCouponDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Coupon updated successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "default": true
-                    },
-                    "data": {
-                      "$ref": "#/components/schemas/CouponResponseDto"
-                    },
-                    "message": {
-                      "type": "string"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad request"
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "403": {
-            "description": "Forbidden"
-          },
-          "404": {
-            "description": "Not found"
-          },
-          "500": {
-            "description": "Internal server error"
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
-        "summary": "Update a coupon",
-        "tags": [
-          "Coupons"
-        ]
-      },
-      "delete": {
-        "description": "Delete an existing discount coupon. ADMIN can delete any coupon. INSTRUCTOR can only delete coupons for their own courses.",
-        "operationId": "CouponsController_deleteCoupon[1]",
-        "parameters": [
-          {
-            "name": "id",
-            "required": true,
-            "in": "path",
-            "description": "Coupon ID",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "400": {
-            "description": "Bad request"
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "403": {
-            "description": "Forbidden"
-          },
-          "404": {
-            "description": "Not found"
-          },
-          "500": {
-            "description": "Internal server error"
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
-        "summary": "Delete a coupon",
         "tags": [
           "Coupons"
         ]
@@ -7274,30 +7336,41 @@
             "description": "Discount value"
           },
           "description": {
-            "type": "string",
-            "description": "Coupon description"
+            "type": "object",
+            "description": "Coupon description",
+            "nullable": true
           },
           "isActive": {
             "type": "boolean",
             "description": "Whether the coupon is active"
           },
-          "startsAt": {
-            "format": "date-time",
-            "type": "string",
-            "description": "Coupon start date"
+          "maxUses": {
+            "type": "object",
+            "description": "Maximum total uses allowed",
+            "nullable": true
           },
-          "expiresAt": {
-            "format": "date-time",
-            "type": "string",
-            "description": "Coupon expiration date"
+          "usedCount": {
+            "type": "number",
+            "description": "Current number of times coupon has been used"
+          },
+          "maxUsesPerUser": {
+            "type": "number",
+            "description": "Maximum uses per user"
           },
           "minOrderAmount": {
-            "type": "number",
-            "description": "Minimum order amount"
+            "type": "object",
+            "description": "Minimum order amount required",
+            "nullable": true
           },
-          "maxDiscountAmount": {
-            "type": "number",
-            "description": "Maximum discount amount"
+          "startsAt": {
+            "type": "object",
+            "description": "Coupon start date",
+            "nullable": true
+          },
+          "expiresAt": {
+            "type": "object",
+            "description": "Coupon expiration date",
+            "nullable": true
           },
           "courseIds": {
             "description": "List of course IDs this coupon applies to",
@@ -7305,6 +7378,16 @@
             "items": {
               "type": "string"
             }
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Creation timestamp"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Last update timestamp"
           }
         },
         "required": [
@@ -7313,7 +7396,11 @@
           "type",
           "value",
           "isActive",
-          "courseIds"
+          "usedCount",
+          "maxUsesPerUser",
+          "courseIds",
+          "createdAt",
+          "updatedAt"
         ]
       },
       "CreateCouponDto": {

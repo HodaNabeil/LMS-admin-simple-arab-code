@@ -1,7 +1,7 @@
 /**
 * AUTO-GENERATED FILE - DO NOT EDIT MANUALLY
 * Generated from OpenAPI schema
-* Last updated: 2026-01-28T03:41:27.381Z
+* Last updated: 2026-01-29T01:40:31.307Z
 * Schema URL: https://simple-arab-code-backend-production.up.railway.app/api/docs-json
 */
  
@@ -379,7 +379,11 @@ export type paths = {
             path?: never;
             cookie?: never;
         };
-        get?: never;
+        /**
+         * Get a single coupon by ID
+         * @description Retrieve detailed information about a specific coupon.
+         */
+        get: operations["CouponsController_getCoupon[1]"];
         put?: never;
         post?: never;
         /**
@@ -465,7 +469,7 @@ export type paths = {
         };
         /**
          * List courses with filters
-         * @description List all courses with optional filters. This is a public endpoint and does not require authentication. Returns published and public courses by default. You can filter by various criteria such as instructor, path, level, and more.
+         * @description List all courses with optional filters. This is a public endpoint and does not require authentication. Returns published and public courses by default. You can filter by various criteria such as instructor, path, level, and more. Archived courses are only visible to admins and instructors.
          */
         get: operations["CourseController_listCourses[1]"];
         put?: never;
@@ -661,7 +665,7 @@ export type paths = {
         };
         /**
          * Get course by ID or slug
-         * @description Retrieve a course by its unique identifier (UUID) or slug. The system automatically detects whether you provided an ID or slug. Examples: `/courses/550e8400-e29b-41d4-a716-446655440000` or `/courses/nodejs-complete-guide`. This is a public endpoint and does not require authentication.
+         * @description Retrieve a course by its unique identifier (UUID) or slug. The system automatically detects whether you provided an ID or slug. Examples: `/courses/550e8400-e29b-41d4-a716-446655440000` or `/courses/nodejs-complete-guide`. This is a public endpoint and does not require authentication. Archived courses are only visible to admins and instructors.
          */
         get: operations["CourseController_getCourse[1]"];
         put?: never;
@@ -1322,31 +1326,39 @@ export type components = {
             code: string;
             /** @description List of course IDs this coupon applies to */
             courseIds: string[];
-            /** @description Coupon description */
-            description?: string;
             /**
              * Format: date-time
-             * @description Coupon expiration date
+             * @description Creation timestamp
              */
-            expiresAt?: string;
+            createdAt: string;
+            /** @description Coupon description */
+            description?: Record<string, never> | null;
+            /** @description Coupon expiration date */
+            expiresAt?: Record<string, never> | null;
             /** @description Coupon ID */
             id: string;
             /** @description Whether the coupon is active */
             isActive: boolean;
-            /** @description Maximum discount amount */
-            maxDiscountAmount?: number;
-            /** @description Minimum order amount */
-            minOrderAmount?: number;
-            /**
-             * Format: date-time
-             * @description Coupon start date
-             */
-            startsAt?: string;
+            /** @description Maximum total uses allowed */
+            maxUses?: Record<string, never> | null;
+            /** @description Maximum uses per user */
+            maxUsesPerUser: number;
+            /** @description Minimum order amount required */
+            minOrderAmount?: Record<string, never> | null;
+            /** @description Coupon start date */
+            startsAt?: Record<string, never> | null;
             /**
              * @description Coupon type
              * @enum {string}
              */
             type: CouponResponseDtoType;
+            /**
+             * Format: date-time
+             * @description Last update timestamp
+             */
+            updatedAt: string;
+            /** @description Current number of times coupon has been used */
+            usedCount: number;
             /** @description Discount value */
             value: number;
         };
@@ -4489,6 +4501,69 @@ export interface operations {
         responses: {
             /** @description Coupon created successfully */
             201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["CouponResponseDto"];
+                        message?: string;
+                        /** @default true */
+                        success: boolean;
+                    };
+                };
+            };
+            /** @description Bad request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Internal server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    "CouponsController_getCoupon[1]": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Coupon ID */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Coupon retrieved successfully */
+            200: {
                 headers: {
                     [name: string]: unknown;
                 };

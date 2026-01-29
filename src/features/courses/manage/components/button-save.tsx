@@ -13,9 +13,9 @@ export default function ButtonSave() {
     const originalData = courseResponse ? {
         title: courseResponse.data.course.title,
         description: courseResponse.data.course.description,
-        level: courseResponse.data.course.level as any,
+        level: courseResponse.data.course.level,
         slug: courseResponse.data.course.slug,
-        hours: courseResponse.data.course.duration ?? 0,
+        hours: courseResponse.data.course.hours ?? 0,
         shortDescription: courseResponse.data.course.shortDescription,
     } : undefined;
 

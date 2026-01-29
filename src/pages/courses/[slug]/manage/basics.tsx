@@ -19,8 +19,8 @@ export default function Basics() {
         description={courseResponse?.data.course.description}
         level={courseResponse?.data.course.level}
         thumbnail={courseResponse?.data.course.thumbnailUrl ?? null}
-        previewVideo={courseResponse?.data.course.previewVideo ?? null}
-        shortDescription={courseResponse?.data.course.shortDescription}
+        previewVideo={(courseResponse.data.course.previewVideo as any) ?? null}
+        shortDescription={(courseResponse.data.course.shortDescription as any) || undefined}
       />
     </main>
   ) : null;
