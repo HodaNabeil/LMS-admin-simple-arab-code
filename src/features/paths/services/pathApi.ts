@@ -1,5 +1,4 @@
 import { api } from "@/lib/axios";
-import { appendFormData } from "@/lib/formdata";
 import { PATH_ENDPOINTS } from "@/constants/path";
 import type {
   CreatePathRequest,
@@ -28,18 +27,9 @@ export const pathApi = {
 
   // Create new path
   async createPath(data: CreatePathRequest): Promise<CreatePathResponse> {
-    const formData = new FormData();
-    appendFormData(formData, {
-      ...data,
-    });
     const response = await api.post<CreatePathResponse>(
       PATH_ENDPOINTS.CREATE,
-      formData,
-      {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      }
+      data
     );
     return response.data;
   },
@@ -49,18 +39,9 @@ export const pathApi = {
     slug: string,
     data: UpdatePathRequest
   ): Promise<UpdatePathResponse> {
-    const formData = new FormData();
-    appendFormData(formData, {
-      ...data,
-    });
     const response = await api.patch<UpdatePathResponse>(
       PATH_ENDPOINTS.UPDATE.replace("{idOrSlug}", slug),
-      formData,
-      {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      }
+      data
     );
     return response.data;
   },

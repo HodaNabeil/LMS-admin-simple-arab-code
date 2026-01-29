@@ -21,10 +21,10 @@ export function useCreateTrack() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.tracks.all });
-      toast.success('تم إنشاء المسار بنجاح');
+      toast.success('تم إنشاء التراك بنجاح');
     },
     onError: (error) => {
-      handleApiError(error, 'فشل إنشاء المسار');
+      handleApiError(error);
     },
   });
 }
@@ -44,10 +44,10 @@ export function useUpdateTrack() {
       queryClient.invalidateQueries({
         queryKey: queryKeys.tracks.detail(variables.slug),
       });
-      toast.success(res.message || 'تم تحديث المسار بنجاح');
+      toast.success(res.message || 'تم تحديث التراك بنجاح');
     },
     onError: (error) => {
-      handleApiError(error, 'فشل تحديث المسار');
+      handleApiError(error);
     },
   });
 }
@@ -59,10 +59,10 @@ export function useDeleteTrack() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.tracks.all });
-      toast.success('تم حذف المسار بنجاح');
+      toast.success('تم حذف التراك بنجاح');
     },
     onError: (error) => {
-      handleApiError(error, 'فشل حذف المسار');
+      handleApiError(error);
     },
   });
 }

@@ -1,5 +1,4 @@
 import { api } from "@/lib/axios";
-import { appendFormData } from "@/lib/formdata";
 import { TRACKS_ENDPOINTS } from "@/constants/path";
 import type {
   CreateTrackRequest,
@@ -25,18 +24,9 @@ export const tracksApi = {
   },
 
   async createTrack(data: CreateTrackRequest): Promise<CreateTrackResponse> {
-    const formData = new FormData();
-    appendFormData(formData, {
-      ...data,
-    });
     const response = await api.post<CreateTrackResponse>(
       TRACKS_ENDPOINTS.CREATE,
-      formData,
-      {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      }
+      data
     );
     return response.data;
   },
@@ -45,18 +35,9 @@ export const tracksApi = {
     slug: string,
     data: UpdateTrackRequest
   ): Promise<UpdateTrackResponse> {
-    const formData = new FormData();
-    appendFormData(formData, {
-      ...data,
-    });
     const response = await api.put<UpdateTrackResponse>(
       TRACKS_ENDPOINTS.UPDATE.replace("{idOrSlug}", slug),
-      formData,
-      {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      }
+      data
     );
     return response.data;
   },

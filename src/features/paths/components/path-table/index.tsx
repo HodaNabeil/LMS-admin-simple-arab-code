@@ -52,7 +52,7 @@ function PathTable() {
   if (isPending) {
     return (
       <div className="flex items-center justify-center h-full">
-        <Loader />
+        <Loader className="style-loader" />
       </div>
     );
   }

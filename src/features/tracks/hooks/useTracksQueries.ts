@@ -24,6 +24,5 @@ export function useTrack(slug: string | undefined) {
       return await tracksApi.getTrack(slug);
     },
     enabled: !!slug,
-
   });
 }

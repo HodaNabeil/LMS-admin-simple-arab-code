@@ -2,7 +2,7 @@ import { Pages } from '@/constants/enums';
 import { useNavigate } from 'react-router-dom';
 import { useForm, type Control } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useState, useMemo } from 'react';
+import { useMemo, useEffect } from 'react';
 import FormFields from '@/components/shared/form-fields/form-fields';
 import { Loader } from '@/components/shared/loader';
 import useFormFields from '@/hooks/useFormFields';
@@ -10,15 +10,16 @@ import useFormValidations from '@/hooks/useFormValidations';
 import { createTrackSchema, type ITrackForm } from '@/validations/track';
 import { useCreateTrack, useUpdateTrack } from '../../hooks/useTracksMutations';
 import { usePaths } from '@/features/paths/hooks/usePathsQueries';
-import type { GetTrackResponse, UpdateTrackRequest, CreateTrackRequest } from '@/types/tracks';
+import type { UpdateTrackRequest, CreateTrackRequest, Track } from '@/types/tracks';
+import { handleApiError } from '@/lib/error-handler';
 
 interface TrackFormProps {
-  trackData?: GetTrackResponse;
+  trackData?: Track;
 }
 
 export default function TrackForm({ trackData }: TrackFormProps) {
-  const isEditMode = !!trackData;
-  const track = trackData?.data;
+  const track = trackData;
+  const isEditMode = !!track;
 
   const { getFormFields } = useFormFields({ slug: Pages.CREATE_TRACKS });
   const { getValidationSchema } = useFormValidations({
@@ -27,7 +28,6 @@ export default function TrackForm({ trackData }: TrackFormProps) {
   const navigate = useNavigate();
   const { data: pathsData, isPending: isLoadingPaths } = usePaths();
 
-  // Map paths to select options
   const pathOptions = useMemo(() => {
     if (!pathsData?.data?.paths) return [];
     return pathsData.data.paths.map((path) => ({
@@ -39,31 +39,39 @@ export default function TrackForm({ trackData }: TrackFormProps) {
   const { mutateAsync: createTrack } = useCreateTrack();
   const { mutateAsync: updateTrack } = useUpdateTrack();
 
-  const {
-    handleSubmit,
-    control,
-    formState: { errors, isSubmitting },
-  } = useForm<ITrackForm>({
+  const useFormReturn = useForm<ITrackForm>({
     defaultValues: {
       slug: track?.slug || '',
       pathId: track?.pathId || '',
       title: track?.title || '',
       summary: track?.summary || '',
       description: track?.description || '',
-      category: track?.category as unknown as ITrackForm['category'], // API returns same category type
+      category: track?.category as unknown as ITrackForm['category'],
     },
     mode: 'onChange',
     resolver: zodResolver(getValidationSchema() as typeof createTrackSchema),
   });
 
-  const [submitError, setSubmitError] = useState<string | null>(null);
+  const { reset } = useFormReturn;
+
+  // Initialize form with API data when it arrives
+  useEffect(() => {
+    if (track) {
+      reset({
+        slug: track.slug || '',
+        pathId: track.pathId || '',
+        title: track.title || '',
+        summary: track.summary || '',
+        description: track.description || '',
+        category: track.category as unknown as ITrackForm['category'],
+      });
+    }
+  }, [track, reset]);
+
 
   const handleFormSubmit = async (data: ITrackForm) => {
     try {
-      setSubmitError(null);
-
       if (isEditMode && track) {
-        // Type-safe update data - UpdateTrackDto requires isPublished and sortOrder
         const updateData: UpdateTrackRequest = {
           slug: data.slug,
           pathId: data.pathId,
@@ -84,16 +92,11 @@ export default function TrackForm({ trackData }: TrackFormProps) {
 
       navigate('/admin/tracks');
     } catch (error) {
-      console.error('Track submission error:', error);
-      const errorMessage =
-        error instanceof Error
-          ? error.message
-          : isEditMode
-            ? 'حدث خطأ أثناء تحديث المسار. يرجى المحاولة مرة أخرى.'
-            : 'حدث خطأ أثناء إنشاء المسار. يرجى المحاولة مرة أخرى.';
-      setSubmitError(errorMessage);
+      handleApiError(error);
     }
   };
+
+  const { handleSubmit, control, formState: { errors, isSubmitting } } = useFormReturn;
 
   return (
     <div className="max-w-3xl mx-auto p-6 bg-card rounded-lg border shadow-sm my-6">
@@ -118,12 +121,6 @@ export default function TrackForm({ trackData }: TrackFormProps) {
           );
         })}
 
-        {submitError && (
-          <div className="text-red-500 text-sm text-center p-2 bg-red-50 rounded">
-            {submitError}
-          </div>
-        )}
-
         <button
           type="submit"
           disabled={isSubmitting || isLoadingPaths}
@@ -132,9 +129,9 @@ export default function TrackForm({ trackData }: TrackFormProps) {
           {isSubmitting ? (
             <Loader />
           ) : isEditMode ? (
-            'تحديث المسار'
+            'تحديث التراك'
           ) : (
-            'إضافة مسار'
+            'إضافة تراك'
           )}
         </button>
       </form>
