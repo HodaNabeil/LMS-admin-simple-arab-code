@@ -1,5 +1,5 @@
-import AddSection from "@/features/courses/manage/components/curriculum/AddSection";
-import SectionContent from "@/features/courses/manage/components/curriculum/SectionContent";
+import AddSection from "@/features/courses/manage/curriculum/AddSection";
+import SectionContent from "@/features/courses/manage/curriculum/SectionContent";
 
 export default function Curriculum() {
   return (

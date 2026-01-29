@@ -21,7 +21,7 @@ export default function Courses() {
   const [minPrice, setMinPrice] = useState(0);
 
   const { data: coursesResponse, isLoading, error } = useCourses();
-  const courses = coursesResponse?.data?.courses || [];
+  const courses = useMemo(() => coursesResponse?.data?.courses || [], [coursesResponse]);
 
 
   const filteredCourses = useMemo(() => {

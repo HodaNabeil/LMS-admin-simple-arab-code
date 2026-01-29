@@ -1,6 +1,6 @@
 import { Card } from "@/components/ui/card";
 import { useState } from "react";
-import EditSection from "@/features/courses/manage/components/curriculum/EditSection";
+import EditSection from "@/features/courses/manage/curriculum/EditSection";
 import Delete from "./Delete";
 import MangeLesson from "./MangeLesson";
 

@@ -6,14 +6,15 @@ import { Pages } from '@/constants/enums';
 import FormFields from '@/components/shared/form-fields/form-fields';
 import { Button } from '@/components/ui/button';
 import useFormValidations from '@/hooks/useFormValidations';
-import type { couponSchema } from '@/validations/coupon';
 import type { Coupon } from '@/types/course';
 import { CreateCouponDtoType } from '@/constants/enums';
 import { handleApiError } from '@/lib/error-handler';
 
+import type { CouponSchema } from '@/validations/coupon';
+
 interface CouponFormProps {
     initialData?: Coupon | null;
-    onSubmit: (data: any) => Promise<void>;
+    onSubmit: (data: CouponSchema) => Promise<void>;
     onCancel: () => void;
     isLoading?: boolean;
 }
@@ -33,28 +34,32 @@ function CouponForm({
         handleSubmit,
         control,
         formState: { errors, isSubmitting },
-    } = useForm({
+    } = useForm<CouponSchema>({
         defaultValues: {
             code: initialData?.code || '',
-            value: (initialData?.value || '') as any,
+            value: initialData?.value || 0,
             type: (initialData?.type as unknown as CreateCouponDtoType) || undefined,
             description: initialData?.description || '',
             startsAt: (initialData?.startsAt as string)?.split('T')[0] || '',
             expiresAt: (initialData?.expiresAt as string)?.split('T')[0] || '',
-            maxUses: (initialData as any)?.maxUses || '',
-            maxUsesPerUser: (initialData as any)?.maxUsesPerUser || 1,
-            minOrderAmount: (initialData as any)?.minOrderAmount || '',
+            maxUses: (initialData as unknown as { maxUses: number })?.maxUses || 0,
+            maxUsesPerUser: (initialData as unknown as { maxUsesPerUser: number })?.maxUsesPerUser || 1,
+            minOrderAmount: initialData?.minOrderAmount || 0,
             isActive: initialData?.isActive ?? true,
+            allCourses: false,
         },
         mode: 'onChange',
-        resolver: zodResolver(getValidationSchema() as typeof couponSchema),
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        resolver: zodResolver(getValidationSchema() as any),
     });
 
-    const handleFormSubmit = async (data: any) => {
+    const handleFormSubmit = async (data: CouponSchema) => {
         try {
             await onSubmit(data);
-        } catch (error: any) {
-            const message = error?.response?.data?.message;
+        } catch (error: unknown) {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const err = error as any;
+            const message = err?.response?.data?.message;
             if (message && (
                 (typeof message === 'string' && (message.includes('usedCount') || message.includes('createdAt') || message.includes('updatedAt'))) ||
                 (Array.isArray(message) && message.some((m: string) => m.includes('usedCount') || m.includes('createdAt') || m.includes('updatedAt')))
@@ -70,7 +75,7 @@ function CouponForm({
 
     return (
         <form onSubmit={handleSubmit(handleFormSubmit)} className="p-6 space-y-6 overflow-y-auto h-[500px]">
-            {formLoading && <div className="flex justify-center py-4"><Loader /></div>}
+            {formLoading && <div className="flex justify-center py-4"><Loader className='style-loader' /></div>}
             {!formLoading && formFields.map((field, index) => (
                 <div key={index}>
                     <FormFields {...field} control={control} errors={errors} />
@@ -92,7 +97,7 @@ function CouponForm({
                     className="px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                     {formLoading ? (initialData ? "جاري التعديل..." : "جاري الإنشاء...") : (initialData ? "حفظ التعديلات" : "إنشاء الكوبون")}
-                    {formLoading && <Loader />}
+                    {formLoading && <Loader className='style-loader' />}
                 </Button>
             </div>
         </form>

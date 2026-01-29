@@ -1,4 +1,4 @@
-"use client";
+
 import { Input } from "@/components/ui/input";
 import { useRef, useState } from "react";
 import ReactTagsInput, { type RenderInputProps } from "react-tagsinput";
@@ -24,7 +24,8 @@ const TagsInput = ({
   };
 
   const renderInput = (props: RenderInputProps) => {
-    const { onChange, value, ...other } = props;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { onChange, value, addTag, ...other } = props;
     return (
       <Input
         id="tags"

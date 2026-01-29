@@ -1,6 +1,6 @@
 import { Loader } from "@/components/shared/loader";
 import { useCourse } from "@/features/courses/hooks/useCoursesQueries";
-import BasicsForm from "@/features/courses/manage/components/basics/BasicsForm";
+import BasicsForm from "@/features/courses/manage/basics/components/BasicsForm";
 import { useParams } from "react-router-dom";
 
 export default function Basics() {
@@ -8,7 +8,7 @@ export default function Basics() {
   const { data: courseResponse, isPending, error, isError } = useCourse(slug as string);
 
 
-  if (isPending) return <div><Loader /></div>;
+  if (isPending) return <div className="style-loader "><Loader /></div>;
   if (isError && error) return <div>{error.message}</div>;
   return !isPending && courseResponse ? (
     <main>

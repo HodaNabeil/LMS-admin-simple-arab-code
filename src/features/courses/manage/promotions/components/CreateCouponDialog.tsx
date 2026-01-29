@@ -9,11 +9,12 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { HashIcon } from "lucide-react";
-import type { Coupon } from "@/types/course";
+import type { Coupon, CreateCouponRequest } from "@/types/course";
 import CouponForm from "./CouponForm";
+import type { CouponSchema } from "@/validations/coupon";
 
 interface CouponFormDialogProps {
-  onSubmit: (couponData: Omit<Coupon, 'id' | 'createdAt' | 'uses'>) => void;
+  onSubmit: (couponData: CreateCouponRequest) => void;
   isLoading?: boolean;
   initialData?: Coupon | null;
   courseId: string;
@@ -23,11 +24,12 @@ interface CouponFormDialogProps {
 export default function CouponFormDialog({ onSubmit, isLoading = false, initialData, courseId, children }: CouponFormDialogProps) {
   const [open, setOpen] = useState(false);
 
-  const handleFormSubmit = async (data: any) => {
+  const handleFormSubmit = async (data: CouponSchema) => {
     const couponData = {
       code: data.code,
       value: Number(data.value),
-      type: data.type,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      type: data.type as any,
       description: data.description,
       startsAt: data.startsAt ? new Date(data.startsAt).toISOString() : undefined,
       expiresAt: data.expiresAt ? new Date(data.expiresAt).toISOString() : undefined,

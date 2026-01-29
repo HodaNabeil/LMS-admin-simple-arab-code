@@ -35,7 +35,7 @@ export default function CouponsTable({
   if ((!coupons || coupons.length === 0) && !isLoading) {
     return (
       <div className="flex items-center justify-center h-32">
-        <div className="text-muted-foreground">No coupons found.</div>
+        <div className="text-muted-foreground">لا يوجد كوبونات</div>
       </div>
     );
   }

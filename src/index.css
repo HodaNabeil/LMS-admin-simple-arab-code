@@ -88,6 +88,10 @@
     @apply cursor-pointer;
   }
 
+  .style-loader {
+    @apply flex justify-center py-10 text-blue-600;
+  }
+
   .container {
     @apply mx-auto px-4 sm:px-6 lg:px-8;
   }

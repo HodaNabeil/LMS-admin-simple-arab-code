@@ -1,8 +1,8 @@
 import { useParams } from "react-router-dom";
 import { useCoupons, useCourse } from "@/features/courses/hooks/useCoursesQueries";
 import { useCreateCoupon, useUpdateCoupon, useDeleteCouponMutation } from "@/features/courses/hooks/useCoursesMutations";
-import CreateCouponDialog from "@/features/courses/manage/components/promotions/CreateCouponDialog";
-import CouponsTable from "@/features/courses/manage/components/promotions/CouponsTable";
+import CreateCouponDialog from "@/features/courses/manage/promotions/components/CreateCouponDialog";
+import CouponsTable from "@/features/courses/manage/promotions/components/CouponsTable";
 import type { Coupon, CreateCouponRequest } from "@/types/course";
 
 export default function Promotions() {
@@ -15,14 +15,12 @@ export default function Promotions() {
 
   const courseId = courseResponse?.data?.course?.id || "";
 
-  console.log(couponsResponse);
-
   const coupons = couponsResponse?.data || [];
   const activeCoupons = coupons.filter((coupon) => coupon.isActive);
   const inactiveCoupons = coupons.filter((coupon) => !coupon.isActive);
 
-  const handleCreateCoupon = async (couponData: any) => {
-    await createCouponMutation.mutateAsync(couponData as CreateCouponRequest);
+  const handleCreateCoupon = async (couponData: CreateCouponRequest) => {
+    await createCouponMutation.mutateAsync(couponData);
   };
 
   const handleDeleteCoupon = (id: string) => {
@@ -30,7 +28,7 @@ export default function Promotions() {
   };
 
   const handleEditCoupon = async (coupon: Coupon) => {
-    const { id, usedCount, createdAt, updatedAt, ...data } = coupon as any;
+    const { id, usedCount: _usedCount, createdAt: _createdAt, updatedAt: _updatedAt, ...data } = coupon as any;
     await updateCouponMutation.mutateAsync({ id, data: data as any });
   };
 

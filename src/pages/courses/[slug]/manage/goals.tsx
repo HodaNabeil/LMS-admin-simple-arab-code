@@ -1,6 +1,6 @@
 import { Loader } from "@/components/shared/loader";
 import { useCourse } from "@/features/courses/hooks/useCoursesQueries";
-import GoalsForm from "@/features/courses/manage/components/goals/GoalsForm";
+import GoalsForm from "@/features/courses/manage/goals/GoalsForm";
 import { useParams } from "react-router-dom";
 
 export default function Goals() {
@@ -16,7 +16,7 @@ export default function Goals() {
 
   if (isPending) {
     return (
-      <div className="flex justify-center py-10">
+      <div className="style-loader">
         <Loader />
       </div>
     );

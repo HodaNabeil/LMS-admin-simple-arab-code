@@ -10,7 +10,7 @@ import useFormValidations from "@/hooks/useFormValidations";
 
 import type { pricingSchema, PricingSchema } from "@/validations/course";
 
-import { useCourseManageStore } from "../../store";
+import { useCourseManageStore } from "../store";
 
 interface PricingFormProps {
   price?: number;

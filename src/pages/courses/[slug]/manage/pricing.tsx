@@ -1,6 +1,6 @@
 import { Loader } from "@/components/shared/loader";
 import { useCourse } from "@/features/courses/hooks/useCoursesQueries";
-import PricingForm from "@/features/courses/manage/components/pricing/PricingForm";
+import PricingForm from "@/features/courses/manage/pricing/PricingForm";
 import { useParams } from "react-router-dom";
 
 function Pricing() {
