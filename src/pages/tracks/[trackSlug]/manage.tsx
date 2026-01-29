@@ -6,15 +6,13 @@ import { TrackFormHeader } from "@/features/tracks/components/form/TrackFormHead
 
 function ManageTrack() {
   const { trackSlug } = useParams<{ trackSlug: string }>();
-  // console.log(trackSlug);
   const { data: track, isPending, error, isError } = useTrack(trackSlug);
 
-  console.log(track);
 
   if (isPending) {
     return (
       <div className="flex justify-center items-center min-h-screen pt-20">
-        <Loader />
+        <Loader className="style-loader" />
       </div>
     );
   }
@@ -32,7 +30,6 @@ function ManageTrack() {
       </div>
     );
   }
-
   return (
     !isPending &&
     track && (
@@ -41,7 +38,7 @@ function ManageTrack() {
           title="تعديل المسار"
           description="قم بتحديث معلومات المسار التعليمي"
         />
-        <TrackForm trackData={track} />
+        <TrackForm trackData={track.data.track} />
       </main>
     )
   );

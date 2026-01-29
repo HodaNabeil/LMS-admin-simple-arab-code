@@ -14,11 +14,15 @@ export type UpdateTrackRequest = components['schemas']['UpdateTrackDto'];
 
 export type ListTracksResponse =
   components['schemas']['WrappedResponseTrackListResponseDto'];
-export type GetTrackResponse =
-  components['schemas']['WrappedResponseTrackResponseDto'];
-export type CreateTrackResponse =
-  components['schemas']['WrappedResponseTrackResponseDto'];
-export type UpdateTrackResponse =
-  components['schemas']['WrappedResponseTrackResponseDto'];
+export type GetTrackResponse = {
+  data: {
+    track: Track;
+  };
+  message?: string;
+  success: boolean;
+};
+
+export type CreateTrackResponse = GetTrackResponse;
+export type UpdateTrackResponse = GetTrackResponse;
 export type DeleteTrackResponse =
   components['schemas']['WrappedResponseDeleteResponseDto'];
