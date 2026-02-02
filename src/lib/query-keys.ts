@@ -61,6 +61,12 @@ export const couponsKeys = {
   detail: (id: string) => [...couponsKeys.details(), id] as const,
 };
 
+export const curriculumKeys = {
+  all: ["curriculum"] as const,
+  sections: (courseSlug: string) => [...curriculumKeys.all, courseSlug, "sections"] as const,
+  sectionDetail: (courseSlug: string, id: string) => [...curriculumKeys.sections(courseSlug), id] as const,
+};
+
 // General query key factory patterns
 export const queryKeys = {
   auth: authKeys,
@@ -69,4 +75,5 @@ export const queryKeys = {
   courses: coursesKeys,
   tracks: tracksKeys,
   coupons: couponsKeys,
+  curriculum: curriculumKeys,
 };

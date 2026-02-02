@@ -1,4 +1,4 @@
-import { CreateCouponDtoType, Level, Pages, StatusLesson, UserType } from "@/constants/enums";
+import { CreateCouponDtoType, Level, Pages, UserType } from "@/constants/enums";
 import type { IFormField, IFormFieldsVariables, IOption } from "@/types/app";
 
 const useFormFields = ({ slug }: IFormFieldsVariables) => {
@@ -20,7 +20,7 @@ const useFormFields = ({ slug }: IFormFieldsVariables) => {
 
   const CreateSectionFormFields = (): IFormField[] => [
     {
-      name: "name",
+      name: "title",
       label: "اسم القسم",
       type: "text",
       placeholder: "ادخل اسم القسم",
@@ -295,29 +295,17 @@ const useFormFields = ({ slug }: IFormFieldsVariables) => {
 
   const lessonFields = (): IFormField[] => [
     {
-      name: "name",
-      label: "المحاضرة اسم  ",
+      name: "title",
+      label: "اسم المحاضرة",
       type: "text",
-      placeholder: "ادخل اسم المحاضرة التعليمي",
+      placeholder: "ادخل اسم المحاضرة",
     },
-
     {
       name: "description",
       label: " وصف المحاضرة",
       type: "textarea",
-      placeholder: "ادخل وصف المحاضرة التعليمي",
-    },
-    {
-      label: "معاينه المحاضرة",
-      name: "role",
-      type: "select",
-      placeholder: "اختر معاينه المحاضرة",
-      options: [
-        { value: StatusLesson.LOCKED, label: StatusLesson.LOCKED },
-        { value: StatusLesson.UNLOCKED, label: StatusLesson.UNLOCKED },
-        { value: StatusLesson.PREVIEW, label: StatusLesson.PREVIEW },
-      ],
-    },
+      placeholder: "ادخل وصف المحاضرة",
+    }
   ];
 
   const createTrackFields = (): IFormField[] => [

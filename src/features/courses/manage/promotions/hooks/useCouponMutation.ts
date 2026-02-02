@@ -7,7 +7,7 @@ import type {
     UpdateCouponRequest,
     Coupon
 } from "@/types/course";
-import { couponApi } from "../services/cuponApi";
+import { couponApi } from "../../../services/cuponApi";
 
 export function useCreateCoupon() {
     const queryClient = useQueryClient();

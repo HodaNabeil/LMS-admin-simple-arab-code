@@ -90,10 +90,10 @@ export function CourseTableMobile({ table }: CourseTableMobileProps) {
                                     <span className="text-muted-foreground block text-xs">المدة</span>
                                     <div className="mt-1 font-medium">{row.getValue('hours') || 0} س</div>
                                 </div>
-                                <div className="text-right">
+                                {/* <div className="text-right">
                                     <span className="text-muted-foreground block text-xs">المسار / التتابع</span>
-                                    <div className="mt-1 text-xs truncate" title={row.original.pathId}>{row.original.pathId.split('-')[0]}... / {row.original.trackId?.split('-')[0] || '---'}</div>
-                                </div>
+                                    <div className="mt-1 text-xs truncate" title={row.original?.pathId}>{row.original?.pathId.split('-')[0]}... / {row.original?.trackId?.split('-')[0] || '---'}</div>
+                                </div> */}
                                 <div className="text-right">
                                     <span className="text-muted-foreground block text-xs">مميز / شهادة</span>
                                     <div className="mt-1">{row.original.isFeatured ? '✅' : '❌'} / {row.original.certificateEnabled ? '✅' : '❌'}</div>

@@ -9,25 +9,39 @@ import { Button } from "@/components/ui/button";
 import { DialogTitle } from "@radix-ui/react-dialog";
 import { useState } from "react";
 import { Trash2 } from "lucide-react";
-function Delete({
-  Title,
-  Description,
-}: {
+import { useDeleteSection } from "../hooks/useCurriculumMutation";
+
+interface DeleteProps {
+  sectionId: string;
   Title?: string;
   Description?: string;
-}) {
+}
+
+function Delete({
+  sectionId,
+  Title,
+  Description,
+}: DeleteProps) {
   const [open, setOpen] = useState(false);
+  const { mutate: deleteSection, isPending } = useDeleteSection();
 
   const onCancel = () => {
     setOpen(false);
   };
+
+  const handleDelete = () => {
+    deleteSection(sectionId, {
+      onSuccess: () => setOpen(false),
+    });
+  };
+
   return (
     <div>
       <Dialog open={open} onOpenChange={(open) => setOpen(open)}>
         <DialogTrigger asChild>
-          <Button variant="secondary" className="text-right">
+          <button className="text-gray-500 hover:text-red-600 transition-colors">
             <Trash2 className="h-4 w-4" />
-          </Button>
+          </button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader className="!text-right">
@@ -40,10 +54,15 @@ function Delete({
           </DialogHeader>
 
           <div className="flex justify-end mt-4 gap-2 items-center">
-            <Button type="submit" variant="destructive">
-              حذف
+            <Button
+              type="button"
+              variant="destructive"
+              onClick={handleDelete}
+              disabled={isPending}
+            >
+              {isPending ? 'جاري الحذف...' : 'حذف'}
             </Button>
-            <Button type="button" variant="secondary" onClick={onCancel}>
+            <Button type="button" variant="secondary" onClick={onCancel} disabled={isPending}>
               إلغاء
             </Button>
           </div>

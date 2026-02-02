@@ -38,7 +38,7 @@ function CouponForm({
         defaultValues: {
             code: initialData?.code || '',
             value: initialData?.value || 0,
-            type: (initialData?.type as unknown as CreateCouponDtoType) || undefined,
+            type: (initialData?.type as CreateCouponDtoType) || undefined,
             description: initialData?.description || '',
             startsAt: (initialData?.startsAt as string)?.split('T')[0] || '',
             expiresAt: (initialData?.expiresAt as string)?.split('T')[0] || '',

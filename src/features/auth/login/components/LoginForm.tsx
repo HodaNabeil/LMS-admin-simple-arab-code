@@ -11,6 +11,7 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { loginSchema } from '@/validations/login';
 import type { z } from 'zod';
+import { handleApiError } from '@/lib/error-handler';
 
 
 
@@ -39,16 +40,19 @@ export default function LoginForm() {
     });
 
     const onSubmit = async (data: LoginSchema) => {
-        try {
-            const { message } = await login(data);
-            toast.success(message);
-            navigate("/admin");
 
-        } catch (error: unknown) {
-            const errorMessage =
-                (error as Error & { response?: { data?: { message?: string } } })
-                    ?.response?.data?.message || "حدث خطأ أثناء تسجيل الدخول";
-            toast.error(errorMessage);
+        console.log(data);
+        try {
+            const { message, data: authData } = await login(data);
+
+            toast.success(message);
+            if (authData?.accessToken) {
+                navigate("/admin");
+            }
+
+        } catch (error) {
+            handleApiError(error);
+
         }
     };
 

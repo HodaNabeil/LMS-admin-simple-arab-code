@@ -1,185 +1,223 @@
+import axios, { AxiosError } from "axios";
 import { toast } from "sonner";
-import type { AxiosError } from "axios";
 
-/**
- * Standard API error response structure
- */
+/* =====================================
+   API Error Response Shape
+===================================== */
+
 export interface ApiErrorResponse {
-    message: string;
+    message?: string;
     statusCode?: number;
     error?: string;
+
     errors?: Array<{
         field: string;
         message: string;
     }>;
 }
 
-/**
- * Validation error structure for form fields
- */
-export interface ValidationErrors {
-    [field: string]: string;
-}
+/* =====================================
+   Validation Errors (Multiple Messages)
+===================================== */
 
-/**
- * Extract error message from various error types
- */
+export type ValidationErrors = {
+    [field: string]: string[];
+};
+
+/* =====================================
+   Extract Error Message
+===================================== */
+
 export function getErrorMessage(error: unknown): string {
-    // Handle AxiosError
-    if (isAxiosError(error)) {
+    /* Axios Errors */
+    if (axios.isAxiosError(error)) {
         const axiosError = error as AxiosError<ApiErrorResponse>;
 
-        // Check for response data message
-        if (axiosError.response?.data?.message) {
-            return axiosError.response.data.message;
-        }
+        const data = axiosError.response?.data;
 
-        // Check for generic error message
-        if (axiosError.response?.data?.error) {
-            return axiosError.response.data.error;
-        }
+        /* Backend Message */
+        if (data?.message) return data.message;
 
-        // Check for network errors
+        /* Backend Generic Error */
+        if (data?.error) return data.error;
+
+        /* Network Error */
         if (axiosError.message === "Network Error") {
-            return "فشل الاتصال بالخادم. يرجى التحقق من اتصال الإنترنت.";
+            return "فشل الاتصال بالخادم. تحقق من الإنترنت.";
         }
 
-        // Handle timeout
+        /* Timeout */
         if (axiosError.code === "ECONNABORTED") {
-            return "انتهت مهلة الطلب. يرجى المحاولة مرة أخرى.";
+            return "انتهت مهلة الطلب. حاول مرة أخرى.";
         }
 
-        // Return general axios error message
+        /* Fallback */
         return axiosError.message || "حدث خطأ غير متوقع";
     }
 
-    // Handle standard Error
+    /* Native JS Error */
     if (error instanceof Error) {
         return error.message;
     }
 
-    // Handle string errors
+    /* String Error */
     if (typeof error === "string") {
         return error;
     }
 
-    // Fallback for unknown error types
     return "حدث خطأ غير متوقع";
 }
 
-/**
- * Extract validation errors from API response
- */
-export function getValidationErrors(error: unknown): ValidationErrors | null {
-    if (isAxiosError(error)) {
-        const axiosError = error as AxiosError<ApiErrorResponse>;
+/* =====================================
+   Extract Validation Errors
+===================================== */
 
-        if (axiosError.response?.data?.errors && Array.isArray(axiosError.response.data.errors)) {
-            const validationErrors: ValidationErrors = {};
-            axiosError.response.data.errors.forEach((err) => {
-                validationErrors[err.field] = err.message;
-            });
-            return validationErrors;
-        }
+export function getValidationErrors(
+    error: unknown
+): ValidationErrors | null {
+    if (!axios.isAxiosError(error)) return null;
+
+    const data = error.response?.data as ApiErrorResponse | undefined;
+
+    if (!data?.errors || !Array.isArray(data.errors)) {
+        return null;
     }
 
-    return null;
+    const validationErrors: ValidationErrors = {};
+
+    data.errors.forEach(({ field, message }) => {
+        if (!validationErrors[field]) {
+            validationErrors[field] = [];
+        }
+
+        validationErrors[field].push(message);
+    });
+
+    return validationErrors;
 }
 
-/**
- * Check if error is an AxiosError
- */
-function isAxiosError(error: unknown): boolean {
-    return (
-        typeof error === "object" &&
-        error !== null &&
-        "isAxiosError" in error &&
-        (error as AxiosError).isAxiosError === true
-    );
+/* =====================================
+   Get Status Code
+===================================== */
+
+export function getErrorStatusCode(
+    error: unknown
+): number | null {
+    if (!axios.isAxiosError(error)) return null;
+
+    return error.response?.status ?? null;
 }
 
-/**
- * Handle API errors with toast notifications
- */
-export function handleApiError(error: unknown, customMessage?: string): void {
-    const errorMessage = customMessage || getErrorMessage(error);
-    toast.error(errorMessage);
+/* =====================================
+   Status Helpers
+===================================== */
 
-    // Log error for debugging
-    console.error("API Error:", error);
+export const isValidationError = (error: unknown) =>
+    getErrorStatusCode(error) === 422;
+
+export const isUnauthorizedError = (error: unknown) =>
+    getErrorStatusCode(error) === 401;
+
+export const isForbiddenError = (error: unknown) =>
+    getErrorStatusCode(error) === 403;
+
+export const isNotFoundError = (error: unknown) =>
+    getErrorStatusCode(error) === 404;
+
+export const isServerError = (error: unknown) => {
+    const status = getErrorStatusCode(error);
+    return status !== null && status >= 500;
+};
+
+/* =====================================
+   Auth Auto Handler
+===================================== */
+
+function handleAuthError(error: unknown) {
+    if (!isUnauthorizedError(error)) return;
+
+    /*
+      Example:
+      localStorage.removeItem("token");
+      window.location.href = "/login";
+    */
+
+    toast.error("انتهت الجلسة. يرجى تسجيل الدخول مرة أخرى.");
 }
 
-/**
- * Handle form submission errors
- * Returns validation errors if any, otherwise shows toast
- */
-export function handleFormError(error: unknown): ValidationErrors | null {
+/* =====================================
+   Dev Logger
+===================================== */
+
+function logError(error: unknown) {
+    if (import.meta.env.DEV) {
+        console.error("API Error:", error);
+    }
+}
+
+/* =====================================
+   Global API Error Handler
+===================================== */
+
+export function handleApiError(
+    error: unknown,
+    options?: {
+        customMessage?: string;
+        silent?: boolean;
+    }
+) {
+    const message =
+        options?.customMessage || getErrorMessage(error);
+
+    /* Auth Handling */
+    handleAuthError(error);
+
+    /* Toast */
+    if (!options?.silent) {
+        toast.error(message);
+    }
+
+    /* Logging */
+    logError(error);
+}
+
+/* =====================================
+   Form Error Handler
+===================================== */
+
+export function handleFormError(
+    error: unknown
+): ValidationErrors | null {
     const validationErrors = getValidationErrors(error);
 
+    /* Validation Errors */
     if (validationErrors) {
-        // Show first validation error as toast
-        const firstError = Object.values(validationErrors)[0];
-        if (firstError) {
-            toast.error(firstError);
+        const firstField = Object.keys(validationErrors)[0];
+
+        if (firstField) {
+            const firstMessage =
+                validationErrors[firstField][0];
+
+            toast.error(firstMessage);
         }
+
+        logError(error);
+
         return validationErrors;
     }
 
-    // No validation errors, show general error
+    /* General Errors */
     handleApiError(error);
+
     return null;
 }
 
-/**
- * Get HTTP status code from error
- */
-export function getErrorStatusCode(error: unknown): number | null {
-    if (isAxiosError(error)) {
-        const axiosError = error as AxiosError<ApiErrorResponse>;
-        return axiosError.response?.status || null;
-    }
-    return null;
-}
+/* =====================================
+   React Query / TanStack Support
+===================================== */
 
-/**
- * Check if error is a specific HTTP status code
- */
-export function isErrorStatus(error: unknown, statusCode: number): boolean {
-    return getErrorStatusCode(error) === statusCode;
-}
-
-/**
- * Check if error is a validation error (422)
- */
-export function isValidationError(error: unknown): boolean {
-    return isErrorStatus(error, 422);
-}
-
-/**
- * Check if error is unauthorized (401)
- */
-export function isUnauthorizedError(error: unknown): boolean {
-    return isErrorStatus(error, 401);
-}
-
-/**
- * Check if error is forbidden (403)
- */
-export function isForbiddenError(error: unknown): boolean {
-    return isErrorStatus(error, 403);
-}
-
-/**
- * Check if error is not found (404)
- */
-export function isNotFoundError(error: unknown): boolean {
-    return isErrorStatus(error, 404);
-}
-
-/**
- * Check if error is a server error (500-599)
- */
-export function isServerError(error: unknown): boolean {
-    const statusCode = getErrorStatusCode(error);
-    return statusCode !== null && statusCode >= 500 && statusCode < 600;
+export function createQueryErrorHandler() {
+    return (error: unknown) => {
+        handleApiError(error);
+    };
 }

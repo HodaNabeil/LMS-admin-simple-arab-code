@@ -34,11 +34,10 @@ const TextField = ({
         name={name}
         render={({ field: { onChange, onBlur, value, ref } }) => (
           <Input
-            className={`${
-              errors[name]
-                ? "border-destructive focus-visible:border-destructive focus-visible:ring-destructive/20"
-                : "!border-border !shadow-none focus-visible:ring-0 focus-visible:border-border"
-            } h-10 !bg-transparent`}
+            className={`${errors[name]
+              ? "border-destructive focus-visible:border-destructive focus-visible:ring-destructive/20"
+              : "!border-border !shadow-none focus-visible:ring-0 focus-visible:border-border"
+              } h-10 !bg-transparent`}
             type={type}
             onChange={(e) => {
               const val = e.target.value;

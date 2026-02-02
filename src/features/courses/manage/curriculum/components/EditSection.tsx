@@ -6,21 +6,25 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { DialogTitle } from "@radix-ui/react-dialog";
-import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import SectionForm from "./SectionForm";
 import { Edit } from "lucide-react";
+import type { Section } from "@/types/curriculum";
 
-function EditSection() {
+interface EditSectionProps {
+  section: Section;
+}
+
+function EditSection({ section }: EditSectionProps) {
   const [open, setOpen] = useState(false);
 
   return (
     <div>
       <Dialog open={open} onOpenChange={(open) => setOpen(open)}>
         <DialogTrigger asChild>
-          <Button variant="secondary">
-            <Edit />
-          </Button>
+          <button className="text-gray-500 hover:text-blue-600 transition-colors">
+            <Edit className="h-4 w-4" />
+          </button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader className="!text-right">
@@ -33,10 +37,7 @@ function EditSection() {
           </DialogHeader>
           <SectionForm
             setOpen={setOpen}
-            section={{
-              title: "تعديل قسم",
-              description: "يمكنك تعديل اسم القسم ووصفه",
-            }}
+            section={section}
           />
         </DialogContent>
       </Dialog>

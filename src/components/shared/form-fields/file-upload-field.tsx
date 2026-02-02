@@ -4,8 +4,9 @@ import type { Control, FieldErrors } from "react-hook-form";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { useState, useRef } from "react";
-import { Upload, X, File, Image as ImageIcon, Video } from "lucide-react";
+import { useState, useRef, useEffect } from "react";
+import { useWatch } from "react-hook-form";
+import { Upload, X, File as FileIcon, Image as ImageIcon, Video } from "lucide-react";
 
 interface Props extends IFormField {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -14,7 +15,7 @@ interface Props extends IFormField {
   accept?: string;
   maxSize?: number; // in MB
   allowedTypes?: string[];
-  fileType?: "image" | "video" | "any";
+  fileType?: "image" | "video" | "pdf" | "zip" | "any";
 }
 
 const FileUploadField = ({
@@ -33,6 +34,32 @@ const FileUploadField = ({
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const [fileName, setFileName] = useState<string | null>(null);
+
+  const watchValue = useWatch({ control, name }) as unknown as any;
+
+  useEffect(() => {
+    if (watchValue instanceof File) {
+      setFileName(watchValue.name);
+      if (
+        (fileType === "image" && watchValue.type.startsWith("image/")) ||
+        (fileType === "video" && watchValue.type.startsWith("video/"))
+      ) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          setPreview(e.target?.result as string);
+        };
+        reader.readAsDataURL(watchValue);
+      } else {
+        setPreview(null);
+      }
+    } else if (typeof watchValue === "string") {
+      setPreview(watchValue);
+      setFileName(watchValue.split("/").pop() || null);
+    } else if (!watchValue) {
+      setPreview(null);
+      setFileName(null);
+    }
+  }, [watchValue, fileType]);
 
   const handleFileSelect = () => {
     fileInputRef.current?.click();
@@ -92,7 +119,7 @@ const FileUploadField = ({
       case "video":
         return <Video className="w-8 h-8" />;
       default:
-        return <File className="w-8 h-8" />;
+        return <FileIcon className="w-8 h-8" />;
     }
   };
 
@@ -189,8 +216,8 @@ const FileUploadField = ({
                         {fileType === "image"
                           ? "صورة"
                           : fileType === "video"
-                          ? "فيديو"
-                          : "ملف"}
+                            ? "فيديو"
+                            : "ملف"}
                       </p>
                     </div>
                     <Button

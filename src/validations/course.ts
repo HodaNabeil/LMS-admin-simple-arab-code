@@ -1,4 +1,4 @@
-import { CourseDtoLevel } from "@/types/api.generated";
+import { CourseDtoLevel, LectureType } from "@/types/api.generated";
 import { z } from "zod";
 
 /**
@@ -93,7 +93,7 @@ export const courseSchema = z.object(course);
  * Section
  */
 export const sectionSchema = z.object({
-  name: z.string().min(1, "Section name is required"),
+  title: z.string().min(1, "Section title is required"),
   heading: z.string().min(1, "Section heading is required"),
 });
 
@@ -101,8 +101,8 @@ export const sectionSchema = z.object({
  * Create Section
  */
 export const createSectionCourseSchema = z.object({
-  name: z.string().min(1),
-  description: z.string().min(1),
+  title: z.string().min(1, "عنوان القسم مطلوب."),
+  description: z.string().min(1, "وصف القسم مطلوب."),
 });
 
 /**
@@ -156,8 +156,7 @@ export type BasicsSchema = z.infer<typeof basicsSchema>;
 export const createLessonCourseSchema = z.object({
   title: course.title,
   description: z.string().optional(),
-  select: z.string().optional(),
-  shortDescription: z.string().optional(),
+  type: z.nativeEnum(LectureType).optional(),
 });
 
 

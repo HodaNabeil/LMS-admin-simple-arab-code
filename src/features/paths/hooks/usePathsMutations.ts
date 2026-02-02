@@ -16,7 +16,7 @@ export function useCreatePath() {
       toast.success(res.message || "تم إنشاء المسار بنجاح");
     },
     onError: (error) => {
-      handleApiError(error, "فشل إنشاء المسار");
+      handleApiError(error);
     },
   });
 }
@@ -33,7 +33,7 @@ export function useUpdatePath({ slug }: { slug: string }) {
       toast.success(res.message || "تم تحديث المسار بنجاح");
     },
     onError: (error) => {
-      handleApiError(error, "فشل تحديث المسار");
+      handleApiError(error);
     },
   });
 }
@@ -49,7 +49,7 @@ export function useDeletePath() {
       toast.success(res.message || "تم حذف المسار بنجاح");
     },
     onError: (error) => {
-      handleApiError(error, "فشل حذف المسار");
+      handleApiError(error);
     },
   });
 }

@@ -18,6 +18,7 @@ interface Props extends IFormField {
   accept?: string;
   maxSize?: number;
   allowedTypes?: string[];
+  fileType?: "image" | "video" | "pdf" | "zip" | "any";
 }
 
 const FormFields = (props: Props) => {

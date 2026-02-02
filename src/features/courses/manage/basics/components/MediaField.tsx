@@ -64,9 +64,10 @@ export default function MediaField({
                 name={name}
                 label={label}
                 placeholder={placeholder}
-                type="file" // Assuming FormFields handles 'file' type correctly based on passed props or internal logic
+                type="file"
                 control={control}
                 errors={errors}
+                fileType={type}
             />
             {hasExistingValue && isReplacing && (
                 <button

@@ -3,7 +3,7 @@ import { couponsKeys } from "@/lib/query-keys";
 import type {
   CouponsResponse,
 } from "@/types/course";
-import { couponApi } from "../services/cuponApi";
+import { couponApi } from "../../../services/cuponApi";
 
 export function useCoupons() {
   return useQuery<CouponsResponse>({
