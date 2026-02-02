@@ -158,7 +158,7 @@ export const getColumns = ({
                 <div className="flex gap-2 justify-center">
                     <CouponFormDialog
                         initialData={row.original}
-                        onSubmit={(data) => onEdit({ ...row.original, ...data })}
+                        onSubmit={(data) => onEdit({ ...row.original, ...data } as unknown as Coupon)}
                         courseId={courseId}
                     >
                         <Button

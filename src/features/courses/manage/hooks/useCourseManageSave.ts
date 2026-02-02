@@ -5,6 +5,7 @@ import {
     useUpdateCourse,
     useUploadCourseMedia,
 } from "@/features/courses/hooks/useCoursesMutations";
+import type { UpdateCourseRequest } from "@/types/course";
 import {
     handleAvailabilitySave,
     handleBasicsSave,
@@ -49,28 +50,11 @@ export function useCourseManageSave(section: string | null, originalData?: Origi
                     await handleGoalsSave(store, updateCourse);
                     changesSaved = true;
                     break;
-                case "basics":
-                    // Helper to normalize empty values
-                    const normalize = (value: any) => value || "";
-
-                    // handleBasicsSave returns early if no changes, so we need to check
-                    const hasMedia = store.thumbnail instanceof File || store.previewVideo instanceof File;
-                    const hasDataChanged = !originalData || (
-                        normalize(store.title) !== normalize(originalData.title) ||
-                        normalize(store.description) !== normalize(originalData.description) ||
-                        (store.level as any) !== originalData.level ||
-                        normalize(store.slug) !== normalize(originalData.slug) ||
-                        store.hours !== originalData.hours ||
-                        normalize(store.shortDescription) !== normalize(originalData.shortDescription)
-                    );
-
-                    if (hasDataChanged || hasMedia) {
-                        await handleBasicsSave(store, updateCourse, uploadMedia, originalData);
-                        changesSaved = true;
-                    } else if (process.env.NODE_ENV === 'development') {
-                        console.log('⏭️ No changes detected in handleSave');
-                    }
+                case "basics": {
+                    await handleBasicsSave(store, updateCourse, uploadMedia, originalData);
+                    changesSaved = true;
                     break;
+                }
                 case "pricing":
                     await handlePricingSave(store, updateCourse);
                     changesSaved = true;
@@ -101,7 +85,7 @@ export function useCourseManageSave(section: string | null, originalData?: Origi
 
 
     const handleSaveWithMediaSeparation = async (
-        regularData: any,
+        regularData: unknown,
         options?: {
             onMediaUploadSuccess?: () => void;
             onRegularDataSuccess?: () => void;
@@ -113,9 +97,9 @@ export function useCourseManageSave(section: string | null, originalData?: Origi
         }
 
         try {
-            const promises: Promise<any>[] = [];
+            const promises: Promise<unknown>[] = [];
 
-            const regularDataPromise = updateCourse(regularData).then((res) => {
+            const regularDataPromise = updateCourse(regularData as UpdateCourseRequest).then((res) => {
                 options?.onRegularDataSuccess?.();
                 return res;
             });
@@ -126,7 +110,7 @@ export function useCourseManageSave(section: string | null, originalData?: Origi
 
             if (hasThumbnail || hasVideo) {
                 const mediaPromise = uploadMedia({
-                    thumbnail: hasThumbnail ? (store.thumbnail as File) : undefined as any,
+                    thumbnail: hasThumbnail ? (store.thumbnail as File) : (undefined as unknown as File),
                     previewVideo: hasVideo ? (store.previewVideo as File) : undefined,
                 }).then((res) => {
                     options?.onMediaUploadSuccess?.();

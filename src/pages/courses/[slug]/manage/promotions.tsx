@@ -3,7 +3,7 @@ import { useCoupons, useCourse } from "@/features/courses/hooks/useCoursesQuerie
 import { useCreateCoupon, useUpdateCoupon, useDeleteCouponMutation } from "@/features/courses/hooks/useCoursesMutations";
 import CreateCouponDialog from "@/features/courses/manage/promotions/components/CreateCouponDialog";
 import CouponsTable from "@/features/courses/manage/promotions/components/CouponsTable";
-import type { CreateCouponRequest } from "@/types/course";
+import type { CreateCouponRequest, UpdateCouponRequest, Coupon } from "@/types/course";
 
 export default function Promotions() {
   const { slug } = useParams<{ slug: string }>();
@@ -27,9 +27,12 @@ export default function Promotions() {
     deleteCouponMutation.mutate(id);
   };
 
-  const handleEditCoupon = async (coupon: any) => {
-    const { id, usedCount, createdAt, updatedAt, ...data } = coupon;
-    await updateCouponMutation.mutateAsync({ id, data });
+  const handleEditCoupon = async (coupon: Coupon) => {
+    const { id, usedCount: _usedCount, createdAt: _createdAt, updatedAt: _updatedAt, ...data } = coupon;
+    void _usedCount;
+    void _createdAt;
+    void _updatedAt;
+    await updateCouponMutation.mutateAsync({ id, data: (data as unknown) as UpdateCouponRequest });
   };
 
   return (

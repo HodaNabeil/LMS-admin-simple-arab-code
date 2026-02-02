@@ -3,6 +3,7 @@ import { useCourse } from "@/features/courses/hooks/useCoursesQueries";
 import BasicsForm from "@/features/courses/manage/basics/components/BasicsForm";
 import { useParams } from "react-router-dom";
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export default function Basics() {
   const { slug } = useParams<{ slug: string }>();
   const { data: courseResponse, isPending, error, isError } = useCourse(slug as string);

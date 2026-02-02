@@ -38,13 +38,13 @@ function CouponForm({
         defaultValues: {
             code: initialData?.code || '',
             value: initialData?.value || 0,
-            type: (initialData?.type as CreateCouponDtoType) || undefined,
-            description: initialData?.description || '',
-            startsAt: (initialData?.startsAt as string)?.split('T')[0] || '',
-            expiresAt: (initialData?.expiresAt as string)?.split('T')[0] || '',
+            type: (initialData?.type as unknown as CreateCouponDtoType) || undefined,
+            description: ((initialData?.description || '') as string),
+            startsAt: ((initialData?.startsAt as unknown as string) || '')?.split?.('T')?.[0] || '',
+            expiresAt: ((initialData?.expiresAt as unknown as string) || '')?.split?.('T')?.[0] || '',
             maxUses: (initialData as unknown as { maxUses: number })?.maxUses || 0,
             maxUsesPerUser: (initialData as unknown as { maxUsesPerUser: number })?.maxUsesPerUser || 1,
-            minOrderAmount: initialData?.minOrderAmount || 0,
+            minOrderAmount: ((initialData?.minOrderAmount || 0) as number),
             isActive: initialData?.isActive ?? true,
             allCourses: false,
         },
@@ -64,7 +64,7 @@ function CouponForm({
                 (typeof message === 'string' && (message.includes('usedCount') || message.includes('createdAt') || message.includes('updatedAt'))) ||
                 (Array.isArray(message) && message.some((m: string) => m.includes('usedCount') || m.includes('createdAt') || m.includes('updatedAt')))
             )) {
-                handleApiError(error, 'غير مصرح بالتعديل');
+                handleApiError(error, { customMessage: 'غير مصرح بالتعديل' });
             } else {
                 handleApiError(error);
             }

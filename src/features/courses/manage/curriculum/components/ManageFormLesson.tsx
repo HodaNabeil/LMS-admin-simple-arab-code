@@ -9,6 +9,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { useCreateLecture, useUpdateLecture } from '../hooks/useCurriculumMutation';
 import type { LectureType } from '@/types/api.generated';
+import type { IFormField } from '@/types/app';
 
 interface ManageFormLessonProps {
   mode: 'add' | 'edit';
@@ -17,7 +18,7 @@ interface ManageFormLessonProps {
   type: LectureType;
   onClose: () => void;
   hiddenFields?: string[];
-  initialValues?: any;
+  initialValues?: Record<string, unknown>;
 }
 
 export default function ManageFormLesson({
@@ -44,27 +45,25 @@ export default function ManageFormLesson({
     formState: { errors },
   } = useForm<z.infer<typeof createLessonCourseSchema>>({
     defaultValues: {
-      description: initialValues?.description || "",
-      title: initialValues?.title || "",
-      type: type
+      title: (initialValues?.title as string) || "",
+      description: (initialValues?.description as string) || "",
     },
     mode: 'onChange',
-    resolver: zodResolver(
-      getValidationSchema() as any
-    ),
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    resolver: zodResolver(getValidationSchema() as any),
   });
 
-  const handleFormSubmit = (data: any) => {
+  const handleFormSubmit = (data: z.infer<typeof createLessonCourseSchema>) => {
 
     console.log(data);
     if (mode === 'add' && sectionId) {
-      createLecture({ sectionId, data: { ...data, type } }, {
+      createLecture({ sectionId, data: { ...data, type: type as LectureType, isFree: false } }, {
         onSuccess: () => {
           onClose();
         }
       });
     } else if (mode === 'edit' && lessonId) {
-      updateLecture({ id: lessonId, data: { ...data, type } }, {
+      updateLecture({ id: lessonId, data: { ...data, type: type as LectureType, isFree: false } }, {
         onSuccess: () => {
           onClose();
         }
@@ -75,8 +74,8 @@ export default function ManageFormLesson({
   return (
     <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-4">
       {getFormFields()
-        .filter((field: any) => !hiddenFields.includes(field.name))
-        .map((field: any, index: number) => (
+        .filter((field: IFormField) => !hiddenFields.includes(field.name))
+        .map((field: IFormField, index: number) => (
           <div key={index} className="mb-4">
             <FormFields {...field} control={control} errors={errors} />
           </div>

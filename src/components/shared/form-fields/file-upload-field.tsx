@@ -35,7 +35,7 @@ const FileUploadField = ({
   const [preview, setPreview] = useState<string | null>(null);
   const [fileName, setFileName] = useState<string | null>(null);
 
-  const watchValue = useWatch({ control, name }) as unknown as any;
+  const watchValue = useWatch({ control, name }) as File | string | null | undefined;
 
   useEffect(() => {
     if (watchValue instanceof File) {

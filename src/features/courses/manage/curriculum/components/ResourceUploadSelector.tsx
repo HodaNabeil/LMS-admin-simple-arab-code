@@ -1,9 +1,9 @@
 import { useState, useRef } from "react";
-import { Library, X } from "lucide-react";
+import { X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 interface ResourceUploadSelectorProps {
-    onResourceSelect: (resource: any) => void;
+    onResourceSelect: (resource: { type: string; file: File }) => void;
     onCancel: () => void;
 }
 

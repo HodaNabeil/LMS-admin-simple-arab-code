@@ -5,8 +5,8 @@ import type { UpdateCourseRequest } from "@/types/course";
 import { type CourseGoalsState } from "../store";
 
 // Helper types
-type UpdateCourseFn = (data: UpdateCourseRequest) => Promise<any>;
-type UploadMediaFn = (data: { thumbnail: File; previewVideo?: File | undefined }) => Promise<any>;
+type UpdateCourseFn = (data: UpdateCourseRequest) => Promise<unknown>;
+type UploadMediaFn = (data: { thumbnail: File; previewVideo?: File | undefined }) => Promise<unknown>;
 
 export async function handleGoalsSave(
     store: CourseGoalsState,
@@ -33,10 +33,10 @@ export async function handleBasicsSave(
         shortDescription?: string;
     }
 ) {
-    const promises: Promise<any>[] = [];
+    const promises: Promise<unknown>[] = [];
 
     // Helper to normalize empty values (treats null, undefined, and "" as equal)
-    const normalize = (value: any) => value || "";
+    const normalize = (value: unknown) => value || "";
 
     // Check if we have media to upload
     const thumbnail = store.thumbnail instanceof File;
@@ -88,9 +88,7 @@ export async function handleBasicsSave(
             title: store.title,
             description: store.description,
             level: store.level as unknown as UpdateCourseDtoLevel,
-            // @ts-ignore - Slug may not be in generated DTO but is accepted by API
             slug: store.slug,
-            hours: store.hours,
             shortDescription: store.shortDescription,
         }).then((res) => {
             if (process.env.NODE_ENV === 'development') {
@@ -106,7 +104,7 @@ export async function handleBasicsSave(
     if (hasMedia) {
         // Send media data in parallel
         const mediaPromise = uploadMedia({
-            thumbnail: thumbnail ? (store.thumbnail as File) : undefined as any,
+            thumbnail: thumbnail ? (store.thumbnail as File) : (undefined as unknown as File),
             previewVideo: previewVideo ? (store.previewVideo as File) : undefined,
         }).then((res) => {
             if (process.env.NODE_ENV === 'development') {

@@ -4,7 +4,7 @@ import { useSections } from "@/features/courses/manage/curriculum/hooks/useCurri
 import { Skeleton } from "@/components/ui/skeleton";
 
 export default function Curriculum() {
-  const { data: sectionResponse, isPending, isError, error } = useSections();
+  const { data: sectionResponse, isPending, isError } = useSections();
   const sections = sectionResponse?.data?.sections || [];
   if (isError) return null
 

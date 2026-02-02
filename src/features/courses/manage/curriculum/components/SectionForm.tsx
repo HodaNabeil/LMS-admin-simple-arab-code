@@ -8,6 +8,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { useCreateSection, useUpdateSection } from '../hooks/useCurriculumMutation';
 import type { CreateSectionRequest, UpdateSectionRequest, Section } from '@/types/curriculum';
+import type z from 'zod';
 
 interface SectionFormProps {
   section?: Section;
@@ -38,7 +39,7 @@ export default function SectionForm({ section, setOpen }: SectionFormProps) {
     ),
   });
 
-  const handleFormSubmit = (data: any) => {
+  const handleFormSubmit = (data: z.infer<typeof createSectionCourseSchema>) => {
     if (section) {
       updateSection(
         { id: section.id, data: data as UpdateSectionRequest },

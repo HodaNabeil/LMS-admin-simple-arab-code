@@ -10,7 +10,6 @@ import {
 import TagsInput from "@/components/shared/tags-input";
 import { useCoursesByPath } from "@/features/courses/hooks/useCoursesQueries";
 
-import { CourseType } from "@/types/course";
 
 
 
@@ -20,7 +19,6 @@ interface GoalsFormProps {
   targetAudience: string[];
   pathId: string;
   courseId: string;
-  courseType?: CourseType;
   prerequisiteIds?: string[];
 }
 
@@ -30,7 +28,7 @@ export default function GoalsForm({
   targetAudience,
   pathId,
   courseId,
-  courseType,
+
   prerequisiteIds = [],
 }: GoalsFormProps) {
 
@@ -128,9 +126,7 @@ export default function GoalsForm({
 
       <div className="mb-2">
         <Label className="text-sm font-medium text-card-foreground block">
-          {courseType === CourseType.BUNDLE
-            ? "اختر الدورات المضمنة في الحزمة"
-            : "اختر دورة يجب تعلمها أولًا"}
+          اختر دورة يجب تعلمها أولًا
         </Label>
       </div>
 

@@ -46,8 +46,7 @@ export default function Goals() {
         targetAudience={course.targetAudience}
         pathId={course.pathId}
         courseId={course.id}
-        courseType={null as any}
-        // TODO: fix this change api response
+
         prerequisiteIds={course.prerequisiteIds}
       />
     </main>

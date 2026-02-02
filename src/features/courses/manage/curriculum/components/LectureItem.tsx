@@ -335,7 +335,7 @@ export default function LectureItem({ lecture, index }: LectureItemProps) {
                                     ) : (
                                         <div className="animate-in fade-in zoom-in-95 duration-200">
                                             <ResourceUploadSelector
-                                                onResourceSelect={(resourceData: any) => {
+                                                onResourceSelect={(resourceData: { type: string; file: File }) => {
                                                     if (editingResourceId) {
                                                         // Replace
                                                         setResources(resources.map(r => r.id === editingResourceId ? {

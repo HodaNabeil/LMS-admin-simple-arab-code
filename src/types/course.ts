@@ -35,11 +35,6 @@ export type UpdateCourseResponse =
 export type DeleteCourseResponse =
   components["schemas"]["WrappedResponseDeleteResponseDto"];
 
-// Re-export specific enums if needed by UI components
-export enum CourseType {
-  SINGLE = "SINGLE",
-  BUNDLE = "BUNDLE",
-}
 
 // Keep existing non-DTO types if they are still relevant or used elsewhere
 export type Coupon = components["schemas"]["CouponResponseDto"];
