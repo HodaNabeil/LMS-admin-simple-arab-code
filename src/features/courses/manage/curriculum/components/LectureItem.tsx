@@ -122,7 +122,8 @@ export default function LectureItem({ lecture, index }: LectureItemProps) {
 
 
                             {
-                                !showContentTypeSelector && (!manageVideo || uploadStatus === "PROCESSING") && (
+                                !showContentTypeSelector
+                                && (!manageVideo || uploadStatus === "PROCESSING") && (
                                     <button
                                         onClick={() => setIsOpen(!isOpen)}
                                         className="text-gray-500 hover:text-gray-700 transition-colors"
@@ -135,6 +136,8 @@ export default function LectureItem({ lecture, index }: LectureItemProps) {
                     </div>
                 </>
             )}
+
+
 
             {/* Content Selection Area */}
             {showContentTypeSelector && !selectedContentType && (
@@ -272,73 +275,77 @@ export default function LectureItem({ lecture, index }: LectureItemProps) {
                         </div>
                     )}
 
-                    {/* Left-aligned buttons (Description, Resources, Lab) - Show after upload completes, during processing, or when not managing video */}
-                    {/* Left-aligned buttons (Description, Resources, Lab) - Show after upload completes, during processing, or when not managing video */}
-                    {((selectedContentType === "VIDEO")
-                        || uploadStatus === "COMPLETED") && (
-                            <div className="flex flex-col items-start gap-3 mt-4">
-                                <Button
-                                    variant="outline"
-                                    size="sm"
-                                    className="border-[#7c3aed] text-[#7c3aed] hover:bg-[#7c3aed]/5 rounded-xl flex items-center gap-3 w-40 font-bold px-4 py-6 border-2"
-                                >
-                                    <Plus className="h-5 w-5" /> الوصف
-                                </Button>
+                    {/* Right-aligned buttons (Description, Resources, Lab) - Show after upload completes, during processing, or when not managing video */}
+                    {(!showContentTypeSelector && (!manageVideo || uploadStatus === "PROCESSING" || uploadStatus === "COMPLETED")) && (
+                        <div className="flex flex-col items-end gap-3 mt-4 w-full">
+                            <Button
+                                variant="outline"
+                                size="sm"
+                                className="border-[#7c3aed] text-[#7c3aed] hover:bg-[#7c3aed]/5 rounded-xl flex items-center gap-3 w-40 font-bold px-4 py-6 border-2 justify-between"
+                                dir="rtl"
+                            >
+                                <span className="flex-1 text-right">الوصف</span>
+                                <Plus className="h-5 w-5" />
+                            </Button>
 
-                                <div className="w-full">
-                                    <div className="flex flex-col items-start gap-4">
-                                        <Button
-                                            variant="outline"
-                                            size="sm"
-                                            onClick={() => setSelectedContentType(selectedContentType === "RESOURCES" ? null : "RESOURCES")}
-                                            className="border-[#7c3aed] text-[#7c3aed] hover:bg-[#7c3aed]/5 rounded-xl flex items-center gap-3 w-40 font-bold px-4 py-6 border-2"
-                                        >
-                                            <Plus className="h-5 w-5" /> الموارد
-                                        </Button>
+                            <div className="w-full flex flex-col items-end">
+                                <div className="flex flex-col items-end gap-4 w-full">
+                                    <Button
+                                        variant="outline"
+                                        size="sm"
+                                        onClick={() => setSelectedContentType(selectedContentType === "RESOURCES" ? null : "RESOURCES")}
+                                        className="border-[#7c3aed] text-[#7c3aed] hover:bg-[#7c3aed]/5 rounded-xl flex items-center gap-3 w-40 font-bold px-4 py-6 border-2 justify-between"
+                                        dir="rtl"
+                                    >
+                                        <span className="flex-1 text-right">الموارد</span>
+                                        <Plus className="h-5 w-5" />
+                                    </Button>
 
-                                        {selectedContentType === "RESOURCES" && (
-                                            <div className="w-full mt-2 animate-in fade-in slide-in-from-top-2 duration-200">
-                                                <div className="border border-gray-100 rounded-lg p-4 bg-gray-50/50">
-                                                    {resources.length > 0 && (
-                                                        <div className="flex flex-col gap-2 mb-4">
-                                                            {resources.map((resource) => (
-                                                                <div key={resource.id} className="flex items-center justify-between p-3 border border-gray-100 rounded-md bg-white">
-                                                                    <div className="flex items-center gap-3">
-                                                                        <FileText className="h-5 w-5 text-gray-400" />
-                                                                        <div className="flex flex-col">
-                                                                            <span className="text-sm font-bold text-gray-700">{resource.name}</span>
-                                                                            <span className="text-[10px] text-gray-500">{resource.size}</span>
-                                                                        </div>
+                                    {selectedContentType === "RESOURCES" && (
+                                        <div className="w-full mt-2 animate-in fade-in slide-in-from-top-2 duration-200">
+                                            <div className="border border-gray-100 rounded-lg p-4 bg-gray-50/50">
+                                                {resources.length > 0 && (
+                                                    <div className="flex flex-col gap-2 mb-4">
+                                                        {resources.map((resource) => (
+                                                            <div key={resource.id} className="flex items-center justify-between p-3 border border-gray-100 rounded-md bg-white" dir="rtl">
+                                                                <div className="flex items-center gap-3">
+                                                                    <FileText className="h-5 w-5 text-gray-400" />
+                                                                    <div className="flex flex-col items-start">
+                                                                        <span className="text-sm font-bold text-gray-700">{resource.name}</span>
+                                                                        <span className="text-[10px] text-gray-500">{resource.size}</span>
                                                                     </div>
-                                                                    <button onClick={() => setResources(resources.filter(r => r.id !== resource.id))} className="text-gray-400 hover:text-red-500">
-                                                                        <X className="h-4 w-4" />
-                                                                    </button>
                                                                 </div>
-                                                            ))}
-                                                        </div>
-                                                    )}
-                                                    <ResourceUploadSelector
-                                                        onResourceSelect={(data) => {
-                                                            setResources([...resources, { id: Date.now().toString(), name: data.file.name, size: "1.0 MB", type: AttachmentType.OTHER }]);
-                                                            setSelectedContentType(null);
-                                                        }}
-                                                        onCancel={() => setSelectedContentType(null)}
-                                                    />
-                                                </div>
+                                                                <button onClick={() => setResources(resources.filter(r => r.id !== resource.id))} className="text-gray-400 hover:text-red-500">
+                                                                    <X className="h-4 w-4" />
+                                                                </button>
+                                                            </div>
+                                                        ))}
+                                                    </div>
+                                                )}
+                                                <ResourceUploadSelector
+                                                    onResourceSelect={(data) => {
+                                                        setResources([...resources, { id: Date.now().toString(), name: data.file.name, size: "1.0 MB", type: AttachmentType.OTHER }]);
+                                                        setSelectedContentType(null);
+                                                    }}
+                                                    onCancel={() => setSelectedContentType(null)}
+                                                />
                                             </div>
-                                        )}
-                                    </div>
+                                        </div>
+                                    )}
                                 </div>
-
-                                <Button
-                                    variant="outline"
-                                    size="sm"
-                                    className="border-[#7c3aed] text-[#7c3aed] hover:bg-[#7c3aed]/5 rounded-xl flex items-center gap-3 w-40 font-bold px-4 py-6 border-2"
-                                >
-                                    <Plus className="h-5 w-5" /> مختبر
-                                </Button>
                             </div>
-                        )}
+
+                            <Button
+                                variant="outline"
+                                size="sm"
+                                className="border-[#7c3aed] text-[#7c3aed] hover:bg-[#7c3aed]/5 rounded-xl flex items-center gap-3 w-40 font-bold px-4 py-6 border-2 justify-between"
+                                dir="rtl"
+                            >
+                                <span className="flex-1 text-right">مختبر</span>
+                                <Plus className="h-5 w-5" />
+                            </Button>
+                        </div>
+                    )}
                 </div>
             )}
         </div>
