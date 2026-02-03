@@ -29,6 +29,7 @@ type ValidationSchema =
   | typeof goalsSchema
   | typeof pricingSchema
   | typeof couponSchema
+  | typeof createLessonCourseSchema
   | z.ZodObject<Record<string, never>>;
 
 const useFormValidations = (

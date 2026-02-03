@@ -3,8 +3,8 @@ import { z } from 'zod';
 import { Button } from '@/components/ui/button';
 import { Pages } from '@/constants/enums';
 import useFormFields from '@/hooks/useFormFields';
-import useFormValidations from '@/hooks/useFormValidations';
-import type { createLessonCourseSchema } from '@/validations/course';
+
+import { createLessonCourseSchema } from '@/validations/course';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { useCreateLecture, useUpdateLecture } from '../hooks/useCurriculumMutation';
@@ -31,9 +31,7 @@ export default function ManageFormLesson({
   initialValues,
 }: ManageFormLessonProps) {
   const { getFormFields } = useFormFields({ slug: Pages.LESSONS });
-  const { getValidationSchema } = useFormValidations({
-    slug: Pages.LESSONS,
-  });
+
 
   const { mutate: createLecture, isPending: isCreating } = useCreateLecture();
   const { mutate: updateLecture, isPending: isUpdating } = useUpdateLecture();
@@ -49,7 +47,7 @@ export default function ManageFormLesson({
       description: (initialValues?.description as string) || "",
     },
     mode: 'onChange',
-    resolver: zodResolver(getValidationSchema()),
+    resolver: zodResolver(createLessonCourseSchema),
   });
 
   const handleFormSubmit = (data: z.infer<typeof createLessonCourseSchema>) => {

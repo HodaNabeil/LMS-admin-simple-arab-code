@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { FileText, ChevronDown, ChevronUp, Plus, X, PlayCircle, CheckCircle2, Pencil, Trash2 } from "lucide-react";
+import { FileText, ChevronDown, ChevronUp, Plus, X, PlayCircle, CheckCircle2, Pencil } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { Lecture } from "@/types/curriculum";
 import ManageFormLesson from "./ManageFormLesson";
