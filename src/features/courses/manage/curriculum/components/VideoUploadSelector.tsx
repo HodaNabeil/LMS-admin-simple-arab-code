@@ -1,11 +1,15 @@
 import { useState, useRef } from "react";
-import { Library, X } from "lucide-react";
+import { X } from "lucide-react";
+
+export type UploadStatus = "IDLE" | "UPLOADING" | "PROCESSING" | "COMPLETED";
 
 interface VideoUploadSelectorProps {
     onFileSelect: (file: File) => void;
+    onStatusChange?: (status: UploadStatus) => void;
+    onUploadComplete?: () => void;
+    setUploadStatus: (status: UploadStatus) => void;
+    uploadStatus: UploadStatus;
 }
-
-type UploadStatus = "IDLE" | "UPLOADING" | "PROCESSING" | "COMPLETED";
 
 interface FileInfo {
     name: string;
@@ -14,9 +18,8 @@ interface FileInfo {
     uploadDate: string;
 }
 
-export default function VideoUploadSelector({ onFileSelect }: VideoUploadSelectorProps) {
+export default function VideoUploadSelector({ onFileSelect, onStatusChange, onUploadComplete, uploadStatus, setUploadStatus }: VideoUploadSelectorProps) {
     const [activeTab, setActiveTab] = useState<"UPLOAD" | "LIBRARY">("UPLOAD");
-    const [uploadStatus, setUploadStatus] = useState<UploadStatus>("IDLE");
     const [progress, setProgress] = useState(0);
     const [fileInfo, setFileInfo] = useState<FileInfo | null>(null);
     const fileInputRef = useRef<HTMLInputElement>(null);
@@ -34,6 +37,7 @@ export default function VideoUploadSelector({ onFileSelect }: VideoUploadSelecto
                 uploadDate: dateString
             });
             setUploadStatus("UPLOADING");
+            onStatusChange?.("UPLOADING");
             setProgress(0);
             onFileSelect(file);
 
@@ -46,6 +50,8 @@ export default function VideoUploadSelector({ onFileSelect }: VideoUploadSelecto
                     clearInterval(interval);
                     setTimeout(() => {
                         setUploadStatus("PROCESSING");
+                        onStatusChange?.("PROCESSING");
+                        onUploadComplete?.();
                     }, 800);
                 }
                 setProgress(currentProgress);
@@ -59,15 +65,25 @@ export default function VideoUploadSelector({ onFileSelect }: VideoUploadSelecto
 
     const handleCancel = () => {
         setUploadStatus("IDLE");
+        onStatusChange?.("IDLE");
         setFileInfo(null);
         setProgress(0);
         if (fileInputRef.current) fileInputRef.current.value = "";
     };
 
     return (
-        <div className="flex flex-col w-full bg-white dir-rtl text-right">
+        <div className="flex flex-col w-full bg-white  text-right">
             {/* Tabs */}
-            <div className="flex items-center gap-8 border-b border-gray-100 mb-6 relative">
+            <div className="flex items-center justify-end gap-8 border-b border-gray-100 mb-6 relative">
+                <button
+                    onClick={() => setActiveTab("LIBRARY")}
+                    className={`pb-2 text-sm font-bold transition-all relative ${activeTab === "LIBRARY"
+                        ? "text-slate-800 after:content-[''] after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[2px] after:bg-slate-800"
+                        : "text-gray-400 hover:text-gray-600"
+                        }`}
+                >
+                    إضافة من المكتبة
+                </button>
                 <button
                     onClick={() => setActiveTab("UPLOAD")}
                     className={`pb-2 text-sm font-bold transition-all relative ${activeTab === "UPLOAD"
@@ -77,7 +93,6 @@ export default function VideoUploadSelector({ onFileSelect }: VideoUploadSelecto
                 >
                     تحميل فيديو
                 </button>
-
             </div>
 
             {/* Tab Content */}
@@ -87,9 +102,9 @@ export default function VideoUploadSelector({ onFileSelect }: VideoUploadSelecto
                         <div className="flex flex-col gap-2">
                             <div className="flex items-center gap-4 w-full">
                                 <div
-                                    className="flex-1 border border-[#7c3aed] rounded-md p-3 h-12 flex items-center justify-end bg-white"
+                                    className="flex-1 border border-gray-200 rounded-md p-3 h-10 flex items-center justify-end bg-white"
                                 >
-                                    <span className="text-gray-500 text-sm">
+                                    <span className="text-gray-400 text-xs">
                                         لا توجد ملفات محددة
                                     </span>
                                 </div>
@@ -97,9 +112,8 @@ export default function VideoUploadSelector({ onFileSelect }: VideoUploadSelecto
                                 <input
                                     type="button"
                                     value="اختيار الفيديو"
-                                    accept=".avi,.mpg,.mpeg,.flv,.mov,.m2v,.m4v,.mp4,.rm,.ram,.vob,.ogv,.webm,.wmv"
                                     onClick={triggerFileInput}
-                                    className="h-12 border border-[#7c3aed] text-[#7c3aed] hover:bg-[#7c3aed]/5 px-8 font-bold rounded-md cursor-pointer"
+                                    className="h-10 border border-[#7c3aed] text-[#7c3aed] hover:bg-[#7c3aed]/5 px-6 font-bold rounded-md cursor-pointer text-xs"
                                 />
                                 <input
                                     type="file"
@@ -110,7 +124,7 @@ export default function VideoUploadSelector({ onFileSelect }: VideoUploadSelecto
                                 />
                             </div>
 
-                            <p className="text-[11px] text-gray-500 font-medium text-right">
+                            <p className="text-[10px] text-gray-500 font-medium text-right mt-1">
                                 <span className="font-bold">ملاحظة:</span> يجب أن تكون جميع الملفات بدقة 720 بكسل على الأقل وأقل من 4.0 جيجابايت.
                             </p>
                         </div>
@@ -178,12 +192,7 @@ export default function VideoUploadSelector({ onFileSelect }: VideoUploadSelecto
                 </div>
             )}
 
-            {activeTab === "LIBRARY" && (
-                <div className="flex flex-col items-center justify-center py-12 border-2 border-dashed border-gray-200 rounded-lg">
-                    <Library className="h-12 w-12 text-gray-300 mb-4" />
-                    <p className="text-gray-500 text-sm font-medium">المكتبة فارغة حالياً</p>
-                </div>
-            )}
+
         </div>
     );
 }

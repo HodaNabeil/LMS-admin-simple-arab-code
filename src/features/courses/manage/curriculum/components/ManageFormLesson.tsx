@@ -49,21 +49,20 @@ export default function ManageFormLesson({
       description: (initialValues?.description as string) || "",
     },
     mode: 'onChange',
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    resolver: zodResolver(getValidationSchema() as any),
+    resolver: zodResolver(getValidationSchema()),
   });
 
   const handleFormSubmit = (data: z.infer<typeof createLessonCourseSchema>) => {
 
-    console.log(data);
+    console.log(data, "video");
     if (mode === 'add' && sectionId) {
-      createLecture({ sectionId, data: { ...data, type: type as LectureType, isFree: false } }, {
+      createLecture({ sectionId, data: { ...data, type: type as LectureType } }, {
         onSuccess: () => {
           onClose();
         }
       });
     } else if (mode === 'edit' && lessonId) {
-      updateLecture({ id: lessonId, data: { ...data, type: type as LectureType, isFree: false } }, {
+      updateLecture({ id: lessonId, data: { ...data, type: type as LectureType } }, {
         onSuccess: () => {
           onClose();
         }

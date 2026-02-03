@@ -5,7 +5,7 @@ export type CreateSectionRequest = components["schemas"]["CreateSectionDto"];
 export type UpdateSectionRequest = components["schemas"]["UpdateSectionDto"];
 
 export type Lecture = components["schemas"]["LectureDto"];
-export type CreateLectureRequest = components["schemas"]["CreateLectureDto"];
+export type CreateLectureRequest = Omit<components["schemas"]["CreateLectureDto"], "isFree"> & { isFree?: boolean };
 // UpdateLectureDto seems missing in the generated types, usually it's a Partial of Create or same
 export type UpdateLectureRequest = Partial<CreateLectureRequest>;
 

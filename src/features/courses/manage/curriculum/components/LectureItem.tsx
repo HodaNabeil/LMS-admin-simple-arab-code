@@ -3,10 +3,10 @@ import { FileText, ChevronDown, ChevronUp, Plus, X, PlayCircle, CheckCircle2, Pe
 import { Button } from "@/components/ui/button";
 import type { Lecture } from "@/types/curriculum";
 import ManageFormLesson from "./ManageFormLesson";
-import VideoUploadSelector from "./VideoUploadSelector";
+import VideoUploadSelector, { type UploadStatus } from "./VideoUploadSelector";
 import ResourceUploadSelector from "./ResourceUploadSelector";
 import DeleteLecture from "./DeleteLecture";
-import { LectureType } from "@/types/api.generated";
+import { LectureType, AttachmentType } from "@/types/api.generated";
 
 interface LectureItemProps {
     lecture: Lecture;
@@ -17,13 +17,29 @@ export default function LectureItem({ lecture, index }: LectureItemProps) {
     const [isOpen, setIsOpen] = useState(false);
     const [showContentTypeSelector, setShowContentTypeSelector] = useState(false);
     const [selectedContentType, setSelectedContentType] = useState<"VIDEO" | "QUIZ" | "RESOURCES" | null>(null);
-    const [isPreviewOpen, setIsPreviewOpen] = useState(false);
-    const [isDownloadable, setIsDownloadable] = useState(false);
-    const [resources, setResources] = useState([
-        { id: 1, name: "9.pdf", size: "141.8 kB", type: "PDF" }
-    ]);
-    const [editingResourceId, setEditingResourceId] = useState<number | null>(null);
+
+    const [manageVideo, setManageVideo] = useState(false);
+    const [resources, setResources] = useState(lecture.attachments?.map(a => ({
+        id: a.id,
+        name: a.name,
+        size: a.fileSize ? `${(a.fileSize / 1024).toFixed(1)} kB` : "0 kB",
+        type: a.type
+    })) || []);
     const [isEditingInfo, setIsEditingInfo] = useState(false);
+    const [isUploadingVideo, setIsUploadingVideo] = useState(false);
+    const [uploadStatus, setUploadStatus] = useState<UploadStatus>("IDLE");
+
+
+
+    const getFileName = (url?: string) => {
+        if (!url) return "";
+        try {
+            const decoded = decodeURIComponent(url);
+            return decoded.split('/').pop() || lecture.title;
+        } catch {
+            return lecture.title;
+        }
+    };
 
     const toggleSelector = () => {
         setShowContentTypeSelector(!showContentTypeSelector);
@@ -33,6 +49,7 @@ export default function LectureItem({ lecture, index }: LectureItemProps) {
     const handleVideoFileSelect = (file: File) => {
         console.log("Selected video file:", file);
         // Here we can trigger the actual upload or update mutation
+
     };
 
     return (
@@ -71,7 +88,13 @@ export default function LectureItem({ lecture, index }: LectureItemProps) {
                             <CheckCircle2 className="h-4 w-4 text-gray-800" />
                             <div className="flex items-center gap-1 flex-1">
                                 <span className="text-sm text-gray-700 font-bold whitespace-nowrap">محاضرة {index + 1}:</span>
-                                <FileText className="h-4 w-4 text-gray-400" />
+                                {!isUploadingVideo && (
+                                    lecture.type === LectureType.VIDEO ? (
+                                        <PlayCircle className="h-4 w-4 text-gray-400" />
+                                    ) : (
+                                        <FileText className="h-4 w-4 text-gray-400" />
+                                    )
+                                )}
                                 <span className="text-sm text-gray-600 truncate max-w-[200px]">{lecture.title}</span>
                             </div>
                             <div className="flex items-center gap-2 mr-4">
@@ -86,7 +109,7 @@ export default function LectureItem({ lecture, index }: LectureItemProps) {
                         </div>
 
                         <div className="flex items-center gap-3">
-                            {!showContentTypeSelector && !selectedContentType && (
+                            {!showContentTypeSelector && !selectedContentType && !lecture.videoUrl && (
                                 <Button
                                     variant="outline"
                                     size="sm"
@@ -96,12 +119,18 @@ export default function LectureItem({ lecture, index }: LectureItemProps) {
                                     <Plus className="h-3 w-3" /> المحتوى
                                 </Button>
                             )}
-                            <button
-                                onClick={() => setIsOpen(!isOpen)}
-                                className="text-gray-500 hover:text-gray-700 transition-colors"
-                            >
-                                {isOpen ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
-                            </button>
+
+
+                            {
+                                !showContentTypeSelector && (!manageVideo || uploadStatus === "PROCESSING") && (
+                                    <button
+                                        onClick={() => setIsOpen(!isOpen)}
+                                        className="text-gray-500 hover:text-gray-700 transition-colors"
+                                    >
+                                        {isOpen ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+                                    </button>
+                                )
+                            }
                         </div>
                     </div>
                 </>
@@ -132,7 +161,15 @@ export default function LectureItem({ lecture, index }: LectureItemProps) {
                             </div>
 
                             {/* Option: Video */}
-                            <div className="flex flex-col items-center gap-2 cursor-pointer group" onClick={() => setSelectedContentType("VIDEO")}>
+                            <div
+                                className="flex flex-col items-center gap-2 cursor-pointer group"
+                                onClick={() => {
+                                    setSelectedContentType("VIDEO");
+                                    setManageVideo(true);
+                                    setShowContentTypeSelector(false);
+                                    setIsOpen(true);
+                                }}
+                            >
                                 <div className="w-16 h-16 border border-gray-200 flex items-center justify-center bg-white group-hover:border-[#3c45aa] group-hover:shadow-sm transition-all relative overflow-hidden rounded-sm">
                                     <PlayCircle className="h-7 w-7 text-gray-300 group-hover:text-[#3c45aa]" />
                                     <div className="absolute bottom-0 left-0 right-0 bg-gray-100 text-[#374151] text-[9px] py-1 text-center font-bold">فيديو</div>
@@ -143,242 +180,165 @@ export default function LectureItem({ lecture, index }: LectureItemProps) {
                 </div>
             )}
 
-            {/* Video Content Form */}
-            {selectedContentType === "VIDEO" && (
-                <div className="border border-gray-200 mt-6 p-6 bg-white animate-in slide-in-from-top duration-300 relative rounded-sm">
-                    {/* Tab Header for "Add Video" */}
-                    <div className="absolute -top-[34px] left-0">
-                        <div className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 border-b-0 rounded-t-sm relative z-10">
-                            <button
-                                onClick={() => setSelectedContentType(null)}
-                                className="text-gray-400 hover:text-gray-600 transition-colors mr-2"
-                            >
-                                <X className="h-3 w-3" />
-                            </button>
-                            <span className="text-xs font-bold text-gray-700">إضافة فيديو</span>
-                        </div>
-                    </div>
-
-                    <div className="mb-4">
-                        <VideoUploadSelector onFileSelect={handleVideoFileSelect} />
-                    </div>
-
-                    <div className="mt-8 border-t border-gray-100 pt-6">
-                        <h4 className="font-bold text-gray-700 mb-4 text-right">معلومات الفيديو</h4>
-                        <ManageFormLesson
-                            mode="edit"
-                            lessonId={lecture.id}
-                            type={LectureType.VIDEO}
-                            hiddenFields={["title", "description"]}
-                            initialValues={lecture}
-                            onClose={() => {
-                                setSelectedContentType(null);
-                                setShowContentTypeSelector(false);
-                            }}
-                        />
-                    </div>
-                </div>
-            )}
-
             {/* Resources / Description / Lab Section (Visible when Expanded) */}
             {isOpen && (
-                <div className="border-t border-gray-100 bg-white">
-                    {/* Video Content Overview (Visible when expanded and not in selection mode) */}
-                    {!showContentTypeSelector && !selectedContentType && (
-                        <div className="p-6">
-                            <div className="flex items-start justify-between mb-6">
-                                {/* Left side: Actions */}
-                                <div className="flex flex-col gap-4">
-                                    <div className="flex items-center gap-3">
-                                        <div
-                                            onClick={() => setIsDownloadable(!isDownloadable)}
-                                            className={`w-10 h-5 rounded-full relative cursor-pointer transition-colors ${isDownloadable ? 'bg-[#7c3aed]' : 'bg-gray-200'}`}
-                                        >
-                                            <div className={`absolute top-0.5 left-0.5 w-4 h-4 bg-white rounded-full transition-transform ${isDownloadable ? 'translate-x-5' : 'translate-x-0'}`}></div>
-                                        </div>
-                                        <span className="text-sm text-gray-600 font-bold">قابل للتنزيل:</span>
-                                    </div>
-                                    <div className="relative">
-                                        <button
-                                            onClick={() => setIsPreviewOpen(!isPreviewOpen)}
-                                            className="bg-[#7c3aed] text-white px-6 py-2 rounded-md flex items-center gap-2 text-sm font-bold hover:bg-[#6d28d9] transition-colors"
-                                        >
-                                            <ChevronDown className={`h-4 w-4 transition-transform ${isPreviewOpen ? 'rotate-180' : ''}`} />
-                                            معاينة
-                                        </button>
-
-                                        {isPreviewOpen && (
-                                            <div className="absolute top-full left-0 mt-1 w-40 bg-white border border-gray-200 rounded-md shadow-lg z-50 overflow-hidden animate-in fade-in slide-in-from-top-1">
-                                                <button className="w-full text-right px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 flex items-center justify-end gap-2">
-                                                    كمحاضر
-                                                </button>
-                                                <button className="w-full text-right px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 flex items-center justify-end gap-2 border-t border-gray-100">
-                                                    كطالب
-                                                </button>
-                                            </div>
-                                        )}
-                                    </div>
-
-
-                                </div>
-
-                                {/* Right side: Video Info */}
-                                <div className="flex items-start gap-4">
-                                    <div className="flex flex-col items-end gap-2">
-                                        <div className="flex items-center gap-2">
-                                            <span className="text-sm font-bold text-gray-800 dir-ltr text-right">
-                                                مقدمة ألعاب YouTube الهندسية - تم تصميمه باستخدام Clipchamp.mp4
-                                            </span>
-                                        </div>
-                                        <span className="text-xs text-gray-400">00:10</span>
-                                        <button
-                                            onClick={() => setSelectedContentType("VIDEO")}
-                                            className="text-[#7c3aed] text-sm font-bold hover:underline flex items-center gap-1"
-                                        >
-                                            <Pencil className="h-3.5 w-3.5" />
-                                            تحرير المحتوى
-                                        </button>
-                                    </div>
-                                    <div className="w-24 h-14 bg-black rounded-sm flex items-center justify-center relative overflow-hidden">
-                                        {/* Video preview placeholder */}
-                                        <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/* Downloadable Materials List */}
-                            <div className="mt-8 border-t border-gray-100 pt-6">
-                                <h4 className="text-sm font-bold text-gray-700 mb-4 text-right">مواد قابلة للتنزيل</h4>
-                                <div className="flex flex-col gap-2">
-                                    {resources.map((resource) => (
-                                        <div key={resource.id} className="flex items-center justify-between py-2 border-b border-gray-50 last:border-0 hover:bg-gray-50/50 px-2 transition-colors group">
+                <div className="border-t border-gray-100 bg-white p-4">
+                    {/* Video Upload / Status Section */}
+                    {(selectedContentType === "VIDEO" || lecture.videoUrl) && (
+                        <div className="mb-6">
+                            {selectedContentType === "VIDEO" && manageVideo && (
+                                <div className="mb-4">
+                                    <div className="flex justify-end">
+                                        <div className="flex items-center justify-between border border-gray-200 rounded-t-lg p-2 w-fit bg-white mb-[-1px] relative z-10 px-4 gap-4 border-b-white">
+                                            <span className="text-xs font-bold text-gray-600">إضافة فيديو</span>
                                             <button
-                                                onClick={() => setResources(resources.filter(r => r.id !== resource.id))}
-                                                className="text-gray-300 hover:text-red-500 transition-colors"
+                                                onClick={() => {
+                                                    setSelectedContentType(null);
+                                                    setManageVideo(false);
+                                                }}
+                                                className="text-gray-400 hover:text-gray-600"
                                             >
-                                                <Trash2 className="h-4 w-4" />
+                                                <X className="h-3 w-3" />
                                             </button>
-                                            <div className="flex items-center gap-3">
-                                                <span className="text-xs text-gray-500 font-medium">({resource.size})</span>
-                                                <span className="text-sm text-gray-600 font-bold">{resource.name}</span>
-                                                <FileText className="h-4 w-4 text-gray-400" />
-                                            </div>
                                         </div>
-                                    ))}
-                                </div>
-                            </div>
-                        </div>
-                    )}
+                                    </div>
 
-                    <div className="bg-gray-50/50 p-4">
-                        {/* Resources Section */}
-                        <div className="mb-2 bg-white border border-gray-200 rounded-lg overflow-hidden">
-                            <button
-                                onClick={() => setSelectedContentType(selectedContentType === "RESOURCES" ? null : "RESOURCES")}
-                                className="w-full flex items-center justify-between p-4 bg-white hover:bg-gray-50 transition-colors"
-                            >
-                                <div className="flex items-center gap-2">
-                                    <span className="font-bold text-gray-700">الموارد</span>
-                                    <Plus className="h-4 w-4 text-[#7c3aed]" />
+                                    <div className="border border-gray-200 rounded-b-lg rounded-tr-lg p-6 bg-white shadow-[0_0_10px_rgba(0,0,0,0.02)]">
+                                        <VideoUploadSelector
+                                            onFileSelect={handleVideoFileSelect}
+                                            onStatusChange={(status) => {
+                                                setIsUploadingVideo(status === "UPLOADING");
+                                                if (status === "COMPLETED") {
+                                                    setManageVideo(false);
+                                                    setSelectedContentType(null);
+                                                }
+                                            }}
+                                            uploadStatus={uploadStatus}
+                                            setUploadStatus={setUploadStatus}
+                                        />
+                                    </div>
                                 </div>
-                                {selectedContentType === "RESOURCES" ? <ChevronUp className="h-4 w-4 text-gray-400" /> : <ChevronDown className="h-4 w-4 text-gray-400" />}
-                            </button>
+                            )}
 
-                            {selectedContentType === "RESOURCES" && (
-                                <div className="p-4 border-t border-gray-100 bg-white">
-                                    {!showContentTypeSelector ? (
-                                        <div className="flex flex-col gap-3">
-                                            {resources.map((resource) => (
-                                                <div key={resource.id} className="flex items-center justify-between p-3 border border-gray-100 rounded-md bg-white hover:border-[#7c3aed]/30 transition-all group">
-                                                    <div className="flex items-center gap-3">
-                                                        <div className="bg-[#f8f9fb] p-2 rounded-md group-hover:bg-[#7c3aed]/5">
-                                                            <FileText className="h-5 w-5 text-gray-500 group-hover:text-[#7c3aed]" />
-                                                        </div>
-                                                        <div className="flex flex-col">
-                                                            <span className="text-sm font-bold text-gray-700">{resource.name}</span>
-                                                            <span className="text-[10px] text-gray-500">{resource.size} • {resource.type}</span>
-                                                        </div>
-                                                    </div>
-                                                    <div className="flex items-center gap-2">
+                            {lecture.videoUrl && selectedContentType !== "VIDEO" && (
+                                <div className="border border-gray-200 rounded-sm p-4 mb-4 bg-white shadow-sm overflow-hidden">
+                                    <div className="flex flex-col w-full text-right dir-rtl">
+                                        <table className="w-full text-right text-xs">
+                                            <thead className="bg-[#f8f9fb] border-b border-gray-100">
+                                                <tr>
+                                                    <th className="p-3 font-bold text-gray-700 w-[40%]">اسم الملف</th>
+                                                    <th className="p-3 font-bold text-gray-700 text-center">النوع</th>
+                                                    <th className="p-3 font-bold text-gray-700 text-center">الحالة</th>
+                                                    <th className="p-3 font-bold text-gray-700 text-center">التاريخ</th>
+                                                    <th className="p-3 font-bold text-gray-700 w-16"></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr className="border-b border-gray-100 last:border-0 h-16">
+                                                    <td className="p-3 text-gray-600 font-medium truncate max-w-0">{getFileName(lecture.videoUrl)}</td>
+                                                    <td className="p-3 text-gray-500 text-center">Video</td>
+                                                    <td className="p-3 text-center">
+                                                        <span className="text-gray-600 font-bold">جارِ المعالجة</span>
+                                                    </td>
+                                                    <td className="p-3 text-gray-500 text-center">2026/02/03</td>
+                                                    <td className="p-3 text-center">
                                                         <button
-                                                            className="text-[#7c3aed] text-xs font-bold hover:underline"
                                                             onClick={() => {
-                                                                setEditingResourceId(resource.id);
-                                                                setShowContentTypeSelector(true);
+                                                                setSelectedContentType("VIDEO");
+                                                                setManageVideo(true);
+                                                                setIsOpen(true);
                                                             }}
+                                                            className="text-[#7c3aed] font-bold hover:underline"
                                                         >
                                                             استبدال
                                                         </button>
-                                                        <button
-                                                            className="text-gray-400 hover:text-red-500 transition-colors"
-                                                            onClick={() => {
-                                                                setResources(resources.filter(r => r.id !== resource.id));
-                                                            }}
-                                                        >
-                                                            <X className="h-4 w-4" />
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            ))}
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        {/* Horizontal scrollbar placeholder */}
+                                        <div className="bg-white p-1 border-t border-gray-100 flex items-center gap-2 h-6">
+                                            <span className="text-[10px] text-gray-300">◀</span>
+                                            <div className="flex-1 h-2 bg-gray-200 rounded-full"></div>
+                                            <span className="text-[10px] text-gray-300">▶</span>
+                                        </div>
+                                    </div>
 
-                                            <button
-                                                onClick={() => {
-                                                    setEditingResourceId(null);
-                                                    setShowContentTypeSelector(true);
-                                                }}
-                                                className="mt-2 flex items-center justify-center gap-2 w-full py-3 border border-dashed border-gray-300 rounded-md text-gray-500 hover:text-[#7c3aed] hover:border-[#7c3aed] hover:bg-[#7c3aed]/5 transition-all"
-                                            >
-                                                <Plus className="h-4 w-4" />
-                                                <span className="text-sm font-bold">إضافة مورد جديد</span>
-                                            </button>
-                                        </div>
-                                    ) : (
-                                        <div className="animate-in fade-in zoom-in-95 duration-200">
-                                            <ResourceUploadSelector
-                                                onResourceSelect={(resourceData: { type: string; file: File }) => {
-                                                    if (editingResourceId) {
-                                                        // Replace
-                                                        setResources(resources.map(r => r.id === editingResourceId ? {
-                                                            ...r,
-                                                            name: resourceData.file?.name || "مورد محدث",
-                                                            size: "1.0 MB", // Mock size
-                                                            type: "UPDATED"
-                                                        } : r));
-                                                    } else {
-                                                        // Add
-                                                        setResources([...resources, {
-                                                            id: Date.now(),
-                                                            name: resourceData.file?.name || "مورد جديد",
-                                                            size: "0.5 MB", // Mock size
-                                                            type: "NEW"
-                                                        }]);
-                                                    }
-                                                    setShowContentTypeSelector(false);
-                                                    setEditingResourceId(null);
-                                                }}
-                                                onCancel={() => {
-                                                    setShowContentTypeSelector(false);
-                                                    setEditingResourceId(null);
-                                                }}
-                                            />
-                                        </div>
-                                    )}
+                                    <p className="text-[11px] text-gray-600 font-medium text-right mt-4">
+                                        <span className="font-bold">ملاحظة:</span> لا يزال video هذا قيد المعالجة. سنرسل إليك رسالة عبر البريد الإلكتروني عندما يكون جاهزًا.
+                                    </p>
                                 </div>
                             )}
                         </div>
+                    )}
 
+                    {/* Left-aligned buttons (Description, Resources, Lab) - Show after upload completes, during processing, or when not managing video */}
+                    {/* Left-aligned buttons (Description, Resources, Lab) - Show after upload completes, during processing, or when not managing video */}
+                    {((selectedContentType === "VIDEO")
+                        || uploadStatus === "COMPLETED") && (
+                            <div className="flex flex-col items-start gap-3 mt-4">
+                                <Button
+                                    variant="outline"
+                                    size="sm"
+                                    className="border-[#7c3aed] text-[#7c3aed] hover:bg-[#7c3aed]/5 rounded-xl flex items-center gap-3 w-40 font-bold px-4 py-6 border-2"
+                                >
+                                    <Plus className="h-5 w-5" /> الوصف
+                                </Button>
 
+                                <div className="w-full">
+                                    <div className="flex flex-col items-start gap-4">
+                                        <Button
+                                            variant="outline"
+                                            size="sm"
+                                            onClick={() => setSelectedContentType(selectedContentType === "RESOURCES" ? null : "RESOURCES")}
+                                            className="border-[#7c3aed] text-[#7c3aed] hover:bg-[#7c3aed]/5 rounded-xl flex items-center gap-3 w-40 font-bold px-4 py-6 border-2"
+                                        >
+                                            <Plus className="h-5 w-5" /> الموارد
+                                        </Button>
 
-                        <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
-                            <button className="w-full flex items-center justify-between p-4 bg-white hover:bg-gray-50 transition-colors">
-                                <div className="flex items-center gap-2">
-                                    <span className="font-bold text-gray-700">مختبر</span>
-                                    <Plus className="h-4 w-4 text-[#7c3aed]" />
+                                        {selectedContentType === "RESOURCES" && (
+                                            <div className="w-full mt-2 animate-in fade-in slide-in-from-top-2 duration-200">
+                                                <div className="border border-gray-100 rounded-lg p-4 bg-gray-50/50">
+                                                    {resources.length > 0 && (
+                                                        <div className="flex flex-col gap-2 mb-4">
+                                                            {resources.map((resource) => (
+                                                                <div key={resource.id} className="flex items-center justify-between p-3 border border-gray-100 rounded-md bg-white">
+                                                                    <div className="flex items-center gap-3">
+                                                                        <FileText className="h-5 w-5 text-gray-400" />
+                                                                        <div className="flex flex-col">
+                                                                            <span className="text-sm font-bold text-gray-700">{resource.name}</span>
+                                                                            <span className="text-[10px] text-gray-500">{resource.size}</span>
+                                                                        </div>
+                                                                    </div>
+                                                                    <button onClick={() => setResources(resources.filter(r => r.id !== resource.id))} className="text-gray-400 hover:text-red-500">
+                                                                        <X className="h-4 w-4" />
+                                                                    </button>
+                                                                </div>
+                                                            ))}
+                                                        </div>
+                                                    )}
+                                                    <ResourceUploadSelector
+                                                        onResourceSelect={(data) => {
+                                                            setResources([...resources, { id: Date.now().toString(), name: data.file.name, size: "1.0 MB", type: AttachmentType.OTHER }]);
+                                                            setSelectedContentType(null);
+                                                        }}
+                                                        onCancel={() => setSelectedContentType(null)}
+                                                    />
+                                                </div>
+                                            </div>
+                                        )}
+                                    </div>
                                 </div>
-                                <ChevronDown className="h-4 w-4 text-gray-400" />
-                            </button>
-                        </div>
-                    </div>
+
+                                <Button
+                                    variant="outline"
+                                    size="sm"
+                                    className="border-[#7c3aed] text-[#7c3aed] hover:bg-[#7c3aed]/5 rounded-xl flex items-center gap-3 w-40 font-bold px-4 py-6 border-2"
+                                >
+                                    <Plus className="h-5 w-5" /> مختبر
+                                </Button>
+                            </div>
+                        )}
                 </div>
             )}
         </div>
