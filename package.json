@@ -8,7 +8,7 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "openapi:generate": "tsx --env-file=.env scripts/generate-api-types.ts"
+    "openapi:generate": "tsx scripts/generate-api-types.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.0.1",
