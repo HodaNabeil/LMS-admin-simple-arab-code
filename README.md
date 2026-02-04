@@ -112,7 +112,7 @@ simple-arab-code-admin/
 ### Prerequisites
 
 - Node.js (version 18 or higher)
-- npm or yarn package manager
+- pnpm package manager (recommended)
 
 ### Installation
 
@@ -126,9 +126,7 @@ simple-arab-code-admin/
 2. **Install dependencies**
 
    ```bash
-   npm install
-   # or
-   yarn install
+   pnpm install
    ```
 
 3. **Environment Configuration**
@@ -143,19 +141,18 @@ simple-arab-code-admin/
 4. **Start the development server**
 
    ```bash
-   npm run dev
-   # or
-   yarn dev
+   pnpm run dev
    ```
 
    The application will be available at `http://localhost:3000`
 
 ### Available Scripts
 
-- `npm run dev` - Start development server on port 3000
-- `npm run build` - Build for production (TypeScript compilation + Vite build)
-- `npm run lint` - Run ESLint for code quality checks
-- `npm run preview` - Preview production build locally
+- `pnpm run dev` - Start development server on port 3000
+- `pnpm run openapi:generate` - Generate API types from OpenAPI schema
+- `pnpm run build` - Build for production (Type generation + TypeScript compilation + Vite build)
+- `pnpm run lint` - Run ESLint for code quality checks
+- `pnpm run preview` - Preview production build locally
 
 ## 🏗️ Architecture Overview
 

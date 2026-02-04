@@ -1,8 +1,8 @@
 {
-  "buildCommand": "yarn build",
+  "buildCommand": "pnpm run openapi:generate && pnpm build",
   "outputDirectory": "dist",
-  "devCommand": "yarn dev",
-  "installCommand": "yarn install",
+  "devCommand": "pnpm dev",
+  "installCommand": "pnpm install",
   "framework": "vite",
   "git": {
     "deploymentEnabled": {
