@@ -1,9 +1,18 @@
 import { useParams } from "react-router-dom";
-import { useCoupons, useCourse } from "@/features/courses/hooks/useCoursesQueries";
-import { useCreateCoupon, useUpdateCoupon, useDeleteCouponMutation } from "@/features/courses/hooks/useCoursesMutations";
+import { useCourse } from "@/features/courses/hooks/useCoursesQueries";
 import CreateCouponDialog from "@/features/courses/manage/promotions/components/CreateCouponDialog";
 import CouponsTable from "@/features/courses/manage/promotions/components/CouponsTable";
-import type { CreateCouponRequest, UpdateCouponRequest, Coupon } from "@/types/course";
+import type {
+  CreateCouponRequest,
+  UpdateCouponRequest,
+  Coupon,
+} from "@/types/course";
+import { useCoupons } from "@/features/courses/manage/promotions/hooks/useCouponsQueries";
+import {
+  useCreateCoupon,
+  useDeleteCouponMutation,
+  useUpdateCoupon,
+} from "@/features/courses/manage/promotions/hooks/useCouponMutation";
 
 export default function Promotions() {
   const { slug } = useParams<{ slug: string }>();
@@ -20,7 +29,10 @@ export default function Promotions() {
   const inactiveCoupons = coupons.filter((coupon) => !coupon.isActive);
 
   const handleCreateCoupon = async (couponData: CreateCouponRequest) => {
-    await createCouponMutation.mutateAsync({ ...couponData, courseIds: [courseId] });
+    await createCouponMutation.mutateAsync({
+      ...couponData,
+      courseIds: [courseId],
+    });
   };
 
   const handleDeleteCoupon = (id: string) => {
@@ -28,11 +40,20 @@ export default function Promotions() {
   };
 
   const handleEditCoupon = async (coupon: Coupon) => {
-    const { id, usedCount: _usedCount, createdAt: _createdAt, updatedAt: _updatedAt, ...data } = coupon;
+    const {
+      id,
+      usedCount: _usedCount,
+      createdAt: _createdAt,
+      updatedAt: _updatedAt,
+      ...data
+    } = coupon;
     void _usedCount;
     void _createdAt;
     void _updatedAt;
-    await updateCouponMutation.mutateAsync({ id, data: (data as unknown) as UpdateCouponRequest });
+    await updateCouponMutation.mutateAsync({
+      id,
+      data: data as unknown as UpdateCouponRequest,
+    });
   };
 
   return (

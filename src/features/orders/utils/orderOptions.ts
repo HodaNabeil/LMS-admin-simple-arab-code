@@ -32,14 +32,23 @@ export const getCurrencyOptions = (): OptionType[] =>
         label: currency === "EGP" ? "جنيه مصري (EGP)" : "دولار أمريكي (USD)",
     }));
 
-export const getCourseOptions = (courses: { id: number; name: string }[]): OptionType[] =>
+import type { Course, Coupon } from "@/types/course";
+import type { User } from "@/types/user";
+
+export const getCourseOptions = (courses: Course[]): OptionType[] =>
     courses.map((course) => ({
         value: course.id,
-        label: course.name,
+        label: course.title,
     }));
 
-export const getUserOptions = (users: { id: number; name: string }[]): OptionType[] =>
+export const getUserOptions = (users: User[]): OptionType[] =>
     users.map((user) => ({
         value: user.id,
-        label: user.name,
+        label: `${user.firstName || ""} ${user.lastName || ""} (${user.email})`.trim() || user.email,
+    }));
+
+export const getCouponOptions = (coupons: Coupon[]): OptionType[] =>
+    coupons.map((coupon) => ({
+        value: coupon.id,
+        label: coupon.code,
     }));

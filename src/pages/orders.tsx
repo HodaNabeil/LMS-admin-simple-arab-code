@@ -1,57 +1,13 @@
 import { NewOrder } from "@/features/orders/components/new-order";
 import OrdersFilters from "@/features/orders/components/orders-filters";
-import OrdersTable from "@/features/orders/components/table/orders-table";
-
+import { useOrders } from "@/features/orders/hooks/useOrdersQueries";
 import { useMemo, useState } from "react";
-import OrderStats from "@/features/orders/components/order-stats";
-
-const orders = [
-  {
-    id: 1,
-    date: "2025-06-25",
-    PaymentMethod: "بطاقة فيزا/ماستر",
-    Status: "مدفوع",
-    Amount: 3,
-    Currency: "SAR",
-    price: 300,
-  },
-  {
-    id: 2,
-    date: "2025-06-24",
-    PaymentMethod: "Apple Pay",
-    Status: "غير مدفوع",
-    Amount: 1,
-    Currency: "USD",
-    price: 120,
-  },
-  {
-    id: 3,
-    date: "2025-06-23",
-    PaymentMethod: "محفظة إلكترونية",
-    Status: "غير مدفوع",
-    Amount: 5,
-    Currency: "EGP",
-    price: 80,
-  },
-  {
-    id: 4,
-    date: "2025-06-22",
-    PaymentMethod: "Stripe",
-    Status: "مدفوع",
-    Amount: 2,
-    Currency: "SAR",
-    price: 250,
-  },
-  {
-    id: 5,
-    date: "2025-06-21",
-    PaymentMethod: "STC Pay",
-    Status: "مدفوع",
-    Amount: 7,
-    Currency: "USD",
-    price: 700,
-  },
-];
+import { Loader } from "@/components/shared/loader";
+import { PageHeader } from "@/components/shared/PageHeader";
+import { ShoppingCart } from "lucide-react";
+import type { Order } from "@/types/orders";
+import { Button } from "@/components/ui/button";
+import { OrdersTable } from "@/features/orders/components/table/orders-table";
 
 export default function Orders() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -61,20 +17,29 @@ export default function Orders() {
   const [selectedCurrency, setSelectedCurrency] = useState("all");
   const [selectedAmount, setSelectedAmount] = useState("all");
 
+  const { data: ordersResponse, isPending, error, isError } = useOrders();
+
+  const orders = useMemo(
+    () => ordersResponse?.data?.orders || [],
+    [ordersResponse?.data?.orders],
+  );
+
   const filteredOrders = useMemo(() => {
-    return orders.filter((order) => {
-      const matchesSearch = !searchTerm || order.id.toString() === searchTerm;
-      const matchesPrice = minPrice === 0 || order.Amount >= minPrice;
+    return orders.filter((order: Order) => {
+      const matchesSearch =
+        !searchTerm || order.id.toString().includes(searchTerm);
+      const orderAmount = order.total || order.amount || order.amount || 0;
+      const matchesPrice = minPrice === 0 || orderAmount >= minPrice;
       const matchesCurrency =
-        selectedCurrency === "all" || order.Currency === selectedCurrency;
+        selectedCurrency === "all" || order.currency === selectedCurrency;
       const matchesPayment =
         selectedPaymentMethod === "all" ||
-        order.PaymentMethod === selectedPaymentMethod;
+        (order?.payment?.paymentMethod || order?.paymentMethod) === selectedPaymentMethod;
       const matchesAmount =
         selectedAmount === "all" ||
-        (selectedAmount === "1-5" && order.Amount >= 1 && order.Amount <= 5) ||
-        (selectedAmount === "5-10" && order.Amount > 5 && order.Amount <= 10) ||
-        (selectedAmount === "10+" && order.Amount > 10);
+        (selectedAmount === "1-5" && orderAmount >= 1 && orderAmount <= 5) ||
+        (selectedAmount === "5-10" && orderAmount > 5 && orderAmount <= 10) ||
+        (selectedAmount === "10+" && orderAmount > 10);
 
       return (
         matchesSearch &&
@@ -85,6 +50,7 @@ export default function Orders() {
       );
     });
   }, [
+    orders,
     searchTerm,
     minPrice,
     selectedCurrency,
@@ -101,13 +67,55 @@ export default function Orders() {
     setSelectedAmount("all");
   };
 
-  return (
-    <div className="container p-4">
-      <div className="flex justify-between items-center mb-4">
-        <h1 className="text-2xl font-bold mb-4">كل الطلبات </h1>
-        <NewOrder />
+  if (isPending)
+    return (
+      <div className="flex h-screen items-center justify-center">
+        <Loader />
       </div>
-      <OrderStats orders={orders} />
+    );
+
+  if (isError && error) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[400px] p-6 text-center space-y-4 bg-red-50 rounded-xl border border-red-100 m-4">
+        <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center">
+          <ShoppingCart className="w-6 h-6 text-red-600" />
+        </div>
+        <div className="space-y-2">
+          <h3 className="text-lg font-bold text-red-900">
+            حدث خطأ أثناء تحميل الطلبات
+          </h3>
+          <p className="text-red-700 max-w-xs mx-auto">
+            {error.message ||
+              "فشل الاتصال بالخادم. يرجى المحاولة مرة أخرى لاحقاً."}
+          </p>
+        </div>
+        <Button
+          variant="outline"
+          className="bg-white hover:bg-red-50 border-red-200 text-red-700 font-semibold"
+          onClick={() => window.location.reload()}
+        >
+          إعادة المحاولة
+        </Button>
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-6 p-4">
+      <PageHeader
+        title="الطلبات"
+        icon={ShoppingCart}
+        badge={
+          <div className="bg-linear-to-r from-blue-100 to-blue-200 text-blue-700 px-3 lg:px-4 py-1.5 lg:py-2 rounded-full text-sm font-medium border border-blue-300 shadow-sm">
+            الطلبات ({orders.length})
+          </div>
+        }
+      >
+        <NewOrder />
+      </PageHeader>
+
+      {/* <OrderStats orders={orders} /> */}
+
       <OrdersFilters
         selectedPaymentMethod={selectedPaymentMethod}
         searchTerm={searchTerm}

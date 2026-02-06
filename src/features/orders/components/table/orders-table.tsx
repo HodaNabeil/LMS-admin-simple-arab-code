@@ -17,7 +17,8 @@ import { Button } from "@/components/ui/button";
 import EditOrder from "../edit-order";
 import { OrdersTableMobile } from "./OrdersTableMobile";
 import { OrdersTableDesktop } from "./OrdersTableDesktop";
-import type { Order } from "../../types";
+import { Badge } from "@/components/ui/badge";
+import type { Order, OrderFormData } from "../../types";
 
 interface OrdersTableProps {
   orders: Order[];
@@ -25,74 +26,92 @@ interface OrdersTableProps {
 
 const columns: ColumnDef<Order>[] = [
   {
-    accessorKey: "id",
-    header: "ID",
-    cell: ({ row }) => <div>{row.getValue("id")}</div>,
+    accessorKey: "orderNumber",
+    header: "رقم الطلب",
+    cell: ({ row }) => (
+      <div className="font-medium text-blue-600">{row.getValue("orderNumber")}</div>
+    ),
   },
   {
-    accessorKey: "date",
-    header: "التاريح",
-    cell: ({ row }) => <div>{row.getValue("date")}</div>,
+    accessorKey: "email",
+    header: "البريد الإلكتروني",
   },
   {
-    accessorKey: "PaymentMethod",
-    header: "طريقة الدفع",
-    cell: ({ row }) => <div>{row.getValue("PaymentMethod")}</div>,
-  },
-  {
-    accessorKey: "Status",
+    accessorKey: "status",
     header: "الحالة",
-    cell: ({ row }) => <div>{row.getValue("Status")}</div>,
+    cell: ({ row }) => {
+      const status = row.getValue("status") as string;
+      const variant: "secondary" | "default" | "destructive" =
+        status === "PENDING"
+          ? "secondary"
+          : status === "COMPLETED"
+            ? "default"
+            : "destructive";
+      return <Badge variant={variant}>{status}</Badge>;
+    },
   },
   {
-    accessorKey: "Amount",
-    header: "المبلغ",
-    cell: ({ row }) => <div>{row.getValue("Amount")}</div>,
+    accessorKey: "total",
+    header: "الإجمالي",
+    cell: ({ row }) => {
+      const total = row.getValue("total") as number;
+      const currency = row.original.currency || "EGP";
+      return <div className="font-bold">{total} {currency}</div>;
+    },
   },
   {
-    accessorKey: "Currency",
-    header: "العملة",
-    cell: ({ row }) => <div>{row.getValue("Currency")}</div>,
+    accessorKey: "items",
+    header: "عدد الكورسات",
+    cell: ({ row }) => <div>{(row.getValue("items") as []).length}</div>,
+  },
+  {
+    accessorKey: "createdAt",
+    header: "تاريخ الطلب",
+    cell: ({ row }) => {
+      const date = new Date(row.getValue("createdAt") as string);
+      return (
+        <div className="flex flex-col">
+          <span>{date.toLocaleDateString("ar-EG")}</span>
+          <span className="text-xs text-muted-foreground">
+            {date.toLocaleTimeString("ar-EG", { hour: "2-digit", minute: "2-digit" })}
+          </span>
+        </div>
+      );
+    },
   },
   {
     id: "actions",
     header: "الإجراءات",
     enableHiding: false,
     cell: ({ row }) => {
-      // Transform Order to OrderFormData
       const order = row.original;
-      const orderFormData = {
-        price: order.price,
-        discountCode: "", // Default empty since not in Order
-        orderStatus: order.Status ? { value: order.Status, label: order.Status } : null,
-        paymentMethod: order.PaymentMethod ? { value: order.PaymentMethod, label: order.PaymentMethod } : null,
-        currency: order.Currency ? { value: order.Currency, label: order.Currency } : null,
-        courses: [], // Default empty since not in Order
-        user: null, // Default null since not in Order
+
+      const orderFormData: OrderFormData = {
+        price: order.total,
+        discountCode: order.couponCode || "",
+        orderStatus: order.status ? { value: order.status, label: order.status } : null,
+        paymentMethod: order.payment?.status
+          ? { value: order.payment.status, label: order.payment.status }
+          : null,
+        currency: { value: order.currency || "EGP", label: order.currency || "EGP" },
+        courses: order.items.map((item) => ({
+          value: item.id,
+          label: item.courseName,
+        })),
+        user: { value: order.userId, label: order.email },
       };
 
       return (
-        <Button
-          variant="ghost"
-          size="sm"
-          className="h-8 w-8 p-0 text-blue-600 hover:text-blue-800 hover:bg-blue-50"
-        >
-          <EditOrder orderId={row.getValue("id")}
-            initialData={orderFormData}
-          />
-        </Button>
+        <EditOrder orderId={order.id} initialData={orderFormData} />
       );
     },
   },
 ];
 
-function OrdersTable({ orders }: OrdersTableProps) {
+export function OrdersTable({ orders }: OrdersTableProps) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    []
-  );
-  const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({});
+  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
+  const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
 
   const table = useReactTable({
@@ -146,5 +165,3 @@ function OrdersTable({ orders }: OrdersTableProps) {
     </div>
   );
 }
-
-export default OrdersTable;

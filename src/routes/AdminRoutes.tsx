@@ -1,6 +1,7 @@
 import { Route } from 'react-router-dom';
 import AdminLayout from '@/components/shared/admin-layout';
 import { lazyLoad } from './lazyLoadHelper';
+import Payment from '@/pages/payment';
 
 const Admin = lazyLoad(() => import('@/pages'));
 const Users = lazyLoad(() => import('@/pages/users'));
@@ -27,7 +28,13 @@ export const adminRoutes = (
     <Route index element={Admin} />
     <Route path="users" element={Users} />
     <Route path="profile" element={<div>Profile Page</div>} />
-    <Route path="settings" element={<div>Settings Page</div>} />
+    <Route path="settings">
+      <Route path="payment" element={<Payment />} />
+    </Route>
+
+
+
+
     <Route path="paths">
       <Route index element={Paths} />
       <Route path="create" element={CreateNewPath} />

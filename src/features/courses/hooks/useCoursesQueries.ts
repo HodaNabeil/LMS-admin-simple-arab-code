@@ -1,23 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
-import { coursesKeys, couponsKeys } from "@/lib/query-keys";
+import { coursesKeys } from "@/lib/query-keys";
 import { coursesApi } from "../services/coursesApi";
 import type {
   GetCoursesResponse,
   GetCourseResponse,
   CourseFilters,
   GetCoursesByPathParams,
-  CouponsResponse,
 } from "@/types/course";
-import { couponApi } from "../services/cuponApi";
 
-export function useCoupons() {
-  return useQuery<CouponsResponse>({
-    queryKey: couponsKeys.lists(),
-    queryFn: async (): Promise<CouponsResponse> => {
-      return await couponApi.getAllCoupons();
-    },
-  });
-}
+
 
 export function useCourses(filters?: CourseFilters) {
   return useQuery<GetCoursesResponse>({

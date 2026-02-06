@@ -1,5 +1,4 @@
 import { Languages } from "@/constants/enums";
-import type { Invoice } from "@/types/PaymentHistory";
 
 const CURRENCY_FORMATTER = new Intl.NumberFormat("en-US", {
   currency: "USD",
@@ -54,27 +53,42 @@ export function formatLargeNumber(value: number): string {
   return value.toString();
 }
 
-export function formatPaymentStatus(status: Invoice["status"]): string {
-  switch (status) {
+export function formatPaymentStatus(status: string): string {
+  switch (status?.toUpperCase()) {
     case "PAID":
+    case "COMPLETED":
+    case "SUCCEEDED":
       return "مدفوعة";
     case "FAILED":
       return "غير مدفوعة";
     case "PENDING":
+    case "PROCESSING":
       return "قيد الانتظار";
     case "REFUNDED":
       return "مستردة";
+    case "CANCELLED":
+      return "ملغاة";
     default:
-      return status; // Return the original status if it doesn't match known values
+      return status;
   }
 }
-export function formatPaymentMethod(method: Invoice["paymentMethod"]): string {
-  switch (method) {
+export function formatPaymentMethod(method: string | undefined): string {
+  if (!method) return "غير محدد";
+
+  switch (method?.toUpperCase()) {
     case "STRIPE":
+    case "CARD":
+    case "CREDIT_CARD":
+    case "VISA":
+    case "MASTERCARD":
       return "بطاقة ائتمان";
     case "PHONE_CASH":
-      return "نقدًا عبر الهاتف";
+    case "WALLET":
+    case "VODAFONE_CASH":
+      return "محفظة إلكترونية";
+    case "CASH":
+      return "نقدًا";
     default:
-      return method; // Return the original method if it doesn't match known values
+      return method;
   }
 }
