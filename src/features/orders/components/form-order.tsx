@@ -177,7 +177,7 @@ export default function FormOrder({
         {/* Course Price */}
         <div className="grid gap-3">
           <label htmlFor="coursePriceCents" className="font-bold text-gray-900 mb-1">
-            سعر الدورة (بالقرش) *
+            سعر الدورة (بالسنت) *
           </label>
           <Input
             id="coursePriceCents"
@@ -232,7 +232,7 @@ export default function FormOrder({
           {/* Discount Amount */}
           <div className="grid gap-3 mb-3">
             <label htmlFor="discountCents" className="text-sm font-semibold text-gray-700">
-              مبلغ التخفيض (بالقرش)
+              مبلغ التخفيض (بالسنت)
             </label>
             <Input
               id="discountCents"
@@ -253,7 +253,7 @@ export default function FormOrder({
           {/* Tax Amount */}
           <div className="grid gap-3 mb-3">
             <label htmlFor="taxCents" className="text-sm font-semibold text-gray-700">
-              الضريبة (بالقرش)
+              الضريبة (بالسنت)
             </label>
             <Input
               id="taxCents"
