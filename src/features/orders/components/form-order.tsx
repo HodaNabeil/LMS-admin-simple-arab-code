@@ -199,7 +199,7 @@ export default function FormOrder({
         <div className="border-t border-gray-200 pt-4 mt-2">
           <div className="flex items-center gap-2 mb-3">
             <Calculator className="h-5 w-5 text-blue-600" />
-            <label className="font-bold text-gray-900">التخفيض والتسعير</label>
+            <label className="font-bold text-gray-900">الكوبون والخصم</label>
           </div>
 
           {/* Coupon */}
