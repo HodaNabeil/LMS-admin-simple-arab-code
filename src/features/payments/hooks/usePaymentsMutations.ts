@@ -12,13 +12,11 @@ import type {
 import { paymentApi } from '../services/paymentApi';
 
 export function useCreatePayment() {
-    const queryClient = useQueryClient();
     return useMutation<CreatePaymentResponse, Error, CreatePaymentRequest>({
         mutationFn: async (data: CreatePaymentRequest): Promise<CreatePaymentResponse> => {
             return await paymentApi.createPayment(data);
         },
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: queryKeys.orders.all });
             toast.success('تم إنشاء طلب الدفع بنجاح');
         },
         onError: (error) => {

@@ -13,7 +13,7 @@ import type {
  */
 export function useUsers(filters?: UserFilters) {
   return useQuery({
-    queryKey: queryKeys.users.list(filters),
+    queryKey: queryKeys.users.list(filters ),
     queryFn: async (): Promise<UserListData> => {
       const { data } = await api.get<UserListResponse>("/api/users", {
         params: filters,

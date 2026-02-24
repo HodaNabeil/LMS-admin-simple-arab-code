@@ -68,6 +68,7 @@ export enum Pages {
   ADMINS = "admins",
   TRACKS = "tracks",
   CREATE_TRACKS = "tracks/create",
+  CREATE_PAYMENTS = "payments/create",
 }
 
 export enum InputTypes {

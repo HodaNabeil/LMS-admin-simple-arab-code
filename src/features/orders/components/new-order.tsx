@@ -8,11 +8,14 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import FormOrder from "./form-order";
 import type { Order } from "../types";
 
 import { useCreateOrder } from "../hooks/useOrdersMutations";
-import type { CreateOrderDtoCurrency, CreateOrderItemDtoCurrency } from "@/types";
+import type {
+  CreateOrderDtoCurrency,
+  CreateOrderItemDtoCurrency,
+} from "@/types";
+import OrderForm from "./OrderForm";
 
 export function NewOrder() {
   const [open, setOpen] = useState(false);
@@ -60,7 +63,7 @@ export function NewOrder() {
             أضف طلبًا جديدًا مع دعم كامل للتخفيضات والكوبونات
           </DialogDescription>
         </DialogHeader>
-        <FormOrder
+        <OrderForm
           mode="create"
           onSubmit={handleSubmit}
           onCancel={() => setOpen(false)}

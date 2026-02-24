@@ -15,6 +15,7 @@ import {
   pricingSchema,
 } from '@/validations/course';
 import { couponSchema } from '@/validations/coupon';
+import { createPaymentSchema } from '@/validations/payment';
 
 type ValidationSchema =
   | typeof signinSchema
@@ -29,6 +30,7 @@ type ValidationSchema =
   | typeof goalsSchema
   | typeof pricingSchema
   | typeof couponSchema
+  | typeof createPaymentSchema
   | typeof createLessonCourseSchema
   | z.ZodObject<Record<string, never>>;
 
@@ -69,6 +71,8 @@ const useFormValidations = (
         return createLessonCourseSchema;
       case Pages.COUPONS:
         return couponSchema;
+      case Pages.CREATE_PAYMENTS:
+        return createPaymentSchema;
       default:
         return z.object({});
     }

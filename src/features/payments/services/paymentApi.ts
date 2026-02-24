@@ -6,6 +6,8 @@ import type {
   CreatePaymentResponse,
   UpdatePaymentResponse,
   RefundPaymentResponse,
+  CreatePaymentRequest,
+  UpdatePaymentRequest,
 } from "@/types/payments";
 
 export const paymentApi = {
@@ -24,7 +26,7 @@ export const paymentApi = {
   },
 
   // Initiate a payment/order
-  async createPayment(data: any): Promise<CreatePaymentResponse> {
+  async createPayment(data: CreatePaymentRequest): Promise<CreatePaymentResponse> {
     const response = await api.post<CreatePaymentResponse>(
       PAYMENT_ENDPOINTS.CREATE,
       data
@@ -35,7 +37,7 @@ export const paymentApi = {
   // Update a payment/order
   async updatePayment(
     id: string,
-    data: any
+    data: UpdatePaymentRequest
   ): Promise<UpdatePaymentResponse> {
     const response = await api.patch<UpdatePaymentResponse>(
       PAYMENT_ENDPOINTS.UPDATE.replace("{id}", id),

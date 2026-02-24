@@ -50,13 +50,13 @@ export default function CouponFormDialog({ onSubmit, isLoading = false, initialD
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         {children ? children : (
-          <Button className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold px-6 py-2 rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105">
+          <Button className="bg-linear-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold px-6 py-2 rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105">
             إنشاء كوبون جديد
           </Button>
         )}
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[500px] bg-white rounded-2xl shadow-2xl border-0 p-0 overflow-hidden">
-        <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-6 text-white">
+      <DialogContent className="sm:max-w-125 bg-white rounded-2xl shadow-2xl border-0 p-0 overflow-hidden">
+        <div className="bg-linear-to-r from-blue-600 to-purple-600 p-6 text-white">
           <DialogHeader className="text-center">
             <DialogTitle className="text-2xl font-bold text-white flex items-center justify-center gap-2">
               <HashIcon className="w-6 h-6" />

@@ -1,7 +1,7 @@
 import { Route } from 'react-router-dom';
 import AdminLayout from '@/components/shared/admin-layout';
 import { lazyLoad } from './lazyLoadHelper';
-import Payment from '@/pages/payment';
+import Payment from '@/pages/payment/payment';
 
 const Admin = lazyLoad(() => import('@/pages'));
 const Users = lazyLoad(() => import('@/pages/users'));
@@ -9,7 +9,7 @@ const Courses = lazyLoad(() => import('@/pages/courses'));
 const Paths = lazyLoad(() => import('@/pages/paths'));
 const CreateNewPath = lazyLoad(() => import('@/pages/paths/create'));
 const ManagePath = lazyLoad(() => import('@/pages/paths/[pathSlug]/manage'));
-const Orders = lazyLoad(() => import('@/pages/orders'));
+const Orders = lazyLoad(() => import('@/pages/orders/orders'));
 const Availability = lazyLoad(() => import('@/pages/courses/[slug]/manage/availability'));
 const Basics = lazyLoad(() => import('@/pages/courses/[slug]/manage/basics'));
 const Curriculum = lazyLoad(() => import('@/pages/courses/[slug]/manage/curriculum'));

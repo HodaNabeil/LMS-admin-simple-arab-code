@@ -87,22 +87,22 @@ const columns: ColumnDef<Order>[] = [
       const order = row.original;
 
       const orderFormData: OrderFormData = {
-        price: order.total,
-        discountCode: order.couponCode || "",
-        orderStatus: order.status ? { value: order.status, label: order.status } : null,
-        paymentMethod: order.payment?.status
-          ? { value: order.payment.status, label: order.payment.status }
-          : null,
-        currency: { value: order.currency || "EGP", label: order.currency || "EGP" },
+        user: { value: order.userId, label: order.userId },
         courses: order.items.map((item) => ({
-          value: item.id,
-          label: item.courseName,
+          value: item.courseId,
+          label: item.courseId, // Using courseId since courseName doesn't exist
         })),
-        user: { value: order.userId, label: order.email },
+        currency: { value: order.currency || "EGP", label: order.currency || "EGP" },
+        coupon: order.couponCode ? { value: order.couponCode, label: order.couponCode } : null,
+        subtotalCents: order.subtotalCents || 0,
+        discountCents: order.discountCents || 0,
+        taxCents: order.taxCents || 0,
+        totalCents: order.totalCents || 0,
+        couponCode: order.couponCode,
       };
 
       return (
-        <EditOrder orderId={order.id} initialData={orderFormData} />
+        <EditOrder orderId={order.userId} initialData={orderFormData} />
       );
     },
   },

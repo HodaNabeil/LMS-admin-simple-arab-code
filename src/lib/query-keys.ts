@@ -14,7 +14,7 @@ export const authKeys = {
 export const userKeys = {
   all: ["users"] as const,
   lists: () => [...userKeys.all, "list"] as const,
-  list: (filters?: Record<string, unknown>) =>
+  list: (filters?: object) =>
     [...userKeys.lists(), filters] as const,
   details: () => [...userKeys.all, "detail"] as const,
   detail: (id: string) => [...userKeys.details(), id] as const,
@@ -23,7 +23,7 @@ export const userKeys = {
 export const pathsKeys = {
   all: ["paths"] as const,
   lists: () => [...pathsKeys.all, "list"] as const,
-  list: (filters?: Record<string, unknown>) =>
+  list: (filters?: object) =>
     [...pathsKeys.lists(), filters] as const,
   details: () => [...pathsKeys.all, "detail"] as const,
   detail: (id: string) => [...pathsKeys.details(), id] as const,
@@ -33,11 +33,11 @@ export const pathsKeys = {
 export const coursesKeys = {
   all: ["courses"] as const,
   lists: () => [...coursesKeys.all, "list"] as const,
-  list: (filters?: Record<string, unknown>) =>
+  list: (filters?: object) =>
     [...coursesKeys.lists(), filters] as const,
   details: () => [...coursesKeys.all, "detail"] as const,
   detail: (id: string) => [...coursesKeys.details(), id] as const,
-  byPath: (params: Record<string, unknown>) =>
+  byPath: (params: object) =>
     [...coursesKeys.all, "by-path", params] as const,
   stats: () => [...coursesKeys.all, "stats"] as const,
 };
@@ -45,7 +45,7 @@ export const coursesKeys = {
 export const tracksKeys = {
   all: ["tracks"] as const,
   lists: () => [...tracksKeys.all, "list"] as const,
-  list: (filters?: Record<string, unknown>) =>
+  list: (filters?: object) =>
     [...tracksKeys.lists(), filters] as const,
   details: () => [...tracksKeys.all, "detail"] as const,
   detail: (id: string) => [...tracksKeys.details(), id] as const,
@@ -55,7 +55,7 @@ export const tracksKeys = {
 export const couponsKeys = {
   all: ["coupons"] as const,
   lists: () => [...couponsKeys.all, "list"] as const,
-  list: (filters?: Record<string, unknown>) =>
+  list: (filters?: object) =>
     [...couponsKeys.lists(), filters] as const,
   details: () => [...couponsKeys.all, "detail"] as const,
   detail: (id: string) => [...couponsKeys.details(), id] as const,
@@ -70,7 +70,7 @@ export const curriculumKeys = {
 export const ordersKeys = {
   all: ["orders"] as const,
   lists: () => [...ordersKeys.all, "list"] as const,
-  list: (filters?: Record<string, unknown>) =>
+  list: (filters?: object) =>
     [...ordersKeys.lists(), filters] as const,
   details: () => [...ordersKeys.all, "detail"] as const,
   detail: (id: string) => [...ordersKeys.details(), id] as const,

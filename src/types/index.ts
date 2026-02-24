@@ -229,7 +229,6 @@ export {
 
 // Enum Aliases for convenience
 export { 
-  UserResponseDtoRole as UserRole,
   CourseDtoLevel as CourseLevel,
   CourseDtoStatus as CourseStatus,
   CourseDtoVisibility as CourseVisibility,

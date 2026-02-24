@@ -31,7 +31,7 @@ api.interceptors.request.use(
   },
   (error: AxiosError) => {
     return Promise.reject(error);
-  }
+  },
 );
 
 // Response interceptor to handle auth errors and token refresh
@@ -53,16 +53,14 @@ api.interceptors.response.use(
             `${api.defaults.baseURL}${AUTH_ENDPOINTS.REFRESH}`,
             {
               refresh_token: refreshToken,
-            }
+            },
           );
 
-          const { data } =
-            response.data;
+          const { data } = response.data;
 
           // Update tokens in cookies
           if (data.accessToken) {
             authCookies.setAccessToken(data.accessToken);
-
           }
 
           // Update the original request with new token
@@ -85,7 +83,7 @@ api.interceptors.response.use(
     }
 
     return Promise.reject(error);
-  }
+  },
 );
 
 export default api;

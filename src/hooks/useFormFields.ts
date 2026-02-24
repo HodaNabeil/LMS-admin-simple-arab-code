@@ -442,6 +442,38 @@ const useFormFields = ({ slug }: IFormFieldsVariables) => {
     },
   ];
 
+  const createPaymentFields = (): IFormField[] => [
+    {
+      name: "orderId",
+      label: "اختر الطلب",
+      type: "select",
+      placeholder: "اختر طلباً",
+      options: [],
+    },
+    {
+      name: "provider",
+      label: "مزود الدفع",
+      type: "select",
+      placeholder: "اختر مزود الدفع",
+      options: [
+        { value: "PAYMOB", label: "Paymob" },
+        { value: "STRIPE", label: "Stripe" },
+        { value: "PAYPAL", label: "PayPal" },
+      ],
+    },
+    {
+      name: "status",
+      label: "الحالة",
+      type: "select",
+      placeholder: "اختر الحالة",
+      options: [
+        { value: "PENDING", label: "قيد الانتظار" },
+        { value: "PROCESSING", label: "قيد المعالجة" },
+        { value: "SUCCEEDED", label: "مكتمل" },
+      ],
+    },
+  ];
+
   const getFormFields = (dynamicOptions?: Record<string, IOption[]>): IFormField[] => {
     const fields = (() => {
       switch (slug) {
@@ -475,6 +507,8 @@ const useFormFields = ({ slug }: IFormFieldsVariables) => {
           return lessonFields();
         case Pages.COUPONS:
           return couponFields();
+        case Pages.CREATE_PAYMENTS:
+          return createPaymentFields();
         default:
           return [];
       }
