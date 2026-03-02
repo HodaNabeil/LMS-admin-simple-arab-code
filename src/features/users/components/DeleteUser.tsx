@@ -12,6 +12,7 @@ import { Loader } from '@/components/shared/loader';
 import type { AxiosError } from 'axios';
 import { useState } from 'react';
 import { useDeleteUser } from '../hooks/useUsersMutations';
+import { cn } from "../../../lib/utils";
 
 export default function DeleteUser({ userId }: { userId: string }) {
   const [userMenu, setUserMenu] = useState(false);
@@ -38,10 +39,10 @@ export default function DeleteUser({ userId }: { userId: string }) {
   return (
     <Dialog open={userMenu} onOpenChange={(open) => setUserMenu(open)}>
       <DialogTrigger asChild>
-        <Trash2 className="h-4 w-4" />
+        <Trash2 className={cn('h-4', 'w-4')} />
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
-        <DialogHeader className="!text-right">
+      <DialogContent className="sm:max-w-106.25">
+        <DialogHeader className="text-right">
           <DialogTitle>حذف المستخدم</DialogTitle>
         </DialogHeader>
         <Button

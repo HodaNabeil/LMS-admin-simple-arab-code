@@ -3,13 +3,10 @@ import type { ColumnDef } from '@tanstack/react-table';
 import type { Coupon } from '@/types/course';
 import { Link } from 'react-router-dom';
 import { Edit } from 'lucide-react';
-import { Trash2 } from 'lucide-react';
 import { cn } from "../../../../lib/utils";
 import { formatCurrency } from '@/lib/formatters';
-import { EditCoupon } from '../EditCoupon';
 import DeleteCoupon from '../DeleteCoupon';
 
-// Type-safe column definition that enforces accessorKey matches Coupon properties
 type CouponColumnDef = ColumnDef<Coupon, unknown> & {
   accessorKey?: keyof Coupon;
 };
@@ -117,7 +114,7 @@ export const columns: CouponColumnDef[] = [
     header: 'الحد الأدنى للطلب',
     cell: ({ row }) => {
       const amount = row.getValue('minOrderAmount') as number;
-      return <div className="text-right font-medium">{amount ? formatCurrency(amount) : '0'}</div>;
+      return <div className={cn('text-right', 'font-medium')}>{amount ? formatCurrency(amount) : '0'}</div>;
     },
   },
   {

@@ -11,7 +11,7 @@ export const couponApi = {
     async getCouponById(id: string): Promise<Coupon> {
         const url = COUPON_ENDPOINTS.UPDATE.replace("{id}", id);
         const response = await api.get(url);
-        return response.data.data; // Extract coupon from wrapped response
+        return response.data.data;
     },
 
     async createCoupon(data: CreateCouponRequest): Promise<Coupon> {

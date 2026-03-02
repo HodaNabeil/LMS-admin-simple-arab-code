@@ -29,6 +29,27 @@ export function useCreateReview() {
   });
 }
 
+export function useCreateCourseReview() {
+  const queryClient = useQueryClient();
+
+  return useMutation<
+    CreateReviewResponse,
+    Error,
+    { courseSlug: string; data: { rating: number; comment: string } }
+  >({
+    mutationFn: async ({ courseSlug, data }): Promise<CreateReviewResponse> => {
+      return await reviewsApi.createCourseReview(courseSlug, data);
+    },
+    onSuccess: (res) => {
+      queryClient.invalidateQueries({ queryKey: reviewsKeys.all });
+      toast.success(res.message || "تم إنشاء مراجعة الدورة بنجاح");
+    },
+    onError: (error) => {
+      handleApiError(error);
+    },
+  });
+}
+
 export function useUpdateReview() {
   const queryClient = useQueryClient();
 

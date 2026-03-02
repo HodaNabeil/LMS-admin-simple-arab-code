@@ -3,8 +3,7 @@ import { queryKeys } from "@/lib/query-keys";
 import { toast } from "sonner";
 import { handleApiError } from "@/lib/error-handler";
 
-import type { Order } from "../types";
-import type { CreateOrderRequest, UpdateOrderRequest } from "@/types/orders";
+import type { Order, CreateOrderRequest, UpdateOrderRequest } from "@/types/orders";
 import { ordersApi } from "../services/ordersAPi";
 
 export function useCreateOrder() {

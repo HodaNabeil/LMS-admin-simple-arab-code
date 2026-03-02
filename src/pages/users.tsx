@@ -4,6 +4,7 @@ import { Loader } from "@/components/shared/loader";
 import { useUsers } from "@/features/users/hooks/useUsersQueries";
 
 import UsersStats from "@/features/users/components/users-stats";
+import { cn } from "../lib/utils";
 
 export default function Users() {
   const { data: usersData, isLoading, isError } = useUsers();
@@ -11,14 +12,14 @@ export default function Users() {
   let userTable;
   if (isLoading) {
     userTable = (
-      <div className="flex justify-center items-center h-64">
+      <div className={cn('flex', 'justify-center', 'items-center', 'h-64')}>
         <Loader />
       </div>
     );
   }
   if (!isLoading && isError) {
     userTable = (
-      <div className="flex justify-center items-center h-64">
+      <div className={cn('flex', 'justify-center', 'items-center', 'h-64')}>
         <p className="text-red-500">حدث خطأ أثناء تحميل البيانات</p>
       </div>
     );
@@ -34,8 +35,8 @@ export default function Users() {
     <div className="p-4">
       <UsersStats users={usersData?.data?.users || []} />
 
-      <div className="flex justify-between items-center m-4">
-        <h2 className="text-2xl font-bold text-blue-800">Users</h2>
+      <div className={cn('flex', 'justify-between', 'items-center', 'm-4')}>
+        <h2 className={cn('text-2xl', 'font-bold', 'text-blue-800')}>Users</h2>
         <CreateNewUser />
       </div>
       {userTable}

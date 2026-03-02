@@ -1,8 +1,6 @@
 import { Route } from 'react-router-dom';
 import AdminLayout from '@/components/shared/admin-layout';
 import { lazyLoad } from './lazyLoadHelper';
-import ReviewsPage from '@/pages/reviews/inedex';
-
 
 const Admin = lazyLoad(() => import('@/pages'));
 const Users = lazyLoad(() => import('@/pages/users'));
@@ -10,7 +8,8 @@ const Courses = lazyLoad(() => import('@/pages/courses'));
 const Paths = lazyLoad(() => import('@/pages/paths'));
 const CreateNewPath = lazyLoad(() => import('@/pages/paths/create'));
 const ManagePath = lazyLoad(() => import('@/pages/paths/[pathSlug]/manage'));
-const Orders = lazyLoad(() => import('@/pages/orders/orders'));
+const Orders = lazyLoad(() => import('@/pages/orders'));
+const CreateOrder = lazyLoad(() => import('@/pages/orders/create'));
 const Availability = lazyLoad(() => import('@/pages/courses/[slug]/manage/availability'));
 const Basics = lazyLoad(() => import('@/pages/courses/[slug]/manage/basics'));
 const Curriculum = lazyLoad(() => import('@/pages/courses/[slug]/manage/curriculum'));
@@ -27,6 +26,8 @@ const Coupons = lazyLoad(() => import('@/pages/coupons'));
 const CreateCouponPage = lazyLoad(() => import('@/pages/coupons/create'));
 const ManageCoupon = lazyLoad(() => import('@/pages/coupons/[couponId]/manage'));
 const Payment = lazyLoad(() => import('@/pages/payment/payment'));
+const Reviews = lazyLoad(() => import('@/pages/reviews/index'));
+const CreateReview = lazyLoad(() => import('@/pages/reviews/create'));
 
 export const adminRoutes = (
   <Route path="admin" element={<AdminLayout />}>
@@ -37,7 +38,8 @@ export const adminRoutes = (
       <Route path="create" element={CreateCouponPage} />
       <Route path=":couponId/manage" element={ManageCoupon} />
     </Route>
-    <Route path="reviews" element={<ReviewsPage />} />
+    <Route path="reviews" element={Reviews} />
+    <Route path="reviews/create" element={CreateReview} />
     <Route path="profile" element={<div>Profile Page</div>} />
     <Route path="settings">
       <Route path="payment" element={Payment} />
@@ -51,7 +53,10 @@ export const adminRoutes = (
       <Route path="create" element={CreateNewPath} />
       <Route path=":pathSlug/manage" element={ManagePath} />
     </Route>
-    <Route path="orders" element={Orders} />
+    <Route path="orders">
+      <Route index element={Orders} />
+      <Route path="create" element={CreateOrder} />
+    </Route>
     <Route path="courses">
       <Route index element={Courses} />
       <Route path="create" element={CreateCourse} />
@@ -69,6 +74,6 @@ export const adminRoutes = (
       <Route path="create" element={CreateNewTrack} />
       <Route path=":trackSlug/manage" element={ManageTrack} />
     </Route>
-    <Route path="analytics" element={Statistics} />
+    <Route path="analytics/general" element={Statistics} />
   </Route>
 );

@@ -12,6 +12,7 @@ import { useCreateTrack, useUpdateTrack } from '../../hooks/useTracksMutations';
 import { usePaths } from '@/features/paths/hooks/usePathsQueries';
 import type { UpdateTrackRequest, CreateTrackRequest, Track } from '@/types/tracks';
 import { handleApiError } from '@/lib/error-handler';
+import { cn } from "../../../../lib/utils";
 
 interface TrackFormProps {
   trackData?: Track;
@@ -99,10 +100,10 @@ export default function TrackForm({ trackData }: TrackFormProps) {
   const { handleSubmit, control, formState: { errors, isSubmitting } } = useFormReturn;
 
   return (
-    <div className="max-w-3xl mx-auto p-6 bg-card rounded-lg border shadow-sm my-6">
+    <div className={cn('max-w-3xl', 'mx-auto', 'p-6', 'bg-card', 'rounded-lg', 'border', 'shadow-sm', 'my-6')}>
       <form
         onSubmit={handleSubmit(handleFormSubmit)}
-        className="flex flex-col gap-4"
+        className={cn('flex', 'flex-col', 'gap-4')}
       >
         {getFormFields().map((field) => {
           // Inject dynamic path options into the pathId field
@@ -124,7 +125,7 @@ export default function TrackForm({ trackData }: TrackFormProps) {
         <button
           type="submit"
           disabled={isSubmitting || isLoadingPaths}
-          className="bg-primary text-white rounded px-4 py-2 text-sm hover:bg-primary/90 transition disabled:opacity-50 flex items-center justify-center gap-2"
+          className={cn('bg-primary', 'text-white', 'rounded', 'px-4', 'py-2', 'text-sm', 'hover:bg-primary/90', 'transition', 'disabled:opacity-50', 'flex', 'items-center', 'justify-center', 'gap-2')}
         >
           {isSubmitting ? (
             <Loader />

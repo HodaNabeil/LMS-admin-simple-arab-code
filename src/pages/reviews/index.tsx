@@ -1,12 +1,13 @@
 import { useMemo, useState } from "react";
 import { MessageSquare } from "lucide-react";
+import { Link } from "react-router-dom";
 import { PageHeader } from "@/components/shared/PageHeader";
 import ReviewTable from "@/features/reviews/components/table/ReviewTable";
 import type { Review } from "@/types/reviews";
 import { useReviews } from "@/features/reviews/hooks/useReviewsQueries";
 import { Input } from "@/components/ui/input";
-import CreateReviewDialog from "@/features/reviews/components/CreateReviewDialog";
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 
 export default function ReviewsPage() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -34,7 +35,7 @@ export default function ReviewsPage() {
     "items-start",
     "sm:items-center",
     "gap-4",
-    "py-4"
+    "padding-page"
   );
   const searchInputClassName = cn("w-full", "sm:max-w-sm");
 
@@ -52,12 +53,15 @@ export default function ReviewsPage() {
   }, [reviews, searchTerm]);
 
   return (
-    <main className={pageClassName}>
+    <div className={pageClassName}>
       <PageHeader title="مراجعات الطلاب" icon={MessageSquare}>
-        <CreateReviewDialog />
+        <Link to="/admin/reviews/create">
+          <Button variant="default">
+            إضافة مراجعة
+          </Button>
+        </Link>
       </PageHeader>
 
-      <div className="w-full">
         <div className={filterRowClassName}>
           <Input
             placeholder="البحث في المراجعة الاسم أو التعليق أو الدورة..."
@@ -68,7 +72,6 @@ export default function ReviewsPage() {
         </div>
 
         <ReviewTable reviews={filteredReviews} />
-      </div>
-    </main>
+    </div>
   );
 }

@@ -1,15 +1,16 @@
-import { NewOrder } from "@/features/orders/components/new-order";
+import { useNavigate } from "react-router-dom";
 import OrdersFilters from "@/features/orders/components/orders-filters";
 import { useOrders } from "@/features/orders/hooks/useOrdersQueries";
 import { useMemo, useState } from "react";
 import { Loader } from "@/components/shared/loader";
 import { PageHeader } from "@/components/shared/PageHeader";
-import { ShoppingCart } from "lucide-react";
+import { ShoppingCart, Plus } from "lucide-react";
 import type { Order } from "@/types/orders";
 import { Button } from "@/components/ui/button";
 import { OrdersTable } from "@/features/orders/components/table/orders-table";
 
 export default function Orders() {
+  const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
   const [minPrice, setMinPrice] = useState(0);
   const [dateOrder, setDateOrder] = useState("desc");
@@ -111,7 +112,13 @@ export default function Orders() {
           </div>
         }
       >
-        <NewOrder />
+        <Button
+          onClick={() => navigate('/admin/orders/create')}
+          className="bg-blue-600 hover:bg-blue-700 text-white"
+        >
+          <Plus className="w-4 h-4 ml-2" />
+          إضافة طلب جديد
+        </Button>
       </PageHeader>
 
       {/* <OrderStats orders={orders} /> */}

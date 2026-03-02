@@ -4,11 +4,11 @@ import GeneralStatistics from "@/features/analytics/statistics/components/genera
 
 export default function Statistics() {
   return (
-    <main className="space-y-8 p-6 bg-gray-50 min-h-screen">
+    <div className="space-y-8 p-6 bg-gray-50 min-h-screen">
       <UserStatistics />
       <CourseStatistics />
       <GeneralStatistics />
 
-    </main>
+    </div>
   );
 }

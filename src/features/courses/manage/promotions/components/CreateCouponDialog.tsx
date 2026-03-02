@@ -38,7 +38,7 @@ export default function CouponFormDialog({ onSubmit, isLoading = false, initialD
       minOrderAmount: data.minOrderAmount ? Number(data.minOrderAmount) : undefined,
       courseIds: courseId ? [courseId] : [],
       isActive: data.isActive,
-      // @ts-ignore - allCourses might be handled by backend even if not in DTO types
+      // @ts-expect-error - allCourses might be handled by backend even if not in DTO types
       allCourses: data.allCourses,
     };
 

@@ -1,11 +1,12 @@
 import { components } from 'react-select';
 import type { StylesConfig, ThemeConfig, OptionProps } from 'react-select';
+import { cn } from "../../../lib/utils";
 import type { OptionType } from './orderOptions';
 
 // Custom Option component to show checkmark when selected
 export const CustomOption = (props: OptionProps<OptionType, boolean>) => (
   <components.Option {...props}>
-    <div className="flex items-center justify-between">
+    <div className={cn('flex', 'items-center', 'justify-between')}>
       <span>{props.label}</span>
       {props.isSelected && (
         <svg

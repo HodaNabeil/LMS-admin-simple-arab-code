@@ -1,4 +1,4 @@
-import { CreateCouponDtoType, Level, Pages, UserType } from "@/constants/enums";
+import { CreateCouponDtoType, Level, Pages, UserType, InputTypes } from "@/constants/enums";
 import type { IFormField, IFormFieldsVariables, IOption } from "@/types/app";
 
 const useFormFields = ({ slug }: IFormFieldsVariables) => {
@@ -6,7 +6,7 @@ const useFormFields = ({ slug }: IFormFieldsVariables) => {
     {
       label: "البريد الإلكتروني",
       name: "email",
-      type: "email",
+      type: InputTypes.EMAIL,
       placeholder: "أدخل بريدك الإلكتروني",
       autoFocus: true,
     },
@@ -14,7 +14,7 @@ const useFormFields = ({ slug }: IFormFieldsVariables) => {
       label: "كلمة المرور",
       name: "password",
       placeholder: "••••••••",
-      type: "password",
+      type: InputTypes.PASSWORD,
     },
   ];
 
@@ -22,13 +22,13 @@ const useFormFields = ({ slug }: IFormFieldsVariables) => {
     {
       name: "title",
       label: "اسم القسم",
-      type: "text",
+      type: InputTypes.TEXT,
       placeholder: "ادخل اسم القسم",
     },
     {
       name: "description",
       label: "وصف القسم",
-      type: "textarea",
+      type: InputTypes.TEXTAREA,
       placeholder: "ادخل وصف القسم",
     },
   ];
@@ -37,7 +37,7 @@ const useFormFields = ({ slug }: IFormFieldsVariables) => {
     {
       label: "نوع الحساب",
       name: "user_type",
-      type: "select",
+      type: InputTypes.SELECT,
       placeholder: "اختر نوع حسابك",
       autoFocus: true,
       options: [
@@ -48,37 +48,37 @@ const useFormFields = ({ slug }: IFormFieldsVariables) => {
     {
       label: "صورة الملف الشخصي",
       name: "profile_picture",
-      type: "image",
+      type: InputTypes.IMAGE,
       placeholder: "اختر صورة شخصية",
     },
     {
       label: "الاسم",
       name: "name",
-      type: "text",
+      type: InputTypes.TEXT,
       placeholder: "أدخل اسمك الكامل",
     },
     {
       label: "رقم الهاتف",
       name: "phone",
-      type: "phone",
+      type: InputTypes.PHONE,
       placeholder: "أدخل رقم هاتفك",
     },
     {
       label: "البريد الإلكتروني",
       name: "email",
-      type: "email",
+      type: InputTypes.EMAIL,
       placeholder: "أدخل بريدك الإلكتروني",
     },
     {
       label: "كلمة المرور",
       name: "password",
-      type: "password",
+      type: InputTypes.PASSWORD,
       placeholder: "••••••••",
     },
     {
       label: "تأكيد كلمة المرور",
       name: "confirm_password",
-      type: "password",
+      type: InputTypes.PASSWORD,
       placeholder: "••••••••",
     },
   ];
@@ -87,7 +87,7 @@ const useFormFields = ({ slug }: IFormFieldsVariables) => {
     {
       label: "البريد الإلكتروني",
       name: "email",
-      type: "text",
+      type: InputTypes.TEXT,
       placeholder: "أدخل بريدك الإلكتروني",
       autoFocus: true,
     },
@@ -97,14 +97,14 @@ const useFormFields = ({ slug }: IFormFieldsVariables) => {
     {
       label: "كلمة المرور الجديدة",
       name: "password",
-      type: "password",
+      type: InputTypes.PASSWORD,
       placeholder: "أدخل كلمة المرور الجديدة",
       autoFocus: true,
     },
     {
       label: "تأكيد كلمة المرور",
       name: "confirm_password",
-      type: "password",
+      type: InputTypes.PASSWORD,
       placeholder: "أعد إدخال كلمة المرور",
     },
   ];
@@ -112,14 +112,14 @@ const useFormFields = ({ slug }: IFormFieldsVariables) => {
     {
       label: "البريد الإلكتروني أو اسم المستخدم",
       name: "email",
-      type: "text",
+      type: InputTypes.TEXT,
       placeholder: "أدخل بريدك الإلكتروني أو اسم المستخدم",
       autoFocus: true,
     },
     {
       label: "كلمة المرور",
       name: "password",
-      type: "password",
+      type: InputTypes.PASSWORD,
       placeholder: "••••••••",
     },
   ];
@@ -128,30 +128,31 @@ const useFormFields = ({ slug }: IFormFieldsVariables) => {
     {
       label: "الاسم",
       name: "name",
-      type: "text",
+      type: InputTypes.TEXT,
       placeholder: "أدخل اسمك الكامل",
       autoFocus: true,
     },
     {
       label: "البريد الإلكتروني",
       name: "email",
-      type: "email",
+      type: InputTypes.EMAIL,
       placeholder: "أدخل بريدك الإلكتروني",
     },
     {
       label: "كلمة المرور",
       name: "password",
-      type: "password",
+      type: InputTypes.PASSWORD,
       placeholder: "••••••••",
     },
     {
       label: "نوع الحساب",
       name: "role",
-      type: "select",
+      type: InputTypes.SELECT,
       placeholder: "اختر نوع حسابك",
       options: [
         { value: UserType.USER, label: UserType.USER },
         { value: UserType.ADMIN, label: UserType.ADMIN },
+        { value: UserType.INSTRUCTOR, label: UserType.INSTRUCTOR },
       ],
     },
   ];
@@ -160,32 +161,32 @@ const useFormFields = ({ slug }: IFormFieldsVariables) => {
     {
       name: "name",
       label: "اسم التراك التعليمي",
-      type: "text",
+      type: InputTypes.TEXT,
       placeholder: "ادخل اسم المسار التعليمي",
     },
     {
       name: "heading",
       label: "عنوان المسار",
-      type: "text",
+      type: InputTypes.TEXT,
       placeholder: "ادخل عنوان المسار",
     },
     {
       name: "slug",
       label: "Slug",
-      type: "text",
+      type: InputTypes.TEXT,
       placeholder: "أدخل مُعرّف المادة (يجب أن يكون فريدًا)",
     },
 
     {
       name: "description",
       label: "وصف المسار التعليمي",
-      type: "textarea",
+      type: InputTypes.TEXTAREA,
       placeholder: "ادخل وصف المسار التعليمي",
     },
     {
       name: "image",
       label: "اختار صورة المسار التعليمي",
-      type: "image",
+      type: InputTypes.IMAGE,
       placeholder: "اختار صورة المسار التعليمي",
     },
     {
@@ -200,20 +201,20 @@ const useFormFields = ({ slug }: IFormFieldsVariables) => {
     {
       name: "pathId",
       label: "اختار المسار",
-      type: "select",
+      type: InputTypes.SELECT,
       placeholder: "اختر المسار",
     },
     {
       name: "trackId",
       label: "اختار التراك",
-      type: "select",
+      type: InputTypes.SELECT,
       placeholder: "اختر التراك",
       options: [],
     },
     {
       name: "slug",
       label: "اسم الدورة (Slug)",
-      type: "text",
+      type: InputTypes.TEXT,
       placeholder: "ادخل اسم الدورة يجب أن يكون فريد!",
     },
   ];
@@ -222,7 +223,7 @@ const useFormFields = ({ slug }: IFormFieldsVariables) => {
     {
       name: "knowledgeNeeded",
       label: "ما ينبغي عليك معرفته",
-      type: "textarea",
+      type: InputTypes.TEXTAREA,
       placeholder: "مثال: يفضل معرفة أساسيات البرمجة أو HTML",
     },
   ];
@@ -231,31 +232,31 @@ const useFormFields = ({ slug }: IFormFieldsVariables) => {
     {
       name: "title",
       label: "اسم الدورة",
-      type: "text",
+      type: InputTypes.TEXT,
       placeholder: "ادخل اسم الدورة",
     },
     {
       name: "description",
       label: "وصف الدورة",
-      type: "textarea",
+      type: InputTypes.TEXTAREA,
       placeholder: "ادخل وصف الدورة",
     },
     {
       name: "shortDescription",
       label: "وصف قصير",
-      type: "textarea",
+      type: InputTypes.TEXTAREA,
       placeholder: "ادخل وصف قصير",
     },
     {
       name: "slug",
       label: "اسم الدورة (Slug)",
-      type: "text",
+      type: InputTypes.TEXT,
       placeholder: "ادخل اسم الدورة (يجب أن يكون فريد)",
     },
     {
       name: "level",
       label: "مستوى الدورة",
-      type: "select",
+      type: InputTypes.SELECT,
       placeholder: "اختر مستوى الدورة",
       options: [
         { value: Level.ALL_LEVELS, label: "جميع المستويات" },
@@ -267,13 +268,13 @@ const useFormFields = ({ slug }: IFormFieldsVariables) => {
     {
       name: "hours",
       label: "مدة الدورة (بالساعات)",
-      type: "number",
+      type: InputTypes.NUMBER,
       placeholder: "ادخل مدة الدورة (بالساعات)",
     },
     {
       name: "thumbnail",
       label: "صورة الدورة",
-      type: "image",
+      type: InputTypes.IMAGE,
       placeholder: "اختار صورة الدورة",
     },
     {
@@ -288,13 +289,13 @@ const useFormFields = ({ slug }: IFormFieldsVariables) => {
     {
       name: "compareAtPrice",
       label: "سعر العرض بالسينت",
-      type: "number",
+      type: InputTypes.NUMBER,
       placeholder: "ادخل سعر العرض بالسينت",
     },
     {
       name: "price",
       label: "السعر الاساسي بالسينت",
-      type: "number",
+      type: InputTypes.NUMBER,
       placeholder: "ادخل سعر الدورة بالسينت",
     },
   ];
@@ -303,13 +304,13 @@ const useFormFields = ({ slug }: IFormFieldsVariables) => {
     {
       name: "title",
       label: "اسم المحاضرة",
-      type: "text",
+      type: InputTypes.TEXT,
       placeholder: "ادخل اسم المحاضرة",
     },
     {
       name: "description",
       label: " وصف المحاضرة",
-      type: "textarea",
+      type: InputTypes.TEXTAREA,
       placeholder: "ادخل وصف المحاضرة",
     },
   ];
@@ -318,38 +319,38 @@ const useFormFields = ({ slug }: IFormFieldsVariables) => {
     {
       name: "pathId",
       label: "المسار التعليمي ",
-      type: "select" as const,
+      type: InputTypes.SELECT,
       placeholder: "اختر المسار التعليمي",
       options: [],
     },
     {
       name: "title",
       label: "عنوان التراك الفرعي",
-      type: "text" as const,
+      type: InputTypes.TEXT,
       placeholder: "ادخل عنوان التراك الفرعي",
     },
     {
       name: "slug",
       label: "المُعرّف (Slug)",
-      type: "text" as const,
+      type: InputTypes.TEXT,
       placeholder: "أدخل مُعرّف التراك (يجب أن يكون فريدًا)",
     },
     {
       name: "summary",
       label: "ملخص التراك",
-      type: "textarea" as const,
+      type: InputTypes.TEXTAREA,
       placeholder: "ادخل ملخص التراك الفرعي",
     },
     {
       name: "description",
       label: "وصف التراك الفرعي (بالتفاصيل)",
-      type: "textarea" as const,
+      type: InputTypes.TEXTAREA,
       placeholder: "ادخل وصف التراك الفرعي",
     },
     {
       name: "category",
       label: "تصنيف التراك",
-      type: "select" as const,
+      type: InputTypes.SELECT,
       placeholder: "اختار تصنيف التراك",
       options: [
         { label: "WEB", value: "WEB" },
@@ -360,26 +361,26 @@ const useFormFields = ({ slug }: IFormFieldsVariables) => {
     {
       name: "icon",
       label: "أيقونة التراك",
-      type: "text" as const,
+      type: InputTypes.TEXT,
       placeholder: "react",
     },
     {
       name: "thumbnail",
       label: "صورة التراك",
-      type: "file" as const,
+      type: InputTypes.FILE,
       placeholder: "اختر صورة للمسار",
       description: "يمكن رفع صورة بحجم أقصى 5 ميجابايت (JPEG, PNG, JPG, WebP)",
     },
     {
       name: "metaTitle",
       label: "عنوان SEO",
-      type: "text" as const,
+      type: InputTypes.TEXT,
       placeholder: "تعلم تطوير الواجهات الأمامية - مسار شامل",
     },
     {
       name: "metaDescription",
       label: "وصف SEO",
-      type: "textarea" as const,
+      type: InputTypes.TEXTAREA,
       placeholder: "مسار شامل لتعلم تطوير الواجهات الأمامية الحديثة",
     },
   ];
@@ -388,20 +389,20 @@ const useFormFields = ({ slug }: IFormFieldsVariables) => {
     {
       name: "code",
       label: "كود الكوبون",
-      type: "text",
+      type: InputTypes.TEXT,
       placeholder: "مثال: SUMMER2024",
       autoFocus: true,
     },
     {
       name: "value",
       label: "قيمة التخفيض",
-      type: "number",
+      type: InputTypes.NUMBER,
       placeholder: "100",
     },
     {
       name: "type",
       label: "نوع التخفيض",
-      type: "select",
+      type: InputTypes.SELECT,
       options: [
         { value: CreateCouponDtoType.FIXED, label: "مبلغ ثابت" },
         { value: CreateCouponDtoType.PERCENTAGE, label: "نسبة مئوية" },
@@ -410,52 +411,52 @@ const useFormFields = ({ slug }: IFormFieldsVariables) => {
     {
       name: "description",
       label: "الوصف",
-      type: "textarea",
+      type: InputTypes.TEXTAREA,
       placeholder: "وصف اختياري للكوبون",
     },
     {
       name: "startsAt",
       label: "تاريخ البدء",
-      type: "date",
+      type: InputTypes.DATE,
     },
     {
       name: "expiresAt",
       label: "تاريخ انتهاء الصلاحية",
-      type: "date",
+      type: InputTypes.DATE,
     },
     {
       name: "maxUses",
       label: "الحد الأقصى للاستخدام (كلي)",
-      type: "number",
+      type: InputTypes.NUMBER,
       placeholder: "100",
     },
     {
       name: "maxUsesPerUser",
       label: "الحد الأقصى لكل مستخدم",
-      type: "number",
+      type: InputTypes.NUMBER,
       placeholder: "1",
     },
     {
       name: "minOrderAmount",
       label: "أقل قيمة للطلب",
-      type: "number",
+      type: InputTypes.NUMBER,
       placeholder: "0",
     },
     {
       name: "courseIds",
       label: "الدورات *",
-      type: "multi select",
+      type: InputTypes.MULTI_SELECT,
       placeholder: "اختر دورة واحدة على الأقل",
     },
     {
       name: "allCourses",
       label: "كل الدورات",
-      type: "checkbox",
+      type: InputTypes.CHECKBOX,
     },
     {
       name: "isActive",
       label: "تفعيل الكوبون",
-      type: "checkbox",
+      type: InputTypes.CHECKBOX,
     },
   ];
 
@@ -463,25 +464,26 @@ const useFormFields = ({ slug }: IFormFieldsVariables) => {
     {
       name: "studentId",
       label: "Student ID",
-      type: "text",
-      placeholder: "stu_123",
+      type: InputTypes.MULTI_SELECT,
+      placeholder: "اختر طالب واحد على الأقل",
     },
     {
       name: "courseId",
       label: "Course ID",
-      type: "text",
-      placeholder: "course_123",
+      type: InputTypes.MULTI_SELECT,
+      placeholder: "اختر دورة واحدة على الأقل",
     },
     {
       name: "rating",
       label: "التقييم",
-      type: "number",
+      type: InputTypes.RATING,
+      required: true,
       placeholder: "5",
     },
     {
       name: "status",
       label: "الحالة",
-      type: "select",
+      type: InputTypes.SELECT,
       placeholder: "اختر الحالة",
       options: [
         { label: "قيد الانتظار", value: "pending" },
@@ -492,7 +494,7 @@ const useFormFields = ({ slug }: IFormFieldsVariables) => {
     {
       name: "comment",
       label: "التعليق",
-      type: "textarea",
+      type: InputTypes.TEXTAREA,
       placeholder: "اكتب تعليق المراجعة...",
     },
   ];
@@ -501,14 +503,14 @@ const useFormFields = ({ slug }: IFormFieldsVariables) => {
     {
       name: "orderId",
       label: "اختر الطلب",
-      type: "select",
+      type: InputTypes.SELECT,
       placeholder: "اختر طلباً",
       options: [],
     },
     {
       name: "provider",
       label: "مزود الدفع",
-      type: "select",
+      type: InputTypes.SELECT,
       placeholder: "اختر مزود الدفع",
       options: [
         { value: "PAYMOB", label: "Paymob" },
@@ -519,13 +521,62 @@ const useFormFields = ({ slug }: IFormFieldsVariables) => {
     {
       name: "status",
       label: "الحالة",
-      type: "select",
+      type: InputTypes.SELECT,
       placeholder: "اختر الحالة",
       options: [
         { value: "PENDING", label: "قيد الانتظار" },
         { value: "PROCESSING", label: "قيد المعالجة" },
         { value: "SUCCEEDED", label: "مكتمل" },
       ],
+    },
+  ];
+
+  const createOrderFields = (): IFormField[] => [
+    {
+      name: "userId",
+      label: "اختر المستخدم *",
+      type: InputTypes.SELECT,
+      placeholder: "ابحث عن البريد الإلكتروني أو الاسم...",
+      options: [],
+    },
+    {
+      name: "currency",
+      label: "العملة *",
+      type: InputTypes.SELECT,
+      placeholder: "اختر العملة...",
+      options: [],
+    },
+    {
+      name: "courseId",
+      label: "الدورة *",
+      type: InputTypes.SELECT,
+      placeholder: "ابحث عن الدورة...",
+      options: [],
+    },
+    {
+      name: "coursePriceCents",
+      label: "سعر الدورة (بالسنت) *",
+      type: InputTypes.NUMBER,
+      placeholder: "49990",
+    },
+    {
+      name: "couponId",
+      label: "اختر الكوبون (اختياري)",
+      type: InputTypes.SELECT,
+      placeholder: "ابحث عن الكوبون...",
+      options: [],
+    },
+    {
+      name: "discountCents",
+      label: "مبلغ التخفيض (بالسنت)",
+      type: InputTypes.NUMBER,
+      placeholder: "10000",
+    },
+    {
+      name: "taxCents",
+      label: "الضريبة (بالسنت)",
+      type: InputTypes.NUMBER,
+      placeholder: "0",
     },
   ];
 
@@ -569,6 +620,8 @@ const useFormFields = ({ slug }: IFormFieldsVariables) => {
           return createReviewFields();
         case Pages.CREATE_PAYMENTS:
           return createPaymentFields();
+        case Pages.CREATE_ORDERS:
+          return createOrderFields();
         default:
           return [];
       }

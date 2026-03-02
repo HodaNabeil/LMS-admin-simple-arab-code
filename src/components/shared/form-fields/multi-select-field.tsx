@@ -1,8 +1,7 @@
 import type { IFormField } from "@/types/app";
-import { Controller } from "react-hook-form";
-import type { Control, FieldErrors } from "react-hook-form";
-import { Label } from "@/components/ui/label";
 import Select from 'react-select';
+import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
+import type { Control, FieldValues } from "react-hook-form";
 
 interface SelectOption {
     value: string;
@@ -10,8 +9,7 @@ interface SelectOption {
 }
 
 interface Props extends IFormField {
-    errors: FieldErrors;
-    control: Control<Record<string, unknown>>;
+    control: Control<FieldValues>;
     options?: SelectOption[];
 }
 
@@ -19,69 +17,109 @@ const MultiSelectField = ({
     label,
     name,
     disabled,
-    errors,
     control,
     placeholder,
     options = [],
+    required,
 }: Props) => {
-    const hasError = Boolean(errors[name]);
-
     return (
-        <div className="flex flex-col gap-2">
-            {label && (
-                <Label
-                    htmlFor={name}
-                    className="text-sm font-medium leading-none mb-1 text-card-foreground"
-                >
-                    {label}
-                </Label>
-            )}
-            <Controller
-                control={control}
-                name={name}
-                render={({ field: { onChange, value } }) => {
-                    // react-select expects an array of { value, label } for multi-select
-                    // but our form state probably just wants an array of strings (ids)
-                    const selectedOptions = options.filter(opt =>
-                        Array.isArray(value) && value.includes(opt.value)
-                    );
+        <FormField
+            control={control}
+            name={name}
+            render={({ field }) => {
+                const value = field.value || [];
+                const selectedOptions = options.filter(opt =>
+                    Array.isArray(value) && value.includes(opt.value)
+                );
 
-                    return (
-                        <Select
-                            isMulti
-                            isRtl
-                            options={options}
-                            value={selectedOptions}
-                            onChange={(newValue) => {
-                                onChange(newValue ? (newValue as SelectOption[]).map(opt => opt.value) : []);
-                            }}
-                            isDisabled={disabled}
-                            placeholder={placeholder}
-                            classNamePrefix="react-select"
-                            className={`text-sm ${hasError ? 'border-destructive' : ''}`}
-                            styles={{
-                                control: (base) => ({
-                                    ...base,
-                                    borderColor: hasError ? 'hsl(var(--destructive))' : base.borderColor,
-                                    '&:hover': {
-                                        borderColor: hasError ? 'hsl(var(--destructive))' : base.borderColor,
-                                    }
-                                }),
-                            }}
-                        />
-                    );
-                }}
-            />
-            {hasError && (
-                <p
-                    id={`${name}-error`}
-                    className="text-sm text-destructive"
-                    role="alert"
-                >
-                    {errors[name]?.message as string}
-                </p>
-            )}
-        </div>
+                return (
+                    <FormItem className="flex flex-col gap-2">
+                        {label && (
+                            <FormLabel className="text-sm font-medium text-foreground">
+                                {label} {required && <span className="text-destructive">*</span>}
+                            </FormLabel>
+                        )}
+                        <FormControl>
+                            <Select
+                                isMulti
+                                isRtl
+                                options={options}
+                                value={selectedOptions}
+                                onChange={(newValue) => {
+                                    field.onChange(newValue ? (newValue as SelectOption[]).map(opt => opt.value) : []);
+                                }}
+                                onBlur={field.onBlur}
+                                isDisabled={disabled}
+                                placeholder={placeholder}
+                                classNamePrefix="react-select"
+                                className="text-sm"
+                                styles={{
+                                    control: (base, state) => ({
+                                        ...base,
+                                        backgroundColor: 'transparent',
+                                        borderColor: state.isFocused ? 'hsl(var(--primary))' : 'hsl(var(--border))',
+                                        boxShadow: 'none',
+                                        '&:hover': {
+                                            borderColor: state.isFocused ? 'hsl(var(--primary))' : 'hsl(var(--border))',
+                                        },
+                                        borderRadius: '0.75rem',
+                                        minHeight: '2.5rem',
+                                    }),
+                                    menu: (base) => ({
+                                        ...base,
+                                        backgroundColor: 'hsl(var(--popover))',
+                                        border: '1px solid hsl(var(--border))',
+                                        borderRadius: '0.75rem',
+                                        overflow: 'hidden',
+                                        zIndex: 50,
+                                    }),
+                                    option: (base, state) => ({
+                                        ...base,
+                                        backgroundColor: state.isFocused ? 'hsl(var(--accent))' : 'transparent',
+                                        color: state.isFocused ? 'hsl(var(--accent-foreground))' : 'hsl(var(--popover-foreground))',
+                                        '&:active': {
+                                            backgroundColor: 'hsl(var(--accent))',
+                                        },
+                                        cursor: 'pointer',
+                                    }),
+                                    multiValue: (base) => ({
+                                        ...base,
+                                        backgroundColor: 'hsl(var(--secondary))',
+                                        borderRadius: '0.375rem',
+                                    }),
+                                    multiValueLabel: (base) => ({
+                                        ...base,
+                                        color: 'hsl(var(--secondary-foreground))',
+                                    }),
+                                    multiValueRemove: (base) => ({
+                                        ...base,
+                                        color: 'hsl(var(--secondary-foreground))',
+                                        '&:hover': {
+                                            backgroundColor: 'hsl(var(--destructive))',
+                                            color: 'hsl(var(--destructive-foreground))',
+                                            borderRadius: '0.375rem',
+                                        },
+                                    }),
+                                    placeholder: (base) => ({
+                                        ...base,
+                                        color: 'hsl(var(--muted-foreground))',
+                                    }),
+                                    input: (base) => ({
+                                        ...base,
+                                        color: 'hsl(var(--foreground))',
+                                    }),
+                                    singleValue: (base) => ({
+                                        ...base,
+                                        color: 'hsl(var(--foreground))',
+                                    })
+                                }}
+                            />
+                        </FormControl>
+                        <FormMessage />
+                    </FormItem>
+                );
+            }}
+        />
     );
 };
 

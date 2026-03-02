@@ -1,10 +1,10 @@
 import { ShoppingCart, RotateCcw, TrendingUp, DollarSign } from "lucide-react";
-import type { Order } from "../types";
 import { cn } from "../../../lib/utils";
+import type { Order } from "@/types/orders";
 
 
 
-interface CourseStatsProps {
+interface OrderStatsProps {
   orders: Order[];
 }
 
@@ -39,16 +39,14 @@ function StatCard({ title, value, icon, change, changeType }: StatCardProps) {
   );
 }
 
-function OrderStats({ orders }: CourseStatsProps) {
+function OrderStats({ orders }: OrderStatsProps) {
   const totalOrders = orders.length;
   const totalAmount = orders.reduce(
-    // @ts-expect-error - order amount property might not exist on type
-    (sum, order) => sum + (order.amountCents || 0),
+    (sum, order) => sum + (order.totalCents || 0),
     0
   );
   const totalRevenue = orders.reduce(
-    // @ts-expect-error - order price property might not exist on type
-    (sum, order) => sum + (order.price || 0),
+    (sum, order) => sum + (order.totalCents || 0) / 100,
     0
   );
 
@@ -61,7 +59,7 @@ function OrderStats({ orders }: CourseStatsProps) {
       changeType: "positive" as const,
     },
     {
-      title: "والطلبات المستردة",
+      title: "الطلبات المستردة",
       value: totalAmount.toLocaleString(),
       icon: <RotateCcw className={cn('w-8', 'h-8')} />,
       change: "+12% من الشهر الماضي",
@@ -77,7 +75,7 @@ function OrderStats({ orders }: CourseStatsProps) {
   ];
 
   return (
-    <div className={cn('grid', 'grid-cols-1', 'md:grid-cols-2', 'lg:grid-cols-4', 'gap-6', 'mb-6')}>
+    <div className={cn('grid', 'grid-cols-1', 'md:grid-cols-3', 'gap-6', 'mb-6')}>
       {stats.map((stat, index) => (
         <StatCard
           key={index}
@@ -86,9 +84,6 @@ function OrderStats({ orders }: CourseStatsProps) {
           icon={stat.icon}
           change={stat.change}
           changeType={stat.changeType}
-
-
-
         />
       ))}
     </div>

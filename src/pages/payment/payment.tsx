@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import StatsCard from "@/components/shared/stats-card";
 import { usePayments } from "@/features/payments/hooks/usePaymentsQueries";
 import { cn } from "../../lib/utils";
-import { CreatePayment } from "./createPayments";
+import { CreatePayment } from "./create";
 
 export default function Payment() {
     const [searchTerm, setSearchTerm] = useState("");

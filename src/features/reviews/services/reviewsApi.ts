@@ -31,6 +31,17 @@ export const reviewsApi = {
     return response.data;
   },
 
+  async createCourseReview(
+    courseSlug: string,
+    data: { rating: number; comment: string },
+  ): Promise<CreateReviewResponse> {
+    const response = await api.post<CreateReviewResponse>(
+      REVIEWS_ENDPOINTS.CREATE_BY_COURSE.replace("{courseSlug}", courseSlug),
+      data,
+    );
+    return response.data;
+  },
+
   async updateReview(
     idOrSlug: string,
     data: UpdateReviewRequest,

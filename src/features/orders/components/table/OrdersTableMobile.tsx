@@ -1,4 +1,3 @@
-import DeleteOrder from "../DeleteOrder";
 import type { Table as TableType } from '@tanstack/react-table';
 import type { Order } from "@/types/orders";
 import { Badge } from "@/components/ui/badge";
@@ -42,21 +41,15 @@ export function OrdersTableMobile({ table }: OrdersTableMobileProps) {
                                 <EditOrder
                                     orderId={row.original.id}
                                     initialData={{
-                                        user: { value: row.original.userId, label: row.original.userId },
-                                        courses: row.original.items.map((item) => ({
-                                            value: item.courseId,
-                                            label: item.courseName || item.courseId,
-                                        })),
-                                        currency: { value: row.original.currency || "EGP", label: row.original.currency || "EGP" },
-                                        coupon: row.original.couponId ? { value: row.original.couponId, label: row.original.couponCode || row.original.couponId } : null,
-                                        subtotalCents: row.original.subtotalCents || 0,
+                                        userId: row.original.userId,
+                                        courseId: row.original.items[0]?.courseId || "",
+                                        coursePriceCents: row.original.items[0]?.priceCents || 0,
+                                        currency: row.original.currency || "EGP",
+                                        couponId: row.original.couponId || "",
                                         discountCents: row.original.discountCents || 0,
                                         taxCents: row.original.taxCents || 0,
-                                        totalCents: row.original.totalCents || 0,
-                                        couponCode: row.original.couponCode,
                                     }}
                                 />
-                                <DeleteOrder orderId={row.original.id} />
                             </div>
                         </div>
                     </div>

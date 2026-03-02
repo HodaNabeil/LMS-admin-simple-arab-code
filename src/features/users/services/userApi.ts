@@ -5,10 +5,11 @@ import type {
   User,
   CreateUserDto,
   UpdateUserDto,
+  UserFilters,
 } from "@/types/user";
 
 export const userApi = {
-  async getAllUsers(filters?: any): Promise<UserListResponse> {
+  async getAllUsers(filters?: UserFilters): Promise<UserListResponse> {
     const response = await api.get<UserListResponse>(USERS_ENDPOINTS.LIST, {
       params: filters,
     });

@@ -1,10 +1,43 @@
 import type { components } from './api.generated';
 
-export const orderStatuses = ["PAID", "FAILED", "PENDING", "REFUNDED"];
+export const orderStatuses = ["PAID", "FAILED", "PENDING", "REFUNDED"] as const;
 
-export const paymentMethods = ["STRIPE", "PHONE_CASH"];
+export type OrderStatus = typeof orderStatuses[number];
 
-export const currencies = ["USD", "EGP"];
+export const paymentMethods = ["STRIPE", "PHONE_CASH"] as const;
+
+export type PaymentMethod = typeof paymentMethods[number];
+
+export const currencies = ["USD", "EGP"] as const;
+
+export type Currency = typeof currencies[number];
+
+// Common select option type for reuse across the app
+export interface BaseOptionType {
+    value: string | number;
+    label: string;
+}
+
+// ============================================
+// Localization Maps
+// ============================================
+
+export const orderStatusLabels: Record<OrderStatus, string> = {
+    PAID: "مدفوع",
+    FAILED: "فشل الدفع",
+    PENDING: "قيد الانتظار",
+    REFUNDED: "مسترجع",
+};
+
+export const paymentMethodLabels: Record<PaymentMethod, string> = {
+    STRIPE: "بطاقة/سترايب",
+    PHONE_CASH: "دفع هاتفي",
+};
+
+export const currencyLabels: Record<Currency, string> = {
+    USD: "دولار أمريكي (USD)",
+    EGP: "جنيه مصري (EGP)",
+};
 
 // ============================================
 // Schema Types (DTOs)

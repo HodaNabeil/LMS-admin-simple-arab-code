@@ -3,9 +3,9 @@ import ReviewForm from '@/features/reviews/components/form/ReviewForm';
 
 export default function CreateReview() {
   return (
-    <main className="pt-20">
+    <div className='padding-page  space-y-10 pt-10'>
       <ReviewFormHeader title="إنشاء مراجعة جديدة" description="املأ التفاصيل الأساسية للمراجعة." />
       <ReviewForm />
-    </main>
+    </div>
   );
 }

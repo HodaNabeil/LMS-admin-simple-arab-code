@@ -4,9 +4,10 @@ import {
   DialogContent,
   DialogHeader,
   DialogTrigger,
+  DialogTitle,
+  DialogDescription,
 } from "@/components/ui/dialog";
 import UserForm from "./UserForm";
-import { DialogTitle } from "@radix-ui/react-dialog";
 import { useState } from "react";
 import { useCreateUser } from "../hooks/useUsersMutations";
 
@@ -19,10 +20,12 @@ export function CreateNewUser() {
       <DialogTrigger asChild>
         <Button variant="default">انشاء مستخدم جديد</Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-106.25 sm:max-h-106.25 overflow-y-auto">
+      <DialogContent >
         <DialogHeader className="text-right!">
           <DialogTitle>إنشاء مستخدم جديد</DialogTitle>
-
+          <DialogDescription className="sr-only">
+            تعبئة بيانات المستخدم الجديد
+          </DialogDescription>
         </DialogHeader>
         <UserForm setUserMenu={setUserMenu} mutation={mutation} />
       </DialogContent>

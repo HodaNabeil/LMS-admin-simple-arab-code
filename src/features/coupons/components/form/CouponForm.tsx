@@ -1,6 +1,6 @@
 import { Pages, CreateCouponDtoType } from '@/constants/enums';
 import { useNavigate } from 'react-router-dom';
-import { useForm, type Control, useWatch } from 'react-hook-form';
+import { useForm, type Control } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect, useMemo } from 'react';
 import FormFields from '@/components/shared/form-fields/form-fields';
@@ -9,7 +9,7 @@ import useFormFields from '@/hooks/useFormFields';
 import { couponSchema, type CouponSchema } from '@/validations/coupon';
 import { useCreateCoupon, useUpdateCoupon } from '../../hooks/useCouponsMutation';
 import { useCourses } from '@/features/courses/hooks/useCoursesQueries';
-import type { CreateCouponRequest, Coupon } from '@/types/course';
+import type { CreateCouponRequest, Coupon, UpdateCouponRequest } from '@/types/course';
 import type { UseMutationResult } from '@tanstack/react-query';
 import { handleApiError } from '@/lib/error-handler';
 import { cn } from "../../../../lib/utils";
@@ -17,7 +17,7 @@ import { cn } from "../../../../lib/utils";
 interface CouponFormProps {
   coupon?: Coupon;
   setCouponMenu?: React.Dispatch<React.SetStateAction<boolean>>;
-  mutation?: UseMutationResult<Coupon, Error, { id: string; data: any }, unknown>;
+  mutation?: UseMutationResult<Coupon, Error, { id: string; data: UpdateCouponRequest }, unknown>;
 }
 
 export default function CouponForm({ coupon, setCouponMenu, mutation }: CouponFormProps) {
@@ -37,7 +37,8 @@ export default function CouponForm({ coupon, setCouponMenu, mutation }: CouponFo
   }, [coursesData]);
 
   const { mutateAsync: createCoupon } = useCreateCoupon();
-  const updateMutation = mutation || useUpdateCoupon();
+  const defaultUpdateMutation = useUpdateCoupon();
+  const updateMutation = mutation || defaultUpdateMutation;
 
   const useFormReturn = useForm<CouponSchema>({
     defaultValues: {
@@ -65,7 +66,7 @@ export default function CouponForm({ coupon, setCouponMenu, mutation }: CouponFo
       reset({
         code: coupon.code || '',
         value: coupon.value || 0,
-        type: (coupon.type as any) || CreateCouponDtoType.PERCENTAGE,
+        type: (coupon.type as unknown as CreateCouponDtoType) || CreateCouponDtoType.PERCENTAGE,
         description: (coupon.description as unknown as string) || '',
         startsAt: coupon.startsAt && typeof coupon.startsAt === 'string' ? new Date(coupon.startsAt).toISOString().split('T')[0] : '',
         expiresAt: coupon.expiresAt && typeof coupon.expiresAt === 'string' ? new Date(coupon.expiresAt).toISOString().split('T')[0] : '',
@@ -94,13 +95,13 @@ export default function CouponForm({ coupon, setCouponMenu, mutation }: CouponFo
           courseIds: data.courseIds,
           isActive: data.isActive,
         };
-        
-        await updateMutation.mutateAsync({ id: coupon.id, data: updateData as any });
-        
+
+        await updateMutation.mutateAsync({ id: coupon.id, data: { ...updateData, id: coupon.id } as UpdateCouponRequest });
+
         if (setCouponMenu) {
           setCouponMenu(false);
         }
-        
+
         // Navigate to coupons list after successful update
         navigate('/admin/coupons');
       } else {
@@ -132,54 +133,54 @@ export default function CouponForm({ coupon, setCouponMenu, mutation }: CouponFo
       onSubmit={handleSubmit(handleFormSubmit)}
       className={cn('flex', 'flex-col', 'gap-4')}
     >
-        {getFormFields().map((field) => {
-          // Inject dynamic course options into the courseIds field
-          const fieldWithOptions =
-            field.name === 'courseIds'
-              ? { ...field, options: courseOptions }
-              : field;
+      {getFormFields().map((field) => {
+        // Inject dynamic course options into the courseIds field
+        const fieldWithOptions =
+          field.name === 'courseIds'
+            ? { ...field, options: courseOptions }
+            : field;
 
-          return (
-            <FormFields
-              key={field.name}
-              {...fieldWithOptions}
-              control={control as unknown as Control<Record<string, unknown>>}
-              errors={errors}
-            />
-          );
-        })}
+        return (
+          <FormFields
+            key={field.name}
+            {...fieldWithOptions}
+            control={control as unknown as Control<Record<string, unknown>>}
+            errors={errors}
+          />
+        );
+      })}
 
-             <button
-            type="submit"
-            disabled={isSubmitting || isLoadingCourses}
-            className={cn(
-              'w-full',
-              'bg-primary', 
-              'text-white', 
-              'rounded-lg', 
-              'px-6', 
-              'py-3', 
-              'text-base',
-              'font-medium',
-              'hover:bg-primary/90', 
-              'transition-colors',
-              'disabled:opacity-50',
-              'disabled:cursor-not-allowed',
-              'flex', 
-              'items-center', 
-              'justify-center', 
-              'gap-2',
-              'shadow-sm'
-            )}
-          >
-            {isSubmitting || isLoadingCourses ? (
-              <Loader />
-            ) : isEditMode ? (
-              'تحديث الكوبون'
-            ) : (
-              'إنشاء كوبون'
-            )}
-          </button>
-      </form>
+      <button
+        type="submit"
+        disabled={isSubmitting || isLoadingCourses}
+        className={cn(
+          'w-full',
+          'bg-primary',
+          'text-white',
+          'rounded-lg',
+          'px-6',
+          'py-3',
+          'text-base',
+          'font-medium',
+          'hover:bg-primary/90',
+          'transition-colors',
+          'disabled:opacity-50',
+          'disabled:cursor-not-allowed',
+          'flex',
+          'items-center',
+          'justify-center',
+          'gap-2',
+          'shadow-sm'
+        )}
+      >
+        {isSubmitting || isLoadingCourses ? (
+          <Loader />
+        ) : isEditMode ? (
+          'تحديث الكوبون'
+        ) : (
+          'إنشاء كوبون'
+        )}
+      </button>
+    </form>
   );
 }

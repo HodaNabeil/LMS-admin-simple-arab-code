@@ -3,39 +3,41 @@ import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
-  DialogHeader,
+
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Edit } from "lucide-react";
-import FormOrder from "./OrderForm";
-import type { Order, OrderFormData } from "../types";
+
 import type { UpdateOrderRequest } from "@/types/orders";
+import type { OrderFormData } from "@/validations/order";
 
 interface EditOrderProps {
   orderId: string;
   initialData: OrderFormData;
-  currentOrderLabel?: string;
 }
 
 import { useUpdateOrder } from "../hooks/useOrdersMutations";
 import { cn } from "../../../lib/utils";
+import OrderForm from "./OrderForm";
 
-export default function EditOrder({ orderId, initialData, currentOrderLabel }: EditOrderProps) {
+export default function EditOrder({ orderId, initialData,    }: EditOrderProps) {
   const [open, setOpen] = useState(false);
   const { mutateAsync: updateOrder, isPending: isUpdating } = useUpdateOrder();
 
-  const handleSubmit = async (data: Order) => {
+  const handleSubmit = async (data: OrderFormData) => {
     try {
+      // Calculate subtotal and total from form data
+      const subtotalCents = data.coursePriceCents;
+      const totalCents = data.coursePriceCents - data.discountCents + data.taxCents;
+      
       const updateData: UpdateOrderRequest = {
-        subtotalCents: data.subtotalCents,
+        subtotalCents,
         discountCents: data.discountCents,
         taxCents: data.taxCents,
-        totalCents: data.totalCents,
+        totalCents,
         currency: data.currency as UpdateOrderRequest["currency"],
-        couponId: data.couponId,
-        couponCode: data.couponCode,
+        couponId: data.couponId || undefined,
       };
 
       await updateOrder({ id: orderId.toString(), data: updateData });
@@ -59,25 +61,12 @@ export default function EditOrder({ orderId, initialData, currentOrderLabel }: E
           <Edit className={cn('h-4', 'w-4')} />
         </Button>
       </DialogTrigger>
-      <DialogContent
-        dir="rtl"
-        className={cn('bg-white', 'text-gray-900', 'max-w-2xl', 'w-full', 'mx-auto', 'rounded-xl', 'shadow-lg', 'max-h-[90vh]', 'overflow-y-auto', 'p-4', 'sm:p-6')}
-      >
-        <DialogHeader className="w-full">
+      <DialogContent dir="rtl">
           <DialogTitle className={cn('text-center', 'w-full', 'mb-2')}>
             تعديل الطلب
           </DialogTitle>
-          <DialogDescription className={cn('text-center', 'w-full', 'mb-4', 'text-gray-500')}>
-            {currentOrderLabel ? currentOrderLabel : "قم بتعديل بيانات الطلب مع دعم كامل للتخفيضات"}
-          </DialogDescription>
-        </DialogHeader>
-        <FormOrder
-          mode="edit"
-          initialData={initialData}
-          onSubmit={handleSubmit}
-          onCancel={() => setOpen(false)}
-          isLoading={isLoading}
-        />
+        
+        <OrderForm onSubmit={handleSubmit} initialData={initialData} isLoading={isLoading} />
       </DialogContent>
     </Dialog>
   );

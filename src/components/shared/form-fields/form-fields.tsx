@@ -10,6 +10,7 @@ import FileUploadField from './file-upload-field';
 import TextField from './text-field';
 import TextareaField from './textarea-field';
 import MultiSelectField from './multi-select-field';
+import RatingField from './rating-field';
 
 interface Props extends IFormField {
   errors: FieldErrors;
@@ -55,6 +56,10 @@ const FormFields = (props: Props) => {
 
     if (type === 'file') {
       return <FileUploadField {...props} />;
+    }
+
+    if (type === InputTypes.RATING) {
+      return <RatingField {...props} />;
     }
 
     return <TextField {...props} />;

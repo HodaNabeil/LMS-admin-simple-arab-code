@@ -1,12 +1,12 @@
 import type { IFormField } from "@/types/app";
-import { Controller } from "react-hook-form";
-import type { Control, FieldErrors } from "react-hook-form";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { cn } from "../../../lib/utils";
+import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
+import type { Control } from "react-hook-form";
 
 interface Props extends IFormField {
-  errors: FieldErrors;
-  control: Control<Record<string, unknown>>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  control: Control<any>;
 }
 
 const TextField = ({
@@ -17,56 +17,47 @@ const TextField = ({
   disabled,
   autoFocus,
   control,
-  errors,
+  required,
 }: Props) => {
   return (
-    <div className="flex flex-col gap-2">
-      {label && (
-        <Label
-          htmlFor={name}
-          className="text-sm font-medium text-card-foreground"
-        >
-          {label}
-        </Label>
-      )}
-      <Controller
-        control={control}
-        name={name}
-        render={({ field: { onChange, onBlur, value, ref } }) => (
-          <Input
-            className={`${errors[name]
-              ? "border-destructive focus-visible:border-destructive focus-visible:ring-destructive/20"
-              : "!border-border !shadow-none focus-visible:ring-0 focus-visible:border-border"
-              } h-10 !bg-transparent`}
-            type={type}
-            onChange={(e) => {
-              const val = e.target.value;
-              // For number inputs, convert to number or set to 0 if empty
-              if (type === "number") {
-                onChange(val === "" ? 0 : Number(val));
-              } else {
-                onChange(val);
+    <FormField
+      control={control}
+      name={name}
+      render={({ field }) => (
+        <FormItem className="flex flex-col gap-2">
+          {label && (
+            <FormLabel className="text-sm font-medium text-foreground">
+              {label} {required && <span className="text-destructive">*</span>}
+            </FormLabel>
+          )}
+          <FormControl>
+            <Input
+              {...field}
+              className={cn(
+                "h-10 bg-transparent! transition-all",
+                "focus-visible:ring-1 focus-visible:ring-primary"
+              )}
+              type={type}
+              placeholder={placeholder || ""}
+              disabled={disabled || false}
+              autoFocus={autoFocus || false}
+              onChange={(e) => {
+                const val = e.target.value;
+                if (type === "number") {
+                  field.onChange(val === "" ? 0 : Number(val));
+                } else {
+                  field.onChange(val);
+                }
+              }}
+              value={
+                type === "number" ? (field.value || 0).toString() : String(field.value || "")
               }
-            }}
-            onBlur={onBlur}
-            value={
-              type === "number" ? (value || 0).toString() : String(value || "")
-            }
-            ref={ref}
-            placeholder={placeholder || ""}
-            disabled={disabled || false}
-            autoFocus={autoFocus || false}
-            id={name}
-            aria-invalid={errors[name] ? "true" : "false"}
-          />
-        )}
-      />
-      {errors[name] && (
-        <p className="text-sm text-destructive">
-          {errors[name]?.message as string}
-        </p>
+            />
+          </FormControl>
+          <FormMessage />
+        </FormItem>
       )}
-    </div>
+    />
   );
 };
 

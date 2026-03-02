@@ -1,39 +1,35 @@
-import { orderStatuses, paymentMethods, currencies } from "@/types/orders";
+import type { Course, Coupon } from "@/types/course";
+import type { User } from "@/types/user";
+import { 
+    orderStatuses, 
+    paymentMethods, 
+    currencies,
+    orderStatusLabels,
+    paymentMethodLabels,
+    currencyLabels,
+    type BaseOptionType
+} from "@/types/orders";
 
-export interface OptionType {
-    value: string | number;
-    label: string;
-}
+// Re-export the base option type for backward compatibility
+export type OptionType = BaseOptionType;
 
 export const getOrderStatusOptions = (): OptionType[] =>
     orderStatuses.map((status) => ({
         value: status,
-        label:
-            status === "PAID"
-                ? "مدفوع"
-                : status === "FAILED"
-                    ? "فشل الدفع"
-                    : status === "PENDING"
-                        ? "قيد الانتظار"
-                        : status === "REFUNDED"
-                            ? "مسترجع"
-                            : status,
+        label: orderStatusLabels[status],
     }));
 
 export const getPaymentMethodOptions = (): OptionType[] =>
     paymentMethods.map((method) => ({
         value: method,
-        label: method === "STRIPE" ? "بطاقة/سترايب" : "دفع هاتفي",
+        label: paymentMethodLabels[method],
     }));
 
 export const getCurrencyOptions = (): OptionType[] =>
     currencies.map((currency) => ({
         value: currency,
-        label: currency === "EGP" ? "جنيه مصري (EGP)" : "دولار أمريكي (USD)",
+        label: currencyLabels[currency],
     }));
-
-import type { Course, Coupon } from "@/types/course";
-import type { User } from "@/types/user";
 
 export const getCourseOptions = (courses: Course[]): OptionType[] =>
     courses.map((course) => ({

@@ -1,3 +1,5 @@
+import { InputTypes } from "@/constants/enums";
+
 export interface IOption {
   label: string;
   value: string;
@@ -5,23 +7,8 @@ export interface IOption {
 export interface IFormField {
   name: string;
   label?: string;
-  type:
-  | "text"
-  | "email"
-  | "password"
-  | "number"
-  | "date"
-  | "time"
-  | "datetime-local"
-  | "checkbox"
-  | "radio"
-  | "select"
-  | "multi select"
-  | "phone"
-  | "hidden"
-  | "textarea"
-  | "image"
-  | "file";
+  type: InputTypes | "file";
+  required?: boolean;
 
   placeholder?: string;
   disabled?: boolean;

@@ -44,6 +44,7 @@ export const REVIEWS_ENDPOINTS = {
     LIST: '/api/reviews',
     DETAIL: '/api/reviews/{idOrSlug}',
     CREATE: '/api/reviews',
+    CREATE_BY_COURSE: '/api/courses/{courseSlug}/reviews',
     UPDATE: '/api/reviews/{idOrSlug}',
     DELETE: '/api/reviews/{idOrSlug}',
 } as const;

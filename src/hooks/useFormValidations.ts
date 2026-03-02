@@ -17,6 +17,7 @@ import { loginSchema } from '@/validations/login';
 import { userSchema } from '@/validations/user';
 import { createPathSchema } from '@/validations/path';
 import { createCourseSchema } from '@/validations/createcourse';
+import { orderSchema } from '@/validations/order';
 
 type ValidationSchema =
   | typeof signinSchema
@@ -34,6 +35,7 @@ type ValidationSchema =
   | typeof createPaymentSchema
   | typeof createLessonCourseSchema
   | typeof createReviewSchema
+  | typeof orderSchema
   | z.ZodObject<Record<string, never>>;
 
 const useFormValidations = (
@@ -77,6 +79,8 @@ const useFormValidations = (
         return createReviewSchema;
       case Pages.CREATE_PAYMENTS:
         return createPaymentSchema;
+      case Pages.CREATE_ORDERS:
+        return orderSchema;
       default:
         return z.object({});
     }

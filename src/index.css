@@ -112,6 +112,9 @@
   .padding-card-statistics {
     @apply py-[50px] px-[15px];
   }
+  .padding-page{
+      @apply p-4;
+  }
 }
 
 .dark {

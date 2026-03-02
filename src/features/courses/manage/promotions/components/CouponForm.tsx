@@ -46,7 +46,6 @@ function CouponForm({
             maxUsesPerUser: (initialData as unknown as { maxUsesPerUser: number })?.maxUsesPerUser || 1,
             minOrderAmount: ((initialData?.minOrderAmount || 0) as number),
             isActive: initialData?.isActive ?? true,
-            allCourses: false,
         },
         mode: 'onChange',
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -74,7 +73,7 @@ function CouponForm({
     const formLoading = isSubmitting || isLoading;
 
     return (
-        <form onSubmit={handleSubmit(handleFormSubmit)} className="p-6 space-y-6 overflow-y-auto h-[500px]">
+        <form onSubmit={handleSubmit(handleFormSubmit as Parameters<typeof handleSubmit>[0])} className="p-6 space-y-6 overflow-y-auto h-[500px]">
             {formLoading && <div className="flex justify-center py-4"><Loader className='style-loader' /></div>}
             {!formLoading && formFields.map((field, index) => (
                 <div key={index}>

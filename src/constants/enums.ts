@@ -54,6 +54,7 @@ export enum Pages {
   GENERAL = "general",
   SALES = "sales",
   ORDERS = "orders",
+  CREATE_ORDERS = "orders/create",
   PAYMENTS = "payments",
   REFUNDS = "refunds",
   COUPONS = "coupons",
@@ -97,6 +98,7 @@ export enum InputTypes {
   WEEK = "week",
   HIDDEN = "hidden",
   MULTI_SELECT = "multi select",
+  RATING = "rating",
 }
 
 export enum Navigate {
