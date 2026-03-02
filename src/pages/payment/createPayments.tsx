@@ -3,7 +3,6 @@ import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -12,12 +11,12 @@ import PaymentForm from "@/features/payments/components/paymentForm";
 import { cn } from "../../lib/utils";
 
 export function CreatePayment() {
-    const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline">طلب جديد</Button>
+        <Button variant="outline">عملية دفع جديدة</Button>
       </DialogTrigger>
       <DialogContent
         dir="rtl"
@@ -25,15 +24,12 @@ export function CreatePayment() {
       >
         <DialogHeader className="w-full">
           <DialogTitle className={cn('text-center', 'w-full', 'mb-2')}>
-            إضافة طلب جديد
+            إضافة عملية دفع جديدة
           </DialogTitle>
-          <DialogDescription className={cn('text-center', 'w-full', 'mb-4', 'text-gray-500')}>
-            أضف طلبًا جديدًا مع دعم كامل للتخفيضات والكوبونات
-          </DialogDescription>
         </DialogHeader>
 
 
-    <PaymentForm onSuccess={() => setOpen(false)} />
+        <PaymentForm onSuccess={() => setOpen(false)} />
       </DialogContent>
     </Dialog>
   );

@@ -15,10 +15,12 @@ import type {
 
 import { Button } from "@/components/ui/button";
 import EditOrder from "../edit-order";
+import DeleteOrder from "../DeleteOrder";
 import { OrdersTableMobile } from "./OrdersTableMobile";
 import { OrdersTableDesktop } from "./OrdersTableDesktop";
 import { Badge } from "@/components/ui/badge";
-import type { Order, OrderFormData } from "../../types";
+import type { Order } from "@/types/orders";
+import type { OrderFormData } from "../../types";
 
 interface OrdersTableProps {
   orders: Order[];
@@ -65,10 +67,74 @@ const columns: ColumnDef<Order>[] = [
     cell: ({ row }) => <div>{(row.getValue("items") as []).length}</div>,
   },
   {
+    accessorKey: "subtotal",
+    header: "المبلغ الفرعي",
+    cell: ({ row }) => {
+      const subtotal = row.getValue("subtotal") as number;
+      const currency = row.original.currency || "EGP";
+      return <div>{subtotal} {currency}</div>;
+    },
+  },
+  {
+    accessorKey: "discount",
+    header: "الخصم",
+    cell: ({ row }) => {
+      const discount = row.getValue("discount") as number;
+      const currency = row.original.currency || "EGP";
+      return <div className="text-red-600">-{discount} {currency}</div>;
+    },
+  },
+  {
+    accessorKey: "tax",
+    header: "الضريبة",
+    cell: ({ row }) => {
+      const tax = row.getValue("tax") as number;
+      const currency = row.original.currency || "EGP";
+      return <div>{tax} {currency}</div>;
+    },
+  },
+  {
+    accessorKey: "couponCode",
+    header: "كود الخصم",
+    cell: ({ row }) => <div>{row.getValue("couponCode") || "---"}</div>,
+  },
+  {
     accessorKey: "createdAt",
     header: "تاريخ الطلب",
     cell: ({ row }) => {
       const date = new Date(row.getValue("createdAt") as string);
+      return (
+        <div className="flex flex-col">
+          <span>{date.toLocaleDateString("ar-EG")}</span>
+          <span className="text-xs text-muted-foreground">
+            {date.toLocaleTimeString("ar-EG", { hour: "2-digit", minute: "2-digit" })}
+          </span>
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: "completedAt",
+    header: "تاريخ الإكمال",
+    cell: ({ row }) => {
+      const completedAt = row.getValue("completedAt") as string;
+      if (!completedAt) return <div>---</div>;
+      const date = new Date(completedAt);
+      return (
+        <div className="flex flex-col">
+          <span>{date.toLocaleDateString("ar-EG")}</span>
+          <span className="text-xs text-muted-foreground">
+            {date.toLocaleTimeString("ar-EG", { hour: "2-digit", minute: "2-digit" })}
+          </span>
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: "updatedAt",
+    header: "آخر تحديث",
+    cell: ({ row }) => {
+      const date = new Date(row.getValue("updatedAt") as string);
       return (
         <div className="flex flex-col">
           <span>{date.toLocaleDateString("ar-EG")}</span>
@@ -86,14 +152,16 @@ const columns: ColumnDef<Order>[] = [
     cell: ({ row }) => {
       const order = row.original;
 
+      const currentOrderLabel = `${order.orderNumber ?? order.id}${order.email ? ` - ${order.email}` : ""}`;
+
       const orderFormData: OrderFormData = {
         user: { value: order.userId, label: order.userId },
         courses: order.items.map((item) => ({
           value: item.courseId,
-          label: item.courseId, // Using courseId since courseName doesn't exist
+          label: item.courseName || item.courseId,
         })),
         currency: { value: order.currency || "EGP", label: order.currency || "EGP" },
-        coupon: order.couponCode ? { value: order.couponCode, label: order.couponCode } : null,
+        coupon: order.couponId ? { value: order.couponId, label: order.couponCode || order.couponId } : null,
         subtotalCents: order.subtotalCents || 0,
         discountCents: order.discountCents || 0,
         taxCents: order.taxCents || 0,
@@ -102,7 +170,10 @@ const columns: ColumnDef<Order>[] = [
       };
 
       return (
-        <EditOrder orderId={order.userId} initialData={orderFormData} />
+        <div className="flex gap-2 items-center">
+          <EditOrder orderId={order.id} initialData={orderFormData} currentOrderLabel={currentOrderLabel} />
+          <DeleteOrder orderId={order.id} />
+        </div>
       );
     },
   },

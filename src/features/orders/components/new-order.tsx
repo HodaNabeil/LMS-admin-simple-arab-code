@@ -49,7 +49,7 @@ export function NewOrder() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline">طلب جديد</Button>
+        <Button variant="outline">عملية دفع جديدة</Button>
       </DialogTrigger>
       <DialogContent
         dir="rtl"
@@ -57,10 +57,10 @@ export function NewOrder() {
       >
         <DialogHeader className="w-full">
           <DialogTitle className="text-center w-full mb-2">
-            إضافة طلب جديد
+            إضافة عملية دفع جديدة
           </DialogTitle>
           <DialogDescription className="text-center w-full mb-4 text-gray-500">
-            أضف طلبًا جديدًا مع دعم كامل للتخفيضات والكوبونات
+            أضف عملية دفع جديدة مع دعم كامل للتخفيضات والكوبونات
           </DialogDescription>
         </DialogHeader>
         <OrderForm

@@ -10,7 +10,7 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-import type { Order } from "../../types";
+import type { Order } from "@/types/orders";
 
 interface OrdersTableDesktopProps {
     table: TableType<Order>;

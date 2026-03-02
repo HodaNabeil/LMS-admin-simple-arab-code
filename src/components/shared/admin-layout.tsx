@@ -8,16 +8,16 @@ import {
 
 function AdminLayout() {
   return (
-    <ProtectedRoute>
+    <ProtectedRoute adminOnly={true}>
       <SidebarProvider defaultOpen={true}>
         <div className="flex min-h-svh w-full bg-background overflow-hidden" dir="rtl">
           <AppSidebar />
           <SidebarInset>
-            <main className="flex-1 overflow-y-auto bg-muted/30">
-              <div className="container max-w-none p-0">
+            <div className="flex-1 overflow-y-auto bg-muted/30">
+              <div className="container  p-0">
                 <Outlet />
               </div>
-            </main>
+            </div>
           </SidebarInset>
         </div>
       </SidebarProvider>

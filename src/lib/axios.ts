@@ -13,7 +13,7 @@ import type { RefreshTokenResponse } from "@/types/auth";
 export const api = axios.create({
   baseURL:
     import.meta.env.VITE_API_URL ||
-    "https://simple-arab-code-backend-production.up.railway.app",
+    "http://localhost:4000",
   headers: {
     "Content-Type": "application/json",
   },

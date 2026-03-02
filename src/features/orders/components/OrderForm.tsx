@@ -65,7 +65,7 @@ export default function OrderForm({
 
   const currencyOptions: SelectOption[] = getCurrencyOptions();
   const courseOptions: SelectOption[] = getCourseOptions(coursesData?.data?.courses || []);
-  const userOptions: SelectOption[] = getUserOptions(usersData?.users ?? []);
+  const userOptions: SelectOption[] = getUserOptions(usersData?.data?.users ?? []);
   const couponOptions: SelectOption[] = getCouponOptions(couponsData?.data ?? []);
 
   const getCurrencySymbol = () => {
@@ -142,42 +142,60 @@ export default function OrderForm({
           <label htmlFor="currency" className={cn('font-bold', 'text-gray-900', 'mb-1')}>
             العملة *
           </label>
-          <Select<SelectOption, false>
-            inputId="currency"
-            options={currencyOptions}
-            value={currencyOptions.find(c => c.value === currency) || null}
-            onChange={(option: SingleValue<SelectOption>) => setCurrency(String(option?.value || "EGP"))}
-            isDisabled={isLoading}
-            isMulti={false}
-            classNamePrefix="react-select"
-            styles={selectStyles}
-            theme={selectTheme}
-            components={{ Option: CustomOption }}
-            isRtl
-            menuPlacement="auto"
-            placeholder="اختر العملة..."
+          <Controller
+            control={control}
+            name="currency"
+            render={({ field }) => (
+              <Select<SelectOption, false>
+                inputId="currency"
+                options={currencyOptions}
+                value={currencyOptions.find((c) => String(c.value) === String(field.value)) || null}
+                onChange={(option: SingleValue<SelectOption>) => field.onChange(String(option?.value || "EGP"))}
+                isDisabled={isLoading || isSubmitting}
+                isMulti={false}
+                classNamePrefix="react-select"
+                styles={selectStyles}
+                theme={selectTheme}
+                components={{ Option: CustomOption }}
+                isRtl
+                menuPlacement="auto"
+                placeholder="اختر العملة..."
+              />
+            )}
           />
+          {errors.currency?.message && (
+            <p className={cn('text-xs', 'text-red-600')}>{errors.currency.message}</p>
+          )}
         </div>
 
         {/* Course */}
         <div className={cn('grid', 'gap-3')}>
           <label className={cn('font-bold', 'text-gray-900')}>الدورة *</label>
-          <Select<SelectOption, false>
-            options={courseOptions}
-            value={courseOptions.find(c => c.value === courseId) || null}
-            onChange={(option: SingleValue<SelectOption>) => setCourseId(String(option?.value || ""))}
-            onInputChange={(newValue) => setCourseSearch(newValue)}
-            isLoading={isPendingCourses}
-            isDisabled={isLoading}
-            isMulti={false}
-            classNamePrefix="react-select"
-            styles={selectStyles}
-            theme={selectTheme}
-            components={{ Option: CustomOption }}
-            isRtl
-            menuPlacement="auto"
-            placeholder="ابحث عن الدورة..."
+          <Controller
+            control={control}
+            name="courseId"
+            render={({ field }) => (
+              <Select<SelectOption, false>
+                options={courseOptions}
+                value={courseOptions.find((c) => String(c.value) === String(field.value)) || null}
+                onChange={(option: SingleValue<SelectOption>) => field.onChange(String(option?.value || ""))}
+                onInputChange={(newValue) => setCourseSearch(newValue)}
+                isLoading={isPendingCourses}
+                isDisabled={isLoading || isSubmitting}
+                isMulti={false}
+                classNamePrefix="react-select"
+                styles={selectStyles}
+                theme={selectTheme}
+                components={{ Option: CustomOption }}
+                isRtl
+                menuPlacement="auto"
+                placeholder="ابحث عن الدورة..."
+              />
+            )}
           />
+          {errors.courseId?.message && (
+            <p className={cn('text-xs', 'text-red-600')}>{errors.courseId.message}</p>
+          )}
         </div>
 
         {/* Course Price */}
@@ -185,17 +203,26 @@ export default function OrderForm({
           <label htmlFor="coursePriceCents" className={cn('font-bold', 'text-gray-900', 'mb-1')}>
             سعر الدورة (بالسنت) *
           </label>
-          <Input
-            id="coursePriceCents"
-            type="number"
-            min="0"
-            step="1"
-            value={coursePriceCents || ""}
-            onChange={(e) => setCoursePriceCents(parseInt(e.target.value) || 0)}
-            disabled={isLoading}
-            className={cn('text-gray-900', 'font-bold')}
-            placeholder="49990"
+          <Controller
+            control={control}
+            name="coursePriceCents"
+            render={({ field }) => (
+              <Input
+                id="coursePriceCents"
+                type="number"
+                min="0"
+                step="1"
+                value={field.value || ""}
+                onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
+                disabled={isLoading || isSubmitting}
+                className={cn('text-gray-900', 'font-bold')}
+                placeholder="49990"
+              />
+            )}
           />
+          {errors.coursePriceCents?.message && (
+            <p className={cn('text-xs', 'text-red-600')}>{errors.coursePriceCents.message}</p>
+          )}
           <p className={cn('text-xs', 'text-gray-500')}>
             {(coursePriceCents / 100).toFixed(2)} {getCurrencySymbol()}
           </p>
@@ -213,26 +240,33 @@ export default function OrderForm({
             <label htmlFor="coupon" className={cn('text-sm', 'font-semibold', 'text-gray-700')}>
               اختر الكوبون (اختياري)
             </label>
-            <Select<SelectOption, false>
-              inputId="coupon"
-              options={couponOptions}
-              value={couponOptions.find(c => c.value === couponId) || null}
-              onChange={(option: SingleValue<SelectOption>) => {
-                setCouponId(String(option?.value || ""));
-                setCouponCode(option?.label || "");
-              }}
-              onInputChange={(newValue) => setCouponSearch(newValue)}
-              isLoading={isPendingCoupons}
-              isDisabled={isLoading}
-              isMulti={false}
-              classNamePrefix="react-select"
-              styles={selectStyles}
-              theme={selectTheme}
-              components={{ Option: CustomOption }}
-              isRtl
-              isClearable
-              menuPlacement="auto"
-              placeholder="ابحث عن الكوبون..."
+            <Controller
+              control={control}
+              name="couponId"
+              render={({ field }) => (
+                <Select<SelectOption, false>
+                  inputId="coupon"
+                  options={couponOptions}
+                  value={couponOptions.find((c) => String(c.value) === String(field.value)) || null}
+                  onChange={(option: SingleValue<SelectOption>) => {
+                    const nextId = String(option?.value || "");
+                    field.onChange(nextId);
+                    setValue("couponCode", option?.label || "");
+                  }}
+                  onInputChange={(newValue) => setCouponSearch(newValue)}
+                  isLoading={isPendingCoupons}
+                  isDisabled={isLoading || isSubmitting}
+                  isMulti={false}
+                  classNamePrefix="react-select"
+                  styles={selectStyles}
+                  theme={selectTheme}
+                  components={{ Option: CustomOption }}
+                  isRtl
+                  isClearable
+                  menuPlacement="auto"
+                  placeholder="ابحث عن الكوبون..."
+                />
+              )}
             />
           </div>
 
@@ -241,17 +275,26 @@ export default function OrderForm({
             <label htmlFor="discountCents" className={cn('text-sm', 'font-semibold', 'text-gray-700')}>
               مبلغ التخفيض (بالسنت)
             </label>
-            <Input
-              id="discountCents"
-              type="number"
-              min="0"
-              step="1"
-              value={discountCents || ""}
-              onChange={(e) => setDiscountCents(parseInt(e.target.value) || 0)}
-              disabled={isLoading}
-              className={cn('text-gray-900', 'font-bold')}
-              placeholder="10000"
+            <Controller
+              control={control}
+              name="discountCents"
+              render={({ field }) => (
+                <Input
+                  id="discountCents"
+                  type="number"
+                  min="0"
+                  step="1"
+                  value={field.value || ""}
+                  onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
+                  disabled={isLoading || isSubmitting}
+                  className={cn('text-gray-900', 'font-bold')}
+                  placeholder="10000"
+                />
+              )}
             />
+            {errors.discountCents?.message && (
+              <p className={cn('text-xs', 'text-red-600')}>{errors.discountCents.message}</p>
+            )}
             <p className={cn('text-xs', 'text-gray-500')}>
               {(discountCents / 100).toFixed(2)} {getCurrencySymbol()}
             </p>
@@ -262,17 +305,26 @@ export default function OrderForm({
             <label htmlFor="taxCents" className={cn('text-sm', 'font-semibold', 'text-gray-700')}>
               الضريبة (بالسنت)
             </label>
-            <Input
-              id="taxCents"
-              type="number"
-              min="0"
-              step="1"
-              value={taxCents || ""}
-              onChange={(e) => setTaxCents(parseInt(e.target.value) || 0)}
-              disabled={isLoading}
-              className={cn('text-gray-900', 'font-bold')}
-              placeholder="0"
+            <Controller
+              control={control}
+              name="taxCents"
+              render={({ field }) => (
+                <Input
+                  id="taxCents"
+                  type="number"
+                  min="0"
+                  step="1"
+                  value={field.value || ""}
+                  onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
+                  disabled={isLoading || isSubmitting}
+                  className={cn('text-gray-900', 'font-bold')}
+                  placeholder="0"
+                />
+              )}
             />
+            {errors.taxCents?.message && (
+              <p className={cn('text-xs', 'text-red-600')}>{errors.taxCents.message}</p>
+            )}
             <p className={cn('text-xs', 'text-gray-500')}>
               {(taxCents / 100).toFixed(2)} {getCurrencySymbol()}
             </p>
@@ -317,21 +369,19 @@ export default function OrderForm({
       <DialogFooter className={cn('flex', 'justify-center', 'gap-2', 'mt-4')}>
         {onCancel && (
           <DialogClose asChild>
-            <Button variant="outline" type="button" disabled={isLoading}>
+            <Button variant="outline" type="button" disabled={isLoading || isSubmitting}>
               إلغاء
             </Button>
           </DialogClose>
         )}
-        <Button type="submit" disabled={isLoading}>
-          {isLoading ? (
+        <Button type="submit" disabled={isLoading || isSubmitting}>
+          {(isLoading || isSubmitting) ? (
             <>
               <Loader2 className={cn('mr-2', 'h-4', 'w-4', 'animate-spin')} />
               جاري الحفظ...
             </>
-          ) : mode === "create" ? (
-            "إضافة الطلب"
           ) : (
-            "تحديث الطلب"
+            "حفظ التعديلات"
           )}
         </Button>
       </DialogFooter>

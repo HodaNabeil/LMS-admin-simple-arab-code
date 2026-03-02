@@ -19,8 +19,8 @@ export function CreateNewUser() {
       <DialogTrigger asChild>
         <Button variant="default">انشاء مستخدم جديد</Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px] sm:max-h-[425px] overflow-y-auto">
-        <DialogHeader className="!text-right">
+      <DialogContent className="sm:max-w-106.25 sm:max-h-106.25 overflow-y-auto">
+        <DialogHeader className="text-right!">
           <DialogTitle>إنشاء مستخدم جديد</DialogTitle>
 
         </DialogHeader>

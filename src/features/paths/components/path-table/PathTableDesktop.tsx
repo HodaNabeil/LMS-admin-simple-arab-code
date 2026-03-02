@@ -15,7 +15,8 @@ interface PathTableDesktopProps {
 
 export function PathTableDesktop({ table }: PathTableDesktopProps) {
     return (
-        <div className="hidden lg:block rounded-lg border border-gray-200 bg-white overflow-hidden">
+        <div className=" rounded-lg border border-gray-200
+         bg-white ">
             <Table>
                 <TableHeader className="bg-gray-50">
                     {table.getHeaderGroups().map((headerGroup) => (
@@ -46,7 +47,8 @@ export function PathTableDesktop({ table }: PathTableDesktopProps) {
                         table.getRowModel().rows.map((row) => (
                             <TableRow
                                 key={row.id}
-                                className="border-b border-gray-100 hover:bg-gray-50 transition-colors"
+                                className="border-b border-gray-100 hover:bg-gray-50
+                                 transition-colors"
                                 data-state={row.getIsSelected() && 'selected'}
                             >
                                 {row.getVisibleCells().map((cell) => (

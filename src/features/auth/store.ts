@@ -26,13 +26,14 @@ interface AuthState {
 // Initialize authentication state from cookies
 const initializeAuthState = () => {
   const { accessToken } = authCookies.getTokens();
+  const user = authCookies.getUser();
 
   return {
-    user: null,
+    user,
     accessToken,
     refreshToken: null,
     isLoading: false,
-    isAuthenticated: Boolean(accessToken),
+    isAuthenticated: Boolean(accessToken && user),
   };
 };
 export const useAuthStore = create<AuthState>()((set, get) => ({
@@ -58,16 +59,33 @@ export const useAuthStore = create<AuthState>()((set, get) => ({
     try {
       const response: LoginResponse = await authService.login(credentials);
 
+      let userData = response.data.user;
+      
+      // If user data is not included in login response, fetch it separately
+      if (!userData && response.data.accessToken) {
+        try {
+          userData = await authService.getCurrentUser();
+        } catch (userError) {
+          console.error("Failed to fetch user data after login:", userError);
+          // Continue with login even if user fetch fails
+        }
+      }
+
       set(() => ({
-        user: response.data.user,
+        user: userData,
         accessToken: response.data.accessToken,
         isAuthenticated: true,
         isLoading: false,
       }));
+      
       // Store in cookies
       if (response.data.accessToken) {
         authCookies.setAccessToken(response.data.accessToken);
       }
+      if (userData) {
+        authCookies.setUser(userData);
+      }
+      
       return response;
     } catch (error) {
       set(() => ({ isLoading: false }));

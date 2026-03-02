@@ -1,11 +1,7 @@
 import * as z from 'zod';
-import { signinSchema, signupSchema } from '@/validations/auth';
+import { createReviewSchema } from '@/validations/review';
 import type { IFormFieldsVariables } from '@/types/app';
 import { Pages } from '@/constants/enums';
-import { loginSchema } from '@/validations/login';
-import { userSchema } from '@/validations/user';
-import { createPathSchema } from '@/validations/path';
-import { createCourseSchema } from '@/validations/createcourse';
 import { createTrackSchema } from '@/validations/track';
 import {
   basicsSchema,
@@ -16,6 +12,11 @@ import {
 } from '@/validations/course';
 import { couponSchema } from '@/validations/coupon';
 import { createPaymentSchema } from '@/validations/payment';
+import { signinSchema, signupSchema } from '@/validations/auth';
+import { loginSchema } from '@/validations/login';
+import { userSchema } from '@/validations/user';
+import { createPathSchema } from '@/validations/path';
+import { createCourseSchema } from '@/validations/createcourse';
 
 type ValidationSchema =
   | typeof signinSchema
@@ -32,6 +33,7 @@ type ValidationSchema =
   | typeof couponSchema
   | typeof createPaymentSchema
   | typeof createLessonCourseSchema
+  | typeof createReviewSchema
   | z.ZodObject<Record<string, never>>;
 
 const useFormValidations = (
@@ -71,6 +73,8 @@ const useFormValidations = (
         return createLessonCourseSchema;
       case Pages.COUPONS:
         return couponSchema;
+      case Pages.CREATE_REVIEWS:
+        return createReviewSchema;
       case Pages.CREATE_PAYMENTS:
         return createPaymentSchema;
       default:

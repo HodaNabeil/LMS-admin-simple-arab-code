@@ -65,18 +65,18 @@ export default function Payment() {
     }
 
     return (
-            <div className={cn('space-y-8', 'p-6')}>
-                <PageHeader
-                    title="إدارة المدفوعات"
-                    icon={CreditCard}
-                    badge={
-                        <div className={cn('bg-linear-to-r', 'from-blue-100', 'to-blue-200', 'text-blue-700', 'px-3', 'lg:px-4', 'py-1.5', 'lg:py-2', 'rounded-full', 'text-sm', 'font-medium', 'border', 'border-blue-300', 'shadow-sm')}>
-                            {invoices.length}
-                        </div>
-                    }
-                >
-                    <CreatePayment />
-                </PageHeader>
+        <div className={cn('space-y-8', 'p-6')}>
+            <PageHeader
+                title="إدارة المدفوعات"
+                icon={CreditCard}
+                badge={
+                    <div className={cn('bg-linear-to-r', 'from-blue-600', 'to-indigo-600', 'text-white', 'px-4', 'py-1.5', 'rounded-full', 'text-xs', 'font-semibold', 'shadow-md', 'border', 'border-blue-400/20', 'animate-in', 'fade-in', 'slide-in-from-top-1', 'duration-500')}>
+                        {invoices.length} فواتير
+                    </div>
+                }
+            >
+                <CreatePayment />
+            </PageHeader>
 
             {/* Stats Overview */}
             <div className={cn('grid', 'gap-4', 'md:grid-cols-2', 'lg:grid-cols-3')}>

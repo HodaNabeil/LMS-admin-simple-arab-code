@@ -76,7 +76,7 @@ export default function Orders() {
 
   if (isError && error) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-[400px] p-6 text-center space-y-4 bg-red-50 rounded-xl border border-red-100 m-4">
+      <div className="flex flex-col items-center justify-center min-h-96 p-6 text-center space-y-4 bg-red-50 rounded-xl border border-red-100 m-4">
         <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center">
           <ShoppingCart className="w-6 h-6 text-red-600" />
         </div>

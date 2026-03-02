@@ -22,23 +22,25 @@ export function PageHeader({
     return (
         <header
             className={cn(
-                "flex flex-col sm:space-y-0 sm:flex-row sm:items-center sm:justify-between gap-4 bg-white p-4 lg:p-6 rounded-xl shadow-sm border border-gray-100",
+                "flex flex-col  sm:space-y-0 sm:flex-row sm:items-center sm:justify-between gap-2 bg-card p-2 lg:p-4 rounded-2xl shadow-sm border border-app",
                 className
             )}
         >
-            <div className="flex flex-col sm:flex-row sm:items-center gap-3 lg:gap-4">
-                <div className="flex items-center gap-2 text-gray-600">
-                    {Icon && <Icon className="w-5 h-5 text-blue-600" />}
-                    <div className="flex flex-col">
-                        <h1 className="font-medium text-sm lg:text-base">{title}</h1>
+            <div className={cn('flex', 'flex-col', 'sm:flex-row', 'sm:items-center', 'gap-4', 'lg:gap-6')}>
+                <div className={cn('flex', 'items-center', 'gap-4', 'text-foreground')}>
+                    <div className={cn('p-3', 'bg-app-soft', 'rounded-xl')}>
+                        {Icon && <Icon className={cn('w-6', 'h-6', 'text-app')} />}
+                    </div>
+                    <div className={cn('flex', 'flex-col', 'gap-1')}>
+                        <h1 className={cn('font-bold', 'text-xl', 'tracking-tight', 'text-foreground', 'leading-none')}>{title}</h1>
                         {description && (
-                            <div className="text-sm text-gray-500">{description}</div>
+                            <div className={cn('text-sm', 'text-muted-foreground', 'font-medium')}>{description}</div>
                         )}
                     </div>
                 </div>
                 {badge}
             </div>
-            {children && <div className="flex items-center gap-4">{children}</div>}
+            {children && <div className={cn('flex', 'items-center', 'gap-4')}>{children}</div>}
         </header>
     );
 }

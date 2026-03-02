@@ -182,6 +182,18 @@ const data = {
       ],
     },
     {
+      title: "إدارة المراجعات",
+      url: "#",
+      icon: MessageSquare,
+      items: [
+        {
+          title: "جميع المراجعات",
+          url: `/${Routes.ADMIN}/${Pages.REVIEWS}`,
+          icon: Star,
+        },
+      ],
+    },
+    {
       title: "إدارة الطلبات والمدفوعات",
       url: "#",
       icon: ShoppingCart,
@@ -314,11 +326,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 
   return (
     <Sidebar collapsible="icon" side="right" {...props}>
-      <SidebarHeader className="border-b border-sidebar-border bg-white">
-        <div className="flex flex-col gap-4 p-4 pb-0">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4 px-1">
-              <div className="flex aspect-square size-10 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-sm">
+      <SidebarHeader className={cn('border-b', 'border-sidebar-border', 'bg-white')}>
+        <div className={cn('flex', 'flex-col', 'gap-4', 'p-4', 'pb-0')}>
+          <div className={cn('flex', 'items-center', 'justify-between')}>
+            <div className={cn('flex', 'items-center', 'gap-4', 'px-1')}>
+              <div className={cn('flex', 'aspect-square', 'size-10', 'items-center', 'justify-center', 'rounded-xl', 'bg-primary', 'text-primary-foreground', 'shadow-sm')}>
                 <BookOpen className="size-5" />
               </div>
               <div
@@ -327,17 +339,18 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                   state === "collapsed" && "opacity-0"
                 )}
               >
-                <span className="truncate font-bold text-base text-foreground">
-                  أكاديمية العرب
+                <span className={cn('truncate', 'font-bold', 'text-base', 'text-foreground')}>
+
+                  Simple Arab Code
                 </span>
-                <span className="truncate text-xs text-muted-foreground">
+                <span className={cn('truncate', 'text-xs', 'text-muted-foreground')}>
                   لوحة التحكم
                 </span>
               </div>
             </div>
             <SidebarMenuButton
               onClick={toggleSidebar}
-              className="size-9 text-muted-foreground hover:bg-blue-50 hover:text-primary rounded-lg transition-colors"
+              className={cn('size-9', 'text-muted-foreground', 'hover:bg-blue-50', 'hover:text-primary', 'rounded-lg', 'transition-colors')}
               tooltip={state === "collapsed" ? "توسيع" : "طي"}
             >
               {state === "collapsed" ? (
@@ -351,10 +364,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
       <SidebarContent className="bg-white">
         <SidebarGroup className="py-6">
-          <SidebarGroupLabel className="text-muted-foreground/50 font-medium px-8 py-4 text-xs tracking-wider">
+          <SidebarGroupLabel className={cn('text-muted-foreground/50', 'font-medium', 'px-8', 'py-4', 'text-xs', 'tracking-wider')}>
             القائمة الرئيسية
           </SidebarGroupLabel>
-          <SidebarMenu className="mx-3.5 gap-1 py-2">
+          <SidebarMenu className={cn('mx-3.5', 'gap-1', 'py-2')}>
             {data.navMain.map((item) => (
               <React.Fragment key={item.title}>
                 {item.items ? (
@@ -375,7 +388,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                               : "text-foreground hover:bg-blue-50 hover:text-primary"
                           )}
                         >
-                          <Link to={item.items[0].url} className="flex items-center gap-4 w-full">
+                          <Link to={item.items[0].url} className={cn('flex', 'items-center', 'gap-4', 'w-full')}>
                             {item.icon && (
                               <item.icon
                                 className={cn(
@@ -386,7 +399,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                                 )}
                               />
                             )}
-                            <span className="font-medium text-base flex-1 text-right">
+                            <span className={cn('font-medium', 'text-base', 'flex-1', 'text-right')}>
                               {item.title}
                             </span>
                           </Link>
@@ -402,7 +415,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                                 : "text-foreground hover:bg-blue-50 hover:text-primary"
                             )}
                           >
-                            <div className="flex items-center gap-4">
+                            <div className={cn('flex', 'items-center', 'gap-4')}>
                               {item.icon && (
                                 <item.icon
                                   className={cn(
@@ -413,16 +426,16 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                                   )}
                                 />
                               )}
-                              <span className="font-medium text-base">
+                              <span className={cn('font-medium', 'text-base')}>
                                 {item.title}
                               </span>
                             </div>
-                            <ChevronDown className="mr-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-180 size-4" />
+                            <ChevronDown className={cn('mr-auto', 'transition-transform', 'duration-200', 'group-data-[state=open]/collapsible:rotate-180', 'size-4')} />
                           </SidebarMenuButton>
                         </CollapsibleTrigger>
                       )}
                       <CollapsibleContent>
-                        <SidebarMenuSub className="ml-8 mt-1 gap-1 py-2 mx-3.5 border-none p-0">
+                        <SidebarMenuSub className={cn('ml-8', 'mt-1', 'gap-1', 'py-2', 'mx-3.5', 'border-none', 'p-0')}>
                           {item.items.map((subItem) => (
                             <SidebarMenuSubItem key={subItem.title}>
                               <SidebarMenuSubButton
@@ -437,7 +450,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                               >
                                 <Link
                                   to={subItem.url}
-                                  className="flex items-center gap-4 w-full"
+                                  className={cn('flex', 'items-center', 'gap-4', 'w-full')}
                                 >
                                   {subItem.icon && (
                                     <subItem.icon
@@ -449,7 +462,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                                       )}
                                     />
                                   )}
-                                  <span className="font-medium text-sm flex-1 text-right">
+                                  <span className={cn('font-medium', 'text-sm', 'flex-1', 'text-right')}>
                                     {subItem.title}
                                   </span>
                                 </Link>
@@ -475,7 +488,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                     >
                       <Link
                         to={item.url}
-                        className="flex items-center gap-4 w-full"
+                        className={cn('flex', 'items-center', 'gap-4', 'w-full')}
                       >
                         {item.icon && (
                           <item.icon
@@ -487,7 +500,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                             )}
                           />
                         )}
-                        <span className="font-medium text-base flex-1 text-right">
+                        <span className={cn('font-medium', 'text-base', 'flex-1', 'text-right')}>
                           {item.title}
                         </span>
                       </Link>
@@ -499,7 +512,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           </SidebarMenu>
         </SidebarGroup>
       </SidebarContent>
-      <SidebarFooter className="flex flex-col gap-2 border-t border-sidebar-border p-4">
+      <SidebarFooter className={cn('flex', 'flex-col', 'gap-2', 'border-t', 'border-sidebar-border', 'p-4')}>
         {/* Could add user profile here */}
       </SidebarFooter>
     </Sidebar>

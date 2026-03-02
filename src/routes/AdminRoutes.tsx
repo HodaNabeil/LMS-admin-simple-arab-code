@@ -1,7 +1,8 @@
 import { Route } from 'react-router-dom';
 import AdminLayout from '@/components/shared/admin-layout';
 import { lazyLoad } from './lazyLoadHelper';
-import Payment from '@/pages/payment/payment';
+import ReviewsPage from '@/pages/reviews/inedex';
+
 
 const Admin = lazyLoad(() => import('@/pages'));
 const Users = lazyLoad(() => import('@/pages/users'));
@@ -22,14 +23,24 @@ const Statistics = lazyLoad(() => import('@/pages/analytics/statistics'));
 const Tracks = lazyLoad(() => import('@/pages/tracks'));
 const CreateNewTrack = lazyLoad(() => import('@/pages/tracks/create'));
 const ManageTrack = lazyLoad(() => import('@/pages/tracks/[trackSlug]/manage'));
+const Coupons = lazyLoad(() => import('@/pages/coupons'));
+const CreateCouponPage = lazyLoad(() => import('@/pages/coupons/create'));
+const ManageCoupon = lazyLoad(() => import('@/pages/coupons/[couponId]/manage'));
+const Payment = lazyLoad(() => import('@/pages/payment/payment'));
 
 export const adminRoutes = (
   <Route path="admin" element={<AdminLayout />}>
     <Route index element={Admin} />
     <Route path="users" element={Users} />
+    <Route path="coupons">
+      <Route index element={Coupons} />
+      <Route path="create" element={CreateCouponPage} />
+      <Route path=":couponId/manage" element={ManageCoupon} />
+    </Route>
+    <Route path="reviews" element={<ReviewsPage />} />
     <Route path="profile" element={<div>Profile Page</div>} />
     <Route path="settings">
-      <Route path="payment" element={<Payment />} />
+      <Route path="payment" element={Payment} />
     </Route>
 
 

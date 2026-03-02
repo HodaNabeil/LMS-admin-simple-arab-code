@@ -32,4 +32,5 @@ export interface IFormField {
 }
 export interface IFormFieldsVariables {
   slug: string;
+  dynamicOptions?: Record<string, IOption[]>;
 }

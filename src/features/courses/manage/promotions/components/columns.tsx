@@ -9,7 +9,7 @@ import CouponFormDialog from "./CreateCouponDialog";
 interface GetColumnsProps {
     onEdit: (coupon: Coupon) => void;
     onDelete: (id: string) => void;
-    courseId: string;
+    courseId?: string;
 }
 
 const formatDate = (dateString: string) => {

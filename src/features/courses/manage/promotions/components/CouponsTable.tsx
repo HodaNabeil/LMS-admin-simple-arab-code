@@ -7,7 +7,7 @@ interface CouponsTableProps {
   onDelete: (id: string) => void;
   onEdit: (coupon: Coupon) => void;
   isLoading?: boolean;
-  courseId: string;
+  courseId?: string;
 }
 
 export default function CouponsTable({

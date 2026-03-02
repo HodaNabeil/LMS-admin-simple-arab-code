@@ -49,7 +49,7 @@ export function useUpdateOrder() {
   });
 }
 
-export function useDeleteOrderMutation() {
+export function useDeleteOrder() {
   const queryClient = useQueryClient();
   return useMutation<void, Error, string>({
     mutationFn: async (id: string): Promise<void> => {

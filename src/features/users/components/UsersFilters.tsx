@@ -8,21 +8,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  Search,
-  Filter,
-  X,
-} from "lucide-react";
+import { Search, Filter, X } from "lucide-react";
 
 interface UsersFiltersProps {
   searchTerm: string;
-  onSearchChange: (
-    term: string
-  ) => void;
+  onSearchChange: (term: string) => void;
   selectedCategory: string;
-  onCategoryChange: (
-    category: string
-  ) => void;
+  onCategoryChange: (category: string) => void;
   onClearFilters: () => void;
 }
 
@@ -34,24 +26,16 @@ function UsersFilters({
 
   onClearFilters,
 }: UsersFiltersProps) {
-  const categories = [
-    "الكل",
-    "ADMIN",
-    "USER",
-  ];
+  const categories = ["الكل", "ADMIN", "INSTRUCTOR", "STUDENT"];
 
-  const hasActiveFilters =
-    searchTerm ||
-    selectedCategory !== "الكل";
+  const hasActiveFilters = searchTerm || selectedCategory !== "الكل";
 
   return (
     <div className="bg-white rounded-lg border border-gray-200 p-4 space-y-4">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Filter className="w-5 h-5 text-gray-600" />
-          <h3 className="font-semibold text-gray-900">
-            فلتر المستخدمين
-          </h3>
+          <h3 className="font-semibold text-gray-900">فلتر المستخدمين</h3>
         </div>
         {hasActiveFilters && (
           <Button
@@ -73,36 +57,22 @@ function UsersFilters({
           <Input
             placeholder="Id | Email"
             value={searchTerm}
-            onChange={(e) =>
-              onSearchChange(
-                e.target.value
-              )
-            }
+            onChange={(e) => onSearchChange(e.target.value)}
             className="pr-10"
           />
         </div>
 
         {/* Category Filter */}
-        <Select
-          value={selectedCategory}
-          onValueChange={
-            onCategoryChange
-          }
-        >
+        <Select value={selectedCategory} onValueChange={onCategoryChange}>
           <SelectTrigger>
             <SelectValue placeholder="التصنيف" />
           </SelectTrigger>
           <SelectContent>
-            {categories.map(
-              (category) => (
-                <SelectItem
-                  key={category}
-                  value={category}
-                >
-                  {category}
-                </SelectItem>
-              )
-            )}
+            {categories.map((category) => (
+              <SelectItem key={category} value={category}>
+                {category}
+              </SelectItem>
+            ))}
           </SelectContent>
         </Select>
       </div>
@@ -114,21 +84,13 @@ function UsersFilters({
             الفلاتر النشطة:
           </span>
           {searchTerm && (
-            <Badge
-              variant="secondary"
-              className="gap-1"
-            >
+            <Badge variant="secondary" className="gap-1">
               البحث: {searchTerm}
             </Badge>
           )}
-          {selectedCategory !==
-            "الكل" && (
-            <Badge
-              variant="secondary"
-              className="gap-1"
-            >
-              التصنيف:{" "}
-              {selectedCategory}
+          {selectedCategory !== "الكل" && (
+            <Badge variant="secondary" className="gap-1">
+              التصنيف: {selectedCategory}
             </Badge>
           )}
         </div>

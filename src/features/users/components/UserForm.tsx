@@ -6,11 +6,12 @@ import { Pages, UserType } from '@/constants/enums';
 import FormFields from '@/components/shared/form-fields/form-fields';
 import { Button } from '@/components/ui/button';
 import type { User } from '@/types/user';
-import useFormValidations from '@/hooks/useFormValidations';
 import type { UseMutationResult } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import type { AxiosError } from 'axios';
-import type { userSchema } from '@/validations/user';
+import { createUserValidation, updateUserValidation } from '@/validations/user';
+import { cn } from "../../../lib/utils";
+import { handleApiError } from '@/lib/error-handler';
 
 function UserForm({
   user,
@@ -19,10 +20,9 @@ function UserForm({
 }: {
   user?: User;
   setUserMenu: React.Dispatch<React.SetStateAction<boolean>>;
-  mutation: UseMutationResult<{ message: string }, Error, object, unknown>;
+  mutation: UseMutationResult<{ message: string }, Error, any, any>;
 }) {
   const { getFormFields } = useFormFields({ slug: Pages.USERS });
-  const { getValidationSchema } = useFormValidations({ slug: Pages.USERS });
 
   const {
     handleSubmit,
@@ -32,10 +32,11 @@ function UserForm({
     defaultValues: {
       name: user?.firstName ? `${user.firstName} ${user.lastName || ''}`.trim() : '',
       email: user?.email || '',
+      password: '',
       role: (user?.role as unknown as UserType) || UserType.USER,
     },
     mode: 'onChange',
-    resolver: zodResolver(getValidationSchema() as typeof userSchema),
+    resolver: zodResolver(user ? updateUserValidation : createUserValidation),
   });
 
   const onSubmit = async (data: Record<string, string>) => {
@@ -50,32 +51,29 @@ function UserForm({
       ...restData,
       firstName,
       lastName,
-      ...(user ? { id: user.id } : {}),
     };
     try {
-      const res = await mutation.mutateAsync(mutationData);
+      let res;
+      if (user) {
+        res = await mutation.mutateAsync({
+          id: user.id,
+          data: mutationData as any,
+        });
+      } else {
+        res = await mutation.mutateAsync(mutationData as any);
+      }
       toast.success(res.message);
       setUserMenu(false);
     } catch (error) {
-      if (error instanceof Error) {
-        // Handle AxiosError specifically
-        const axiosError = error as AxiosError<{ message: string }>;
-        if (axiosError.response?.data?.message) {
-          toast.error(axiosError.response.data.message);
-        } else {
-          toast.error('An error occurred');
-        }
-      } else {
-        toast.error('An unexpected error occurred');
-      }
+      handleApiError(error as Error);
     }
   };
 
   const formLoading = isSubmitting || mutation.isPending;
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="max-h-[calc(100vh-200px)] overflow-y-auto">
-      {getFormFields().map((field, index) => (
+    <form onSubmit={handleSubmit(onSubmit)} className={cn('max-h-[calc(100vh-200px)]', 'overflow-y-auto')}>
+      {getFormFields().filter(field => user ? field.name !== 'password' : true).map((field, index) => (
         <div key={index} className="mb-4">
           <FormFields {...field} control={control} errors={errors} />
         </div>

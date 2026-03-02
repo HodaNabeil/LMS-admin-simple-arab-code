@@ -43,7 +43,7 @@ function UsersStats({ users }: UsersStatsProps) {
     const currentYear = new Date().getFullYear();
 
     const newUsersThisMonth = users.filter((user) => {
-        const createdAt = new Date(user.role);
+        const createdAt = new Date(user.createdAt);
         return (
             createdAt.getMonth() === currentMonth &&
             createdAt.getFullYear() === currentYear

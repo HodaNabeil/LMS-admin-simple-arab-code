@@ -65,7 +65,7 @@ export default function Courses() {
         title="الدورات التدريبية"
         icon={Users}
         badge={
-          <div className="bg-gradient-to-r from-blue-100 to-blue-200 text-blue-700 px-3 lg:px-4 py-1.5 lg:py-2 rounded-full text-sm font-medium border border-blue-300 shadow-sm">
+          <div className="bg-linear-to-r from-blue-100 to-blue-200 text-blue-700 px-3 lg:px-4 py-1.5 lg:py-2 rounded-full text-sm font-medium border border-blue-300 shadow-sm">
             الدورات ({courses.length})
           </div>
         }

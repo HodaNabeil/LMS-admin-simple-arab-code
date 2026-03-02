@@ -39,19 +39,10 @@ const columns: ColumnDef<Payment>[] = [
         accessorKey: "id",
         header: "رقم العملية",
         cell: ({ row }) => (
-            <div className={cn('font-medium', 'text-blue-600')}>#{(row.getValue("id") as string).slice(-6)}</div>
+            <div className={cn('font-medium', 'text-blue-600')}>#{(row.getValue("id") as string)}</div>
         ),
     },
-    {
-        accessorKey: "orderId",
-        header: "رقم الطلب",
-        cell: ({ row }) => {
-            const orderId = row.getValue("orderId") as string;
-            return (
-                <div className="font-medium">#{orderId?.slice(-6) || 'N/A'}</div>
-            );
-        },
-    },
+
     {
         accessorKey: "createdAt",
         header: "التاريخ",
@@ -90,6 +81,17 @@ const columns: ColumnDef<Payment>[] = [
         },
     },
     {
+        accessorKey: "amount",
+        header: "المبلغ (عشري)",
+        cell: ({ row }) => <div className="font-medium">{row.getValue("amount")}</div>,
+    },
+    {
+        accessorKey: "currency",
+        header: "العملة",
+        cell: ({ row }) => <Badge variant="outline">
+            {row.getValue("currency")}</Badge>,
+    },
+    {
         accessorKey: "status",
         header: "الحالة",
         cell: ({ row }) => {
@@ -109,6 +111,95 @@ const columns: ColumnDef<Payment>[] = [
                 </Badge>
             );
         },
+    },
+    {
+        accessorKey: "updatedAt",
+        header: "آخر تحديث",
+        cell: ({ row }) => {
+            const date = new Date(row.original.updatedAt);
+            return (
+                <div className={cn('flex', 'flex-col')}>
+                    <span className="font-medium">{date.toLocaleDateString("ar-EG")}</span>
+                    <span className={cn('text-xs', 'text-muted-foreground')}>
+                        {date.toLocaleTimeString("ar-EG", { hour: '2-digit', minute: '2-digit' })}
+                    </span>
+                </div>
+            );
+        },
+    },
+    {
+        accessorKey: "paymobIntentionId",
+        header: "رقم نية الدفع",
+        cell: ({ row }) => <div className="font-mono text-xs">{row.getValue("paymobIntentionId") || 'N/A'}</div>,
+    },
+    {
+        accessorKey: "paymobTransactionId",
+        header: "رقم عملية Paymob",
+        cell: ({ row }) => <div className="font-mono text-xs">{row.getValue("paymobTransactionId") || 'N/A'}</div>,
+    },
+    {
+        accessorKey: "paymobOrderId",
+        header: "رقم طلب Paymob",
+        cell: ({ row }) => <div className="font-mono text-xs">{row.getValue("paymobOrderId") || 'N/A'}</div>,
+    },
+    {
+        accessorKey: "providerTransactionId",
+        header: "رقم عملية المزود",
+        cell: ({ row }) => <div className="font-mono text-xs">{row.getValue("providerTransactionId") || 'N/A'}</div>,
+    },
+    {
+        accessorKey: "paymentMethod",
+        header: "وسيلة الدفع",
+        cell: ({ row }) => <div>{row.getValue("paymentMethod") || 'N/A'}</div>,
+    },
+    {
+        accessorKey: "integrationId",
+        header: "رقم التكامل",
+        cell: ({ row }) => <div className="font-mono text-xs">{row.getValue("integrationId") || 'N/A'}</div>,
+    },
+    {
+        accessorKey: "last4",
+        header: "آخر 4 أرقام",
+        cell: ({ row }) => <div>{row.getValue("last4") || 'N/A'}</div>,
+    },
+    {
+        accessorKey: "brand",
+        header: "النوع",
+        cell: ({ row }) => <div>{row.getValue("brand") || 'N/A'}</div>,
+    },
+    {
+        accessorKey: "paidAt",
+        header: "تاريخ الدفع",
+        cell: ({ row }) => {
+            const paidAt = row.getValue("paidAt");
+            if (!paidAt) return <div>لم يدفع</div>;
+            const date = new Date(paidAt as string);
+            return (
+                <div className={cn('flex', 'flex-col')}>
+                    <span className="font-medium">{date.toLocaleDateString("ar-EG")}</span>
+                    <span className={cn('text-xs', 'text-muted-foreground')}>
+                        {date.toLocaleTimeString("ar-EG", { hour: '2-digit', minute: '2-digit' })}
+                    </span>
+                </div>
+            );
+        },
+    },
+    {
+        accessorKey: "checkoutUrl",
+        header: "رابط الدفع",
+        cell: ({ row }) => {
+            const url = row.getValue("checkoutUrl") as string;
+            return url ? (
+                <a href={url} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
+                    رابط الدفع
+                </a>
+            ) : 'N/A';
+        },
+    },
+    {
+        accessorKey: "clientSecret",
+        header: "السر الخاص بالعميل",
+        cell: ({ row }) => <div className="font-mono text-xs truncate max-w-[150px]">{row.getValue("clientSecret") || 'N/A'}</div>,
     },
     {
         id: "actions",
@@ -182,7 +273,8 @@ export function PaymentTable({ data }: PaymentTableProps) {
                                     <TableRow
                                         key={row.id}
                                         data-state={row.getIsSelected() && "selected"}
-                                        className={cn('group', 'border-b', 'border-gray-100', 'last:border-0', 'hover:bg-blue-50/30', 'transition-colors')}
+                                        className={cn('group', 'border-b', 'border-gray-100', 'last:border-0',
+                                            'hover:bg-blue-50/30', 'transition-colors')}
                                     >
                                         {row.getVisibleCells().map((cell) => (
                                             <TableCell key={cell.id} className={cn('text-right', 'py-4')}>

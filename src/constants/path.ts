@@ -38,6 +38,32 @@ export const TRACKS_ENDPOINTS = {
     DELETE: '/api/tracks/{idOrSlug}',
 } as const satisfies Record<string, TrackEndpointPath>;
 
+
+// Reviews endpoints
+export const REVIEWS_ENDPOINTS = {
+    LIST: '/api/reviews',
+    DETAIL: '/api/reviews/{idOrSlug}',
+    CREATE: '/api/reviews',
+    UPDATE: '/api/reviews/{idOrSlug}',
+    DELETE: '/api/reviews/{idOrSlug}',
+} as const;
+
+// Extract user endpoint paths from OpenAPI schema
+export type UserEndpointPath = Extract<
+    keyof paths,
+    '/api/users' | '/api/users/{id}'
+>;
+
+// API endpoints (from OpenAPI schema)
+export const USERS_ENDPOINTS = {
+    // Users endpoints
+    LIST: '/api/users',
+    DETAIL: '/api/users/{id}',
+    CREATE: '/api/users',
+    UPDATE: '/api/users/{id}',
+    DELETE: '/api/users/{id}',
+} as const satisfies Record<string, UserEndpointPath>;
+
 // Path routes
 export const PATH_ROUTES = {
     LIST: '/learning-paths',

@@ -17,7 +17,7 @@ interface CouponFormDialogProps {
   onSubmit: (couponData: CreateCouponRequest) => void;
   isLoading?: boolean;
   initialData?: Coupon | null;
-  courseId: string;
+  courseId?: string;
   children?: React.ReactNode;
 }
 
@@ -36,11 +36,13 @@ export default function CouponFormDialog({ onSubmit, isLoading = false, initialD
       maxUses: data.maxUses ? Number(data.maxUses) : undefined,
       maxUsesPerUser: data.maxUsesPerUser ? Number(data.maxUsesPerUser) : 1,
       minOrderAmount: data.minOrderAmount ? Number(data.minOrderAmount) : undefined,
-      courseIds: [courseId],
+      courseIds: courseId ? [courseId] : [],
       isActive: data.isActive,
+      // @ts-ignore - allCourses might be handled by backend even if not in DTO types
+      allCourses: data.allCourses,
     };
 
-    await onSubmit(couponData);
+    await onSubmit(couponData as CreateCouponRequest);
     setOpen(false);
   };
 
@@ -56,7 +58,7 @@ export default function CouponFormDialog({ onSubmit, isLoading = false, initialD
         )}
       </DialogTrigger>
       <DialogContent className="sm:max-w-125 bg-white rounded-2xl shadow-2xl border-0 p-0 overflow-hidden">
-        <div className="bg-linear-to-r from-blue-600 to-purple-600 p-6 text-white">
+        <div className="bg-linear-to-r from-blue-600 to-indigo-600 p-6 text-white">
           <DialogHeader className="text-center">
             <DialogTitle className="text-2xl font-bold text-white flex items-center justify-center gap-2">
               <HashIcon className="w-6 h-6" />

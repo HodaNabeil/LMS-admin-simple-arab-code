@@ -1,7 +1,7 @@
 import { UserType } from '@/constants/enums';
 import { z } from 'zod';
 
-export const userSchema = z.object({
+const baseUserSchema = z.object({
   name: z
     .string()
     .trim()
@@ -20,5 +20,22 @@ export const userSchema = z.object({
     })
     .optional(),
 });
+
+const createUserSchema = baseUserSchema.extend({
+  password: z
+    .string()
+    .min(8, { message: 'كلمة المرور يجب أن تكون 8 أحرف على الأقل' }),
+});
+
+const updateUserSchema = baseUserSchema.extend({
+  password: z
+    .string()
+    .min(8, { message: 'كلمة المرور يجب أن تكون 8 أحرف على الأقل' })
+    .optional(),
+});
+
+export const userSchema = createUserSchema;
+export const createUserValidation = createUserSchema;
+export const updateUserValidation = updateUserSchema;
 
 export type UserSchemaType = z.infer<typeof userSchema>;

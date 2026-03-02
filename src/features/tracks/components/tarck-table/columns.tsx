@@ -86,6 +86,64 @@ export const columns: TrackColumnDef[] = [
   },
 
   {
+    accessorKey: 'category',
+    header: 'الفئة',
+    cell: ({ row }) => (
+      <Badge variant="outline" className="border-blue-200 text-blue-800">
+        {row.getValue('category')}
+      </Badge>
+    ),
+  },
+  {
+    accessorKey: 'isPublished',
+    header: 'الحالة',
+    cell: ({ row }) => {
+      const isPublished = row.getValue('isPublished') as boolean;
+      return (
+        <Badge
+          variant={isPublished ? 'default' : 'secondary'}
+          className={isPublished ? 'bg-green-100 text-green-800 border-green-200' : ''}
+        >
+          {isPublished ? 'منشور' : 'مسودة'}
+        </Badge>
+      );
+    },
+  },
+  {
+    accessorKey: 'sortOrder',
+    header: 'الترتيب',
+    cell: ({ row }) => <div className="text-center">{row.getValue('sortOrder')}</div>,
+  },
+  {
+    accessorKey: 'icon',
+    header: 'الأيقونة',
+    cell: ({ row }) => <div className="text-center">{row.getValue('icon') || '---'}</div>,
+  },
+  {
+    accessorKey: 'createdAt',
+    header: 'تاريخ الإنشاء',
+    cell: ({ row }) => {
+      const date = new Date(row.getValue('createdAt'));
+      return (
+        <div className="text-right text-xs whitespace-nowrap">
+          {date.toLocaleDateString('ar-SA')}
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: 'updatedAt',
+    header: 'آخر تحديث',
+    cell: ({ row }) => {
+      const date = new Date(row.getValue('updatedAt'));
+      return (
+        <div className="text-right text-xs whitespace-nowrap">
+          {date.toLocaleDateString('ar-SA')}
+        </div>
+      );
+    },
+  },
+  {
     id: 'actions',
     header: 'الإجراءات',
     enableHiding: false,

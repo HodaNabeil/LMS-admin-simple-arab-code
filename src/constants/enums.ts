@@ -57,6 +57,7 @@ export enum Pages {
   PAYMENTS = "payments",
   REFUNDS = "refunds",
   COUPONS = "coupons",
+  CREATE_COUPONS = "coupons/create",
   REVIEWS = "reviews",
   COMMENTS = "comments",
   MESSAGES = "messages",
@@ -69,6 +70,7 @@ export enum Pages {
   TRACKS = "tracks",
   CREATE_TRACKS = "tracks/create",
   CREATE_PAYMENTS = "payments/create",
+  CREATE_REVIEWS = "reviews/create",
 }
 
 export enum InputTypes {

@@ -24,6 +24,7 @@ import type { Course } from '@/types/course';
 import { Link } from 'react-router-dom';
 import DeleteCourse from '../DeleteCourse';
 import { useMemo } from 'react';
+import { cn } from "../../../../lib/utils";
 
 interface CourseTableProps {
   courses: Course[];
@@ -44,16 +45,16 @@ function CourseTable({ courses }: CourseTableProps) {
       cell: ({ row }) => {
         const thumbnailUrl = row.getValue('thumbnailUrl') as string;
         return (
-          <div className="flex items-center justify-center">
+          <div className={cn('flex', 'items-center')}>
             {thumbnailUrl ? (
               <img
                 src={thumbnailUrl}
                 alt={row.getValue('title')}
-                className="h-12 w-12 rounded-lg object-cover"
+                className={cn('h-12', 'w-12', 'rounded-lg', 'object-cover')}
               />
             ) : (
-              <div className="h-12 w-12 rounded-lg bg-gray-100 flex items-center justify-center">
-                <ImageIcon className="h-6 w-6 text-gray-400" />
+              <div className={cn('h-12', 'w-12', 'rounded-lg', 'bg-gray-100', 'flex', 'items-center', 'justify-center')}>
+                <ImageIcon className={cn('h-6', 'w-6', 'text-gray-400')} />
               </div>
             )}
           </div>
@@ -65,8 +66,8 @@ function CourseTable({ courses }: CourseTableProps) {
       accessorKey: 'title',
       header: 'اسم الدورة',
       cell: ({ row }) => (
-        <div className="max-w-[200px]">
-          <div className="font-medium text-right truncate" title={row.getValue('title')}>
+        <div className="max-w-50">
+          <div className={cn('font-medium', 'text-right', 'truncate')} title={row.getValue('title')}>
             {row.getValue('title')}
           </div>
         </div>
@@ -77,7 +78,7 @@ function CourseTable({ courses }: CourseTableProps) {
       accessorKey: 'slug',
       header: 'المعرف الأساسي (Slug)',
       cell: ({ row }) => (
-        <div className="font-medium text-right truncate max-w-[120px]" title={row.getValue('slug')}>
+        <div className={cn('font-medium', 'text-right', 'truncate', 'max-w-[120px]')} title={row.getValue('slug')}>
           {row.getValue('slug')}
         </div>
       ),
@@ -154,16 +155,16 @@ function CourseTable({ courses }: CourseTableProps) {
         const compareAtPrice = row.original.compareAtPrice;
         const currency = row.original.currency || 'ر.س';
         return (
-          <div className="font-medium text-right flex flex-col items-end gap-1">
+          <div className={cn('font-medium', 'text-right', 'flex', 'flex-col', 'gap-1')}>
             {price === 0 ? (
-              <Badge className="bg-green-50 text-green-700 border-green-200 hover:bg-green-100 transition-colors">مجاني</Badge>
+              <Badge className={cn('bg-green-50', 'text-green-700', 'border-green-200', 'hover:bg-green-100', 'transition-colors')}>مجاني</Badge>
             ) : (
-              <div className="flex flex-col items-end">
-                <span className="text-blue-700 font-bold whitespace-nowrap">
-                  {price} <span className="text-[10px] text-gray-500 font-normal">{currency}</span>
+              <div className={cn('flex', 'flex-col')}>
+                <span className={cn('text-blue-700', 'font-bold', 'whitespace-nowrap')}>
+                  {price} <span className={cn('text-[10px]', 'text-gray-500', 'font-normal')}>{currency}</span>
                 </span>
                 {compareAtPrice && compareAtPrice > price && (
-                  <span className="text-xs text-muted-foreground line-through opacity-60">
+                  <span className={cn('text-xs', 'text-muted-foreground', 'line-through', 'opacity-60')}>
                     {compareAtPrice} {currency}
                   </span>
                 )}
@@ -213,7 +214,7 @@ function CourseTable({ courses }: CourseTableProps) {
       accessorKey: 'pathId',
       header: 'المسار',
       cell: ({ row }) => (
-        <div className="font-medium text-right truncate max-w-[100px]" title={row.getValue('pathId')}>
+        <div className={cn('font-medium', 'text-right', 'truncate', 'max-w-[100px]')} title={row.getValue('pathId')}>
           {row.getValue('pathId')}
         </div>
       ),
@@ -222,7 +223,7 @@ function CourseTable({ courses }: CourseTableProps) {
       accessorKey: 'trackId',
       header: 'التتابع',
       cell: ({ row }) => (
-        <div className="font-medium text-right truncate max-w-[100px]" title={row.getValue('trackId')}>
+        <div className={cn('font-medium', 'text-right', 'truncate', 'max-w-[100px]')} title={row.getValue('trackId')}>
           {row.getValue('trackId') || '---'}
         </div>
       ),
@@ -233,7 +234,7 @@ function CourseTable({ courses }: CourseTableProps) {
       cell: ({ row }) => {
         const date = new Date(row.getValue('createdAt'));
         return (
-          <div className="text-right text-xs whitespace-nowrap">
+          <div className={cn('text-right', 'text-xs', 'whitespace-nowrap')}>
             {date.toLocaleDateString('ar-SA')}
           </div>
         );
@@ -245,10 +246,124 @@ function CourseTable({ courses }: CourseTableProps) {
       cell: ({ row }) => {
         const date = new Date(row.getValue('updatedAt'));
         return (
-          <div className="text-right text-xs whitespace-nowrap">
+          <div className={cn('text-right', 'text-xs', 'whitespace-nowrap')}>
             {date.toLocaleDateString('ar-SA')}
           </div>
         );
+      },
+    },
+    {
+      accessorKey: 'publishedAt',
+      header: 'تاريخ النشر',
+      cell: ({ row }) => {
+        const dateStr = row.getValue('publishedAt') as string;
+        const date = dateStr ? new Date(dateStr) : null;
+        return (
+          <div className={cn('text-right', 'text-xs', 'whitespace-nowrap')}>
+            {date ? date.toLocaleDateString('ar-SA') : '---'}
+          </div>
+        );
+      },
+    },
+    {
+      accessorKey: 'lecturesCount',
+      header: 'عدد الدروس',
+      cell: ({ row }) => (
+        <div className="text-right">
+          {row.getValue('lecturesCount') || 0}
+        </div>
+      ),
+    },
+    {
+      accessorKey: 'rating',
+      header: 'التقييم',
+      cell: ({ row }) => (
+        <div className="text-right">
+          {row.getValue('rating') || '---'}
+        </div>
+      ),
+    },
+    {
+      accessorKey: 'ratingCount',
+      header: 'عدد التقييمات',
+      cell: ({ row }) => (
+        <div className="text-right">
+          {row.getValue('ratingCount') || 0}
+        </div>
+      ),
+    },
+    {
+      accessorKey: 'shortDescription',
+      header: 'وصف قصير',
+      cell: ({ row }) => (
+        <div className={cn('max-w-[200px]', 'truncate')} title={row.getValue('shortDescription') as string}>
+          {row.getValue('shortDescription') as string || '---'}
+        </div>
+      ),
+    },
+    {
+      accessorKey: 'description',
+      header: 'الوصف',
+      cell: ({ row }) => (
+        <div className={cn('max-w-[200px]', 'truncate')} title={row.getValue('description')}>
+          {row.getValue('description')}
+        </div>
+      ),
+    },
+    {
+      accessorKey: 'metaTitle',
+      header: 'عنوان SEO',
+      cell: ({ row }) => (
+        <div className={cn('max-w-[150px]', 'truncate')} title={row.getValue('metaTitle')}>
+          {row.getValue('metaTitle') || '---'}
+        </div>
+      ),
+    },
+    {
+      accessorKey: 'metaDescription',
+      header: 'وصف SEO',
+      cell: ({ row }) => (
+        <div className={cn('max-w-[150px]', 'truncate')} title={row.getValue('metaDescription')}>
+          {row.getValue('metaDescription') || '---'}
+        </div>
+      ),
+    },
+    {
+      accessorKey: 'tags',
+      header: 'الوسوم',
+      cell: ({ row }) => {
+        const tags = row.getValue('tags') as string[];
+        return (
+          <div className={cn('flex', 'flex-wrap', 'gap-1', 'max-w-[150px]')}>
+            {tags?.map((tag) => (
+              <Badge key={tag} variant="outline" className={cn('text-[10px]', 'px-1', 'py-0')}>{tag}</Badge>
+            ))}
+          </div>
+        );
+      },
+    },
+    {
+      accessorKey: 'objectives',
+      header: 'الأهداف',
+      cell: ({ row }) => {
+        const items = row.getValue('objectives') as string[];
+        return <div className="text-right">{items?.length || 0} أهداف</div>;
+      },
+    },
+    {
+      accessorKey: 'requirements',
+      header: 'المتطلبات',
+      cell: ({ row }) => {
+        const items = row.getValue('requirements') as string[];
+        return <div className="text-right">{items?.length || 0} متطلبات</div>;
+      },
+    },
+    {
+      accessorKey: 'targetAudience',
+      header: 'الجمهور المستهدف',
+      cell: ({ row }) => {
+        const items = row.getValue('targetAudience') as string[];
+        return <div className="text-right">{items?.length || 0} فئات</div>;
       },
     },
     {
@@ -264,10 +379,10 @@ function CourseTable({ courses }: CourseTableProps) {
         const slug = row.original.slug;
         const title = row.original.title;
         return (
-          <div className="flex items-center justify-center gap-2">
+          <div className={cn('flex', 'items-center', 'gap-2')}>
             <Link
               to={`/admin/courses/${slug}/manage/basics`}
-              className="text-blue-600 hover:text-blue-800"
+              className={cn('text-blue-600', 'hover:text-blue-800')}
             >
               <Edit />
             </Link>
@@ -283,15 +398,27 @@ function CourseTable({ courses }: CourseTableProps) {
   );
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({
-      id: false,
-      instructorId: false,
-      createdAt: false,
-      updatedAt: false,
-      maxStudents: false,
-      pathId: false,
-      trackId: false,
-      certificateEnabled: false,
-      isFeatured: false,
+      id: true,
+      instructorId: true,
+      createdAt: true,
+      updatedAt: true,
+      maxStudents: true,
+      pathId: true,
+      trackId: true,
+      certificateEnabled: true,
+      isFeatured: true,
+      publishedAt: true,
+      lecturesCount: true,
+      rating: true,
+      ratingCount: true,
+      shortDescription: true,
+      description: true,
+      metaTitle: true,
+      metaDescription: true,
+      tags: true,
+      objectives: true,
+      requirements: true,
+      targetAudience: true,
     });
   const [rowSelection, setRowSelection] = React.useState({});
 
@@ -316,26 +443,26 @@ function CourseTable({ courses }: CourseTableProps) {
 
   return (
     <div className="w-full">
-      <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 py-4">
+      <div className={cn('flex', 'flex-col', 'sm:flex-row', 'items-start', 'sm:items-center', 'gap-4', 'py-4')}>
         <Input
           placeholder="البحث في الدورات slug"
           value={(table.getColumn('slug')?.getFilterValue() as string) ?? ''}
           onChange={(event) =>
             table.getColumn('slug')?.setFilterValue(event.target.value)
           }
-          className="w-full sm:max-w-sm"
+          className={cn('w-full', 'sm:max-w-sm')}
         />
       </div>
 
       <CourseTableMobile table={table} />
       <CourseTableDesktop table={table} />
 
-      <div className="flex flex-col sm:flex-row items-center justify-between gap-4 py-4">
-        <div className="text-sm text-muted-foreground">
+      <div className={cn('flex', 'flex-col', 'sm:flex-row', 'items-center', 'justify-between', 'gap-4', 'py-4')}>
+        <div className={cn('text-sm', 'text-muted-foreground')}>
           {table.getFilteredSelectedRowModel().rows.length} من{' '}
           {table.getFilteredRowModel().rows.length} صف محدد.
         </div>
-        <div className="flex gap-2">
+        <div className={cn('flex', 'gap-2')}>
           <Button
             variant="outline"
             size="sm"

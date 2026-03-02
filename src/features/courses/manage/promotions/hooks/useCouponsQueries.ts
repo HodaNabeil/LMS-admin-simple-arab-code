@@ -4,7 +4,7 @@ import type {
   CouponsResponse,
   Coupon,
 } from "@/types/course";
-import { couponApi } from "../../../services/cuponApi";
+import { couponApi } from "@/features/coupons/services/couponApi";
 
 /**
  * Hook to fetch all coupons with optional search filtering
@@ -15,20 +15,20 @@ export function useCoupons(search?: string) {
     queryKey: couponsKeys.lists(),
     queryFn: async (): Promise<CouponsResponse> => {
       const response = await couponApi.getAllCoupons();
-      
+
       // If search is provided, filter coupons client-side
       if (search && search.trim()) {
         const searchLower = search.toLowerCase().trim();
         const filteredCoupons = response.data.filter((coupon: Coupon) =>
           coupon.code.toLowerCase().includes(searchLower)
         );
-        
+
         return {
           ...response,
           data: filteredCoupons,
         };
       }
-      
+
       return response;
     },
   });

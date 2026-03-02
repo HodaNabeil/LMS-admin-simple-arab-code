@@ -12,6 +12,8 @@ import { toast } from 'sonner';
 import { loginSchema } from '@/validations/login';
 import type { z } from 'zod';
 import { handleApiError } from '@/lib/error-handler';
+import { cn } from "../../../../lib/utils";
+import { isAdmin } from '@/lib/auth-utils';
 
 
 
@@ -46,7 +48,19 @@ export default function LoginForm() {
             const { message, data: authData } = await login(data);
 
             toast.success(message);
-            if (authData?.accessToken) {
+            
+            // Validate admin role before allowing access to admin area
+            if (authData?.accessToken && authData?.user) {
+                if (isAdmin(authData.user)) {
+                    navigate("/admin");
+                } else {
+                    // Clear authentication and show error for non-admin users
+                    toast.error("غير مصرح لك بالوصول إلى لوحة الإدارة. هذا المحتوى متاح للمدراء فقط.");
+                    // You might want to logout the user or redirect to appropriate page
+                    // For now, we'll keep them logged in but show the error
+                }
+            } else if (authData?.accessToken) {
+                // Fallback for cases where user data might not be available
                 navigate("/admin");
             }
 
@@ -60,7 +74,7 @@ export default function LoginForm() {
     return (
         <form
             onSubmit={handleSubmit(onSubmit)}
-            className="flex flex-col bg-[#ffffff] p-4 rounded-lg shadow w-full max-w-md"
+            className={cn('flex', 'flex-col', 'bg-[#ffffff]', 'p-4', 'rounded-lg', 'shadow', 'w-full', 'max-w-md')}
         >
             {getFormFields().map((field) => (
                 <div key={field.name}>
@@ -70,7 +84,7 @@ export default function LoginForm() {
             ))}
             <Button
                 type="submit"
-                className="w-full h-10 mt-4 text-white font-medium"
+                className={cn('w-full', 'h-10', 'mt-4', 'text-white', 'font-medium')}
             >
                 <LoadingButton
                     loading={formLoading}

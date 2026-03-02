@@ -14,8 +14,8 @@ export default function ManageLayout() {
       </header>
       <div className="flex flex-1 min-h-0 gap-4">
         <Sidebar />
-        <main className="flex-1 overflow-y-auto  border-t border-muted border-r-[1px] p-4 md:p-8">
-          <div className="container max-w-none p-0">
+        <main className="flex-1 overflow-y-auto  border-t border-muted border-r p-4 md:p-8">
+          <div className="container  p-0">
             <Outlet />
           </div>
         </main>

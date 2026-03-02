@@ -1,21 +1,20 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import api from "@/lib/axios";
 import { queryKeys } from "@/lib/query-keys";
-import type { User } from "@/types/user";
-import type { AxiosError } from "axios";
+import { userApi } from "../services/userApi";
+import { toast } from "sonner";
+import { handleApiError } from "@/lib/error-handler";
+import type { CreateUserDto, UpdateUserDto } from "@/types/user";
 
 export function useCreateUser() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async (user: Partial<User>): Promise<{ message: string }> => {
-      const { data } = await api.post("/users", user);
-      return data;
-    },
-    onSuccess: () => {
+    mutationFn: (data: CreateUserDto) => userApi.createUser(data),
+    onSuccess: (res) => {
       queryClient.invalidateQueries({ queryKey: queryKeys.users.all });
+      toast.success(res.message || "تم إنشاء المستخدم بنجاح");
     },
-    onError: (error: AxiosError) => {
-      console.error("Error creating user:", error);
+    onError: (error) => {
+      handleApiError(error);
     },
   });
 }
@@ -23,15 +22,14 @@ export function useCreateUser() {
 export function useUpdateUser() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async (user: Partial<User>): Promise<{ message: string }> => {
-      const { data } = await api.put("/users", user);
-      return data;
-    },
-    onSuccess: () => {
+    mutationFn: ({ id, data }: { id: string; data: UpdateUserDto }) =>
+      userApi.updateUser(id, data),
+    onSuccess: (res) => {
       queryClient.invalidateQueries({ queryKey: queryKeys.users.all });
+      toast.success(res.message || "تم تحديث المستخدم بنجاح");
     },
-    onError: (error: AxiosError) => {
-      console.error("Error updating user:", error);
+    onError: (error) => {
+      handleApiError(error);
     },
   });
 }
@@ -39,15 +37,13 @@ export function useUpdateUser() {
 export function useDeleteUser() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async (userId: string): Promise<{ message: string }> => {
-      const { data } = await api.delete(`/users?id=${userId}`);
-      return data;
-    },
-    onSuccess: () => {
+    mutationFn: (userId: string) => userApi.deleteUser(userId),
+    onSuccess: (res) => {
       queryClient.invalidateQueries({ queryKey: queryKeys.users.all });
+      toast.success(res.message || "تم حذف المستخدم بنجاح");
     },
-    onError: (error: AxiosError) => {
-      console.error("Error deleting user:", error);
+    onError: (error) => {
+      handleApiError(error);
     },
   });
 }

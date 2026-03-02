@@ -110,10 +110,10 @@ const useFormFields = ({ slug }: IFormFieldsVariables) => {
   ];
   const loginFields = (): IFormField[] => [
     {
-      label: "البريد الإلكتروني",
+      label: "البريد الإلكتروني أو اسم المستخدم",
       name: "email",
-      type: "email",
-      placeholder: "أدخل بريدك الإلكتروني",
+      type: "text",
+      placeholder: "أدخل بريدك الإلكتروني أو اسم المستخدم",
       autoFocus: true,
     },
     {
@@ -137,6 +137,12 @@ const useFormFields = ({ slug }: IFormFieldsVariables) => {
       name: "email",
       type: "email",
       placeholder: "أدخل بريدك الإلكتروني",
+    },
+    {
+      label: "كلمة المرور",
+      name: "password",
+      type: "password",
+      placeholder: "••••••••",
     },
     {
       label: "نوع الحساب",
@@ -305,7 +311,7 @@ const useFormFields = ({ slug }: IFormFieldsVariables) => {
       label: " وصف المحاضرة",
       type: "textarea",
       placeholder: "ادخل وصف المحاضرة",
-    }
+    },
   ];
 
   const createTrackFields = (): IFormField[] => [
@@ -436,9 +442,58 @@ const useFormFields = ({ slug }: IFormFieldsVariables) => {
       placeholder: "0",
     },
     {
+      name: "courseIds",
+      label: "الدورات *",
+      type: "multi select",
+      placeholder: "اختر دورة واحدة على الأقل",
+    },
+    {
+      name: "allCourses",
+      label: "كل الدورات",
+      type: "checkbox",
+    },
+    {
       name: "isActive",
       label: "تفعيل الكوبون",
       type: "checkbox",
+    },
+  ];
+
+  const createReviewFields = (): IFormField[] => [
+    {
+      name: "studentId",
+      label: "Student ID",
+      type: "text",
+      placeholder: "stu_123",
+    },
+    {
+      name: "courseId",
+      label: "Course ID",
+      type: "text",
+      placeholder: "course_123",
+    },
+    {
+      name: "rating",
+      label: "التقييم",
+      type: "number",
+      placeholder: "5",
+    },
+    {
+      name: "status",
+      label: "الحالة",
+      type: "select",
+      placeholder: "اختر الحالة",
+      options: [
+        { label: "قيد الانتظار", value: "pending" },
+        { label: "موافق", value: "approved" },
+        { label: "مرفوض", value: "rejected" },
+      ],
+    },
+    {
+      name: "comment",
+      label: "التعليق",
+      type: "textarea",
+      placeholder: "اكتب تعليق المراجعة...",
     },
   ];
 
@@ -474,7 +529,9 @@ const useFormFields = ({ slug }: IFormFieldsVariables) => {
     },
   ];
 
-  const getFormFields = (dynamicOptions?: Record<string, IOption[]>): IFormField[] => {
+  const getFormFields = (
+    dynamicOptions?: Record<string, IOption[]>,
+  ): IFormField[] => {
     const fields = (() => {
       switch (slug) {
         case Pages.SIGNIN:
@@ -506,7 +563,10 @@ const useFormFields = ({ slug }: IFormFieldsVariables) => {
         case Pages.LESSONS:
           return lessonFields();
         case Pages.COUPONS:
+        case Pages.CREATE_COUPONS:
           return couponFields();
+        case Pages.CREATE_REVIEWS:
+          return createReviewFields();
         case Pages.CREATE_PAYMENTS:
           return createPaymentFields();
         default:
@@ -515,9 +575,9 @@ const useFormFields = ({ slug }: IFormFieldsVariables) => {
     })();
 
     if (dynamicOptions) {
-      return fields.map(field => ({
+      return fields.map((field: IFormField) => ({
         ...field,
-        options: dynamicOptions[field.name] || field.options
+        options: dynamicOptions[field.name] || field.options,
       }));
     }
 

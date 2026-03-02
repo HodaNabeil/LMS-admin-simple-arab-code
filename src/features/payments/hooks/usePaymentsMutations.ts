@@ -12,11 +12,14 @@ import type {
 import { paymentApi } from '../services/paymentApi';
 
 export function useCreatePayment() {
+    const queryClient = useQueryClient();
     return useMutation<CreatePaymentResponse, Error, CreatePaymentRequest>({
         mutationFn: async (data: CreatePaymentRequest): Promise<CreatePaymentResponse> => {
             return await paymentApi.createPayment(data);
         },
         onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: queryKeys.payments.all });
+            queryClient.invalidateQueries({ queryKey: queryKeys.payments.all });
             toast.success('تم إنشاء طلب الدفع بنجاح');
         },
         onError: (error) => {
@@ -36,9 +39,9 @@ export function useUpdatePayment() {
             return await paymentApi.updatePayment(id, data);
         },
         onSuccess: (res, variables) => {
-            queryClient.invalidateQueries({ queryKey: queryKeys.orders.all });
+            queryClient.invalidateQueries({ queryKey: queryKeys.payments.all });
             queryClient.invalidateQueries({
-                queryKey: queryKeys.orders.detail(variables.id),
+                queryKey: queryKeys.payments.detail(variables.id),
             });
             toast.success(res.message || 'تم تحديث بيانات الدفع بنجاح');
         },
@@ -55,7 +58,7 @@ export function useRefundPayment() {
             return await paymentApi.refundPayment(id);
         },
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: queryKeys.orders.all });
+            queryClient.invalidateQueries({ queryKey: queryKeys.payments.all });
             toast.success('تم طلب استرداد المبلغ بنجاح');
         },
         onError: (error) => {
