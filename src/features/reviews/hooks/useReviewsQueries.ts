@@ -2,8 +2,9 @@
 import { useQuery } from "@tanstack/react-query";
 import { reviewsKeys } from "@/lib/query-keys";
 import type { GetReviewResponse, ListReviewsResponse } from "@/types/reviews";
-import { reviewsApi } from "../services/reviewsApi";
+import { reviewsApi, type GetCourseReviewsParams } from "../services/reviewsApi";
 
+/** Fetch all reviews globally (admin list – uses /api/reviews) */
 export function useReviews() {
   return useQuery<ListReviewsResponse>({
     queryKey: reviewsKeys.lists(),
@@ -13,8 +14,19 @@ export function useReviews() {
   });
 }
 
-export function useAllReviews() {
-  return useReviews();
+/** Fetch reviews for a specific course (uses /api/courses/{idOrSlug}/reviews) */
+export function useCourseReviews(
+  idOrSlug: string | undefined,
+  params?: GetCourseReviewsParams,
+) {
+  return useQuery<ListReviewsResponse>({
+    queryKey: ["reviews", "course", idOrSlug, params],
+    queryFn: async (): Promise<ListReviewsResponse> => {
+      if (!idOrSlug) throw new Error("idOrSlug is required");
+      return await reviewsApi.getCourseReviews(idOrSlug, params);
+    },
+    enabled: !!idOrSlug,
+  });
 }
 
 export function useReview(idOrSlug: string | undefined) {

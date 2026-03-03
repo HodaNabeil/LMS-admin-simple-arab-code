@@ -33,25 +33,23 @@ const TextareaField = ({
             </FormLabel>
           )}
           <FormControl>
-            <>
-              <Textarea
-                {...field}
-                className={cn(
-                  "bg-transparent! resize-none transition-all focus-visible:ring-1 focus-visible:ring-primary",
-                )}
-                placeholder={placeholder || ""}
-                disabled={disabled || false}
-                rows={rows}
-                maxLength={maxLength}
-                value={String(field.value || "")}
-              />
-              {maxLength && (
-                <p className="text-xs text-muted-foreground mt-1">
-                  {String(field.value || "").length} / {maxLength}
-                </p>
+            <Textarea
+              {...field}
+              className={cn(
+                "bg-transparent! resize-none transition-all focus-visible:ring-1 focus-visible:ring-primary",
               )}
-            </>
+              placeholder={placeholder || ""}
+              disabled={disabled || false}
+              rows={rows}
+              maxLength={maxLength}
+              value={String(field.value || "")}
+            />
           </FormControl>
+          {maxLength && (
+            <p className="text-xs text-muted-foreground mt-1 text-end">
+              {String(field.value || "").length} / {maxLength}
+            </p>
+          )}
           <FormMessage />
         </FormItem>
       )}

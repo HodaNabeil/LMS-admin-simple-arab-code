@@ -463,15 +463,15 @@ const useFormFields = ({ slug }: IFormFieldsVariables) => {
   const createReviewFields = (): IFormField[] => [
     {
       name: "studentId",
-      label: "Student ID",
-      type: InputTypes.MULTI_SELECT,
-      placeholder: "اختر طالب واحد على الأقل",
+      label: "اسم الطالب",
+      type: InputTypes.SELECT,
+      placeholder: "اختر الطالب للمراجعة",
     },
     {
       name: "courseId",
-      label: "Course ID",
-      type: InputTypes.MULTI_SELECT,
-      placeholder: "اختر دورة واحدة على الأقل",
+      label: "اسم الدورة",
+      type: InputTypes.SELECT,
+      placeholder: "اختر الدورة للمراجعة",
     },
     {
       name: "rating",

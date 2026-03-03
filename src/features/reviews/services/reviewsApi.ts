@@ -10,9 +10,31 @@ import type {
   UpdateReviewResponse,
 } from "@/types/reviews";
 
+export interface GetCourseReviewsParams {
+  page?: number;
+  limit?: number;
+  rating?: number;
+  search?: string;
+  sortBy?: string;
+  sortOrder?: "asc" | "desc";
+}
+
 export const reviewsApi = {
+  /** Fetch all reviews across all courses (admin global list) */
   async getAllReviews(): Promise<ListReviewsResponse> {
-    const response = await api.get<ListReviewsResponse>(REVIEWS_ENDPOINTS.LIST);
+    const response = await api.get<ListReviewsResponse>(
+      REVIEWS_ENDPOINTS.LIST_ALL,
+    );
+    return response.data;
+  },
+
+  /** Fetch reviews for a specific course by slug or id */
+  async getCourseReviews(
+    idOrSlug: string,
+    params?: GetCourseReviewsParams,
+  ): Promise<ListReviewsResponse> {
+    const url = REVIEWS_ENDPOINTS.LIST.replace("{idOrSlug}", idOrSlug);
+    const response = await api.get<ListReviewsResponse>(url, { params });
     return response.data;
   },
 
@@ -25,8 +47,8 @@ export const reviewsApi = {
 
   async createReview(data: CreateReviewRequest): Promise<CreateReviewResponse> {
     const response = await api.post<CreateReviewResponse>(
-      REVIEWS_ENDPOINTS.CREATE,
-      data,
+      REVIEWS_ENDPOINTS.CREATE.replace("{idOrSlug}", data.courseId),
+      { userId: data.studentId, rating: data.rating, comment: data.comment },
     );
     return response.data;
   },
@@ -36,7 +58,7 @@ export const reviewsApi = {
     data: { rating: number; comment: string },
   ): Promise<CreateReviewResponse> {
     const response = await api.post<CreateReviewResponse>(
-      REVIEWS_ENDPOINTS.CREATE_BY_COURSE.replace("{courseSlug}", courseSlug),
+      REVIEWS_ENDPOINTS.CREATE_BY_COURSE.replace("{idOrSlug}", courseSlug),
       data,
     );
     return response.data;
@@ -56,9 +78,6 @@ export const reviewsApi = {
   async deleteReview(idOrSlug: string): Promise<DeleteReviewResponse> {
     const response = await api.delete<DeleteReviewResponse>(
       REVIEWS_ENDPOINTS.DELETE.replace("{idOrSlug}", idOrSlug),
-      {
-        data: idOrSlug,
-      },
     );
     return response.data;
   },

@@ -38,25 +38,23 @@ export const adminRoutes = (
       <Route path="create" element={CreateCouponPage} />
       <Route path=":couponId/manage" element={ManageCoupon} />
     </Route>
-    <Route path="reviews" element={Reviews} />
-    <Route path="reviews/create" element={CreateReview} />
+
     <Route path="profile" element={<div>Profile Page</div>} />
     <Route path="settings">
       <Route path="payment" element={Payment} />
     </Route>
-
-
-
 
     <Route path="paths">
       <Route index element={Paths} />
       <Route path="create" element={CreateNewPath} />
       <Route path=":pathSlug/manage" element={ManagePath} />
     </Route>
+
     <Route path="orders">
       <Route index element={Orders} />
       <Route path="create" element={CreateOrder} />
     </Route>
+
     <Route path="courses">
       <Route index element={Courses} />
       <Route path="create" element={CreateCourse} />
@@ -68,7 +66,10 @@ export const adminRoutes = (
         <Route path="promotions" element={Promotions} />
         <Route path="curriculum" element={Curriculum} />
       </Route>
+      <Route path=":slug/reviews" element={Reviews} />
+      <Route path=":slug/reviews/create" element={CreateReview} />
     </Route>
+
     <Route path="tracks">
       <Route index element={Tracks} />
       <Route path="create" element={CreateNewTrack} />

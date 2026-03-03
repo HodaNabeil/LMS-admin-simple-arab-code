@@ -1,8 +1,8 @@
 import * as z from 'zod';
 
 export const createReviewSchema = z.object({
-  studentId: z.array(z.string()).min(1, { message: 'At least one student must be selected' }),
-  courseId: z.array(z.string()).min(1, { message: 'At least one course must be selected' }),
+  studentId: z.string().min(1, { message: 'Student is required' }),
+  courseId: z.string().min(1, { message: 'Course is required' }),
   rating: z.number().min(1, { message: 'Rating must be at least 1' }).max(5, { message: 'Rating must be at most 5' }),
   status: z.enum(['pending', 'approved', 'rejected'], {
     errorMap: () => ({ message: 'Status must be one of: pending, approved, rejected' }),
