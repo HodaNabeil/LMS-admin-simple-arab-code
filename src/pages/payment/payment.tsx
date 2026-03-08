@@ -116,7 +116,7 @@ export default function Payment() {
                     </div>
                     <div className={cn('flex', 'items-center', 'gap-2')}>
                         <select
-                            className={cn('bg-gray-50', 'border', 'border-gray-200', 'text-gray-900', 'text-sm', 'rounded-xl', 'focus:ring-blue-500', 'focus:border-blue-500', 'block', 'p-2.5')}
+                            className={cn('bg-white', 'border', 'border-gray-200', 'text-gray-900', 'text-sm', 'rounded-lg', 'focus:outline-none', 'focus:ring-2', 'focus:ring-blue-500/20', 'focus:border-blue-500', 'block', 'px-4', 'py-2.5', 'min-w-[140px]', 'hover:bg-gray-50', 'transition-all', 'cursor-pointer', 'shadow-sm')}
                             value={statusFilter}
                             onChange={(e) => setStatusFilter(e.target.value)}
                         >
