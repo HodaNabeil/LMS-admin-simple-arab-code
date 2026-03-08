@@ -1,8 +1,4 @@
 import * as z from 'zod';
-import {
-    CreateTrackDtoCategory,
-    UpdateTrackDtoCategory
-} from '@/types/api.generated';
 
 // Schema for creating new tracks
 export const createTrackSchema = z.object({
@@ -40,8 +36,13 @@ export const createTrackSchema = z.object({
         .min(1, { message: 'Description is required' })
         .max(2000, { message: 'Description must be less than 2000 characters' }),
 
-    category: z.nativeEnum(CreateTrackDtoCategory, {
-        errorMap: () => ({ message: 'Category must be one of: WEB, MOBILE, OTHER' }),
+    category: z.enum(['WEB', 'MOBILE', 'OTHER'], {
+        errorMap: (issue) => {
+            if (issue.code === z.ZodIssueCode.invalid_enum_value) {
+                return { message: 'يجب اختيار تصنيف التراك' };
+            }
+            return { message: 'يجب اختيار تصنيف التراك' };
+        },
     }),
 
     icon: z.string().trim().optional(),
@@ -113,8 +114,13 @@ export const editTrackSchema = z.object({
         .optional(),
 
     category: z
-        .nativeEnum(UpdateTrackDtoCategory, {
-            errorMap: () => ({ message: 'Category must be one of: WEB, MOBILE, OTHER' }),
+        .enum(['WEB', 'MOBILE', 'OTHER'], {
+            errorMap: (issue) => {
+                if (issue.code === z.ZodIssueCode.invalid_enum_value) {
+                    return { message: 'يجب اختيار تصنيف التراك' };
+                }
+                return { message: 'يجب اختيار تصنيف التراك' };
+            },
         })
         .optional(),
 

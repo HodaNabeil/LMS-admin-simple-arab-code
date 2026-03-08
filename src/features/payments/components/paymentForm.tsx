@@ -15,6 +15,7 @@ import type { Order } from '@/types/orders';
 import { handleApiError } from '@/lib/error-handler';
 import { CreatePaymentDtoProvider, CreatePaymentDtoStatus } from '@/types';
 import { cn } from "../../../lib/utils";
+import { Form } from "@/components/ui/form";
 
 
 interface PaymentFormProps {
@@ -56,7 +57,7 @@ const PaymentForm = ({ onSuccess }: PaymentFormProps) => {
         provider: data.provider,
         status: data.status,
       };
-      
+
       await createPayment(createData);
       onSuccess?.();
       navigate('/admin/settings/payment');
@@ -68,7 +69,8 @@ const PaymentForm = ({ onSuccess }: PaymentFormProps) => {
   const { handleSubmit, control, formState: { errors, isSubmitting } } = useFormReturn;
 
   return (
-   <form
+    <Form {...useFormReturn}>
+      <form
         onSubmit={handleSubmit(handleFormSubmit)}
         className={cn('flex', 'flex-col', 'gap-4')}
       >
@@ -101,6 +103,7 @@ const PaymentForm = ({ onSuccess }: PaymentFormProps) => {
           )}
         </button>
       </form>
+    </Form>
   );
 };
 

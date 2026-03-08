@@ -10,6 +10,7 @@ import { ClearDraftDialog } from "./path-form/ClearDraftDialog/ClearDraftDialog"
 import { PathFormSteps } from "./path-form/components/form/PathFormSteps";
 import { PathFormActions } from "./path-form/components/form/PathFormActions";
 import { PathFormField } from "./path-form/components/form/PathFormField";
+import { Form } from "@/components/ui/form";
 
 interface PathFormProps {
   pathData?: Path;
@@ -74,27 +75,29 @@ const PathForm = ({ pathData }: PathFormProps) => {
       />
 
       <Card className="p-8">
-        <form
-          onSubmit={form.handleSubmit(submit.onSubmit, submit.onInvalid)}
-          className="space-y-6"
-        >
-          {steps.getCurrentFields().map((field) => (
-            <div key={field.name} className="mb-6">
-              <PathFormField field={field} control={form.control} errors={form.errors} />
-            </div>
-          ))}
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(submit.onSubmit, submit.onInvalid)}
+            className="space-y-6"
+          >
+            {steps.getCurrentFields().map((field) => (
+              <div key={field.name} className="mb-6">
+                <PathFormField field={field} control={form.control} errors={form.formState.errors} />
+              </div>
+            ))}
 
-          <PathFormActions
-            isEditMode={isEditMode}
-            currentStep={steps.currentStep}
-            totalSteps={steps.totalSteps}
-            formLoading={formLoading}
-            onCancel={handleCancel}
-            onClearDraft={!isEditMode ? handleClearDraft : undefined}
-            onPrevStep={steps.prevStep}
-            onNextStep={steps.nextStep}
-          />
-        </form>
+            <PathFormActions
+              isEditMode={isEditMode}
+              currentStep={steps.currentStep}
+              totalSteps={steps.totalSteps}
+              formLoading={formLoading}
+              onCancel={handleCancel}
+              onClearDraft={!isEditMode ? handleClearDraft : undefined}
+              onPrevStep={steps.prevStep}
+              onNextStep={steps.nextStep}
+            />
+          </form>
+        </Form>
       </Card>
 
       <ClearDraftDialog

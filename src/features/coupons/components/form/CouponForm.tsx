@@ -13,6 +13,7 @@ import type { CreateCouponRequest, Coupon, UpdateCouponRequest } from '@/types/c
 import type { UseMutationResult } from '@tanstack/react-query';
 import { handleApiError } from '@/lib/error-handler';
 import { cn } from "../../../../lib/utils";
+import { Form } from '@/components/ui/form';
 
 interface CouponFormProps {
   coupon?: Coupon;
@@ -129,58 +130,60 @@ export default function CouponForm({ coupon, setCouponMenu, mutation }: CouponFo
   const { handleSubmit, control, formState: { errors, isSubmitting } } = useFormReturn;
 
   return (
-    <form
-      onSubmit={handleSubmit(handleFormSubmit)}
-      className={cn('flex', 'flex-col', 'gap-4')}
-    >
-      {getFormFields().map((field) => {
-        // Inject dynamic course options into the courseIds field
-        const fieldWithOptions =
-          field.name === 'courseIds'
-            ? { ...field, options: courseOptions }
-            : field;
-
-        return (
-          <FormFields
-            key={field.name}
-            {...fieldWithOptions}
-            control={control as unknown as Control<Record<string, unknown>>}
-            errors={errors}
-          />
-        );
-      })}
-
-      <button
-        type="submit"
-        disabled={isSubmitting || isLoadingCourses}
-        className={cn(
-          'w-full',
-          'bg-primary',
-          'text-white',
-          'rounded-lg',
-          'px-6',
-          'py-3',
-          'text-base',
-          'font-medium',
-          'hover:bg-primary/90',
-          'transition-colors',
-          'disabled:opacity-50',
-          'disabled:cursor-not-allowed',
-          'flex',
-          'items-center',
-          'justify-center',
-          'gap-2',
-          'shadow-sm'
-        )}
+    <Form {...useFormReturn}>
+      <form
+        onSubmit={handleSubmit(handleFormSubmit)}
+        className={cn('flex', 'flex-col', 'gap-4')}
       >
-        {isSubmitting || isLoadingCourses ? (
-          <Loader />
-        ) : isEditMode ? (
-          'تحديث الكوبون'
-        ) : (
-          'إنشاء كوبون'
-        )}
-      </button>
-    </form>
+        {getFormFields().map((field) => {
+          // Inject dynamic course options into the courseIds field
+          const fieldWithOptions =
+            field.name === 'courseIds'
+              ? { ...field, options: courseOptions }
+              : field;
+
+          return (
+            <FormFields
+              key={field.name}
+              {...fieldWithOptions}
+              control={control as unknown as Control<Record<string, unknown>>}
+              errors={errors}
+            />
+          );
+        })}
+
+        <button
+          type="submit"
+          disabled={isSubmitting || isLoadingCourses}
+          className={cn(
+            'w-full',
+            'bg-primary',
+            'text-white',
+            'rounded-lg',
+            'px-6',
+            'py-3',
+            'text-base',
+            'font-medium',
+            'hover:bg-primary/90',
+            'transition-colors',
+            'disabled:opacity-50',
+            'disabled:cursor-not-allowed',
+            'flex',
+            'items-center',
+            'justify-center',
+            'gap-2',
+            'shadow-sm'
+          )}
+        >
+          {isSubmitting || isLoadingCourses ? (
+            <Loader />
+          ) : isEditMode ? (
+            'تحديث الكوبون'
+          ) : (
+            'إنشاء كوبون'
+          )}
+        </button>
+      </form>
+    </Form>
   );
 }

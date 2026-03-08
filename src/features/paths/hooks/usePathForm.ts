@@ -27,8 +27,8 @@ export function usePathForm({ pathData }: UsePathFormParams) {
         defaultValues,
     });
 
-    const { handleSubmit, control, formState, trigger, watch, reset } = form;
-    const { errors, isSubmitting } = formState;
+    const { trigger, watch } = form;
+    const { isSubmitting } = form.formState;
 
     const steps = usePathFormSteps({
         isEditMode,
@@ -55,12 +55,7 @@ export function usePathForm({ pathData }: UsePathFormParams) {
     const formLoading = isSubmitting || submit.isSubmitting;
 
     return {
-        form: {
-            handleSubmit,
-            control,
-            errors,
-            reset,
-        },
+        form,
         steps,
         submit,
         isEditMode,

@@ -352,6 +352,7 @@ const useFormFields = ({ slug }: IFormFieldsVariables) => {
       label: "تصنيف التراك",
       type: InputTypes.SELECT,
       placeholder: "اختار تصنيف التراك",
+      required: true,
       options: [
         { label: "WEB", value: "WEB" },
         { label: "MOBILE", value: "MOBILE" },

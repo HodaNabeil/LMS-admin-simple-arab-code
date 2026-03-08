@@ -12,6 +12,7 @@ import { useForm, type Control } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { useMemo } from "react";
 import { useTracks } from "@/features/tracks/hooks/useTracksQueries";
+import { Form } from '@/components/ui/form';
 
 import { useCreateCourse } from "../../hooks/useCoursesMutations";
 import { usePaths } from "@/features/paths/hooks/usePathsQueries";
@@ -26,11 +27,7 @@ export default function CreateCourseForm() {
   const { data: pathsData, isLoading: isLoadingPaths } = usePaths();
   const { mutateAsync: createCourse } = useCreateCourse();
 
-  const {
-    handleSubmit,
-    control,
-    formState: { errors, isSubmitting },
-  } = useForm<ICreateCourseForm>({
+  const formMethods = useForm<ICreateCourseForm>({
     defaultValues: {
       slug: "",
       trackId: "",
@@ -39,6 +36,12 @@ export default function CreateCourseForm() {
     mode: "onChange",
     resolver: zodResolver(getValidationSchema() as typeof createCourseSchema),
   });
+
+  const {
+    handleSubmit,
+    control,
+    formState: { errors, isSubmitting },
+  } = formMethods;
 
   const trackOptions = useMemo(() => {
     if (!tracksData?.data?.tracks) return [];
@@ -88,10 +91,11 @@ export default function CreateCourseForm() {
           <span className="mr-2">جاري تحميل البيانات...</span>
         </div>
       ) : (
-        <form
-          onSubmit={handleSubmit(handleFormSubmit)}
-          className="flex flex-col gap-4"
-        >
+        <Form {...formMethods}>
+          <form
+            onSubmit={handleSubmit(handleFormSubmit)}
+            className="flex flex-col gap-4"
+          >
           {getFormFields().map((field) => {
             let fieldWithOptions = field;
 
@@ -120,7 +124,8 @@ export default function CreateCourseForm() {
           >
             {isSubmitting ? <Loader /> : "إضافة دورة"}
           </button>
-        </form>
+          </form>
+        </Form>
       )}
     </div>
   );

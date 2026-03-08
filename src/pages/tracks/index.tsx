@@ -3,7 +3,7 @@ import { Plus, } from "lucide-react";
 import { Routes } from "@/constants/enums";
 import { Link } from "react-router-dom";
 import { buttonVariants } from "@/components/ui/button";
-import TrackTable from "@/features/tracks/components/tarck-table";
+import TrackTable from "@/features/tracks/components/track-table";
 
 
 function Tracks() {

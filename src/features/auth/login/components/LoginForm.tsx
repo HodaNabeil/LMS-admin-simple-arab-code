@@ -14,6 +14,7 @@ import type { z } from 'zod';
 import { handleApiError } from '@/lib/error-handler';
 import { cn } from "../../../../lib/utils";
 import { isAdmin } from '@/lib/auth-utils';
+import { Form } from '@/components/ui/form';
 
 
 
@@ -28,11 +29,7 @@ export default function LoginForm() {
     const { login, isLoading } = useAuthStore();
 
 
-    const {
-        handleSubmit,
-        control,
-        formState: { errors, isSubmitting },
-    } = useForm<LoginSchema>({
+    const formMethods = useForm<LoginSchema>({
         resolver: zodResolver(getValidationSchema() as typeof loginSchema),
         mode: "onChange",
         defaultValues: {
@@ -40,6 +37,8 @@ export default function LoginForm() {
             password: "",
         },
     });
+
+    const { handleSubmit, control, formState: { errors, isSubmitting } } = formMethods;
 
     const onSubmit = async (data: LoginSchema) => {
 
@@ -71,29 +70,32 @@ export default function LoginForm() {
     };
 
     const formLoading = isSubmitting || isLoading;
+    
     return (
-        <form
-            onSubmit={handleSubmit(onSubmit)}
-            className={cn('flex', 'flex-col', 'bg-[#ffffff]', 'p-4', 'rounded-lg', 'shadow', 'w-full', 'max-w-md')}
-        >
-            {getFormFields().map((field) => (
-                <div key={field.name}>
-                    <FormFields {...field}
-                        control={control} errors={errors} />
-                </div>
-            ))}
-            <Button
-                type="submit"
-                className={cn('w-full', 'h-10', 'mt-4', 'text-white', 'font-medium')}
+        <Form {...formMethods}>
+            <form
+                onSubmit={handleSubmit(onSubmit)}
+                className={cn('flex', 'flex-col', 'bg-[#ffffff]', 'p-4', 'rounded-lg', 'shadow', 'w-full', 'max-w-md')}
             >
-                <LoadingButton
-                    loading={formLoading}
-                    loadingText="جار تسجيل الدخول..."
-                    loaderSize="sm"
+                {getFormFields().map((field) => (
+                    <div key={field.name}>
+                        <FormFields {...field}
+                            control={control} errors={errors} />
+                    </div>
+                ))}
+                <Button
+                    type="submit"
+                    className={cn('w-full', 'h-10', 'mt-4', 'text-white', 'font-medium')}
                 >
-                    تسجيل الدخول
-                </LoadingButton>
-            </Button>
-        </form>
+                    <LoadingButton
+                        loading={formLoading}
+                        loadingText="جار تسجيل الدخول..."
+                        loaderSize="sm"
+                    >
+                        تسجيل الدخول
+                    </LoadingButton>
+                </Button>
+            </form>
+        </Form>
     )
 }

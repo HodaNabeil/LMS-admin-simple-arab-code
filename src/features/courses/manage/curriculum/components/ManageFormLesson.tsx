@@ -2,6 +2,7 @@ import FormFields from '@/components/shared/form-fields/form-fields';
 import { z } from 'zod';
 import { Button } from '@/components/ui/button';
 import { Pages } from '@/constants/enums';
+import { Form } from '@/components/ui/form';
 import useFormFields from '@/hooks/useFormFields';
 
 import { createLessonCourseSchema } from '@/validations/course';
@@ -37,11 +38,7 @@ export default function ManageFormLesson({
   const { mutate: updateLecture, isPending: isUpdating } = useUpdateLecture();
   const isPending = isCreating || isUpdating;
 
-  const {
-    handleSubmit,
-    control,
-    formState: { errors },
-  } = useForm<z.infer<typeof createLessonCourseSchema>>({
+  const form = useForm<z.infer<typeof createLessonCourseSchema>>({
     defaultValues: {
       title: (initialValues?.title as string) || "",
       description: (initialValues?.description as string) || "",
@@ -49,6 +46,12 @@ export default function ManageFormLesson({
     mode: 'onChange',
     resolver: zodResolver(createLessonCourseSchema),
   });
+
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = form;
 
   const handleFormSubmit = (data: z.infer<typeof createLessonCourseSchema>) => {
 
@@ -69,22 +72,24 @@ export default function ManageFormLesson({
   };
 
   return (
-    <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-4">
-      {getFormFields()
-        .filter((field: IFormField) => !hiddenFields.includes(field.name))
-        .map((field: IFormField, index: number) => (
-          <div key={index} className="mb-4">
-            <FormFields {...field} control={control} errors={errors} />
-          </div>
-        ))}
-      <div className="flex justify-end mt-4 gap-2 items-center">
-        <Button type="submit" disabled={isPending}>
-          {isPending ? 'جاري الحفظ...' : (mode === 'add' ? 'إضافة' : 'تحديث')}
-        </Button>
-        <Button type="button" variant="secondary" onClick={onClose} disabled={isPending}>
-          إلغاء
-        </Button>
-      </div>
-    </form>
+    <Form {...form}>
+      <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-4">
+        {getFormFields()
+          .filter((field: IFormField) => !hiddenFields.includes(field.name))
+          .map((field: IFormField, index: number) => (
+            <div key={index} className="mb-4">
+              <FormFields {...field} control={control} errors={errors} />
+            </div>
+          ))}
+        <div className="flex justify-end mt-4 gap-2 items-center">
+          <Button type="submit" disabled={isPending}>
+            {isPending ? 'جاري الحفظ...' : (mode === 'add' ? 'إضافة' : 'تحديث')}
+          </Button>
+          <Button type="button" variant="secondary" onClick={onClose} disabled={isPending}>
+            إلغاء
+          </Button>
+        </div>
+      </form>
+    </Form>
   );
 }

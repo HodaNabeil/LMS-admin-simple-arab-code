@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import FormFields from "@/components/shared/form-fields/form-fields";
 import { Pages } from "@/constants/enums";
+import { Form } from "@/components/ui/form";
 
 import useFormFields from "@/hooks/useFormFields";
 import useFormValidations from "@/hooks/useFormValidations";
@@ -24,12 +25,7 @@ export default function PricingForm({
   const { getFormFields } = useFormFields({ slug: Pages.PRICING });
   const { getValidationSchema } = useFormValidations({ slug: Pages.PRICING });
 
-  const {
-    control,
-    formState: { errors },
-    watch,
-    reset,
-  } = useForm<PricingSchema>({
+  const form = useForm<PricingSchema>({
     defaultValues: {
       price,
       compareAtPrice,
@@ -37,6 +33,13 @@ export default function PricingForm({
     mode: "onChange",
     resolver: zodResolver(getValidationSchema() as typeof pricingSchema),
   });
+
+  const {
+    control,
+    formState: { errors },
+    watch,
+    reset,
+  } = form;
 
   const { setPrice, setCompareAtPrice } = useCourseManageStore();
 
@@ -63,16 +66,18 @@ export default function PricingForm({
   }, [watchedPrice, watchedCompareAtPrice, setPrice, setCompareAtPrice]);
 
   return (
-    <div className="flex flex-col gap-6">
-      {getFormFields().map((field, index) => (
-        <div key={index} className="mb-4">
-          <FormFields
-            {...field}
-            control={control as Control<PricingSchema>}
-            errors={errors}
-          />
-        </div>
-      ))}
-    </div>
+    <Form {...form}>
+      <div className="flex flex-col gap-6">
+        {getFormFields().map((field, index) => (
+          <div key={index} className="mb-4">
+            <FormFields
+              {...field}
+              control={control as Control<PricingSchema>}
+              errors={errors}
+            />
+          </div>
+        ))}
+      </div>
+    </Form>
   );
 }

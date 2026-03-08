@@ -1,6 +1,7 @@
 import FormFields from '@/components/shared/form-fields/form-fields';
 import { Button } from '@/components/ui/button';
 import { Pages } from '@/constants/enums';
+import { Form } from '@/components/ui/form';
 import useFormFields from '@/hooks/useFormFields';
 import useFormValidations from '@/hooks/useFormValidations';
 import type { createSectionCourseSchema } from '@/validations/course';
@@ -24,11 +25,7 @@ export default function SectionForm({ section, setOpen }: SectionFormProps) {
   const { mutate: createSection, isPending: isCreating } = useCreateSection();
   const { mutate: updateSection, isPending: isUpdating } = useUpdateSection();
 
-  const {
-    handleSubmit,
-    control,
-    formState: { errors },
-  } = useForm({
+  const form = useForm({
     defaultValues: {
       title: section?.title || '',
       description: section?.description || '',
@@ -38,6 +35,12 @@ export default function SectionForm({ section, setOpen }: SectionFormProps) {
       getValidationSchema() as typeof createSectionCourseSchema
     ),
   });
+
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = form;
 
   const handleFormSubmit = (data: z.infer<typeof createSectionCourseSchema>) => {
     if (section) {
@@ -61,20 +64,22 @@ export default function SectionForm({ section, setOpen }: SectionFormProps) {
   const isLoading = isCreating || isUpdating;
 
   return (
-    <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-4">
-      {getFormFields().map((field, index) => (
-        <div key={index} className="mb-4">
-          <FormFields {...field} control={control} errors={errors} />
+    <Form {...form}>
+      <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-4">
+        {getFormFields().map((field, index) => (
+          <div key={index} className="mb-4">
+            <FormFields {...field} control={control} errors={errors} />
+          </div>
+        ))}
+        <div className="flex justify-end mt-4 gap-2 items-center">
+          <Button type="submit" disabled={isLoading}>
+            {isLoading ? 'جاري الحفظ...' : section ? 'تعديل القسم' : 'إضافة قسم'}
+          </Button>
+          <Button type="button" variant="secondary" onClick={onCancel} disabled={isLoading}>
+            إلغاء
+          </Button>
         </div>
-      ))}
-      <div className="flex justify-end mt-4 gap-2 items-center">
-        <Button type="submit" disabled={isLoading}>
-          {isLoading ? 'جاري الحفظ...' : section ? 'تعديل القسم' : 'إضافة قسم'}
-        </Button>
-        <Button type="button" variant="secondary" onClick={onCancel} disabled={isLoading}>
-          إلغاء
-        </Button>
-      </div>
-    </form>
+      </form>
+    </Form>
   );
 }

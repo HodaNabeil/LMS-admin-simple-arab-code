@@ -170,7 +170,7 @@ export const columns: ColumnDef<Course>[] = [
         header: 'مميز',
         cell: ({ row }) => (
             <div className="text-center">
-                {row.getValue('isFeatured') ? '✅' : '❌'}
+                {row.getValue('isFeatured') ? '' : ''}
             </div>
         ),
     },
@@ -179,7 +179,7 @@ export const columns: ColumnDef<Course>[] = [
         header: 'شهادة',
         cell: ({ row }) => (
             <div className="text-center">
-                {row.getValue('certificateEnabled') ? '✅' : '❌'}
+                {row.getValue('certificateEnabled') ? '' : ''}
             </div>
         ),
     },
@@ -360,7 +360,7 @@ export const columns: ColumnDef<Course>[] = [
                         className={cn('text-blue-600', 'hover:text-blue-800', 'transition-colors')}
                         title="تعديل الدورة"
                     >
-                        <Edit className="h-4 w-4" />
+                        <Edit className={cn('h-4', 'w-4')} />
                     </Link>
 
                     {/* View course reviews */}
@@ -372,9 +372,9 @@ export const columns: ColumnDef<Course>[] = [
                         )}
                         title="تقييمات الدورة"
                     >
-                        <Star className="h-4 w-4 fill-amber-400 stroke-amber-500" />
+                        <Star className={cn('h-4', 'w-4', 'fill-amber-400', 'stroke-amber-500')} />
                         {ratingCount > 0 && (
-                            <span className="text-[10px] font-bold leading-none">
+                            <span className={cn('text-[10px]', 'font-bold', 'leading-none')}>
                                 {ratingCount}
                             </span>
                         )}

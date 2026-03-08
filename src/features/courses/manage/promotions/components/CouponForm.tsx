@@ -5,6 +5,7 @@ import { Loader } from '@/components/shared/loader';
 import { Pages } from '@/constants/enums';
 import FormFields from '@/components/shared/form-fields/form-fields';
 import { Button } from '@/components/ui/button';
+import { Form } from '@/components/ui/form';
 import useFormValidations from '@/hooks/useFormValidations';
 import type { Coupon } from '@/types/course';
 import { CreateCouponDtoType } from '@/constants/enums';
@@ -30,11 +31,7 @@ function CouponForm({
 
     const formFields = getFormFields();
 
-    const {
-        handleSubmit,
-        control,
-        formState: { errors, isSubmitting },
-    } = useForm<CouponSchema>({
+    const form = useForm<CouponSchema>({
         defaultValues: {
             code: initialData?.code || '',
             value: initialData?.value || 0,
@@ -51,6 +48,12 @@ function CouponForm({
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         resolver: zodResolver(getValidationSchema() as any),
     });
+
+    const {
+        handleSubmit,
+        control,
+        formState: { errors, isSubmitting },
+    } = form;
 
     const handleFormSubmit = async (data: CouponSchema) => {
         try {
@@ -73,33 +76,35 @@ function CouponForm({
     const formLoading = isSubmitting || isLoading;
 
     return (
-        <form onSubmit={handleSubmit(handleFormSubmit as Parameters<typeof handleSubmit>[0])} className="p-6 space-y-6 overflow-y-auto h-[500px]">
-            {formLoading && <div className="flex justify-center py-4"><Loader className='style-loader' /></div>}
-            {!formLoading && formFields.map((field, index) => (
-                <div key={index}>
-                    <FormFields {...field} control={control} errors={errors} />
-                </div>
-            ))}
+        <Form {...form}>
+            <form onSubmit={handleSubmit(handleFormSubmit as Parameters<typeof handleSubmit>[0])} className="p-6 space-y-6 overflow-y-auto h-[500px]">
+                {formLoading && <div className="flex justify-center py-4"><Loader className='style-loader' /></div>}
+                {!formLoading && formFields.map((field, index) => (
+                    <div key={index}>
+                        <FormFields {...field} control={control} errors={errors} />
+                    </div>
+                ))}
 
-            <div className="flex justify-end gap-3 pt-4 border-t border-gray-100">
-                <Button
-                    type="button"
-                    variant="outline"
-                    onClick={onCancel}
-                    className="px-6 py-3 rounded-xl border-2 border-gray-200 text-gray-700 font-semibold hover:bg-gray-50 hover:border-gray-300 transition-all duration-200"
-                >
-                    إلغاء
-                </Button>
-                <Button
-                    type="submit"
-                    disabled={formLoading}
-                    className="px-6 py-3 bg-linear-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                    {formLoading ? (initialData ? "جاري التعديل..." : "جاري الإنشاء...") : (initialData ? "حفظ التعديلات" : "إنشاء الكوبون")}
-                    {formLoading && <Loader className='style-loader' />}
-                </Button>
-            </div>
-        </form>
+                <div className="flex justify-end gap-3 pt-4 border-t border-gray-100">
+                    <Button
+                        type="button"
+                        variant="outline"
+                        onClick={onCancel}
+                        className="px-6 py-3 rounded-xl border-2 border-gray-200 text-gray-700 font-semibold hover:bg-gray-50 hover:border-gray-300 transition-all duration-200"
+                    >
+                        إلغاء
+                    </Button>
+                    <Button
+                        type="submit"
+                        disabled={formLoading}
+                        className="px-6 py-3 bg-linear-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                        {formLoading ? (initialData ? "جاري التعديل..." : "جاري الإنشاء...") : (initialData ? "حفظ التعديلات" : "إنشاء الكوبون")}
+                        {formLoading && <Loader className='style-loader' />}
+                    </Button>
+                </div>
+            </form>
+        </Form>
     );
 }
 

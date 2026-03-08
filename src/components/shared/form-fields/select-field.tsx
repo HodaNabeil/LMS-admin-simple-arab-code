@@ -35,16 +35,16 @@ const SelectField = ({
       control={control}
       name={name}
       render={({ field }) => (
-        <FormItem className="flex flex-col gap-2">
+        <FormItem className={cn('flex', 'flex-col', 'gap-2')}>
           {label && (
-            <FormLabel className="text-sm font-medium text-foreground">
+            <FormLabel className={cn('text-sm', 'font-medium', 'text-foreground')}>
               {label} {required && <span className="text-destructive">*</span>}
             </FormLabel>
           )}
           <FormControl>
             <Select
+              value={field.value || ''}
               onValueChange={field.onChange}
-              defaultValue={field.value}
               disabled={disabled}
             >
               <SelectTrigger

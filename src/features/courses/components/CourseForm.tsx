@@ -12,6 +12,7 @@ import type { AxiosError } from 'axios';
 import { CourseDtoLevel } from '@/types/api.generated';
 import { basicsSchema, type BasicsSchema } from '@/validations/course';
 import type { UpdateCourseRequest, UpdateCourseResponse } from '@/types/course';
+import { Form } from '@/components/ui/form';
 
 
 interface CourseFormProps {
@@ -23,23 +24,24 @@ interface CourseFormProps {
 function CourseForm({ course, setCourseMenu, mutation }: CourseFormProps) {
     const { getFormFields } = useFormFields({ slug: Pages.BASICS });
 
+    const formMethods = useForm({
+        defaultValues: {
+            title: course?.title || '',
+            slug: course?.slug || '',
+            description: course?.description || '',
+            level: course?.level || CourseDtoLevel.BEGINNER,
+            thumbnail: course?.thumbnailUrl || '',
+            hours: course?.hours || 0,
+        },
+        mode: 'onChange',
+        resolver: zodResolver(basicsSchema),
+    });
+
     const {
         handleSubmit,
         control,
         formState: { errors, isSubmitting },
-    } = useForm({
-        defaultValues: {
-            title: course?.title || '',
-            slug: course?.slug || '',
-            level: course?.level || CourseDtoLevel.ALL_LEVELS,
-            thumbnail: course?.thumbnailUrl || '',
-            hours: course?.hours || 0,
-            description: course?.description || '',
-        },
-        mode: 'onChange',
-
-        resolver: zodResolver(basicsSchema),
-    });
+    } = formMethods;
 
     const onSubmit = async (data: BasicsSchema) => {
         const cleanData: UpdateCourseRequest = {
@@ -71,17 +73,19 @@ function CourseForm({ course, setCourseMenu, mutation }: CourseFormProps) {
     const formLoading = isSubmitting || mutation.isPending;
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className="max-h-[calc(100vh-200px)] overflow-y-auto">
-            {getFormFields().map((field, index) => (
-                <div key={index} className="mb-4">
-                    <FormFields {...field} control={control} errors={errors} />
-                </div>
-            ))}
-            <Button type="submit" disabled={formLoading} className='w-full'>
-                {course ? 'تحديث الدورة' : 'إنشاء دورة جديدة'}
-                {formLoading && <Loader />}
-            </Button>
-        </form>
+        <Form {...formMethods}>
+            <form onSubmit={handleSubmit(onSubmit)} className="max-h-[calc(100vh-200px)] overflow-y-auto">
+                {getFormFields().map((field, index) => (
+                    <div key={index} className="mb-4">
+                        <FormFields {...field} control={control} errors={errors} />
+                    </div>
+                ))}
+                <Button type="submit" disabled={formLoading} className='w-full'>
+                    {course ? 'تحديث الدورة' : 'إنشاء دورة جديدة'}
+                    {formLoading && <Loader />}
+                </Button>
+            </form>
+        </Form>
     );
 }
 
