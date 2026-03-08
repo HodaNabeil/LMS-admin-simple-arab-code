@@ -50,68 +50,109 @@ const MultiSelectField = ({
                                 }}
                                 onBlur={field.onBlur}
                                 isDisabled={disabled}
-                                placeholder={placeholder}
+                                placeholder={placeholder || "اختر..."}
+                                noOptionsMessage={() => "لا توجد خيارات متاحة"}
                                 classNamePrefix="react-select"
                                 className="text-sm"
                                 styles={{
                                     control: (base, state) => ({
                                         ...base,
-                                        backgroundColor: 'transparent',
-                                        borderColor: state.isFocused ? 'hsl(var(--primary))' : 'hsl(var(--border))',
-                                        boxShadow: 'none',
+                                        backgroundColor: 'var(--background)',
+                                        borderColor: state.isFocused ? 'var(--primary)' : 'var(--border)',
+                                        boxShadow: state.isFocused ? '0 0 0 1px var(--primary)' : 'none',
                                         '&:hover': {
-                                            borderColor: state.isFocused ? 'hsl(var(--primary))' : 'hsl(var(--border))',
+                                            borderColor: 'var(--primary)',
                                         },
-                                        borderRadius: '0.75rem',
+                                        borderRadius: '0.5rem',
                                         minHeight: '2.5rem',
+                                        transition: 'all 0.2s',
                                     }),
                                     menu: (base) => ({
                                         ...base,
-                                        backgroundColor: 'hsl(var(--popover))',
-                                        border: '1px solid hsl(var(--border))',
-                                        borderRadius: '0.75rem',
+                                        backgroundColor: 'var(--popover)',
+                                        border: '1px solid var(--border)',
+                                        borderRadius: '0.5rem',
+                                        boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)',
                                         overflow: 'hidden',
                                         zIndex: 50,
+                                        marginTop: '4px',
                                     }),
                                     option: (base, state) => ({
                                         ...base,
-                                        backgroundColor: state.isFocused ? 'hsl(var(--accent))' : 'transparent',
-                                        color: state.isFocused ? 'hsl(var(--accent-foreground))' : 'hsl(var(--popover-foreground))',
+                                        backgroundColor: state.isSelected
+                                            ? 'var(--primary)'
+                                            : state.isFocused
+                                                ? 'var(--accent)'
+                                                : 'transparent',
+                                        color: state.isSelected
+                                            ? 'var(--primary-foreground)'
+                                            : state.isFocused
+                                                ? 'var(--accent-foreground)'
+                                                : 'var(--popover-foreground)',
                                         '&:active': {
-                                            backgroundColor: 'hsl(var(--accent))',
+                                            backgroundColor: 'var(--primary)',
+                                            color: 'var(--primary-foreground)',
                                         },
                                         cursor: 'pointer',
+                                        padding: '8px 12px',
                                     }),
                                     multiValue: (base) => ({
                                         ...base,
-                                        backgroundColor: 'hsl(var(--secondary))',
-                                        borderRadius: '0.375rem',
+                                        backgroundColor: 'var(--primary)',
+                                        borderRadius: '4px',
+                                        color: 'white',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        gap: '2px',
+                                        paddingLeft: '4px',
                                     }),
                                     multiValueLabel: (base) => ({
                                         ...base,
-                                        color: 'hsl(var(--secondary-foreground))',
+                                        color: 'var(--primary-foreground)',
+                                        padding: '0 4px',
+                                        fontSize: '0.875rem',
                                     }),
                                     multiValueRemove: (base) => ({
                                         ...base,
-                                        color: 'hsl(var(--secondary-foreground))',
+                                        color: 'var(--primary-foreground)',
+                                        opacity: 0.8,
                                         '&:hover': {
-                                            backgroundColor: 'hsl(var(--destructive))',
-                                            color: 'hsl(var(--destructive-foreground))',
-                                            borderRadius: '0.375rem',
+                                            backgroundColor: 'rgba(255, 255, 255, 0.2)',
+                                            color: 'white',
+                                            opacity: 1,
                                         },
+                                        borderRadius: '2px',
+                                        transition: 'all 0.2s',
                                     }),
                                     placeholder: (base) => ({
                                         ...base,
-                                        color: 'hsl(var(--muted-foreground))',
+                                        color: 'var(--muted-foreground)',
                                     }),
                                     input: (base) => ({
                                         ...base,
-                                        color: 'hsl(var(--foreground))',
+                                        color: 'var(--foreground)',
                                     }),
                                     singleValue: (base) => ({
                                         ...base,
-                                        color: 'hsl(var(--foreground))',
-                                    })
+                                        color: 'var(--foreground)',
+                                    }),
+                                    indicatorSeparator: () => ({
+                                        display: 'none',
+                                    }),
+                                    dropdownIndicator: (base, state) => ({
+                                        ...base,
+                                        color: state.isFocused ? 'var(--primary)' : 'var(--muted-foreground)',
+                                        '&:hover': {
+                                            color: 'var(--primary)',
+                                        }
+                                    }),
+                                    clearIndicator: (base) => ({
+                                        ...base,
+                                        color: 'var(--muted-foreground)',
+                                        '&:hover': {
+                                            color: 'var(--destructive)',
+                                        }
+                                    }),
                                 }}
                             />
                         </FormControl>
