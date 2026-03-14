@@ -10,7 +10,14 @@ import type {
     CreateLectureRequest,
     UpdateLectureRequest
 } from "@/types/curriculum";
-import { curriculumApi } from "@/features/courses/services/curriculumApi";
+import {
+    createSection,
+    updateSection,
+    deleteSection,
+    createLecture,
+    updateLecture,
+    deleteLecture
+} from "@/features/courses/services/curriculumApi";
 import { useParams } from "react-router-dom";
 
 export function useCreateSection() {
@@ -20,7 +27,7 @@ export function useCreateSection() {
 
     return useMutation<Section, Error, CreateSectionRequest>({
         mutationFn: async (data: CreateSectionRequest): Promise<Section> => {
-            return await curriculumApi.createSection(courseSlug, data);
+            return await createSection(courseSlug, data);
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: curriculumKeys.sections(courseSlug) });
@@ -39,7 +46,7 @@ export function useUpdateSection() {
 
     return useMutation<Section, Error, { id: string; data: UpdateSectionRequest }>({
         mutationFn: async ({ id, data }): Promise<Section> => {
-            return await curriculumApi.updateSection(courseSlug, id, data);
+            return await updateSection(courseSlug, id, data);
         },
         onSuccess: (_, { id }) => {
             queryClient.invalidateQueries({ queryKey: curriculumKeys.sections(courseSlug) });
@@ -59,7 +66,7 @@ export function useDeleteSection() {
 
     return useMutation<void, Error, string>({
         mutationFn: async (id: string): Promise<void> => {
-            return await curriculumApi.deleteSection(courseSlug, id);
+            return await deleteSection(courseSlug, id);
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: curriculumKeys.sections(courseSlug) });
@@ -80,7 +87,7 @@ export function useCreateLecture() {
 
     return useMutation<Lecture, Error, { sectionId: string; data: CreateLectureRequest }>({
         mutationFn: async ({ sectionId, data }) => {
-            return await curriculumApi.createLecture(sectionId, data);
+            return await createLecture(sectionId, data);
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: curriculumKeys.sections(courseSlug) });
@@ -99,7 +106,7 @@ export function useUpdateLecture() {
 
     return useMutation<Lecture, Error, { id: string; data: UpdateLectureRequest }>({
         mutationFn: async ({ id, data }) => {
-            return await curriculumApi.updateLecture(id, data);
+            return await updateLecture(id, data);
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: curriculumKeys.sections(courseSlug) });
@@ -118,7 +125,7 @@ export function useDeleteLecture() {
 
     return useMutation<void, Error, string>({
         mutationFn: async (id: string) => {
-            return await curriculumApi.deleteLecture(id);
+            return await deleteLecture(id);
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: curriculumKeys.sections(courseSlug) });
@@ -129,5 +136,3 @@ export function useDeleteLecture() {
         },
     });
 }
-
-

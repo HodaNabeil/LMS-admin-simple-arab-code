@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { curriculumKeys } from "@/lib/query-keys";
-import { curriculumApi } from "@/features/courses/services/curriculumApi";
+import { getAllSections } from "@/features/courses/services/curriculumApi";
 import { useParams } from "react-router-dom";
 
 export function useSections() {
@@ -9,7 +9,7 @@ export function useSections() {
 
   return useQuery({
     queryKey: curriculumKeys.sections(courseSlug),
-    queryFn: () => curriculumApi.getAllSections(courseSlug),
+    queryFn: () => getAllSections(courseSlug),
     enabled: !!courseSlug,
   });
 }

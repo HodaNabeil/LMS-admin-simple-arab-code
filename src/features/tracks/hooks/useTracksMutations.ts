@@ -9,7 +9,11 @@ import type {
   UpdateTrackRequest,
   UpdateTrackResponse,
 } from '@/types/tracks';
-import { tracksApi } from '../services/tracksApi';
+import {
+  createTrack,
+  updateTrack,
+  deleteTrack
+} from '../services/tracksApi';
 
 export function useCreateTrack() {
   const queryClient = useQueryClient();
@@ -17,7 +21,7 @@ export function useCreateTrack() {
     mutationFn: async (
       data: CreateTrackRequest,
     ): Promise<CreateTrackResponse> => {
-      return await tracksApi.createTrack(data);
+      return await createTrack(data);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.tracks.all });
@@ -37,7 +41,7 @@ export function useUpdateTrack() {
     { slug: string; data: UpdateTrackRequest }
   >({
     mutationFn: async ({ slug, data }): Promise<UpdateTrackResponse> => {
-      return await tracksApi.updateTrack(slug, data);
+      return await updateTrack(slug, data);
     },
     onSuccess: (res, variables) => {
       queryClient.invalidateQueries({ queryKey: queryKeys.tracks.all });
@@ -55,7 +59,7 @@ export function useDeleteTrack() {
   const queryClient = useQueryClient();
   return useMutation<DeleteTrackResponse, Error, string>({
     mutationFn: async (slug: string): Promise<DeleteTrackResponse> => {
-      return await tracksApi.deleteTrack(slug);
+      return await deleteTrack(slug);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.tracks.all });

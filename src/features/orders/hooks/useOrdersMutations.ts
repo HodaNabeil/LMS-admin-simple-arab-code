@@ -4,13 +4,19 @@ import { toast } from "sonner";
 import { handleApiError } from "@/lib/error-handler";
 
 import type { Order, CreateOrderRequest, UpdateOrderRequest } from "@/types/orders";
-import { ordersApi } from "../services/ordersAPi";
+import {
+  createOrder,
+  updateOrder,
+  deleteOrder,
+  refundOrder,
+  reportOrderError
+} from "../services/ordersAPi";
 
 export function useCreateOrder() {
   const queryClient = useQueryClient();
   return useMutation<Order, Error, CreateOrderRequest>({
     mutationFn: async (data: CreateOrderRequest): Promise<Order> => {
-      const response = await ordersApi.createOrder(data);
+      const response = await createOrder(data);
       // response.data is the wrapped response, response.data.data is the actual Order
       if (!response.data) {
         throw new Error("No data returned from create order");
@@ -31,7 +37,7 @@ export function useUpdateOrder() {
   const queryClient = useQueryClient();
   return useMutation<Order, Error, { id: string; data: UpdateOrderRequest }>({
     mutationFn: async ({ id, data }): Promise<Order> => {
-      const response = await ordersApi.updateOrder(id, data);
+      const response = await updateOrder(id, data);
       if (!response.data) {
         throw new Error("No data returned from update order");
       }
@@ -52,7 +58,7 @@ export function useDeleteOrder() {
   const queryClient = useQueryClient();
   return useMutation<void, Error, string>({
     mutationFn: async (id: string): Promise<void> => {
-      return await ordersApi.deleteOrder(id);
+      return await deleteOrder(id);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.orders.all });
@@ -68,7 +74,7 @@ export function useRefundOrder() {
   const queryClient = useQueryClient();
   return useMutation<void, Error, { id: string; reason?: string }>({
     mutationFn: async ({ id, reason }) => {
-      return await ordersApi.refundOrder(id, reason);
+      return await refundOrder(id, reason);
     },
     onSuccess: (_, { id }) => {
       queryClient.invalidateQueries({ queryKey: queryKeys.orders.all });
@@ -84,7 +90,7 @@ export function useRefundOrder() {
 export function useReportOrderError() {
   return useMutation<void, Error, { id: string; error: string }>({
     mutationFn: async ({ id, error }) => {
-      return await ordersApi.reportOrderError(id, error);
+      return await reportOrderError(id, error);
     },
     onSuccess: () => {
       toast.success("تم إرسال بلاغ الخطأ للقسم التقني");

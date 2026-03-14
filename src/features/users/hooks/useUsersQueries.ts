@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { queryKeys } from "@/lib/query-keys";
-import { userApi } from "../services/userApi";
+import { getAllUsers } from "../services/userApi";
 import type { UserFilters, UserListResponse } from "@/types/user";
 
 /**
@@ -11,7 +11,7 @@ export function useUsers(filters?: UserFilters) {
   return useQuery<UserListResponse>({
     queryKey: queryKeys.users.list(filters),
     queryFn: async (): Promise<UserListResponse> => {
-      return await userApi.getAllUsers(filters);
+      return await getAllUsers(filters);
     },
   });
 }

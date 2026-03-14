@@ -1,6 +1,11 @@
 import { create } from "zustand";
 
-import { authService } from "./services/authService";
+import {
+  login as loginApi,
+  getCurrentUser,
+  logout as logoutApi,
+  refreshToken as refreshTokenApi
+} from "./services/authService";
 import { authCookies } from "@/lib/cookies";
 import type { User } from "@/types/user";
 import type { LoginRequest, LoginResponse } from "@/types/auth";
@@ -57,14 +62,14 @@ export const useAuthStore = create<AuthState>()((set, get) => ({
     set(() => ({ isLoading: true }));
 
     try {
-      const response: LoginResponse = await authService.login(credentials);
+      const response: LoginResponse = await loginApi(credentials);
 
       let userData = response.data.user;
-      
+
       // If user data is not included in login response, fetch it separately
       if (!userData && response.data.accessToken) {
         try {
-          userData = await authService.getCurrentUser();
+          userData = await getCurrentUser();
         } catch (userError) {
           console.error("Failed to fetch user data after login:", userError);
           // Continue with login even if user fetch fails
@@ -77,7 +82,7 @@ export const useAuthStore = create<AuthState>()((set, get) => ({
         isAuthenticated: true,
         isLoading: false,
       }));
-      
+
       // Store in cookies
       if (response.data.accessToken) {
         authCookies.setAccessToken(response.data.accessToken);
@@ -85,7 +90,7 @@ export const useAuthStore = create<AuthState>()((set, get) => ({
       if (userData) {
         authCookies.setUser(userData);
       }
-      
+
       return response;
     } catch (error) {
       set(() => ({ isLoading: false }));
@@ -96,7 +101,7 @@ export const useAuthStore = create<AuthState>()((set, get) => ({
 
   logout: async () => {
     try {
-      await authService.logout();
+      await logoutApi();
     } catch (error) {
       console.error("Logout API call failed:", error);
     } finally {
@@ -124,7 +129,7 @@ export const useAuthStore = create<AuthState>()((set, get) => ({
     set(() => ({ isLoading: true }));
 
     try {
-      const user = await authService.getCurrentUser();
+      const user = await getCurrentUser();
       set(() => ({
         user,
         isAuthenticated: true,
@@ -148,7 +153,7 @@ export const useAuthStore = create<AuthState>()((set, get) => ({
     }
 
     try {
-      const response = await authService.refreshToken(refreshToken);
+      const response = await refreshTokenApi(refreshToken);
 
       set(() => ({
         accessToken: response.data.accessToken,

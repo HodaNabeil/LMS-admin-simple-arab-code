@@ -1,4 +1,4 @@
-import { tracksApi } from "../services/tracksApi";
+import { getAllTracks, getTrack } from "../services/tracksApi";
 import { tracksKeys } from "@/lib/query-keys";
 import type { GetTrackResponse, ListTracksResponse } from "@/types/tracks";
 import { useQuery } from "@tanstack/react-query";
@@ -7,7 +7,7 @@ export function useTracks() {
   return useQuery<ListTracksResponse>({
     queryKey: tracksKeys.all,
     queryFn: async (): Promise<ListTracksResponse> => {
-      return tracksApi.getAllTracks();
+      return getAllTracks();
     },
   });
 }
@@ -21,7 +21,7 @@ export function useTrack(slug: string | undefined) {
     queryKey: tracksKeys.detail(slug || ""),
     queryFn: async (): Promise<GetTrackResponse> => {
       if (!slug) throw new Error("Slug is required");
-      return await tracksApi.getTrack(slug);
+      return await getTrack(slug);
     },
     enabled: !!slug,
   });

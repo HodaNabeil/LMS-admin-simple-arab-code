@@ -1,15 +1,19 @@
-
 import { useQuery } from "@tanstack/react-query";
 import { reviewsKeys } from "@/lib/query-keys";
 import type { GetReviewResponse, ListReviewsResponse } from "@/types/reviews";
-import { reviewsApi, type GetCourseReviewsParams } from "../services/reviewsApi";
+import {
+  getAllReviews,
+  getCourseReviews,
+  getReview,
+  type GetCourseReviewsParams
+} from "../services/reviewsApi";
 
 /** Fetch all reviews globally (admin list – uses /api/reviews) */
 export function useReviews() {
   return useQuery<ListReviewsResponse>({
     queryKey: reviewsKeys.lists(),
     queryFn: async (): Promise<ListReviewsResponse> => {
-      return await reviewsApi.getAllReviews();
+      return await getAllReviews();
     },
   });
 }
@@ -23,7 +27,7 @@ export function useCourseReviews(
     queryKey: ["reviews", "course", idOrSlug, params],
     queryFn: async (): Promise<ListReviewsResponse> => {
       if (!idOrSlug) throw new Error("idOrSlug is required");
-      return await reviewsApi.getCourseReviews(idOrSlug, params);
+      return await getCourseReviews(idOrSlug, params);
     },
     enabled: !!idOrSlug,
   });
@@ -34,7 +38,7 @@ export function useReview(idOrSlug: string | undefined) {
     queryKey: reviewsKeys.detail(idOrSlug || ""),
     queryFn: async (): Promise<GetReviewResponse> => {
       if (!idOrSlug) throw new Error("idOrSlug is required");
-      return await reviewsApi.getReview(idOrSlug);
+      return await getReview(idOrSlug);
     },
     enabled: !!idOrSlug,
   });

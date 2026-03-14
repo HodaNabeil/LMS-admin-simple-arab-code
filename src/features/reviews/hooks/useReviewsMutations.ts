@@ -1,4 +1,3 @@
-
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { reviewsKeys } from "@/lib/query-keys";
 import { toast } from "sonner";
@@ -10,14 +9,19 @@ import type {
   UpdateReviewRequest,
   UpdateReviewResponse,
 } from "@/types/reviews";
-import { reviewsApi } from "../services/reviewsApi";
+import {
+  createReview,
+  createCourseReview,
+  updateReview,
+  deleteReview
+} from "../services/reviewsApi";
 
 export function useCreateReview() {
   const queryClient = useQueryClient();
 
   return useMutation<CreateReviewResponse, Error, CreateReviewRequest>({
     mutationFn: async (data: CreateReviewRequest): Promise<CreateReviewResponse> => {
-      return await reviewsApi.createReview(data);
+      return await createReview(data);
     },
     onSuccess: (res) => {
       queryClient.invalidateQueries({ queryKey: reviewsKeys.all });
@@ -38,7 +42,7 @@ export function useCreateCourseReview() {
     { courseSlug: string; data: { rating: number; comment: string } }
   >({
     mutationFn: async ({ courseSlug, data }): Promise<CreateReviewResponse> => {
-      return await reviewsApi.createCourseReview(courseSlug, data);
+      return await createCourseReview(courseSlug, data);
     },
     onSuccess: (res) => {
       queryClient.invalidateQueries({ queryKey: reviewsKeys.all });
@@ -59,7 +63,7 @@ export function useUpdateReview() {
     { idOrSlug: string; data: UpdateReviewRequest }
   >({
     mutationFn: async ({ idOrSlug, data }): Promise<UpdateReviewResponse> => {
-      return await reviewsApi.updateReview(idOrSlug, data);
+      return await updateReview(idOrSlug, data);
     },
     onSuccess: (res, variables) => {
       queryClient.invalidateQueries({ queryKey: reviewsKeys.all });
@@ -79,7 +83,7 @@ export function useDeleteReview() {
 
   return useMutation<DeleteReviewResponse, Error, string>({
     mutationFn: async (idOrSlug: string): Promise<DeleteReviewResponse> => {
-      return await reviewsApi.deleteReview(idOrSlug);
+      return await deleteReview(idOrSlug);
     },
     onSuccess: (res) => {
       queryClient.invalidateQueries({ queryKey: reviewsKeys.all });

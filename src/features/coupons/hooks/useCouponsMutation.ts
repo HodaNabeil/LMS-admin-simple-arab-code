@@ -7,13 +7,13 @@ import type {
     UpdateCouponRequest,
     Coupon
 } from "@/types/course";
-import { couponApi } from "../services/couponApi";
+import { createCoupon, updateCoupon, deleteCoupon } from "../services/couponApi";
 
 export function useCreateCoupon() {
     const queryClient = useQueryClient();
     return useMutation<Coupon, Error, CreateCouponRequest>({
         mutationFn: async (data: CreateCouponRequest): Promise<Coupon> => {
-            return await couponApi.createCoupon(data);
+            return await createCoupon(data);
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: couponsKeys.all });
@@ -29,7 +29,7 @@ export function useUpdateCoupon() {
     const queryClient = useQueryClient();
     return useMutation<Coupon, Error, { id: string; data: UpdateCouponRequest }>({
         mutationFn: async ({ id, data }): Promise<Coupon> => {
-            return await couponApi.updateCoupon(id, data);
+            return await updateCoupon(id, data);
         },
         onSuccess: (_, { id }) => {
             queryClient.invalidateQueries({ queryKey: couponsKeys.all });
@@ -46,7 +46,7 @@ export function useDeleteCouponMutation() {
     const queryClient = useQueryClient();
     return useMutation<void, Error, string>({
         mutationFn: async (id: string): Promise<void> => {
-            return await couponApi.deleteCoupon(id);
+            return await deleteCoupon(id);
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: couponsKeys.all });

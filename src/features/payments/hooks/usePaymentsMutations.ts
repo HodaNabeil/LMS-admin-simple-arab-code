@@ -9,13 +9,17 @@ import type {
     UpdatePaymentResponse,
     RefundPaymentResponse,
 } from '@/types/payments';
-import { paymentApi } from '../services/paymentApi';
+import {
+    createPayment,
+    updatePayment,
+    refundPayment
+} from '../services/paymentApi';
 
 export function useCreatePayment() {
     const queryClient = useQueryClient();
     return useMutation<CreatePaymentResponse, Error, CreatePaymentRequest>({
         mutationFn: async (data: CreatePaymentRequest): Promise<CreatePaymentResponse> => {
-            return await paymentApi.createPayment(data);
+            return await createPayment(data);
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: queryKeys.payments.all });
@@ -36,7 +40,7 @@ export function useUpdatePayment() {
         { id: string; data: UpdatePaymentRequest }
     >({
         mutationFn: async ({ id, data }): Promise<UpdatePaymentResponse> => {
-            return await paymentApi.updatePayment(id, data);
+            return await updatePayment(id, data);
         },
         onSuccess: (res, variables) => {
             queryClient.invalidateQueries({ queryKey: queryKeys.payments.all });
@@ -55,7 +59,7 @@ export function useRefundPayment() {
     const queryClient = useQueryClient();
     return useMutation<RefundPaymentResponse, Error, string>({
         mutationFn: async (id: string): Promise<RefundPaymentResponse> => {
-            return await paymentApi.refundPayment(id);
+            return await refundPayment(id);
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: queryKeys.payments.all });

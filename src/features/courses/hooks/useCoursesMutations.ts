@@ -1,6 +1,11 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { queryKeys } from "@/lib/query-keys";
-import { coursesApi } from "../services/coursesApi";
+import {
+    createCourse,
+    updateCourse,
+    deleteCourse,
+    uploadCourseMedia
+} from "../services/coursesApi";
 import { toast } from "sonner";
 import { handleApiError } from "@/lib/error-handler";
 import type {
@@ -16,7 +21,7 @@ export function useCreateCourse() {
     const queryClient = useQueryClient();
     return useMutation<CreateCourseResponse, Error, CreateCourseRequest>({
         mutationFn: async (data: CreateCourseRequest): Promise<CreateCourseResponse> => {
-            return await coursesApi.createCourse(data);
+            return await createCourse(data);
         },
         onSuccess: (res) => {
             queryClient.invalidateQueries({ queryKey: queryKeys.courses.all });
@@ -32,7 +37,7 @@ export function useUpdateCourse({ slug }: { slug: string }) {
     const queryClient = useQueryClient();
     return useMutation<UpdateCourseResponse, Error, UpdateCourseRequest>({
         mutationFn: async (data: UpdateCourseRequest): Promise<UpdateCourseResponse> => {
-            return await coursesApi.updateCourse(slug, data);
+            return await updateCourse(slug, data);
         },
         onSuccess: (res) => {
             queryClient.invalidateQueries({
@@ -50,7 +55,7 @@ export function useDeleteCourse() {
     const queryClient = useQueryClient();
     return useMutation<DeleteCourseResponse, Error, string>({
         mutationFn: async (slug: string): Promise<DeleteCourseResponse> => {
-            return await coursesApi.deleteCourse(slug);
+            return await deleteCourse(slug);
         },
         onSuccess: (res) => {
             queryClient.invalidateQueries({ queryKey: queryKeys.courses.all });
@@ -66,7 +71,7 @@ export function useUploadCourseMedia({ slug }: { slug: string }) {
     const queryClient = useQueryClient();
     return useMutation<{ thumbnail: File; previewVideo?: File }, Error, { thumbnail: File; previewVideo?: File }>({
         mutationFn: async ({ thumbnail, previewVideo }) => {
-            return await coursesApi.uploadCourseMedia(slug, thumbnail, previewVideo);
+            return await uploadCourseMedia(slug, thumbnail, previewVideo);
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: queryKeys.courses.detail(slug) });
