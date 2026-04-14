@@ -1,51 +1,36 @@
-import { useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-
 import { Loader2, Calculator } from "lucide-react";
-
-// Import utilities
-import {
-  getCurrencyOptions,
-  getCourseOptions,
-  getUserOptions,
-  getCouponOptions,
-} from "../services/orderOptions";
-
-import { useCourses } from "@/features/courses/hooks/useCoursesQueries";
-import { useUsers } from "@/features/users/hooks/useUsersQueries";
-import { useCoupons } from "@/features/courses/manage/promotions/hooks/useCouponsQueries";
 import { cn } from "../../../lib/utils";
 import { Pages } from '@/constants/enums';
 import useFormFields from '@/hooks/useFormFields';
 import { type OrderFormData, orderSchema } from "@/validations/order";
-import { useCreateOrder } from '../hooks/useOrdersMutations';
-import { useNavigate } from 'react-router-dom';
-import { handleApiError } from '@/lib/error-handler';
 import FormFields from '@/components/shared/form-fields/form-fields';
 import { Form } from "@/components/ui/form";
-
-
-import type { CreateOrderRequest } from '@/types/orders';
+import { useOrderFormOptions } from "../hooks/useOrderFormOptions";
 
 interface OrderFormProps {
   initialData?: OrderFormData;
-  onSubmit?: (data: OrderFormData) => void;
+  onSubmit: (data: OrderFormData) => void;
   onCancel?: () => void;
   isLoading?: boolean;
 }
 
-export default function
-  OrderForm({
-    initialData,
-    onSubmit,
-    onCancel,
-    isLoading = false,
-  }: OrderFormProps) {
+export default function OrderForm({
+  initialData,
+  onSubmit,
+  onCancel,
+  isLoading = false,
+}: OrderFormProps) {
   const { getFormFields } = useFormFields({ slug: Pages.CREATE_ORDERS });
-  const navigate = useNavigate();
-
-  const { mutateAsync: createOrder } = useCreateOrder();
+  
+  const { 
+    currencyOptions, 
+    courseOptions, 
+    userOptions, 
+    couponOptions, 
+    isPending: isPendingOptions 
+  } = useOrderFormOptions();
 
   // Initialize form with react-hook-form
   const formMethods = useForm<OrderFormData>({
@@ -68,7 +53,7 @@ export default function
   const {
     control,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors },
     watch,
   } = formMethods;
 
@@ -77,63 +62,12 @@ export default function
   const subtotalCents = formValues.coursePriceCents || 0;
   const totalCents = subtotalCents - (formValues.discountCents || 0) + (formValues.taxCents || 0);
 
-  // Fetch real data from backend
-  const { data: coursesData, isPending: isPendingCourses } = useCourses({
-    search: "",
-    limit: 50,
-  });
-
-  const { data: usersData, isPending: isPendingUsers } = useUsers({
-    search: "",
-  });
-
-  const { data: couponsData, isPending: isPendingCoupons } =
-    useCoupons("");
-
-  const currencyOptions = useMemo(() => getCurrencyOptions(), []);
-  const courseOptions = useMemo(() => getCourseOptions(coursesData?.data?.courses || []), [coursesData?.data?.courses]);
-  const userOptions = useMemo(() => getUserOptions(usersData?.data?.users ?? []), [usersData?.data?.users]);
-  const couponOptions = useMemo(() => getCouponOptions(couponsData?.data ?? []), [couponsData?.data]);
-
   const getCurrencySymbol = (currency: string) => {
     return currency === "EGP" ? "ج.م" : "$";
   };
 
-  // Handle form submission with proper typing
   const onFormSubmit = async (data: OrderFormData) => {
-    if (onSubmit) {
-      // Use external submit handler if provided
-      onSubmit(data);
-      return;
-    }
-
-    try {
-      // Calculate totals
-      const subtotalCents = data.coursePriceCents;
-      const totalCents = subtotalCents - data.discountCents + data.taxCents;
-
-      // Transform to API format
-      const orderData: CreateOrderRequest = {
-        userId: data.userId,
-        subtotalCents,
-        discountCents: data.discountCents,
-        taxCents: data.taxCents,
-        totalCents,
-        currency: data.currency as CreateOrderRequest["currency"],
-        couponId: data.couponId || undefined,
-        items: [{
-          courseId: data.courseId,
-          priceCents: data.coursePriceCents,
-          currency: data.currency as unknown as CreateOrderRequest["items"][number]["currency"],
-        }],
-      };
-
-      await createOrder(orderData);
-
-      navigate('/admin/orders');
-    } catch (error) {
-      handleApiError(error);
-    }
+    onSubmit(data);
   };
 
   return (
@@ -206,10 +140,10 @@ export default function
 
         <button
           type="submit"
-          disabled={isSubmitting || isLoading || isPendingUsers || isPendingCourses || isPendingCoupons}
+          disabled={isLoading || isPendingOptions}
           className={cn('bg-primary', 'text-white', 'rounded', 'px-4', 'py-2', 'text-sm', 'hover:bg-primary/90', 'transition', 'disabled:opacity-50', 'flex', 'items-center', 'justify-center', 'gap-2')}
         >
-          {isSubmitting || isLoading ? (
+          {isLoading ? (
             <Loader2 className={cn('h-4', 'w-4', 'animate-spin')} />
           ) : initialData ? (
             'تحديث الطلب'
@@ -221,7 +155,7 @@ export default function
           <button
             type="button"
             onClick={onCancel}
-            disabled={isSubmitting || isLoading}
+            disabled={isLoading}
             className={cn('bg-secondary', 'text-secondary-foreground', 'rounded', 'px-4', 'py-2', 'text-sm', 'hover:bg-secondary/90', 'transition', 'disabled:opacity-50', 'flex', 'items-center', 'justify-center', 'gap-2')}
           >
             إلغاء
@@ -231,3 +165,4 @@ export default function
     </Form>
   );
 }
+

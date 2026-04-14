@@ -10,7 +10,7 @@ import * as path from 'path';
 import openapiTS, { astToString } from 'openapi-typescript';
 
 // Configuration
-const API_BASE_URL = process.env.VITE_API_URL || "https://simple-arab-code-backend-production.up.railway.app";
+const API_BASE_URL = process.env.VITE_API_URL || "http://localhost:4000";
 const SCHEMA_URL = `${API_BASE_URL}/api/docs-json`;
 const TYPES_DIR = path.join(process.cwd(), 'src', 'types');
 const GENERATED_DIR = path.join(process.cwd(), 'src', 'generated');

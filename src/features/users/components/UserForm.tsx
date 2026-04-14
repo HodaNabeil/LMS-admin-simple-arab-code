@@ -19,12 +19,12 @@ type UserFormProps = {
 } & (
     | {
       user: User;
-      mutation: UseMutationResult<{ message: string },
+      mutation: UseMutationResult<User & { message?: string },
         Error, { id: string; data: UpdateUserDto }, unknown>;
     }
     | {
       user?: undefined;
-      mutation: UseMutationResult<{ message: string }, Error, CreateUserDto, unknown>;
+      mutation: UseMutationResult<User & { message?: string }, Error, CreateUserDto, unknown>;
     }
   );
 

@@ -3,52 +3,24 @@ import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
-
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Edit } from "lucide-react";
 
-import type { UpdateOrderRequest } from "@/types/orders";
 import type { OrderFormData } from "@/validations/order";
+import { cn } from "../../../lib/utils";
+import OrderForm from "./OrderForm";
+import { useEditOrderForm } from "../hooks/useEditOrderForm";
 
 interface EditOrderProps {
   orderId: string;
   initialData: OrderFormData;
 }
 
-import { useUpdateOrder } from "../hooks/useOrdersMutations";
-import { cn } from "../../../lib/utils";
-import OrderForm from "./OrderForm";
-
-export default function EditOrder({ orderId, initialData,    }: EditOrderProps) {
+export default function EditOrder({ orderId, initialData }: EditOrderProps) {
   const [open, setOpen] = useState(false);
-  const { mutateAsync: updateOrder, isPending: isUpdating } = useUpdateOrder();
-
-  const handleSubmit = async (data: OrderFormData) => {
-    try {
-      // Calculate subtotal and total from form data
-      const subtotalCents = data.coursePriceCents;
-      const totalCents = data.coursePriceCents - data.discountCents + data.taxCents;
-      
-      const updateData: UpdateOrderRequest = {
-        subtotalCents,
-        discountCents: data.discountCents,
-        taxCents: data.taxCents,
-        totalCents,
-        currency: data.currency as UpdateOrderRequest["currency"],
-        couponId: data.couponId || undefined,
-      };
-
-      await updateOrder({ id: orderId.toString(), data: updateData });
-
-      setOpen(false);
-    } catch (error) {
-      console.error("Error updating order:", error);
-    }
-  };
-
-  const isLoading = isUpdating;
+  const { handleEditOrder, isUpdating } = useEditOrderForm(orderId.toString(), setOpen);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -66,8 +38,9 @@ export default function EditOrder({ orderId, initialData,    }: EditOrderProps) 
             تعديل الطلب
           </DialogTitle>
         
-        <OrderForm onSubmit={handleSubmit} initialData={initialData} isLoading={isLoading} />
+        <OrderForm onSubmit={handleEditOrder} initialData={initialData} isLoading={isUpdating} />
       </DialogContent>
     </Dialog>
   );
 }
+
